@@ -7,9 +7,12 @@ function LoginForm(props)
         <input type="text" id="username"/>
 
         <label>Password</label>
-        <input type="text" id="password"/>
+        <input type="password" id="password"/>
 
-        <input type="button" value="Login" style={{marginTop: "10px"}}/>
+        <input type="button" value="Login" onClick={() => props.Login(
+          document.getElementById("username").value,
+          document.getElementById("password").value,
+        )} style={{marginTop: "10px"}}/>
       </div>
       
       <div className="noAccount">

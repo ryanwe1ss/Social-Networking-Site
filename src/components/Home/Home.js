@@ -7,6 +7,27 @@ function Home()
 {
     const [currentForm, setForm] = useState(true);
 
+    function Login(username, password) {
+      fetch("http://192.168.2.179/api/login", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({
+          "username": username,
+          "password": password,
+        }),
+      })
+      .then((result) => {
+        if (result.ok) {
+          return result.text();
+        }
+      })
+      .then((response) => {
+        if (response !== "invalid") {
+          window.location.href = `/profile?id=${response}`;
+        }
+      });
+    }
+
     return (
     <div className="container">
       <div className="area">
@@ -15,8 +36,8 @@ function Home()
         </div>
         <div className="body">
           {currentForm
-              ? <LoginForm setForm={setForm}/>
-              : <RegisterForm setForm={setForm}/>
+            ? <LoginForm setForm={setForm} Login={Login}/>
+            : <RegisterForm setForm={setForm}/>
           }
           <div className="description">
             <h3>Welcome to NetConnect</h3>

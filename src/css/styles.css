@@ -1,10 +1,10 @@
 .container {
-    font-family: verdana;
-    padding: 20px;
+  font-family: verdana;
+  padding: 20px;
 }
 
 .border-area {
-    border: 4px solid black;
+  border: 4px solid black;
 }
 
 .area, .border-area {
@@ -14,11 +14,11 @@
 }
 
 .border-area img {
-    border: 4px dashed rgb(28, 112, 221);
+  border: 3px solid rgb(83, 127, 189);
 }
 
 .menu a {
-    padding-left: 15px;
+  padding-left: 15px;
 }
 
 .wrapper {
@@ -26,12 +26,13 @@
 }
 
 .profile input {
-    font-size: 12px;
+  font-size: 12px;
 }
 
 .information {
   overflow: auto;
-  border: 4px solid black;
+  white-space: nowrap;
+  border: 3px solid rgb(83, 127, 189);
   margin: 0px 15px 0px 15px;
   padding: 5px;
   width: 100%;
@@ -44,15 +45,19 @@
   padding-top: 5px;
 }
 
+.bio { white-space: normal; }
+
 textarea {
-  height: 100%;
+  background-color: lightblue;
+  resize: none;
   width: 100%;
+  height: 95px;
 }
 
 #header { text-align: center; }
 
 .border-area, .area {
-    margin: 0 auto;
+  margin: 0 auto;
 }
 
 .head { border: 4px solid black; }
@@ -60,60 +65,65 @@ textarea {
 .body { display: flex; }
 
 .body, .footer {
-    border-left: 4px solid black;
-    border-right: 4px solid black;
-    border-bottom: 4px solid black;
+  border-left: 4px solid black;
+  border-right: 4px solid black;
+  border-bottom: 4px solid black;
 }
 
 .footer {
-    text-align: center;
-    height: 100px;
+  text-align: center;
+  height: 115px;
 }
 
 .footer a {
-    padding: 15px;
-    font-size: 18px;
+  padding: 15px;
+  font-size: 18px;
 }
 
 .loginForm, .registerForm {
-    border-right: 4px solid black;
-    width: 200px;
-    padding: 12px;
+  border-right: 4px solid black;
+  width: 200px;
+  padding: 12px;
 }
 
 .loginPrompt, .registerPrompt {
-    font-size: 18px;
+  font-size: 18px;
 }
 
-.loginForm input[type="text"], .registerForm input[type="text"] {
-    border: 2px solid grey;
-}
-
-.loginForm input[type="text"], .registerForm input[type="text"],
-.loginForm input[type="button"], .registerForm input[type="button"] {
-    font-size: 12px;
+.loginForm input, .registerForm input {
+  border: 2px solid grey;
+  font-size: 12px;
 }
 
 .noAccount {
-    text-align: center;
-    font-weight: bold;
-    margin-top: 50px;
-    margin-bottom: 50px;
-    font-size: 20px;
+  text-align: center;
+  font-weight: bold;
+  margin-top: 50px;
+  margin-bottom: 50px;
+  font-size: 20px;
 }
+
+.description { margin: 10px; }
 
 .description h3 {
-    margin-top: 5px;
-    margin-left: 5px;
-    text-decoration: underline;
+  margin-top: 5px;
+  margin-left: 5px;
+  text-decoration: underline;
 }
 
-.description {
-    margin: 10px;
+.left-labels {
+  float: left;
+  width: 200px;
+}
+
+.right-assertions input, .right-assertions select {
+  background-color: lightblue;
+  font-size: 12px;
+  width: 180px;
 }
 
 @media only screen and (max-width: 1200px) {
-    .border-area, .area {
-        width: auto;
-    }
+  .border-area, .area {
+      width: auto;
+  }
 }
