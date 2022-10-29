@@ -6,7 +6,7 @@ function ProfileInformation()
   const profileId = location.search.split("id=")[1];
 
   function GetProfile() {
-    fetch(`http://localhost/api/getprofile?id=${profileId}`)
+    fetch(`${process.env.REACT_APP_API_URL}/api/getprofile?id=${profileId}`)
     .then((result) => {
       if (result.ok) {
         return result.json();
@@ -29,9 +29,9 @@ function ProfileInformation()
             <span>Last Updated:</span><br/>
           </div>
           <div className="right-assertions">
-            <span>{profile.username}</span><br/>
-            <span>{new Date(profile.date_created).toLocaleDateString()}</span><br/>
-            <span>{new Date(profile.last_updated).toLocaleDateString()}</span><br/>
+            <span>{profile.name}</span><br/>
+            <span>{new Date(profile.date_created).toLocaleString()}</span><br/>
+            <span>{new Date(profile.date_updated).toLocaleString()}</span><br/>
           </div>
           <h6>Basic Information</h6>
           <div className="left-labels">
@@ -44,7 +44,7 @@ function ProfileInformation()
           <div className="right-assertions">
             <span>{profile.gender}<br/></span>
             <span>{profile.status}<br/></span>
-            <span>{new Date(profile.birthday).toLocaleDateString()}<br/></span>
+            <span>{new Date(profile.birthdate).toLocaleDateString()}<br/></span>
             <span>{profile.school}<br/></span>
             <span>{profile.concentration}<br/></span>
           </div>

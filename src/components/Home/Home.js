@@ -8,7 +8,7 @@ function Home()
     const [currentForm, setForm] = useState(true);
 
     function Login(username, password) {
-      fetch("http://192.168.2.179/api/login", {
+      fetch(`${process.env.REACT_APP_API_URL}/api/login`, {
         method: "POST",
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify({
@@ -24,12 +24,13 @@ function Home()
       .then((response) => {
         if (response !== "invalid") {
           window.location.href = `/profile?id=${response}`;
-        }
+        
+        } else document.getElementById("response").innerHTML = "Login failed, try again"
       });
     }
 
     return (
-    <div className="container">
+    <div className="block">
       <div className="area">
         <div className="head">
           <h1 id="header">NetConnect - Social Network</h1>

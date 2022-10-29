@@ -5,21 +5,21 @@ function ProfileEdit(props)
   const [data, setData] = useState([]);
   const profileId = location.search.split("id=")[1];
 
-  function UpdateProfile(username, gender, status, birthday, school, concentration, email, phone, bio) {
+  function UpdateProfile(name, gender, status, birthdate, school, concentration, email, phone_number, bio) {
     const details = {
       "id": profileId,
-      "username": username,
+      "name": name,
       "gender": gender,
       "status": status,
-      "birthday": birthday,
+      "birthdate": birthdate,
       "school": school,
       "concentration": concentration,
       "email": email,
-      "phone": phone,
+      "phone_number": phone_number,
       "bio": bio,
     }
 
-    fetch(`http://localhost/api/updateprofile`, {
+    fetch(`${process.env.REACT_APP_API_URL}/api/updateprofile`, {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify(details),
@@ -36,7 +36,7 @@ function ProfileEdit(props)
   }
 
   function FetchProfile() {
-    fetch(`http://localhost/api/getprofile?id=${profileId}`)
+    fetch(`${process.env.REACT_APP_API_URL}/api/getprofile?id=${profileId}`)
     .then((result) => {
       if (result.ok) {
         return result.json();
@@ -50,18 +50,18 @@ function ProfileEdit(props)
 
   return (
     <div className="information">
-      <button onClick={() => UpdateProfile(
-        document.getElementById("username").value,
+      <input type="button" onClick={() => UpdateProfile(
+        document.getElementById("name").value,
         document.getElementById("gender").value,
         document.getElementById("status").value,
-        document.getElementById("birthday").value,
+        document.getElementById("birthdate").value,
         document.getElementById("school").value,
         document.getElementById("concentration").value,
         document.getElementById("email").value,
-        document.getElementById("phone").value,
+        document.getElementById("phone_number").value,
         document.getElementById("bio").value,
 
-      )} style={{float: "right"}}>Update</button>
+      )} style={{float: "right"}} value="Update"/>
 
       {data.map(profile => (
         <div key={"profile"}>
@@ -72,9 +72,9 @@ function ProfileEdit(props)
             <span>Last Updated:</span><br/>
           </div>
           <div className="right-assertions">
-            <span><input type="text" id="username" defaultValue={profile.username}/></span><br/>
-            <span>{new Date(profile.date_created).toLocaleDateString()}</span><br/>
-            <span>{new Date(profile.last_updated).toLocaleDateString()}</span><br/>
+            <span><input type="text" id="name" defaultValue={profile.name}/></span><br/>
+            <span>{new Date(profile.date_created).toLocaleString()}</span><br/>
+            <span>{new Date(profile.date_updated).toLocaleString()}</span><br/>
           </div>
           <h6>Basic Information</h6>
           <div className="left-labels">
@@ -86,16 +86,20 @@ function ProfileEdit(props)
           </div>
           <div className="right-assertions">
             <span>
-              <select id="gender">
+              <select id="gender" defaultValue={profile.gender}>
                 <option>Male</option>
                 <option>Female</option>
               </select><br/></span>
             <span>
-              <select id="status">
+              <select id="status" defaultValue={profile.status}>
                 <option>Single</option>
                 <option>In Relationship</option>
               </select><br/></span>
-            <span><input type="date" id="birthday" defaultValue={profile.birthday}/><br/></span>
+            <span>
+              <input type="date" id="birthdate" defaultValue={new Date(
+                profile.birthdate).toISOString().replace(/T.*/,'').split('-').join('-')}
+              /><br/>
+            </span>
             <span><input type="text" id="school" defaultValue={profile.school}/><br/></span>
             <span><input type="text" id="concentration" defaultValue={profile.concentration}/><br/></span>
           </div>
@@ -106,7 +110,7 @@ function ProfileEdit(props)
           </div>
           <div className="right-assertions">
             <span><input type="text" id="email" defaultValue={profile.email}/></span><br/>
-            <span><input type="text" id="phone" defaultValue={profile.phone_number}/></span><br/>
+            <span><input type="text" id="phone_number" defaultValue={profile.phone_number}/></span><br/>
           </div>
           <hr/>
           <div className="bio">

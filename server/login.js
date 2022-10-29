@@ -2,16 +2,14 @@ const { database } = require("./db_connect");
 
 function Login(request, result)
 {
-  const username = request.body.username;
-  const password = request.body.password;
-
+  const attempt = request.body;
   database.query(`SELECT id, username, password FROM accounts
-    WHERE username='${username}' AND password='${password}'`,
+    WHERE username='${attempt.username}' AND password='${attempt.password}'`,
 
-    function(error, rows) {
+    function(error, data) {
       if (!error) {
-        if (rows.length > 0) {
-          result.send(rows[0].id.toString());
+        if (data.rows.length > 0) {
+          result.send(data.rows[0].id.toString());
         } else {
           result.send("invalid");
         }

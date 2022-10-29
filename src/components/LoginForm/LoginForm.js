@@ -13,6 +13,7 @@ function LoginForm(props)
           document.getElementById("username").value,
           document.getElementById("password").value,
         )} style={{marginTop: "10px"}}/>
+        <div id="response"/>
       </div>
       
       <div className="noAccount">
