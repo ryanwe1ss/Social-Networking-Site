@@ -15,7 +15,7 @@ function UpdateProfile(request, result)
     phone_number=COALESCE('${account.phone_number}', phone_number),
     bio=COALESCE('${account.bio}', bio)
     WHERE id=${account.id}`, function(error, response) {
-      if (!error) { result.send("success") } else console.log(error);
+      if (!error) { result.send("success") }
     }
   );
 }

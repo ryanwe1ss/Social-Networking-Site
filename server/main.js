@@ -2,7 +2,8 @@ const { Login } = require("./login");
 const { GetProfile } = require("./getprofile");
 const { UpdateProfile } = require("./updateprofile");
 
-const port = 80;
+const env = require("dotenv").config({path:"../.env"});
+const port = process.env.REACT_APP_SERVER_PORT;
 const express = require("express");
 const apiRouter = express();
 

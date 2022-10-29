@@ -8,7 +8,7 @@ function Home()
     const [currentForm, setForm] = useState(true);
 
     function Login(username, password) {
-      fetch(`${process.env.REACT_APP_API_URL}/api/login`, {
+      fetch(`${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_SERVER_PORT}/api/login`, {
         method: "POST",
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify({
