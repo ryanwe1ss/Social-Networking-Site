@@ -6,12 +6,11 @@ function ProfileInformation()
   const profileId = location.search.split("id=")[1];
 
   function GetProfile() {
-    fetch(`${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_SERVER_PORT}/api/getprofile?id=${profileId}`)
+    fetch(`${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_SERVER_PORT}/api/profile?id=${profileId}`)
     .then((result) => {
       if (result.ok) {
         return result.json();
-      }
-    })
+      }})
     .then((data) => {
       setData(data);
     })

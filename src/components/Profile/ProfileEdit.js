@@ -19,7 +19,7 @@ function ProfileEdit(props)
       "bio": bio,
     }
 
-    fetch(`${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_SERVER_PORT}/api/updateprofile`, {
+    fetch(`${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_SERVER_PORT}/api/update`, {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify(details),
@@ -36,7 +36,7 @@ function ProfileEdit(props)
   }
 
   function FetchProfile() {
-    fetch(`${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_SERVER_PORT}/api/getprofile?id=${profileId}`)
+    fetch(`${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_SERVER_PORT}/api/profile?id=${profileId}`)
     .then((result) => {
       if (result.ok) {
         return result.json();
