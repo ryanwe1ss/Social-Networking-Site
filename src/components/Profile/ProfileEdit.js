@@ -1,8 +1,5 @@
-import { useEffect, useState } from "react";
-
 function ProfileEdit(props)
 {
-  const [data, setData] = useState([]);
   const profileId = location.search.split("id=")[1];
 
   function UpdateProfile(name, gender, status, birthdate, school, concentration, email, phone_number, bio) {
@@ -31,22 +28,10 @@ function ProfileEdit(props)
     })
     .then((response) => {
       if (response !== "success") alert(response);
+      else props.GetProfile();
       props.setEditForm(false);
     });
   }
-
-  function FetchProfile() {
-    fetch(`${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_SERVER_PORT}/api/profile?id=${profileId}`)
-    .then((result) => {
-      if (result.ok) {
-        return result.json();
-      }
-    })
-    .then((data) => {
-      setData(data);
-    })
-  }
-  useEffect(FetchProfile, []);
 
   return (
     <div className="information">
@@ -63,7 +48,7 @@ function ProfileEdit(props)
 
       )} style={{float: "right"}} value="Update"/>
 
-      {data.map(profile => (
+      {props.data.map(profile => (
         <div key={"profile"}>
           <h6>Account Information</h6>
           <div className="left-labels">

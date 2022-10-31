@@ -1,25 +1,8 @@
-import { useEffect, useState } from "react";
-
-function ProfileInformation()
+function ProfileInformation(props)
 {
-  const [data, setData] = useState([]);
-  const profileId = location.search.split("id=")[1];
-
-  function GetProfile() {
-    fetch(`${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_SERVER_PORT}/api/profile?id=${profileId}`)
-    .then((result) => {
-      if (result.ok) {
-        return result.json();
-      }})
-    .then((data) => {
-      setData(data);
-    })
-  }
-  useEffect(GetProfile, []);
-
   return (
     <div className="information">
-      {data.map(profile => (
+      {props.data.map(profile => (
         <div key={"profile"}>
           <h6>Account Information</h6>
           <div className="left-labels">

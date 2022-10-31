@@ -5,6 +5,7 @@
 
 .border-area {
   border: 4px solid black;
+  overflow: auto;
 }
 
 .area, .border-area {
@@ -18,8 +19,29 @@
   border: 3px solid rgb(83, 127, 189);
 }
 
+.menu {
+  text-align: right;
+}
+
+.menu h1 {
+  float: left;
+}
+
+.menu #search, a {
+  margin-top: 5px;
+}
+
+.menu #search {
+  margin-left: 20px;
+}
+
 .menu a {
   padding-left: 15px;
+  font-size: 18px;
+}
+
+.profile h5 {
+  text-decoration: underline;
 }
 
 .wrapper {
@@ -36,10 +58,11 @@
 }
 
 .information {
-  overflow: auto;
+  overflow: hidden;
   white-space: nowrap;
   border: 3px solid rgb(83, 127, 189);
   margin: 0px 15px 0px 15px;
+  font-size: 17px;
   padding: 5px;
   width: 100%;
   height: 500px;
@@ -57,7 +80,7 @@ textarea {
   background-color: lightblue;
   resize: none;
   width: 100%;
-  height: 95px;
+  min-height: 105px;
 }
 
 #header { text-align: center; }
@@ -127,11 +150,12 @@ textarea {
 @media only screen and (max-width: 1600px) {
   .border-area, .area {
     width: 80%;
-}
+  }
 }
 
 @media only screen and (max-width: 1200px) {
   .border-area, .area {
       width: auto;
+      height: auto;
   }
 }

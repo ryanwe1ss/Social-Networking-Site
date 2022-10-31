@@ -1,34 +1,38 @@
 import { useState } from "react";
+import { ReactSession } from "react-client-session";
+
 import LoginForm from "../LoginForm/LoginForm.js";
 import RegisterForm from "../RegisterForm/RegisterForm.js";
 
 function Home()
 {
-    const [currentForm, setForm] = useState(true);
+  ReactSession.setStoreType("localStorage");
+  const [currentForm, setForm] = useState(true);
 
-    function Login(username, password) {
-      fetch(`${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_SERVER_PORT}/api/login`, {
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({
-          "username": username,
-          "password": password,
-        }),
-      })
-      .then((result) => {
-        if (result.ok) {
-          return result.text();
-        }
-      })
-      .then((response) => {
-        if (response !== "invalid") {
-          window.location.href = `/profile?id=${response}`;
-        
-        } else document.getElementById("response").innerHTML = "Login failed, try again"
-      });
-    }
+  function Login(username, password) {
+    fetch(`${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_SERVER_PORT}/api/login`, {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({
+        "username": username,
+        "password": password,
+      }),
+    })
+    .then((result) => {
+      if (result.ok) {
+        return result.text();
+      }
+    })
+    .then((response) => {
+      if (response !== "invalid") {
+        ReactSession.set("accountId", response);
+        window.location.href = `/profile?id=${response}`;
+      
+      } else document.getElementById("response").innerHTML = "Login failed, try again"
+    });
+  }
 
-    return (
+  return (
     <div className="block">
       <div className="area">
         <div className="head">
@@ -66,6 +70,6 @@ function Home()
         </div>
       </div>
     </div>
-    );
+  );
 }
 export default Home;
