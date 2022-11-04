@@ -1,4 +1,5 @@
 const { Login } = require("./login");
+const { Register } = require("./register");
 const { UpdateProfile } = require("./updateprofile");
 const { SearchAccounts } = require("./search");
 const { GetProfile } = require("./getprofile");
@@ -12,6 +13,10 @@ apiRouter.use(express.json());
 
 apiRouter.post("/api/login", (request, result) => {
   Login(request, result);
+});
+
+apiRouter.post("/api/register", (request, result) => {
+  Register(request, result);
 });
 
 apiRouter.post("/api/update", (request, result) => {

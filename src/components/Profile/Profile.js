@@ -39,8 +39,8 @@ function Profile()
     })
     .then((data) => {
       let names = [];
-      data.map(element => {
-        names.push({value: element.id, text: element.name});
+      data.map(row => {
+        names.push({value: row.id, text: row.username});
       });
       setSearchData(names);
     })

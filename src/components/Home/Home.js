@@ -28,8 +28,42 @@ function Home()
         ReactSession.set("accountId", response);
         window.location.href = `/profile?id=${response}`;
       
-      } else document.getElementById("response").innerHTML = "Login failed, try again"
+      } else {
+        document.getElementById("response").style.color = "red";
+        document.getElementById("response").innerHTML = "Login failed, try again";
+      }
     });
+  }
+
+  function Register(username, password) {
+    fetch(`${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_SERVER_PORT}/api/register`, {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({
+        "username": username,
+        "password": password,
+      }),
+    })
+    .then((response) => {
+      if (response.ok) {
+        return response.text();
+      }
+    })
+    .then((response) => {
+      console.log(response);
+      if (response == "taken") {
+        document.getElementById("response").style.color = "red";
+        document.getElementById("response").innerHTML = "Username already taken";
+
+      } else if (response == "error") {
+        document.getElementById("response").style.color = "red";
+        document.getElementById("response").innerHTML = "Failed to register, try again";
+      
+      } else {
+        document.getElementById("response").style.color = "green";
+        document.getElementById("response").innerHTML = "Account Registered";
+      }
+    })
   }
 
   return (
@@ -41,7 +75,7 @@ function Home()
         <div className="body">
           {currentForm
             ? <LoginForm setForm={setForm} Login={Login}/>
-            : <RegisterForm setForm={setForm}/>
+            : <RegisterForm setForm={setForm} Register={Register}/>
           }
           <div className="description">
             <h3>Welcome to NetConnect</h3>

@@ -52,13 +52,10 @@
   font-size: 12px;
 }
 
-#response {
-  color: red;
-  font-size: 12px;
-}
+#response { font-size: 12px; }
 
 .information {
-  overflow: hidden;
+  overflow: auto;
   white-space: nowrap;
   border: 3px solid rgb(83, 127, 189);
   margin: 0px 15px 0px 15px;
@@ -96,6 +93,7 @@ textarea {
 }
 
 .footer {
+  overflow: auto;
   text-align: center;
   height: 115px;
 }
@@ -128,7 +126,10 @@ textarea {
   font-size: 20px;
 }
 
-.description { margin: 10px; }
+.description {
+  margin: 10px;
+  overflow: auto;
+}
 
 .description h3 {
   margin-top: 5px;

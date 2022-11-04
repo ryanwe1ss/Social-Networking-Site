@@ -27,9 +27,9 @@ function UpdateProfile(request, result)
   } else {
     let profileId = request.query.id;
     form.on("file", function(field, file) {
-      console.log(`Account ID (${profileId}) has changed their profile picture: ${file.originalFilename}`)
       filePath = `images/${profileId}_profile.png`;
       fs.renameSync(file.filepath, filePath, (error) => null)
+      console.log(`Account ID (${profileId}) has changed their profile picture: ${file.originalFilename}`)
     });
     form.parse(request);
     result.send("success");

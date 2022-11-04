@@ -2,9 +2,9 @@ const { database } = require("./db_connect");
 
 function Login(request, result)
 {
-  const attempt = request.body;
+  const credentials = request.body;
   database.query(`SELECT id, username, password FROM accounts
-    WHERE username='${attempt.username}' AND password='${attempt.password}'`,
+    WHERE username='${credentials.username}' AND password='${credentials.password}'`,
 
     function(error, data) {
       if (!error) {
