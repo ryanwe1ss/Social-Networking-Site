@@ -6,8 +6,7 @@ import DefaultProfilePicture from "../../images/profile.png";
 import ProfileInformation from "./ProfileInformation";
 import ProfileEdit from "./ProfileEdit";
 
-function Profile()
-{
+function Profile() {
   ReactSession.setStoreType("localStorage");
   const accountId = ReactSession.get("accountId");
   const profileId = location.search.split("id=")[1];
@@ -19,32 +18,50 @@ function Profile()
 
   function GetProfile() {
     fetch(`${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_SERVER_PORT}/api/profile?id=${profileId}`)
-    .then((result) => {
-      if (result.ok) {
-        return result.json();
-      }
-    })
-    .then((data) => {
-      setData(data);
-    })
+      .then((result) => {
+        if (result.ok) {
+          return result.json();
+        }
+      })
+      .then((data) => {
+        setData(data);
+      })
   }
 
   function SearchAccounts(event) {
     let searchQuery = event ? event.target.value : "";
     fetch(`${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_SERVER_PORT}/api/search?id=${accountId}&searchQuery=${searchQuery}`)
-    .then((result) => {
-      if (result.ok) {
-        return result.json();
-      }
-    })
-    .then((data) => {
-      let names = [];
-      data.map(row => {
-        names.push({value: row.id, text: row.username});
-      });
-      setSearchData(names);
-    })
+      .then((result) => {
+        if (result.ok) {
+          return result.json();
+        }
+      })
+      .then((data) => {
+        let names = [];
+        data.map(row => {
+          names.push({ value: row.id, text: row.username });
+        });
+        setSearchData(names);
+      })
   }
+
+  function GetProfilePicture() {
+    fetch(`${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_SERVER_PORT}/api/picture?id=${profileId}`)
+      .then((result) => {
+        if (result.ok) {
+          return result.blob();
+        }
+      })
+      .then((data) => {
+        setProfilePicture(URL.createObjectURL(data));
+      })
+      .catch((error) => {
+        error => null
+      })
+  }
+  useEffect(GetProfilePicture, []);
+  useEffect(GetProfile, []);
+  useEffect(SearchAccounts, []);
 
   function UploadProfilePicture(event) {
     let httpRequest = new XMLHttpRequest();
@@ -54,25 +71,6 @@ function Profile()
     httpRequest.open("post", `${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_SERVER_PORT}/api/update?id=${profileId}`, false);
     httpRequest.send(formData);
   }
-
-  function GetProfilePicture() 
-  {
-    fetch(`${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_SERVER_PORT}/api/picture?id=${profileId}`)
-    .then((result) => {
-      if (result.ok) {
-        return result.blob();
-      }
-    })
-    .then((data) => {
-      setProfilePicture(URL.createObjectURL(data));
-    })
-    .catch((error) => {
-      error => null
-    })
-  }
-  useEffect(GetProfilePicture, []);
-  useEffect(GetProfile, []);
-  useEffect(SearchAccounts, []);
 
   function RedirectPage(event) {
     if (event.target.innerText.length > 0) {
@@ -87,9 +85,10 @@ function Profile()
         <div className="border-area">
           <div className="menu">
             <h1>NetConnect</h1>
+            <a href={`/`} onClick={() => { ReactSession.set("accountId", null) }}>Logout</a>
             <a href={`/profile?id=${accountId}`}>Direct Messages</a>
             <a href={`/profile?id=${accountId}`}>My Profile</a>
-  
+
             <Dropdown
               id="search"
               options={searchData}
@@ -99,9 +98,9 @@ function Profile()
               search
               selection
             />
-            <hr/>
+            <hr />
           </div>
-          
+
           <div className="wrapper">
             <div className="profile">
               <img
@@ -110,22 +109,22 @@ function Profile()
                 width="250"
                 height="230"
                 alt="profile"
-              /><br/>
+              /><br />
               {accountId == profileId
-              ? <div>
-                  <input className="mt-2" type="button" value="Edit Profile" onClick={() => setEditForm(editForm ? false:true)}/>
-                  <input className="mt-1" type="file" onChange={UploadProfilePicture}/>
-                </div> : <h5>{data.map(d => d.name)}'s Profile</h5>}
+                ? <div>
+                  <input className="mt-2" type="button" value="Edit Profile" onClick={() => setEditForm(editForm ? false : true)} />
+                  <input className="mt-1" type="file" onChange={UploadProfilePicture} />
+                </div> : <h5>@{data.map(d => d.username)}</h5>}
             </div>
             {editForm
-              ? <ProfileEdit GetProfile={GetProfile} setEditForm={setEditForm} data={data}/>
-              : <ProfileInformation data={data}/>
+              ? <ProfileEdit GetProfile={GetProfile} setEditForm={setEditForm} data={data} />
+              : <ProfileInformation data={data} />
             }
           </div>
         </div>
       </div>
     );
-  
+
   } else window.location.href = "/";
 }
 export default Profile;

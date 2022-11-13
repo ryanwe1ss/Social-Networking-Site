@@ -40,10 +40,6 @@
   font-size: 18px;
 }
 
-.profile h5 {
-  text-decoration: underline;
-}
-
 .wrapper {
   display: flex;
 }

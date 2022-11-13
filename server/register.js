@@ -9,6 +9,7 @@ function Register(request, result)
 
     function(error, data) {
       if (!error) result.send("success");
+      else if (error.detail.includes("exists")) result.send("exists");
       else result.send("error");
     }
   );

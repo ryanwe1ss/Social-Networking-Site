@@ -26,9 +26,9 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "dev": "cd server && concurrently \"node api.js\" \"npm start\"",
+    "rs": "node api.js",
+    "build": "react-scripts build"
   },
   "browserslist": {
     "production": [

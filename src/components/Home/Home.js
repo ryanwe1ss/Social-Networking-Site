@@ -50,8 +50,7 @@ function Home()
       }
     })
     .then((response) => {
-      console.log(response);
-      if (response == "taken") {
+      if (response == "exists") {
         document.getElementById("response").style.color = "red";
         document.getElementById("response").innerHTML = "Username already taken";
 
