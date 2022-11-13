@@ -2,4 +2,5 @@
 /build
 package-lock.json
 .env
-/server/images
+/server/images/*
+!server/images/info.txt
