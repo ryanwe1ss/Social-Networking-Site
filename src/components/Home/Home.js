@@ -4,8 +4,7 @@ import { ReactSession } from "react-client-session";
 import LoginForm from "../LoginForm/LoginForm.js";
 import RegisterForm from "../RegisterForm/RegisterForm.js";
 
-function Home()
-{
+function Home() {
   ReactSession.setStoreType("localStorage");
   const [currentForm, setForm] = useState(true);
 
@@ -18,16 +17,15 @@ function Home()
         "password": password,
       }),
     })
-    .then((result) => {
-      if (result.ok) {
-        return result.text();
-      }
-    })
+    .then((result) => { return result.text() })
     .then((response) => {
       if (response !== "invalid") {
-        ReactSession.set("accountId", response);
-        window.location.href = `/profile?id=${response}`;
-      
+        response = JSON.parse(response);
+
+        ReactSession.set("accountId", response.id);
+        ReactSession.set("username", response.username);
+        window.location.href = `/profile?id=${response.id}`;
+
       } else {
         document.getElementById("response").style.color = "red";
         document.getElementById("response").innerHTML = "Login failed, try again";
@@ -44,11 +42,7 @@ function Home()
         "password": password,
       }),
     })
-    .then((response) => {
-      if (response.ok) {
-        return response.text();
-      }
-    })
+    .then((response) => { return response.text() })
     .then((response) => {
       if (response == "exists") {
         document.getElementById("response").style.color = "red";

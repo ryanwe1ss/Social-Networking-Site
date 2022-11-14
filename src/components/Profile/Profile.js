@@ -8,6 +8,8 @@ import ProfileEdit from "./ProfileEdit";
 
 function Profile() {
   ReactSession.setStoreType("localStorage");
+  
+  const username = ReactSession.get("username");
   const accountId = ReactSession.get("accountId");
   const profileId = location.search.split("id=")[1];
 
@@ -16,60 +18,45 @@ function Profile() {
   const [searchData, setSearchData] = useState([]);
   const [editForm, setEditForm] = useState(false);
 
-  function GetProfile() {
-    fetch(`${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_SERVER_PORT}/api/profile?id=${profileId}`)
-      .then((result) => {
-        if (result.ok) {
-          return result.json();
-        }
-      })
-      .then((data) => {
-        setData(data);
-      })
-  }
+  useEffect(() => {
+    Promise.all([
+      fetch(`${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_SERVER_PORT}/api/profile?id=${profileId}`),
+      fetch(`${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_SERVER_PORT}/api/picture?id=${profileId}`),
+    ])
+    .then(([res1, res2]) => Promise.all([res1.json(), res2.blob()]))
+    .then(([profile, picture]) => {
+      setProfilePicture(URL.createObjectURL(picture));
+      setData(profile);
+    })
+  });
 
   function SearchAccounts(event) {
-    let searchQuery = event ? event.target.value : "";
-    fetch(`${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_SERVER_PORT}/api/search?id=${accountId}&searchQuery=${searchQuery}`)
-      .then((result) => {
-        if (result.ok) {
-          return result.json();
-        }
-      })
-      .then((data) => {
-        let names = [];
-        data.map(row => {
-          names.push({ value: row.id, text: row.username });
-        });
-        setSearchData(names);
-      })
+    fetch(
+      `${process.env.REACT_APP_API_URL}:
+      ${process.env.REACT_APP_SERVER_PORT}
+      /api/search?id=${accountId}&searchQuery=${event.target.value}`.replace(/\s/g, '')
+    )
+    .then((result) => { return result.json() })
+    .then((data) => {
+      let names = [];
+      data.map(row => {
+        names.push({ value: row.id, text: row.username });
+      });
+      setSearchData(names);
+    })
   }
-
-  function GetProfilePicture() {
-    fetch(`${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_SERVER_PORT}/api/picture?id=${profileId}`)
-      .then((result) => {
-        if (result.ok) {
-          return result.blob();
-        }
-      })
-      .then((data) => {
-        setProfilePicture(URL.createObjectURL(data));
-      })
-      .catch((error) => {
-        error => null
-      })
-  }
-  useEffect(GetProfilePicture, []);
-  useEffect(GetProfile, []);
-  useEffect(SearchAccounts, []);
 
   function UploadProfilePicture(event) {
     let httpRequest = new XMLHttpRequest();
     let formData = new FormData();
 
     formData.append("data", event.target.files[0]);
-    httpRequest.open("post", `${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_SERVER_PORT}/api/update?id=${profileId}`, false);
-    httpRequest.send(formData);
+    httpRequest.open("post", `
+      ${process.env.REACT_APP_API_URL}:
+      ${process.env.REACT_APP_SERVER_PORT}
+      /api/update?id=${profileId}&username=${username}`.replace(/\s/g, ''), false
+    
+    ); httpRequest.send(formData);
   }
 
   function RedirectPage(event) {
@@ -85,7 +72,7 @@ function Profile() {
         <div className="border-area">
           <div className="menu">
             <h1>NetConnect</h1>
-            <a href={`/`} onClick={() => { ReactSession.set("accountId", null) }}>Logout</a>
+            <a href={'/'} onClick={() => { ReactSession.set("accountId", null) }}>Logout</a>
             <a href={`/profile?id=${accountId}`}>Direct Messages</a>
             <a href={`/profile?id=${accountId}`}>My Profile</a>
 

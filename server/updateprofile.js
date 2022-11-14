@@ -2,11 +2,10 @@ const fs = require("fs");
 const formidable = require("formidable");
 const { database } = require("./db_connect");
 
-function UpdateProfile(request, result)
-{
+function UpdateProfile(request, result) {
   const form = new formidable.IncomingForm();
   const account = request.body;
-  
+
   if (Object.keys(account).length != 0) {
     database.query(`
       UPDATE accounts
@@ -19,17 +18,16 @@ function UpdateProfile(request, result)
       email=COALESCE('${account.email}', email),
       phone_number=COALESCE('${account.phone_number}', phone_number),
       bio=COALESCE('${account.bio}', bio)
-      WHERE id=${account.id}`, function(error, response) {
-        if (!error) result.send("success");
-      }
+      WHERE id=${account.id}`, function (error, response) {
+      if (!error) result.send("success");
+    }
     );
-  
+
   } else {
-    let profileId = request.query.id;
-    form.on("file", function(field, file) {
-      filePath = `images/${profileId}_profile.png`;
+    form.on("file", function (field, file) {
+      filePath = `images/${request.query.id}_profile.png`;
       fs.renameSync(file.filepath, filePath, (error) => null)
-      console.log(`Account ID (${profileId}) has changed their profile picture: ${file.originalFilename}`)
+      console.log(`${request.query.username} has changed their profile picture: ${file.originalFilename}`)
     });
     form.parse(request);
     result.send("success");

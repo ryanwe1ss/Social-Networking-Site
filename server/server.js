@@ -8,7 +8,7 @@ const { GetPicture } = require("./getpicture");
 const express = require("express");
 const apiRouter = express();
 
-apiRouter.use(require("cors")({origin: '*'}));
+apiRouter.use(require("cors")({ origin: '*' }));
 apiRouter.use(express.json());
 
 apiRouter.post("/api/login", (request, result) => {
