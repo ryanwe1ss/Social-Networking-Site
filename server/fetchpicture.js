@@ -1,6 +1,6 @@
 const fs = require("fs");
 
-function GetPicture(request, result)
+function FetchPicture(request, result)
 {
   try {
     result.send(
@@ -11,4 +11,4 @@ function GetPicture(request, result)
     error => null;
   }
 }
-module.exports = { GetPicture }
+module.exports = { FetchPicture }

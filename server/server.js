@@ -2,8 +2,8 @@ const { Login } = require("./login");
 const { Register } = require("./register");
 const { UpdateProfile } = require("./updateprofile");
 const { SearchAccounts } = require("./search");
-const { GetProfile } = require("./getprofile");
-const { GetPicture } = require("./getpicture");
+const { FetchProfile } = require("./fetchprofile");
+const { FetchPicture } = require("./fetchpicture");
 
 const express = require("express");
 const apiRouter = express();
@@ -28,11 +28,11 @@ apiRouter.get("/api/search", (request, result) => {
 });
 
 apiRouter.get("/api/profile", (request, result) => {
-  GetProfile(request, result);
+  FetchProfile(request, result);
 });
 
 apiRouter.get("/api/picture", (request, result) => {
-  GetPicture(request, result);
+  FetchPicture(request, result);
 });
 
 apiRouter.listen(process.env.REACT_APP_SERVER_PORT);

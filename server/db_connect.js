@@ -1,5 +1,4 @@
 const env = require("dotenv").config({path:"../.env"});
-
 const pgClient = require("pg");
 const database = new pgClient.Client(
   `postgres://${process.env.REACT_APP_USER}:` +

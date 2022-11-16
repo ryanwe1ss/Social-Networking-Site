@@ -19,15 +19,18 @@ function UpdateProfile(request, result) {
       phone_number=COALESCE('${account.phone_number}', phone_number),
       bio=COALESCE('${account.bio}', bio)
       WHERE id=${account.id}`, function (error, response) {
-      if (!error) result.send("success");
+      if (!error) {
+        result.send("success");
+        console.log(`${request.query.username} has updated their profile`);
+      }
     }
     );
 
   } else {
     form.on("file", function (field, file) {
       filePath = `images/${request.query.id}_profile.png`;
-      fs.renameSync(file.filepath, filePath, (error) => null)
-      console.log(`${request.query.username} has changed their profile picture: ${file.originalFilename}`)
+      fs.renameSync(file.filepath, filePath, (error) => null);
+      console.log(`${request.query.username} has updated their profile picture: ${file.originalFilename}`);
     });
     form.parse(request);
     result.send("success");

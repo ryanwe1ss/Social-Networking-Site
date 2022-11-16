@@ -1,16 +1,16 @@
-function ProfileInformation(props)
+function ProfileInformation(params)
 {
-  if (props.data.length == 0) {
+  if (params.data.length == 0) {
     return (
       <div className="information">
-        This profile does not exist...
+        This profile doesn't exist or has been disabled...
       </div>
     );
   
   } else {
     return (
       <div className="information">
-        {props.data.map(profile => (
+        {params.data.map(profile => (
           <div key={"profile"}>
             <h6>Account Information</h6>
             <div className="left-labels">

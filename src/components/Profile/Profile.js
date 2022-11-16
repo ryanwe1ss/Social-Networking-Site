@@ -8,7 +8,7 @@ import ProfileEdit from "./ProfileEdit";
 
 function Profile() {
   ReactSession.setStoreType("localStorage");
-  
+
   const username = ReactSession.get("username");
   const accountId = ReactSession.get("accountId");
   const profileId = location.search.split("id=")[1];
@@ -19,22 +19,35 @@ function Profile() {
   const [editForm, setEditForm] = useState(false);
 
   useEffect(() => {
-    Promise.all([
-      fetch(`${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_SERVER_PORT}/api/profile?id=${profileId}`),
-      fetch(`${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_SERVER_PORT}/api/picture?id=${profileId}`),
-    ])
-    .then(([res1, res2]) => Promise.all([res1.json(), res2.blob()]))
-    .then(([profile, picture]) => {
-      setProfilePicture(URL.createObjectURL(picture));
-      setData(profile);
+    FetchProfile();
+    SearchAccounts();
+  }, []);
+
+  function FetchProfile() {
+    fetch(`${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_SERVER_PORT}/api/profile?id=${profileId}`)
+    .then((result) => {
+      return result.json();
     })
-  });
+    .then((profileData) => {
+      if (profileData.length !== 0) {
+        profileData.map(a => a.username = "@" + a.username)
+        setData(profileData);
+
+        fetch(`${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_SERVER_PORT}/api/picture?id=${profileId}`)
+        .then((result) => { return result.blob() })
+        .then((picture) => {
+          setProfilePicture(URL.createObjectURL(picture));
+        });
+      }
+    });
+  }
 
   function SearchAccounts(event) {
+    let searchQuery = event ? event.target.value : "";
     fetch(
       `${process.env.REACT_APP_API_URL}:
       ${process.env.REACT_APP_SERVER_PORT}
-      /api/search?id=${accountId}&searchQuery=${event.target.value}`.replace(/\s/g, '')
+      /api/search?id=${accountId}&searchQuery=${searchQuery}`.replace(/\s/g, '')
     )
     .then((result) => { return result.json() })
     .then((data) => {
@@ -85,7 +98,7 @@ function Profile() {
               search
               selection
             />
-            <hr />
+            <hr/>
           </div>
 
           <div className="wrapper">
@@ -93,18 +106,26 @@ function Profile() {
               <img
                 src={picture}
                 onError={(img) => (img.target.src = DefaultProfilePicture)}
-                width="250"
-                height="230"
-                alt="profile"
-              /><br />
-              {accountId == profileId
-                ? <div>
-                  <input className="mt-2" type="button" value="Edit Profile" onClick={() => setEditForm(editForm ? false : true)} />
-                  <input className="mt-1" type="file" onChange={UploadProfilePicture} />
-                </div> : <h5>@{data.map(d => d.username)}</h5>}
+                className="picture"
+                alt="picture"
+              />
+              {data.map(account => (
+                <div key={account.id}>
+                  {accountId == profileId
+                  ? <div>
+                      <input className="mt-2" type="button" value="Edit Profile" onClick={() => setEditForm(editForm ? false : true)}/>
+                      <input className="mt-1" type="file" onChange={UploadProfilePicture}/>
+                    </div> : <h5>{account.username}</h5>
+                  }
+                  <hr/>
+                  <div className="followers">
+                    Followers: 0 | Following: 0
+                  </div>
+                </div>
+              ))}
             </div>
             {editForm
-              ? <ProfileEdit GetProfile={GetProfile} setEditForm={setEditForm} data={data} />
+              ? <ProfileEdit FetchProfile={FetchProfile} setEditForm={setEditForm} data={data} />
               : <ProfileInformation data={data} />
             }
           </div>

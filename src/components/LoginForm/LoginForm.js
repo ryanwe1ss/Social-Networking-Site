@@ -1,4 +1,4 @@
-function LoginForm(props)
+function LoginForm(params)
 {
   return (
     <div className="loginForm">
@@ -9,7 +9,7 @@ function LoginForm(props)
         <label>Password</label>
         <input type="password" id="password"/>
 
-        <input type="button" value="Login" onClick={() => props.Login(
+        <input type="button" value="Login" onClick={() => params.Login(
           document.getElementById("username").value,
           document.getElementById("password").value,
         )} style={{marginTop: "10px"}}/>
@@ -18,7 +18,7 @@ function LoginForm(props)
       
       <div className="noAccount">
         <label>No Account?</label><br/>
-        <input type="button" value="Register" onClick={() => props.setForm(false)}/>
+        <input type="button" value="Register" onClick={() => params.setForm(false)}/>
       </div>
     </div>
   );

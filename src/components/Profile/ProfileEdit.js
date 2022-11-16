@@ -1,5 +1,9 @@
-function ProfileEdit(props)
+import { ReactSession } from "react-client-session";
+
+function ProfileEdit(params)
 {
+  ReactSession.setStoreType("localStorage");
+  const username = ReactSession.get("username");
   const profileId = location.search.split("id=")[1];
 
   function UpdateProfile(name, gender, status, birthdate, school, concentration, email, phone_number, bio) {
@@ -16,7 +20,7 @@ function ProfileEdit(props)
       "bio": bio,
     }
 
-    fetch(`${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_SERVER_PORT}/api/update`, {
+    fetch(`${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_SERVER_PORT}/api/update?username=${username}`, {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify(details),
@@ -28,8 +32,8 @@ function ProfileEdit(props)
     })
     .then((response) => {
       if (response !== "success") alert(response);
-      else props.GetProfile();
-      props.setEditForm(false);
+      else params.FetchProfile();
+      params.setEditForm(false);
     });
   }
 
@@ -48,7 +52,7 @@ function ProfileEdit(props)
 
       )} style={{float: "right"}} value="Update"/>
 
-      {props.data.map(profile => (
+      {params.data.map(profile => (
         <div key={"profile"}>
           <h6>Account Information</h6>
           <div className="left-labels">

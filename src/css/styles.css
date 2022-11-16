@@ -40,6 +40,12 @@
   font-size: 18px;
 }
 
+.picture {
+  object-fit: cover;
+  width: 250px;
+  height: 230px;
+}
+
 .wrapper {
   display: flex;
 }

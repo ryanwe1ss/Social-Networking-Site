@@ -1,4 +1,4 @@
-function RegisterForm(props)
+function RegisterForm(params)
 {
   function PerformRegister(username, password, confirm) {
     if (username.length < 5 || password.length < 5 || confirm.length < 5) {
@@ -9,7 +9,7 @@ function RegisterForm(props)
       document.getElementById("response").style.color = "red";
       document.getElementById("response").innerHTML = "Password's do not match";
     
-    } else props.Register(username, password);
+    } else params.Register(username, password);
   }
 
   return (
@@ -34,7 +34,7 @@ function RegisterForm(props)
       
       <div className="noAccount">
         <label>Already Registered?</label><br/>
-        <input type="button" value="Login" onClick={() => props.setForm(true)}/>
+        <input type="button" value="Login" onClick={() => params.setForm(true)}/>
       </div>
     </div>
   );
