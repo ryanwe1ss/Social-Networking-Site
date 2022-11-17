@@ -11,7 +11,7 @@
 .area, .border-area {
   margin: 0 auto;
   padding: 10px;
-  height: 600px;
+  height: 725px;
   width: 55%;
 }
 
@@ -54,6 +54,18 @@
   font-size: 12px;
 }
 
+.details {
+  .username {
+    margin-top: 5px;
+  }
+
+  .follow, .message {
+    margin-left: 5px;
+    margin-top: 5px;
+    float: right;
+  }
+}
+
 #response { font-size: 12px; }
 
 .information {
@@ -88,7 +100,7 @@ textarea {
 
 .body { display: flex; }
 
-.body, .footer {
+.body, .footer-border {
   border-left: 4px solid black;
   border-right: 4px solid black;
   border-bottom: 4px solid black;
@@ -97,12 +109,16 @@ textarea {
 .footer {
   overflow: auto;
   text-align: center;
-  height: 115px;
-}
+  height: 120px;
 
-.footer a {
-  padding: 15px;
-  font-size: 18px;
+  .details {
+    margin-top: 15px;
+  }
+
+  a {
+    padding: 15px;
+    font-size: 18px;
+  }
 }
 
 .loginForm, .registerForm {

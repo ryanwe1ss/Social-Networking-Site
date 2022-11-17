@@ -5,6 +5,7 @@ import { ReactSession } from "react-client-session";
 import DefaultProfilePicture from "../../images/profile.png";
 import ProfileInformation from "./ProfileInformation";
 import ProfileEdit from "./ProfileEdit";
+import Footer from "../Footer/Footer.js";
 
 function Profile() {
   ReactSession.setStoreType("localStorage");
@@ -110,16 +111,21 @@ function Profile() {
                 alt="picture"
               />
               {data.map(account => (
-                <div key={account.id}>
+                <div className="details" key={account.id}>
                   {accountId == profileId
                   ? <div>
                       <input className="mt-2" type="button" value="Edit Profile" onClick={() => setEditForm(editForm ? false : true)}/>
                       <input className="mt-1" type="file" onChange={UploadProfilePicture}/>
-                    </div> : <h5>{account.username}</h5>
+                    </div> :
+                    <h5>
+                      <label className="username">{account.username}</label>
+                      <input className="message" type="button" value="Message"/>
+                      <input className="follow" type="button" value="Follow"/>
+                    </h5>
                   }
                   <hr/>
                   <div className="followers">
-                    Followers: 0 | Following: 0
+                    Followers: {account.followers} | Following: {account.following}
                   </div>
                 </div>
               ))}
@@ -129,6 +135,7 @@ function Profile() {
               : <ProfileInformation data={data} />
             }
           </div>
+          <Footer/>
         </div>
       </div>
     );

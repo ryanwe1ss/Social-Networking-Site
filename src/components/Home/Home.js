@@ -3,6 +3,7 @@ import { ReactSession } from "react-client-session";
 
 import LoginForm from "../LoginForm/LoginForm.js";
 import RegisterForm from "../RegisterForm/RegisterForm.js";
+import Footer from "../Footer/Footer.js";
 
 function Home() {
   ReactSession.setStoreType("localStorage");
@@ -86,14 +87,8 @@ function Home() {
             <br/><br/>To get started, click register. If you have already registered, you can log in.
           </div>
         </div>
-        <div className="footer">
-          <a href="/">About</a>
-          <a href="/">Contact</a>
-          <a href="/">FAQ</a>
-          <a href="/">Terms</a>
-          <a href="/">Privacy</a>
-          <br/><br/>a Ryan Weiss production
-          <br/>NetConnect © 2022
+        <div className="footer-border">
+          <Footer/>
         </div>
       </div>
     </div>
