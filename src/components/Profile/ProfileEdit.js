@@ -52,7 +52,7 @@ function ProfileEdit(params)
 
       )} style={{float: "right"}} value="Update"/>
 
-      {params.data.map(profile => (
+      {params.profileData.map(profile => (
         <div key={"profile"}>
           <h6>Account Information</h6>
           <div className="left-labels">

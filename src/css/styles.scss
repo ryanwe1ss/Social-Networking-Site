@@ -64,6 +64,12 @@
     margin-top: 5px;
     float: right;
   }
+
+  .followers label:hover {
+    cursor: pointer;
+    text-decoration: underline;
+    color: blue;
+  }
 }
 
 #response { font-size: 12px; }

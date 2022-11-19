@@ -1,6 +1,6 @@
 function ProfileInformation(params)
 {
-  if (params.data.length == 0) {
+  if (params.profileData.length == 0) {
     return (
       <div className="information">
         This profile doesn't exist or has been disabled...
@@ -10,7 +10,7 @@ function ProfileInformation(params)
   } else {
     return (
       <div className="information">
-        {params.data.map(profile => (
+        {params.profileData.map(profile => (
           <div key={"profile"}>
             <h6>Account Information</h6>
             <div className="left-labels">

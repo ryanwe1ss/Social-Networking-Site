@@ -4,6 +4,10 @@ const { UpdateProfile } = require("./updateprofile");
 const { SearchAccounts } = require("./search");
 const { FetchProfile } = require("./fetchprofile");
 const { FetchPicture } = require("./fetchpicture");
+const { FollowAccount } = require("./follow.js");
+const { UnfollowAccount } = require("./unfollow.js");
+const { GetFollowers } = require("./getfollowers.js");
+const { GetFollowing } = require("./getfollowing.js");
 
 const express = require("express");
 const apiRouter = express();
@@ -33,6 +37,22 @@ apiRouter.get("/api/profile", (request, result) => {
 
 apiRouter.get("/api/picture", (request, result) => {
   FetchPicture(request, result);
+});
+
+apiRouter.get("/api/follow", (request, result) => {
+  FollowAccount(request, result);
+});
+
+apiRouter.get("/api/unfollow", (request, result) => {
+  UnfollowAccount(request, result);
+});
+
+apiRouter.get("/api/followers", (request, result) => {
+  GetFollowers(request, result);
+});
+
+apiRouter.get("/api/following", (request, result) => {
+  GetFollowing(request, result);
 });
 
 apiRouter.listen(process.env.REACT_APP_SERVER_PORT);

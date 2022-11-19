@@ -14,9 +14,11 @@ function Profile() {
   const accountId = ReactSession.get("accountId");
   const profileId = location.search.split("id=")[1];
 
-  const [data, setData] = useState([]);
+  const [profileData, setProfileData] = useState([]);
   const [picture, setProfilePicture] = useState([]);
   const [searchData, setSearchData] = useState([]);
+  const [followers, setFollowers] = useState([]);
+  const [following, setFollowing] = useState([]);
   const [editForm, setEditForm] = useState(false);
 
   useEffect(() => {
@@ -25,14 +27,14 @@ function Profile() {
   }, []);
 
   function FetchProfile() {
-    fetch(`${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_SERVER_PORT}/api/profile?id=${profileId}`)
+    fetch(`${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_SERVER_PORT}/api/profile?id=${accountId}&profileId=${profileId}`)
     .then((result) => {
       return result.json();
     })
     .then((profileData) => {
       if (profileData.length !== 0) {
         profileData.map(a => a.username = "@" + a.username)
-        setData(profileData);
+        setProfileData(profileData);
 
         fetch(`${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_SERVER_PORT}/api/picture?id=${profileId}`)
         .then((result) => { return result.blob() })
@@ -73,6 +75,50 @@ function Profile() {
     ); httpRequest.send(formData);
   }
 
+  function FollowAccount() {
+    fetch(`${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_SERVER_PORT}/api/follow?id=${accountId}&profileId=${profileId}`)
+    .then((result) => {
+      return result.text();
+    })
+    .then((response) => {
+      if (response === "success") {
+        FetchProfile();
+      }
+    });
+  }
+
+  function UnfollowAccount() {
+    fetch(`${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_SERVER_PORT}/api/unfollow?id=${accountId}&profileId=${profileId}`)
+    .then((result) => {
+      return result.text();
+    })
+    .then((response) => {
+      if (response === "success") {
+        FetchProfile();
+      }
+    });
+  }
+
+  function GetFollowers() {
+    fetch(`${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_SERVER_PORT}/api/followers?id=${profileId}`)
+    .then((result) => {
+      return result.json();
+    })
+    .then((followers) => {
+      setFollowers(followers);
+    });
+  }
+
+  function GetFollowing() {
+    fetch(`${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_SERVER_PORT}/api/following?id=${profileId}`)
+    .then((result) => {
+      return result.json();
+    })
+    .then((following) => {
+      setFollowing(following);
+    });
+  }
+
   function RedirectPage(event) {
     if (event.target.innerText.length > 0) {
       let accountId = searchData.find(n => n.text == event.target.innerText).value;
@@ -110,7 +156,7 @@ function Profile() {
                 className="picture"
                 alt="picture"
               />
-              {data.map(account => (
+              {profileData.map(account => (
                 <div className="details" key={account.id}>
                   {accountId == profileId
                   ? <div>
@@ -120,19 +166,23 @@ function Profile() {
                     <h5>
                       <label className="username">{account.username}</label>
                       <input className="message" type="button" value="Message"/>
-                      <input className="follow" type="button" value="Follow"/>
+                      {account.is_following ?
+                        <input className="follow" type="button" value="Unfollow" onClick={UnfollowAccount}/> :
+                        <input className="follow" type="button" value="Follow" onClick={FollowAccount}/>
+                      }
                     </h5>
                   }
                   <hr/>
                   <div className="followers">
-                    Followers: {account.followers} | Following: {account.following}
+                    <label onClick={GetFollowers}>Followers</label>: {account.followers} |&nbsp;
+                    <label onClick={GetFollowing}>Following</label>: {account.following}
                   </div>
                 </div>
               ))}
             </div>
             {editForm
-              ? <ProfileEdit FetchProfile={FetchProfile} setEditForm={setEditForm} data={data} />
-              : <ProfileInformation data={data} />
+              ? <ProfileEdit FetchProfile={FetchProfile} setEditForm={setEditForm} profileData={profileData} />
+              : <ProfileInformation profileData={profileData} />
             }
           </div>
           <Footer/>
