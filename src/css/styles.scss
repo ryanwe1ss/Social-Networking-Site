@@ -15,10 +15,6 @@
   width: 55%;
 }
 
-.border-area img {
-  border: 3px solid rgb(83, 127, 189);
-}
-
 .menu {
   text-align: right;
 }
@@ -41,9 +37,17 @@
 }
 
 .picture {
+  border: 3px solid rgb(83, 127, 189);
   object-fit: cover;
   width: 250px;
   height: 230px;
+}
+
+.thumbnail {
+  border-radius: 50%;
+  object-fit: cover;
+  width: 40px;
+  height: 40px;
 }
 
 .wrapper {
@@ -65,7 +69,7 @@
     float: right;
   }
 
-  .followers label:hover {
+  .interactions label:hover {
     cursor: pointer;
     text-decoration: underline;
     color: blue;
@@ -170,6 +174,65 @@ textarea {
   background-color: lightblue;
   font-size: 12px;
   width: 180px;
+}
+
+.modal {
+  padding-top: 100px;
+  background-color: rgba(0,0,0,0.4);
+  display: block;
+
+  .modal-content {
+    padding: 15px;
+    max-width: 400px;
+    height: 400px;
+    margin: 2rem auto;
+    overflow: auto;
+
+    header {
+      h4 {
+        display: inline-block;
+        position: absolute;
+        transform: translateX(-50%);
+        margin-top: 8px;
+        left: 50%;
+      }
+    }
+
+    .followers, .following {
+      label {
+        font-size: 17px;
+        line-height: 20px;
+        cursor: pointer;
+
+        span {
+          font-size: 13px;
+          color: grey;
+        }
+      }
+
+      .thumbnail {
+        margin-right: 5px;
+        margin-bottom: 20px;
+      }
+
+      input {
+        float: right;
+        margin-top: 7px;
+      }
+    }
+
+    #close {
+      color: black;
+      float: right;
+      font-size: 30px;
+      font-weight: bold;
+    }
+    
+    #close:hover {
+      color: red;
+      cursor: pointer;
+    }
+  }
 }
 
 @media only screen and (max-width: 1600px) {

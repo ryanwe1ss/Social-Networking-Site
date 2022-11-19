@@ -3,4 +3,7 @@
 package-lock.json
 .env
 /server/images/*
+/server/images/thumbnails/*
 !server/images/info.txt
+!server/images/thumbnails/info.txt
+!server/images/thumbnails

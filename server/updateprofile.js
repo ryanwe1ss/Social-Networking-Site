@@ -1,4 +1,5 @@
 const fs = require("fs");
+const sharp = require("sharp");
 const formidable = require("formidable");
 const { database } = require("./db_connect");
 
@@ -28,12 +29,28 @@ function UpdateProfile(request, result) {
 
   } else {
     form.on("file", function (field, file) {
+      let image = `images/${request.query.id}_profile.png`;
+      let thumbnail = `images/thumbnails/${request.query.id}_profile_thumbnail.png`;
+
+      fs.renameSync(file.filepath, image, (error) => null);
+      sharp(image)
+        .resize(100, 100)
+        .toFile(thumbnail, (error) => null);
+        
+      console.log(`${request.query.username} has updated their profile picture: ${file.originalFilename}`);
+    });
+    form.parse(request);
+    result.send("success");
+    
+    /*
+    form.on("file", function (field, file) {
       filePath = `images/${request.query.id}_profile.png`;
       fs.renameSync(file.filepath, filePath, (error) => null);
       console.log(`${request.query.username} has updated their profile picture: ${file.originalFilename}`);
     });
     form.parse(request);
     result.send("success");
+    */
   }
 }
 module.exports = { UpdateProfile }

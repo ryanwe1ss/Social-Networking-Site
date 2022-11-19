@@ -4,6 +4,7 @@ const { UpdateProfile } = require("./updateprofile");
 const { SearchAccounts } = require("./search");
 const { FetchProfile } = require("./fetchprofile");
 const { FetchPicture } = require("./fetchpicture");
+const { FetchThumbnail } = require("./fetchthumbnail");
 const { FollowAccount } = require("./follow.js");
 const { UnfollowAccount } = require("./unfollow.js");
 const { GetFollowers } = require("./getfollowers.js");
@@ -37,6 +38,10 @@ apiRouter.get("/api/profile", (request, result) => {
 
 apiRouter.get("/api/picture", (request, result) => {
   FetchPicture(request, result);
+});
+
+apiRouter.get("/api/thumbnail", (request, result) => {
+  FetchThumbnail(request, result);
 });
 
 apiRouter.get("/api/follow", (request, result) => {

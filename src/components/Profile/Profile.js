@@ -5,6 +5,8 @@ import { ReactSession } from "react-client-session";
 import DefaultProfilePicture from "../../images/profile.png";
 import ProfileInformation from "./ProfileInformation";
 import ProfileEdit from "./ProfileEdit";
+import Followers from "../Followers/Followers";
+import Following from "../Following/Following.js";
 import Footer from "../Footer/Footer.js";
 
 function Profile() {
@@ -12,14 +14,17 @@ function Profile() {
 
   const username = ReactSession.get("username");
   const accountId = ReactSession.get("accountId");
-  const profileId = location.search.split("id=")[1];
+  const profileId = parseInt(location.search.split("id=")[1]);
 
   const [profileData, setProfileData] = useState([]);
   const [picture, setProfilePicture] = useState([]);
   const [searchData, setSearchData] = useState([]);
   const [followers, setFollowers] = useState([]);
   const [following, setFollowing] = useState([]);
+
   const [editForm, setEditForm] = useState(false);
+  const [showFollowers, setShowFollowers] = useState(false);
+  const [showFollowing, setShowFollowing] = useState(false);
 
   useEffect(() => {
     FetchProfile();
@@ -87,8 +92,8 @@ function Profile() {
     });
   }
 
-  function UnfollowAccount() {
-    fetch(`${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_SERVER_PORT}/api/unfollow?id=${accountId}&profileId=${profileId}`)
+  function UnfollowAccount(id=null) {
+    fetch(`${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_SERVER_PORT}/api/unfollow?id=${accountId}&profileId=${id ? id : profileId}`)
     .then((result) => {
       return result.text();
     })
@@ -106,16 +111,18 @@ function Profile() {
     })
     .then((followers) => {
       setFollowers(followers);
+      setShowFollowers(true);
     });
   }
 
   function GetFollowing() {
-    fetch(`${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_SERVER_PORT}/api/following?id=${profileId}`)
+    fetch(`${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_SERVER_PORT}/api/following?id=${profileId}&profileId=${profileId}`)
     .then((result) => {
       return result.json();
     })
     .then((following) => {
       setFollowing(following);
+      setShowFollowing(true);
     });
   }
 
@@ -167,13 +174,13 @@ function Profile() {
                       <label className="username">{account.username}</label>
                       <input className="message" type="button" value="Message"/>
                       {account.is_following ?
-                        <input className="follow" type="button" value="Unfollow" onClick={UnfollowAccount}/> :
+                        <input className="follow" type="button" value="Unfollow" onClick={() => UnfollowAccount()}/> :
                         <input className="follow" type="button" value="Follow" onClick={FollowAccount}/>
                       }
                     </h5>
                   }
                   <hr/>
-                  <div className="followers">
+                  <div className="interactions">
                     <label onClick={GetFollowers}>Followers</label>: {account.followers} |&nbsp;
                     <label onClick={GetFollowing}>Following</label>: {account.following}
                   </div>
@@ -183,6 +190,28 @@ function Profile() {
             {editForm
               ? <ProfileEdit FetchProfile={FetchProfile} setEditForm={setEditForm} profileData={profileData} />
               : <ProfileInformation profileData={profileData} />
+            }
+            {showFollowers
+              ? <Followers
+                  accountId={accountId}
+                  profileId={profileId}
+                  followers={followers}
+                  setShowFollowers={setShowFollowers}
+                  GetFollowers={GetFollowers}
+                  FollowAccount={FollowAccount}
+                />
+              : false
+            }
+            {showFollowing
+              ? <Following
+                  accountId={accountId}
+                  profileId={profileId}
+                  following={following}
+                  setShowFollowing={setShowFollowing}
+                  GetFollowing={GetFollowing}
+                  UnfollowAccount={UnfollowAccount}
+                />
+              : false
             }
           </div>
           <Footer/>
