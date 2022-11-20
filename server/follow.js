@@ -4,7 +4,7 @@ function FollowAccount(request, result)
 {
   const user = request.query;
   database.query(`
-    INSERT INTO communications ("follower", "user")
+    INSERT INTO connections ("follower", "user")
     VALUES ('${user.id}', '${user.profileId}')`, function(error, data) {
       if (!error) result.send("success");
     }

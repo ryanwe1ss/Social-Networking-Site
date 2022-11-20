@@ -5,6 +5,7 @@ import RegisterForm from "../RegisterForm/RegisterForm.js";
 import Footer from "../Footer/Footer.js";
 
 function Home() {
+  const session_id = Math.random().toString(36).slice(-8);
   const [currentForm, setForm] = useState(true);
 
   function Login(username, password) {
@@ -14,6 +15,7 @@ function Home() {
       body: JSON.stringify({
         "username": username,
         "password": password,
+        "session_id": session_id,
       }),
     })
     .then((result) => { return result.text() })
@@ -23,6 +25,7 @@ function Home() {
         
         localStorage.setItem("accountId", response.id);
         localStorage.setItem("username", response.username);
+        localStorage.setItem("session_id", session_id);
         window.location.href = `/profile?id=${response.id}`;
 
       } else {

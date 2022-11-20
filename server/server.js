@@ -1,3 +1,4 @@
+const { Session } = require("./session");
 const { Login } = require("./login");
 const { Register } = require("./register");
 const { UpdateProfile } = require("./updateprofile");
@@ -15,6 +16,10 @@ const apiRouter = express();
 
 apiRouter.use(require("cors")({ origin: '*' }));
 apiRouter.use(express.json());
+
+apiRouter.get("/api/session", (request, result) => {
+  Session(request, result);
+});
 
 apiRouter.post("/api/login", (request, result) => {
   Login(request, result);

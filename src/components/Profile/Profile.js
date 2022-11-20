@@ -4,11 +4,12 @@ import { Dropdown } from "semantic-ui-react"
 import DefaultProfilePicture from "../../images/default.png";
 import ProfileInformation from "./ProfileInformation";
 import ProfileEdit from "./ProfileEdit";
-import Followers from "../Followers/Followers";
-import Following from "../Following/Following.js";
+import Followers from "../Connections/Followers";
+import Following from "../Connections/Following.js";
 import Footer from "../Footer/Footer.js";
 
 function Profile() {
+  const session_id = localStorage.getItem("session_id");
   const username = localStorage.getItem("username");
   const accountId = parseInt(localStorage.getItem("accountId"));
   const profileId = parseInt(location.search.split("id=")[1]);
@@ -24,6 +25,18 @@ function Profile() {
   const [showFollowing, setShowFollowing] = useState(false);
 
   useEffect(() => {
+    new Promise((resolve) => {
+      fetch(`${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_SERVER_PORT}/api/session?id=${accountId}`)
+      .then((result) => {
+        return result.text();
+      })
+      .then((result) => {
+        console.log(result);
+        resolve(null);
+      })
+    });
+
+    console.log("after promise");
     FetchProfile();
     SearchAccounts();
   }, []);
