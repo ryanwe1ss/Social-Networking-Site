@@ -41,16 +41,6 @@ function UpdateProfile(request, result) {
     });
     form.parse(request);
     result.send("success");
-    
-    /*
-    form.on("file", function (field, file) {
-      filePath = `images/${request.query.id}_profile.png`;
-      fs.renameSync(file.filepath, filePath, (error) => null);
-      console.log(`${request.query.username} has updated their profile picture: ${file.originalFilename}`);
-    });
-    form.parse(request);
-    result.send("success");
-    */
   }
 }
 module.exports = { UpdateProfile }

@@ -10,7 +10,7 @@ import Footer from "../Footer/Footer.js";
 
 function Profile() {
   const username = localStorage.getItem("username");
-  const accountId = localStorage.getItem("accountId");
+  const accountId = parseInt(localStorage.getItem("accountId"));
   const profileId = parseInt(location.search.split("id=")[1]);
 
   const [profileData, setProfileData] = useState([]);
