@@ -29,7 +29,7 @@ function UpdateProfile(request, result) {
 
   } else {
     form.on("file", function (field, file) {
-      let image = `images/${request.query.id}_profile.png`;
+      let image = `images/${request.query.id}_default.png`;
       let thumbnail = `images/thumbnails/${request.query.id}_profile_thumbnail.png`;
 
       fs.renameSync(file.filepath, image, (error) => null);

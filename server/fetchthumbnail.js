@@ -8,7 +8,7 @@ function FetchThumbnail(request, result)
     );
   
   } catch(error) {
-    error => null;
+    result.sendStatus(204);
   }
 }
 module.exports = { FetchThumbnail }

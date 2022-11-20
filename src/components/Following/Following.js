@@ -1,4 +1,4 @@
-import DefaultProfilePicture from "../../images/profile.png";
+import DefaultProfilePicture from "../../images/default.png";
 
 function Following(params)
 {
@@ -24,7 +24,7 @@ function Following(params)
               />
               <label onClick={() => { location.href=`/profile?id=${account.id}` }}>
                 {account.username}
-                <br/><span>{account.name}</span>
+                <br/><span>{account.name && account.name.trim().length > 0 ? account.name : "No Name"}</span>
               </label>
               {params.accountId !== params.profileId
                 ? null

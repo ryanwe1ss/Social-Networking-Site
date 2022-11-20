@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Dropdown } from "semantic-ui-react"
 
-import DefaultProfilePicture from "../../images/profile.png";
+import DefaultProfilePicture from "../../images/default.png";
 import ProfileInformation from "./ProfileInformation";
 import ProfileEdit from "./ProfileEdit";
 import Followers from "../Followers/Followers";

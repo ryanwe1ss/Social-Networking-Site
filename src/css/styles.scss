@@ -44,6 +44,8 @@
 }
 
 .thumbnail {
+  position: relative;
+  top: -3px;
   border-radius: 50%;
   object-fit: cover;
   width: 40px;

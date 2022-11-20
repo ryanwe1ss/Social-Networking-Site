@@ -4,11 +4,11 @@ function FetchPicture(request, result)
 {
   try {
     result.send(
-      fs.readFileSync(`images/${request.query.id}_profile.png`)
+      fs.readFileSync(`images/${request.query.id}_default.png`)
     );
   
   } catch(error) {
-    error => null;
+    result.sendStatus(204);
   }
 }
 module.exports = { FetchPicture }
