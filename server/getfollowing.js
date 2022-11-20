@@ -5,7 +5,7 @@ function GetFollowing(request, result)
   database.query(`
     SELECT accounts.id, username, name FROM accounts
     LEFT JOIN communications ON communications.user = accounts.id
-    WHERE communications.follower = ${request.query.id}`, function(error, data) {
+    WHERE communications.follower = ${request.query.id} AND enabled=TRUE`, function(error, data) {
       if (!error) result.send(data.rows);
     }
   );
