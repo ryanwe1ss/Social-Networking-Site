@@ -1,4 +1,4 @@
-# Social Networking Site
+# Social Networking Site (In Progress)
 This site gives you the ability to create your own page, having your information for other 
 users on the network to see, allowing them to follow and message you directly. Frontend written in React.JS and backend NodeJS.
 
