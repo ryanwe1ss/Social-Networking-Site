@@ -1,12 +1,10 @@
 import { useState } from "react";
-import { ReactSession } from "react-client-session";
 
 import LoginForm from "../LoginForm/LoginForm.js";
 import RegisterForm from "../RegisterForm/RegisterForm.js";
 import Footer from "../Footer/Footer.js";
 
 function Home() {
-  ReactSession.setStoreType("localStorage");
   const [currentForm, setForm] = useState(true);
 
   function Login(username, password) {
@@ -22,9 +20,9 @@ function Home() {
     .then((response) => {
       if (response !== "invalid") {
         response = JSON.parse(response);
-
-        ReactSession.set("accountId", response.id);
-        ReactSession.set("username", response.username);
+        
+        localStorage.setItem("accountId", response.id);
+        localStorage.setItem("username", response.username);
         window.location.href = `/profile?id=${response.id}`;
 
       } else {

@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { Dropdown } from "semantic-ui-react"
-import { ReactSession } from "react-client-session";
 
 import DefaultProfilePicture from "../../images/profile.png";
 import ProfileInformation from "./ProfileInformation";
@@ -10,10 +9,8 @@ import Following from "../Following/Following.js";
 import Footer from "../Footer/Footer.js";
 
 function Profile() {
-  ReactSession.setStoreType("localStorage");
-
-  const username = ReactSession.get("username");
-  const accountId = ReactSession.get("accountId");
+  const username = localStorage.getItem("username");
+  const accountId = localStorage.getItem("accountId");
   const profileId = parseInt(location.search.split("id=")[1]);
 
   const [profileData, setProfileData] = useState([]);
@@ -139,7 +136,7 @@ function Profile() {
         <div className="border-area">
           <div className="menu">
             <h1>NetConnect</h1>
-            <a href={'/'} onClick={() => { ReactSession.set("accountId", null) }}>Logout</a>
+            <a href={'/'} onClick={() => { localStorage.clear() }}>Logout</a>
             <a href={`/profile?id=${accountId}`}>Direct Messages</a>
             <a href={`/profile?id=${accountId}`}>My Profile</a>
 

@@ -1,9 +1,6 @@
-import { ReactSession } from "react-client-session";
-
 function ProfileEdit(params)
 {
-  ReactSession.setStoreType("localStorage");
-  const username = ReactSession.get("username");
+  const username = localStorage.getItem("username");
   const profileId = parseInt(location.search.split("id=")[1]);
 
   function UpdateProfile(name, gender, status, birthdate, school, concentration, email, phone_number, bio) {
