@@ -8,8 +8,13 @@ users on the network to see, allowing them to follow and message you directly. F
 
 # Requirements
 - NPM & NodeJS
+- PostgreSQL
 - Web Hosting Software (example: nginx, xampp) for client
 - Enable Read & Write for Server folder: sudo chmod -R 777 /var/www/html/
+
+# Working Versions:
+- Node v18.12.1
+- NPM v8.19.2
 
 # Usage
 - npm install
