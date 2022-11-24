@@ -9,8 +9,6 @@ import Following from "../Connections/Following.js";
 import Footer from "../Footer/Footer.js";
 
 function Profile() {
-  const session_id = localStorage.getItem("session_id");
-  const username = localStorage.getItem("username");
   const accountId = parseInt(localStorage.getItem("accountId"));
   const profileId = parseInt(location.search.split("id=")[1]);
 
@@ -25,39 +23,35 @@ function Profile() {
   const [showFollowing, setShowFollowing] = useState(false);
 
   useEffect(() => {
-    new Promise((resolve) => {
-      fetch(`${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_SERVER_PORT}/api/session?id=${accountId}`)
-      .then((result) => {
-        return result.text();
-      })
-      .then((result) => {
-        console.log(result);
-        resolve(null);
-      })
-    });
-
-    console.log("after promise");
-    FetchProfile();
-    SearchAccounts();
+    fetch(`${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_SERVER_PORT}/api/session`, {
+      method: 'GET',
+      credentials: 'include',
+    })
+    .then((response) => {
+      return response.text();
+    })
+    .then((session) => {
+      if (session === "valid") {
+        FetchProfile();
+        SearchAccounts();
+      
+      } else window.location.href = "/";
+    })
   }, []);
 
   function FetchProfile() {
-    fetch(`${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_SERVER_PORT}/api/profile?id=${accountId}&profileId=${profileId}`)
-    .then((result) => {
-      return result.json();
-    })
-    .then((profileData) => {
-      if (profileData.length !== 0) {
-        profileData.map(a => a.username = "@" + a.username)
-        setProfileData(profileData);
-
-        fetch(`${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_SERVER_PORT}/api/picture?id=${profileId}`)
-        .then((result) => { return result.blob() })
-        .then((picture) => {
-          setProfilePicture(URL.createObjectURL(picture));
-        });
+    Promise.all([
+      fetch(`${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_SERVER_PORT}/api/profile?id=${accountId}&profileId=${profileId}`),
+      fetch(`${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_SERVER_PORT}/api/picture?id=${profileId}`),
+    ])
+    .then(([res1, res2]) => Promise.all([res1.json(), res2.blob()]))
+    .then(([profile, picture]) => {
+      if (profile.length !== 0) {
+        profile.map(a => a.username = "@" + a.username)
+        setProfileData(profile);
+        setProfilePicture(URL.createObjectURL(picture));
       }
-    });
+    })
   }
 
   function SearchAccounts(event) {
@@ -82,10 +76,11 @@ function Profile() {
     let formData = new FormData();
 
     formData.append("data", event.target.files[0]);
+    httpRequest.withCredentials = true;
     httpRequest.open("post", `
       ${process.env.REACT_APP_API_URL}:
       ${process.env.REACT_APP_SERVER_PORT}
-      /api/update?id=${profileId}&username=${username}`.replace(/\s/g, ''), false
+      /api/update?id=${profileId}`.replace(/\s/g, ''), false
     
     ); httpRequest.send(formData);
   }
@@ -143,92 +138,100 @@ function Profile() {
     }
   }
 
-  if (accountId) {
-    return (
-      <div className="block">
-        <div className="border-area">
-          <div className="menu">
-            <h1>NetConnect</h1>
-            <a href={'/'} onClick={() => { localStorage.clear() }}>Logout</a>
-            <a href={`/profile?id=${accountId}`}>Direct Messages</a>
-            <a href={`/profile?id=${accountId}`}>My Profile</a>
+  function Logout() {
+    fetch(`${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_SERVER_PORT}/api/logout`, {
+      method: 'GET',
+      credentials: 'include',
+    })
+    .then(() => {
+      localStorage.clear();
+      window.location.href = "/";
+    })
+  }
 
-            <Dropdown
-              id="search"
-              options={searchData}
-              placeholder="Search Network"
-              onKeyUp={SearchAccounts}
-              onChange={RedirectPage}
-              search
-              selection
-            />
-            <hr/>
-          </div>
+  return (
+    <div className="block">
+      <div className="border-area">
+        <div className="menu">
+          <h1>NetConnect</h1>
+          <a href={'/'} onClick={Logout}>Logout</a>
+          <a href={`/profile?id=${accountId}`}>Direct Messages</a>
+          <a href={`/profile?id=${accountId}`}>My Profile</a>
 
-          <div className="wrapper">
-            <div className="profile">
-              <img
-                src={picture}
-                onError={(img) => (img.target.src = DefaultProfilePicture)}
-                className="picture"
-                alt="picture"
-              />
-              {profileData.map(account => (
-                <div className="details" key={account.id}>
-                  {accountId == profileId
-                  ? <div>
-                      <input className="mt-2" type="button" value="Edit Profile" onClick={() => setEditForm(editForm ? false : true)}/>
-                      <input className="mt-1" type="file" onChange={UploadProfilePicture}/>
-                    </div> :
-                    <h5>
-                      <label className="username">{account.username}</label>
-                      <input className="message" type="button" value="Message"/>
-                      {account.is_following ?
-                        <input className="follow" type="button" value="Unfollow" onClick={() => UnfollowAccount()}/> :
-                        <input className="follow" type="button" value="Follow" onClick={FollowAccount}/>
-                      }
-                    </h5>
-                  }
-                  <hr/>
-                  <div className="interactions">
-                    <label onClick={GetFollowers}>Followers</label>: {account.followers} |&nbsp;
-                    <label onClick={GetFollowing}>Following</label>: {account.following}
-                  </div>
-                </div>
-              ))}
-            </div>
-            {editForm
-              ? <ProfileEdit FetchProfile={FetchProfile} setEditForm={setEditForm} profileData={profileData} />
-              : <ProfileInformation profileData={profileData} />
-            }
-            {showFollowers
-              ? <Followers
-                  accountId={accountId}
-                  profileId={profileId}
-                  followers={followers}
-                  setShowFollowers={setShowFollowers}
-                  GetFollowers={GetFollowers}
-                  FollowAccount={FollowAccount}
-                />
-              : false
-            }
-            {showFollowing
-              ? <Following
-                  accountId={accountId}
-                  profileId={profileId}
-                  following={following}
-                  setShowFollowing={setShowFollowing}
-                  GetFollowing={GetFollowing}
-                  UnfollowAccount={UnfollowAccount}
-                />
-              : false
-            }
-          </div>
-          <Footer/>
+          <Dropdown
+            id="search"
+            options={searchData}
+            placeholder="Search Network"
+            onKeyUp={SearchAccounts}
+            onChange={RedirectPage}
+            search
+            selection
+          />
+          <hr/>
         </div>
-      </div>
-    );
 
-  } else window.location.href = "/";
+        <div className="wrapper">
+          <div className="profile">
+            <img
+              src={picture}
+              onError={(img) => (img.target.src = DefaultProfilePicture)}
+              className="picture"
+              alt="picture"
+            />
+            {profileData.map(account => (
+              <div className="details" key={account.id}>
+                {accountId == profileId
+                ? <div>
+                    <input className="mt-2" type="button" value="Edit Profile" onClick={() => setEditForm(editForm ? false : true)}/>
+                    <input className="mt-1" type="file" onChange={UploadProfilePicture}/>
+                  </div> :
+                  <h5>
+                    <label className="username">{account.username}</label>
+                    <input className="message" type="button" value="Message"/>
+                    {account.is_following ?
+                      <input className="follow" type="button" value="Unfollow" onClick={() => UnfollowAccount()}/> :
+                      <input className="follow" type="button" value="Follow" onClick={FollowAccount}/>
+                    }
+                  </h5>
+                }
+                <hr/>
+                <div className="interactions">
+                  <label onClick={GetFollowers}>Followers</label>: {account.followers} |&nbsp;
+                  <label onClick={GetFollowing}>Following</label>: {account.following}
+                </div>
+              </div>
+            ))}
+          </div>
+          {editForm
+            ? <ProfileEdit FetchProfile={FetchProfile} setEditForm={setEditForm} profileData={profileData} />
+            : <ProfileInformation profileData={profileData} />
+          }
+          {showFollowers
+            ? <Followers
+                accountId={accountId}
+                profileId={profileId}
+                followers={followers}
+                setShowFollowers={setShowFollowers}
+                GetFollowers={GetFollowers}
+                FollowAccount={FollowAccount}
+              />
+            : false
+          }
+          {showFollowing
+            ? <Following
+                accountId={accountId}
+                profileId={profileId}
+                following={following}
+                setShowFollowing={setShowFollowing}
+                GetFollowing={GetFollowing}
+                UnfollowAccount={UnfollowAccount}
+              />
+            : false
+          }
+        </div>
+        <Footer/>
+      </div>
+    </div>
+  );
 }
 export default Profile;

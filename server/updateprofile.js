@@ -29,15 +29,15 @@ function UpdateProfile(request, result) {
 
   } else {
     form.on("file", function (field, file) {
-      let image = `images/${request.query.id}_default.png`;
-      let thumbnail = `images/thumbnails/${request.query.id}_profile_thumbnail.png`;
+      const image = `images/${request.query.id}_profile.png`;
+      const thumbnail = `images/thumbnails/${request.query.id}_profile_thumbnail.png`;
 
       fs.renameSync(file.filepath, image, (error) => null);
       sharp(image)
         .resize(100, 100)
         .toFile(thumbnail, (error) => null);
         
-      console.log(`${request.query.username} has updated their profile picture: ${file.originalFilename}`);
+      console.log(`${request.session.user.username} has updated their profile picture: ${file.originalFilename}`);
     });
     form.parse(request);
     result.send("success");

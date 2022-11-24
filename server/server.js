@@ -1,4 +1,3 @@
-const { Session } = require("./session");
 const { Login } = require("./login");
 const { Register } = require("./register");
 const { UpdateProfile } = require("./updateprofile");
@@ -11,14 +10,30 @@ const { UnfollowAccount } = require("./unfollow.js");
 const { GetFollowers } = require("./getfollowers.js");
 const { GetFollowing } = require("./getfollowing.js");
 
+const session = require("express-session");
 const express = require("express");
 const apiRouter = express();
 
-apiRouter.use(require("cors")({ origin: '*' }));
 apiRouter.use(express.json());
+apiRouter.use(session({
+  resave: true,
+  saveUninitialized: true,
+  secret: "secret",
+}));
+
+apiRouter.use(function(request, result, next) {
+  result.setHeader('Access-Control-Allow-Origin', `http://localhost:3000`)
+  result.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+  result.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+  result.setHeader('Access-Control-Allow-Credentials', true);
+  next();
+})
 
 apiRouter.get("/api/session", (request, result) => {
-  Session(request, result);
+  if (request.session.user === undefined) {
+    result.send("invalid");
+  
+  } else result.send("valid");
 });
 
 apiRouter.post("/api/login", (request, result) => {
@@ -27,6 +42,10 @@ apiRouter.post("/api/login", (request, result) => {
 
 apiRouter.post("/api/register", (request, result) => {
   Register(request, result);
+});
+
+apiRouter.get("/api/logout", (request, result) => {
+  request.session.destroy();
 });
 
 apiRouter.post("/api/update", (request, result) => {
