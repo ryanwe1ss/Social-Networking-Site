@@ -1,30 +1,23 @@
 import { useState } from "react";
+import { Login, Register } from "../../utilities";
 
-import LoginForm from "../LoginForm/LoginForm.js";
 import RegisterForm from "../RegisterForm/RegisterForm.js";
+import LoginForm from "../LoginForm/LoginForm.js";
 import Footer from "../Footer/Footer.js";
 
 function Home() {
   const [currentForm, setForm] = useState(true);
 
-  function Login(username, password) {
-    fetch(`${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/api/login`, {
-      method: "POST",
-      headers: {"Content-Type": "application/json"},
-      credentials: 'include',
-      body: JSON.stringify({
-        "username": username,
-        "password": password,
-      }),
-    })
-    .then((result) => { return result.text() })
-    .then((response) => {
+  function HandleLogin(username, password) {
+    Login(username, password).then((response) => {
+      console.log(response);
+
       if (response !== "invalid") {
         response = JSON.parse(response);
-
+  
         localStorage.setItem("accountId", response.id);
         window.location.href = `/profile?id=${response.id}`;
-
+  
       } else {
         document.getElementById("response").style.color = "red";
         document.getElementById("response").innerHTML = "Login failed, try again";
@@ -32,21 +25,12 @@ function Home() {
     });
   }
 
-  function Register(username, password) {
-    fetch(`${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/api/register`, {
-      method: "POST",
-      headers: {"Content-Type": "application/json"},
-      body: JSON.stringify({
-        "username": username,
-        "password": password,
-      }),
-    })
-    .then((response) => { return response.text() })
-    .then((response) => {
+  function HandleRegister(username, password) {
+    Register(username, password).then((response) => {
       if (response == "exists") {
         document.getElementById("response").style.color = "red";
         document.getElementById("response").innerHTML = "Username already taken";
-
+  
       } else if (response == "error") {
         document.getElementById("response").style.color = "red";
         document.getElementById("response").innerHTML = "Failed to register, try again";
@@ -55,7 +39,7 @@ function Home() {
         document.getElementById("response").style.color = "green";
         document.getElementById("response").innerHTML = "Account Registered";
       }
-    })
+    });
   }
 
   return (
@@ -66,8 +50,8 @@ function Home() {
         </div>
         <div className="body">
           {currentForm
-            ? <LoginForm setForm={setForm} Login={Login}/>
-            : <RegisterForm setForm={setForm} Register={Register}/>
+            ? <LoginForm setForm={setForm} HandleLogin={HandleLogin}/>
+            : <RegisterForm setForm={setForm} HandleRegister={HandleRegister}/>
           }
           <div className="description">
             <h3>Welcome to NetConnect</h3>

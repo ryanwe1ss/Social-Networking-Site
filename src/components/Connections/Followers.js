@@ -28,7 +28,7 @@ function Followers(params) {
               {params.accountId !== params.profileId
                 ? null
                 : <input type="button" value="Remove" onClick={() => {
-                    params.RemoveConnection(account.id, "followers");
+                    params.HandleRemoveConnection(account.id, "followers");
                     params.GetFollowers();
                   }}/>
               }

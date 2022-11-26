@@ -1,30 +1,23 @@
+import { UpdateProfile } from "../../utilities";
+
 function ProfileEdit(params)
 {
-  const accountId = localStorage.getItem("accountId");
-
-  function UpdateProfile(name, gender, status, birthdate, school, concentration, email, phone_number, bio) {
-    const details = {
-      "id": accountId,
-      "name": name,
-      "gender": gender,
-      "status": status,
-      "birthdate": birthdate,
-      "school": school,
-      "concentration": concentration,
-      "email": email,
-      "phone_number": phone_number,
-      "bio": bio,
-    };
-
-    fetch(`${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/api/update?id=${accountId}`, {
-      method: 'POST',
-      credentials: 'include',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify(details),
-    })
-    .then((response) => {
+  function HandleUpdate() {
+    UpdateProfile(
+      localStorage.getItem("accountId"),
+      document.getElementById("name").value,
+      document.getElementById("gender").value,
+      document.getElementById("status").value,
+      document.getElementById("birthdate").value,
+      document.getElementById("school").value,
+      document.getElementById("concentration").value,
+      document.getElementById("email").value,
+      document.getElementById("phone_number").value,
+      document.getElementById("bio").value,
+    
+    ).then((response) => {
       if (response.status === 200) {
-        params.FetchProfile();
+        params.HandleFetch();
         params.setEditForm(false);
       }
     });
@@ -32,19 +25,7 @@ function ProfileEdit(params)
 
   return (
     <div className="information">
-      <input type="button" onClick={() => UpdateProfile(
-        document.getElementById("name").value,
-        document.getElementById("gender").value,
-        document.getElementById("status").value,
-        document.getElementById("birthdate").value,
-        document.getElementById("school").value,
-        document.getElementById("concentration").value,
-        document.getElementById("email").value,
-        document.getElementById("phone_number").value,
-        document.getElementById("bio").value,
-
-      )} style={{float: "right"}} value="Update"/>
-
+      <input type="button" onClick={HandleUpdate} className="update" value="Update"/>
       {params.profileData.map(profile => (
         <div key={"profile"}>
           <h6>Account Information</h6>

@@ -29,7 +29,7 @@ function Following(params)
               {params.accountId !== params.profileId
                 ? null
                 : <input type="button" value="Remove" onClick={() => {
-                    params.RemoveConnection(account.id, "following");
+                    params.HandleRemoveConnection(account.id, "following");
                     params.GetFollowing();
                   }}/>
               }

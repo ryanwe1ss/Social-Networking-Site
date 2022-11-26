@@ -9,10 +9,10 @@ function LoginForm(params)
         <label>Password</label>
         <input type="password" id="password"/>
 
-        <input type="button" value="Login" onClick={() => params.Login(
+        <input type="button" value="Login" onClick={() => params.HandleLogin(
           document.getElementById("username").value,
           document.getElementById("password").value,
-        )} style={{marginTop: "10px"}}/>
+        )} className="buttons"/>
         <div id="response"/>
       </div>
       

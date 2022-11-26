@@ -33,7 +33,7 @@ function UpdateProfile(request, result) {
       function (error, data) {
         if (!error) {
           result.send("success");
-          console.log(`ID (${request.query.id}) has updated their profile`);
+          console.log(`${request.session.user.username} has updated their profile`);
         }
       }
     );
@@ -43,15 +43,27 @@ function UpdateProfile(request, result) {
       const image = `images/${request.query.id}_profile.png`;
       const thumbnail = `images/thumbnails/${request.query.id}_profile_thumbnail.png`;
 
-      fs.renameSync(file.filepath, image, (error) => null);
+      fs.renameSync(file.filepath, image, (error) => {
+        if (error) {
+          console.log(`Error Updating Picture for ${request.session.user.username}`);
+          result.sendStatus(500);
+          return;
+        }
+      });
       sharp(image)
       .resize(100, 100)
-      .toFile(thumbnail, (error) => null);
+      .toFile(thumbnail, (error) => {
+        if (error) {
+          console.log(`Error Updating Thumbnail for ${request.session.user.username}`);
+          result.sendStatus(500);
+          return;
+        }
+      });
         
       console.log(`${request.session.user.username} has updated their profile picture: ${file.originalFilename}`);
     });
     form.parse(request);
-    result.send("success");
+    result.sendStatus(200);
   }
 }
 module.exports = { UpdateProfile }

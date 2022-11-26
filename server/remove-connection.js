@@ -12,6 +12,7 @@ function RemoveConnection(request, result)
       WHERE follower = ${sessionId} AND
       "user" = ${userId}`, function(error, data) {
         if (error) result.sendStatus(500);
+        else result.sendStatus(200);
       }
     );
   
@@ -21,6 +22,7 @@ function RemoveConnection(request, result)
       WHERE follower = ${userId} AND
       "user" = ${sessionId}`, function(error, data) {
         if (error) result.sendStatus(500);
+        else result.sendStatus(200);
       }
     );
   }

@@ -68,7 +68,6 @@
   .follow, .message {
     margin-left: 5px;
     margin-top: 5px;
-    float: right;
   }
 
   .interactions label:hover {
@@ -89,6 +88,10 @@
   padding: 5px;
   width: 100%;
   height: 500px;
+
+  .update {
+    float: right;
+  }
 }
 
 .information h6 {
@@ -137,6 +140,10 @@ textarea {
   border-right: 4px solid black;
   width: 200px;
   padding: 12px;
+
+  .buttons {
+    margin-top: 10px;
+  }
 }
 
 .loginPrompt, .registerPrompt {
