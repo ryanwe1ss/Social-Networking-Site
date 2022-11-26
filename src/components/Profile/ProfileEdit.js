@@ -1,11 +1,10 @@
 function ProfileEdit(params)
 {
-  const username = localStorage.getItem("username");
-  const profileId = parseInt(location.search.split("id=")[1]);
+  const accountId = localStorage.getItem("accountId");
 
   function UpdateProfile(name, gender, status, birthdate, school, concentration, email, phone_number, bio) {
     const details = {
-      "id": profileId,
+      "id": accountId,
       "name": name,
       "gender": gender,
       "status": status,
@@ -15,22 +14,19 @@ function ProfileEdit(params)
       "email": email,
       "phone_number": phone_number,
       "bio": bio,
-    }
+    };
 
-    fetch(`${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_SERVER_PORT}/api/update?username=${username}`, {
+    fetch(`${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/api/update?id=${accountId}`, {
       method: 'POST',
+      credentials: 'include',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify(details),
     })
     .then((response) => {
-      if (response.ok) {
-        return response.text();
+      if (response.status === 200) {
+        params.FetchProfile();
+        params.setEditForm(false);
       }
-    })
-    .then((response) => {
-      if (response !== "success") alert(response);
-      else params.FetchProfile();
-      params.setEditForm(false);
     });
   }
 

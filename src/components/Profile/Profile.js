@@ -23,44 +23,40 @@ function Profile() {
   const [showFollowing, setShowFollowing] = useState(false);
 
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_SERVER_PORT}/api/session`, {
-      method: 'GET',
-      credentials: 'include',
-    })
-    .then((response) => {
-      return response.text();
-    })
-    .then((session) => {
-      if (session === "valid") {
-        FetchProfile();
-        SearchAccounts();
-      
-      } else window.location.href = "/";
-    })
+    FetchProfile();
+    SearchAccounts();
   }, []);
 
   function FetchProfile() {
     Promise.all([
-      fetch(`${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_SERVER_PORT}/api/profile?id=${accountId}&profileId=${profileId}`),
-      fetch(`${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_SERVER_PORT}/api/picture?id=${profileId}`),
+      fetch(`${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/api/profile?id=${accountId}&profileId=${profileId}`, {
+        method: 'GET',
+        credentials: 'include',
+      }),
+      fetch(`${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/api/picture?id=${profileId}`, {
+        method: 'GET',
+        credentials: 'include',
+      }),
     ])
-    .then(([res1, res2]) => Promise.all([res1.json(), res2.blob()]))
+    .then(([profile, picture]) => Promise.all([profile.json(), picture.blob()]))
     .then(([profile, picture]) => {
-      if (profile.length !== 0) {
+      if (profile.length > 0) {
         profile.map(a => a.username = "@" + a.username)
         setProfileData(profile);
         setProfilePicture(URL.createObjectURL(picture));
       }
     })
+    .catch(() => {
+      window.location.href = "/";
+    })
   }
 
   function SearchAccounts(event) {
     let searchQuery = event ? event.target.value : "";
-    fetch(
-      `${process.env.REACT_APP_API_URL}:
-      ${process.env.REACT_APP_SERVER_PORT}
-      /api/search?id=${accountId}&searchQuery=${searchQuery}`.replace(/\s/g, '')
-    )
+    fetch(`${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/api/search?id=${accountId}&searchQuery=${searchQuery}`, {
+      method: 'GET',
+      credentials: 'include',
+    })
     .then((result) => { return result.json() })
     .then((data) => {
       let names = [];
@@ -79,14 +75,17 @@ function Profile() {
     httpRequest.withCredentials = true;
     httpRequest.open("post", `
       ${process.env.REACT_APP_API_URL}:
-      ${process.env.REACT_APP_SERVER_PORT}
+      ${process.env.REACT_APP_API_PORT}
       /api/update?id=${profileId}`.replace(/\s/g, ''), false
     
     ); httpRequest.send(formData);
   }
 
   function FollowAccount() {
-    fetch(`${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_SERVER_PORT}/api/follow?id=${accountId}&profileId=${profileId}`)
+    fetch(`${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/api/follow?id=${accountId}&profileId=${profileId}`, {
+      method: 'GET',
+      credentials: 'include',
+    })
     .then((result) => {
       return result.text();
     })
@@ -97,8 +96,11 @@ function Profile() {
     });
   }
 
-  function UnfollowAccount(id=null) {
-    fetch(`${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_SERVER_PORT}/api/unfollow?id=${accountId}&profileId=${id ? id : profileId}`)
+  function UnfollowAccount() {
+    fetch(`${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/api/unfollow?id=${accountId}&profileId=${profileId}`, {
+      method: 'GET',
+      credentials: 'include',
+    })
     .then((result) => {
       return result.text();
     })
@@ -107,10 +109,26 @@ function Profile() {
         FetchProfile();
       }
     });
+  }
+
+  function RemoveConnection(userId, type) {
+    fetch(`${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/api/rmvconnection?id=${accountId}&userId=${userId}&type=${type}`, {
+      method: 'GET',
+      credentials: 'include',
+    })
+    .then((response) => {
+      if (response.status !== 200) {
+        console.log(`Error Removing Connection: ${userId}`);
+      
+      } else FetchProfile();
+    })
   }
 
   function GetFollowers() {
-    fetch(`${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_SERVER_PORT}/api/followers?id=${profileId}`)
+    fetch(`${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/api/followers?id=${profileId}`, {
+      method: 'GET',
+      credentials: 'include',
+    })
     .then((result) => {
       return result.json();
     })
@@ -121,7 +139,10 @@ function Profile() {
   }
 
   function GetFollowing() {
-    fetch(`${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_SERVER_PORT}/api/following?id=${profileId}&profileId=${profileId}`)
+    fetch(`${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/api/following?id=${profileId}`, {
+      method: 'GET',
+      credentials: 'include',
+    })
     .then((result) => {
       return result.json();
     })
@@ -139,7 +160,7 @@ function Profile() {
   }
 
   function Logout() {
-    fetch(`${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_SERVER_PORT}/api/logout`, {
+    fetch(`${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/api/logout`, {
       method: 'GET',
       credentials: 'include',
     })
@@ -213,7 +234,7 @@ function Profile() {
                 followers={followers}
                 setShowFollowers={setShowFollowers}
                 GetFollowers={GetFollowers}
-                FollowAccount={FollowAccount}
+                RemoveConnection={RemoveConnection}
               />
             : false
           }
@@ -224,7 +245,7 @@ function Profile() {
                 following={following}
                 setShowFollowing={setShowFollowing}
                 GetFollowing={GetFollowing}
-                UnfollowAccount={UnfollowAccount}
+                RemoveConnection={RemoveConnection}
               />
             : false
           }

@@ -4,7 +4,6 @@
   "private": true,
   "dependencies": {
     "bootstrap": "^5.2.2",
-    "cors": "^2.8.5",
     "express": "^4.18.2",
     "express-session": "^1.17.3",
     "formidable": "^2.0.1",
@@ -21,8 +20,6 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "dev": "cd server && concurrently \"node api.js\" \"npm start\"",
-    "rs": "node api.js",
     "build": "react-scripts build"
   },
   "browserslist": {

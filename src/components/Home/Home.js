@@ -8,7 +8,7 @@ function Home() {
   const [currentForm, setForm] = useState(true);
 
   function Login(username, password) {
-    fetch(`${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_SERVER_PORT}/api/login`, {
+    fetch(`${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/api/login`, {
       method: "POST",
       headers: {"Content-Type": "application/json"},
       credentials: 'include',
@@ -21,6 +21,7 @@ function Home() {
     .then((response) => {
       if (response !== "invalid") {
         response = JSON.parse(response);
+
         localStorage.setItem("accountId", response.id);
         window.location.href = `/profile?id=${response.id}`;
 
@@ -32,7 +33,7 @@ function Home() {
   }
 
   function Register(username, password) {
-    fetch(`${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_SERVER_PORT}/api/register`, {
+    fetch(`${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/api/register`, {
       method: "POST",
       headers: {"Content-Type": "application/json"},
       body: JSON.stringify({

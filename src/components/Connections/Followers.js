@@ -16,7 +16,7 @@ function Followers(params) {
           <div className="followers" key={account.id}>
             <div className="account">
               <img
-                src={`${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_SERVER_PORT}/api/thumbnail?id=${account.id}`}
+                src={`${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/api/thumbnail?id=${account.id}`}
                 onError={(img) => (img.target.src = DefaultProfilePicture)}
                 className="thumbnail"
                 alt="thumbnail"
@@ -28,7 +28,7 @@ function Followers(params) {
               {params.accountId !== params.profileId
                 ? null
                 : <input type="button" value="Remove" onClick={() => {
-                    params.FollowAccount(account.id);
+                    params.RemoveConnection(account.id, "followers");
                     params.GetFollowers();
                   }}/>
               }

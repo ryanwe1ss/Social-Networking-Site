@@ -2,7 +2,6 @@ const { database } = require("./db_connect");
 
 function UnfollowAccount(request, result)
 {
-  const user = request.query;
   database.query(`
     DELETE FROM connections
     WHERE follower = ${request.query.id} AND

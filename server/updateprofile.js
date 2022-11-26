@@ -1,5 +1,7 @@
-const fs = require("fs");
 const sharp = require("sharp");
+sharp.cache(false);
+
+const fs = require("fs");
 const formidable = require("formidable");
 const { database } = require("./db_connect");
 
@@ -22,7 +24,7 @@ function UpdateProfile(request, result) {
       WHERE id=${account.id}`, function (error, response) {
       if (!error) {
         result.send("success");
-        console.log(`${request.query.username} has updated their profile`);
+        console.log(`ID (${request.query.id}) has updated their profile`);
       }
     }
     );
@@ -34,8 +36,8 @@ function UpdateProfile(request, result) {
 
       fs.renameSync(file.filepath, image, (error) => null);
       sharp(image)
-        .resize(100, 100)
-        .toFile(thumbnail, (error) => null);
+      .resize(100, 100)
+      .toFile(thumbnail, (error) => console.log(error));
         
       console.log(`${request.session.user.username} has updated their profile picture: ${file.originalFilename}`);
     });
