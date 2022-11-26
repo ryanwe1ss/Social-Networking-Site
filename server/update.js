@@ -9,24 +9,33 @@ function UpdateProfile(request, result) {
   const form = new formidable.IncomingForm();
   const account = request.body;
 
-  if (Object.keys(account).length != 0) {
+  if (Object.keys(account).length > 0) {
+    for (const property in account) {
+      account[property] = account[property].trim();
+      account[property].length > 0
+        ? account[property] = `'${account[property]}'`
+        : account[property] = null;
+    }
+
     database.query(`
       UPDATE accounts
-      SET name=COALESCE('${account.name}', name),
-      gender=COALESCE('${account.gender}', gender),
-      status=COALESCE('${account.status}', status),
-      birthdate=COALESCE('${account.birthdate}', birthdate),
-      school=COALESCE('${account.school}', school),
-      concentration=COALESCE('${account.concentration}', concentration),
-      email=COALESCE('${account.email}', email),
-      phone_number=COALESCE('${account.phone_number}', phone_number),
-      bio=COALESCE('${account.bio}', bio)
-      WHERE id=${account.id}`, function (error, response) {
-      if (!error) {
-        result.send("success");
-        console.log(`ID (${request.query.id}) has updated their profile`);
+      SET name=${account.name},
+      gender=${account.gender},
+      status=${account.status},
+      birthdate=${account.birthdate},
+      school=${account.school},
+      concentration=${account.concentration},
+      email=${account.email},
+      phone_number=${account.phone_number},
+      bio=${account.bio}
+      WHERE id=${account.id}`,
+      
+      function (error, data) {
+        if (!error) {
+          result.send("success");
+          console.log(`ID (${request.query.id}) has updated their profile`);
+        }
       }
-    }
     );
 
   } else {
@@ -37,7 +46,7 @@ function UpdateProfile(request, result) {
       fs.renameSync(file.filepath, image, (error) => null);
       sharp(image)
       .resize(100, 100)
-      .toFile(thumbnail, (error) => console.log(error));
+      .toFile(thumbnail, (error) => null);
         
       console.log(`${request.session.user.username} has updated their profile picture: ${file.originalFilename}`);
     });

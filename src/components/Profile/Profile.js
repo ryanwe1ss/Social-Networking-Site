@@ -86,13 +86,8 @@ function Profile() {
       method: 'GET',
       credentials: 'include',
     })
-    .then((result) => {
-      return result.text();
-    })
     .then((response) => {
-      if (response === "success") {
-        FetchProfile();
-      }
+      if (response.status === 200) FetchProfile();
     });
   }
 
@@ -101,13 +96,8 @@ function Profile() {
       method: 'GET',
       credentials: 'include',
     })
-    .then((result) => {
-      return result.text();
-    })
     .then((response) => {
-      if (response === "success") {
-        FetchProfile();
-      }
+      if (response.status === 200) FetchProfile();
     });
   }
 
@@ -117,10 +107,7 @@ function Profile() {
       credentials: 'include',
     })
     .then((response) => {
-      if (response.status !== 200) {
-        console.log(`Error Removing Connection: ${userId}`);
-      
-      } else FetchProfile();
+      if (response.status === 200) FetchProfile();
     })
   }
 

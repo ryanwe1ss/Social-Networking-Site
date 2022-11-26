@@ -1,13 +1,13 @@
 const { Login } = require("./login");
 const { Register } = require("./register");
-const { UpdateProfile } = require("./updateprofile");
+const { UpdateProfile } = require("./update");
 const { SearchAccounts } = require("./search");
 const { FetchProfile } = require("./fetchprofile");
 const { FetchPicture } = require("./fetchpicture");
 const { FetchThumbnail } = require("./fetchthumbnail");
 const { FollowAccount } = require("./follow.js");
 const { UnfollowAccount } = require("./unfollow.js");
-const { RemoveConnection } = require("./removeconnection");
+const { RemoveConnection } = require("./remove-connection");
 const { GetFollowers } = require("./getfollowers.js");
 const { GetFollowing } = require("./getfollowing.js");
 

@@ -7,12 +7,11 @@ function RemoveConnection(request, result)
   const type = request.query.type;
 
   if (type == "following") {
-    console.log(request.query);
     database.query(`
       DELETE FROM connections
       WHERE follower = ${sessionId} AND
       "user" = ${userId}`, function(error, data) {
-        if (!error) result.send("success");
+        if (error) result.sendStatus(500);
       }
     );
   
@@ -21,7 +20,7 @@ function RemoveConnection(request, result)
       DELETE FROM connections
       WHERE follower = ${userId} AND
       "user" = ${sessionId}`, function(error, data) {
-        if (!error) result.send("success");
+        if (error) result.sendStatus(500);
       }
     );
   }

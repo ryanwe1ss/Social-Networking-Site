@@ -31,6 +31,21 @@ CREATE SEQUENCE public.connections_id_seq
 
 ALTER SEQUENCE public.connections_id_seq OWNER TO postgres;
 GRANT ALL ON SEQUENCE public.connections_id_seq TO postgres;
+
+-- DROP SEQUENCE public.connections_id_seq1;
+
+CREATE SEQUENCE public.connections_id_seq1
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+-- Permissions
+
+ALTER SEQUENCE public.connections_id_seq1 OWNER TO postgres;
+GRANT ALL ON SEQUENCE public.connections_id_seq1 TO postgres;
 -- public.accounts definition
 
 -- Drop table
@@ -105,6 +120,7 @@ $function$
 -- Permissions
 
 ALTER FUNCTION public.date_updated() OWNER TO postgres;
+GRANT ALL ON FUNCTION public.date_updated() TO public;
 GRANT ALL ON FUNCTION public.date_updated() TO postgres;
 
 
