@@ -1,9 +1,16 @@
 function ProfileInformation(params)
 {
-  if (params.profileData.length == 0) {
+  if (params.isDisabled) {
     return (
       <div className="information">
         This profile doesn't exist or has been disabled...
+      </div>
+    );
+
+  } else if (params.profileData.length == 0) {
+    return (
+      <div className="information">
+        <div className="spinner"/>
       </div>
     );
   

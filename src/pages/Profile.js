@@ -11,14 +11,14 @@ import {
   GetFollowing,
   Logout,
   RedirectPage,
-} from "../../utilities";
+} from "../utilities";
 
-import DefaultProfilePicture from "../../images/default.png";
-import ProfileInformation from "./ProfileInformation";
-import ProfileEdit from "./ProfileEdit";
-import Followers from "../Connections/Followers";
-import Following from "../Connections/Following";
-import Footer from "../Footer/Footer";
+import DefaultProfilePicture from "../images/default.png";
+import ProfileInformation from "../components/Profile/ProfileInformation";
+import ProfileEdit from "../components/Profile/ProfileEdit";
+import Followers from "../components/Connections/Followers";
+import Following from "../components/Connections/Following";
+import Footer from "../components/Footer/Footer";
 
 function Profile() {
   const accountId = parseInt(localStorage.getItem("accountId"));
@@ -31,14 +31,12 @@ function Profile() {
   const [following, setFollowing] = useState([]);
 
   const [editForm, setEditForm] = useState(false);
+  const [isDisabled, setDisabled] = useState(false);
   const [showFollowers, setShowFollowers] = useState(false);
   const [showFollowing, setShowFollowing] = useState(false);
 
   useEffect(() => {
-    FetchProfile(accountId, profileId).then((result) => {
-      setProfile(result.profile);
-      setPicture(result.picture);
-    });
+    HandleFetch();
     SearchAccounts(null, accountId).then((result) => {
       setSearchData(result);
     });
@@ -46,8 +44,14 @@ function Profile() {
 
   function HandleFetch() {
     FetchProfile(accountId, profileId).then((result) => {
-      setProfile(result.profile);
-      setPicture(result.picture);
+      if (!result) {
+        setProfile([]);
+        setDisabled(true);
+      
+      } else {
+        setProfile(result.profile);
+        setPicture(result.picture);
+      }
     });
   }
 
@@ -118,7 +122,7 @@ function Profile() {
           />
           <hr/>
         </div>
-
+        
         <div className="wrapper">
           <div className="profile">
             <img
@@ -155,7 +159,7 @@ function Profile() {
           </div>
           {editForm
             ? <ProfileEdit HandleFetch={HandleFetch} setEditForm={setEditForm} profileData={profileData}/>
-            : <ProfileInformation profileData={profileData}/>
+            : <ProfileInformation profileData={profileData} isDisabled={isDisabled}/>
           }
           {showFollowers
             ? <Followers

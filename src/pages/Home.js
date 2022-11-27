@@ -1,17 +1,15 @@
 import { useState } from "react";
-import { Login, Register } from "../../utilities";
+import { Login, Register } from "../utilities";
 
-import RegisterForm from "../RegisterForm/RegisterForm.js";
-import LoginForm from "../LoginForm/LoginForm.js";
-import Footer from "../Footer/Footer.js";
+import RegisterForm from "../components/RegisterForm/RegisterForm.js";
+import LoginForm from "../components/LoginForm/LoginForm.js";
+import Footer from "../components/Footer/Footer.js";
 
 function Home() {
   const [currentForm, setForm] = useState(true);
 
   function HandleLogin(username, password) {
     Login(username, password).then((response) => {
-      console.log(response);
-
       if (response !== "invalid") {
         response = JSON.parse(response);
   
