@@ -20,3 +20,4 @@ users on the network to see, allowing them to follow and message you directly. F
 - npm install
 - npm run build
 - node server.js (run server)
+- Rename 'example.env' --> '.env' and change variables based on yours
