@@ -178,7 +178,7 @@ function Profile() {
                 profileId={profileId}
                 following={following}
                 setShowFollowing={setShowFollowing}
-                GetFollowing={GetFollowing}
+                HandleGetFollowing={HandleGetFollowing}
                 HandleRemoveConnection={HandleRemoveConnection}
               />
             : false

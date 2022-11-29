@@ -30,7 +30,7 @@ function Following(params)
                 ? null
                 : <input type="button" value="Remove" onClick={() => {
                     params.HandleRemoveConnection(account.id, "following");
-                    params.GetFollowing();
+                    params.HandleGetFollowing();
                   }}/>
               }
             </div>
