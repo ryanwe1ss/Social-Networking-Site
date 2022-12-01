@@ -100,13 +100,15 @@
   padding-top: 5px;
 }
 
-.bio { white-space: normal; }
-
-textarea {
-  background-color: lightblue;
-  resize: none;
-  width: 100%;
-  min-height: 105px;
+.bio {
+  white-space: normal;
+  
+  textarea {
+    background-color: lightblue;
+    resize: none;
+    width: 100%;
+    min-height: 105px;
+  }
 }
 
 #header { text-align: center; }
@@ -240,6 +242,56 @@ textarea {
     #close:hover {
       color: red;
       cursor: pointer;
+    }
+  }
+}
+
+.messaging {
+  display: flex;
+
+  .chats {
+    border: 1px solid black;
+    min-width: 200px;
+    max-width: 200px;
+    height: 625px;
+    overflow: hidden;
+  }
+
+  .interface {
+    width: 100%;
+    word-wrap: break-word;
+    overflow: hidden;
+
+    .chat-session {
+      border: 1px solid black;
+      border-left: none;
+      height: 500px;
+    }
+  
+    .message-box {
+      display: flex;
+      margin-top: auto;
+  
+      textarea {
+        min-height: 125px;
+        min-width: 85%;
+        outline: none;
+        resize: none;
+        border: none;
+
+        background-color: lightblue;
+        border-bottom: 1px solid black;
+        border-right: 1px solid black;
+      }
+  
+      .buttons {
+        width: 100%;
+  
+        input {
+          height: 50%;
+          width: 100%;
+        }
+      }
     }
   }
 }

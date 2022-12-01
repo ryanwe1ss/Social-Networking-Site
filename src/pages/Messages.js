@@ -26,6 +26,27 @@ function Messages()
           />
           <hr/>
         </div>
+        
+        <div className="messaging">
+          <div className="chats">
+            chats
+          </div>
+
+          <div className="interface">
+            <div className="chat-session">
+              
+            </div>
+
+            <div className="message-box">
+              <textarea/>
+
+              <div className="buttons">
+                <input type="button" value="Send"/>
+                <input type="button" value="Attach"/>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
