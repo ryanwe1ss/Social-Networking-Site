@@ -23,7 +23,5 @@ users on the network to see, allowing them to follow and message you directly. F
 - Rename 'example.env' --> '.env' and change variables based on yours
 
 # React Routing - Config Changes for Nginx
-Modify /etc/nginx/sites-available/default:
-location / {
-  try_files $uri /index.html;
-}
+- Modify /etc/nginx/sites-available/default
+- location / { try_files $uri /index.html; }
