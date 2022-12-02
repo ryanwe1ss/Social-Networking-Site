@@ -16,7 +16,17 @@ const session = require("express-session");
 const apiRouter = express();
 
 apiRouter.use(function(request, result, next) {
-  result.setHeader('Access-Control-Allow-Origin', `${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_ENDPOINT_PORT}`);
+  if (process.env.REACT_APP_ENDPOINT_PORT === "80") {
+    result.setHeader(
+      'Access-Control-Allow-Origin',
+      process.env.REACT_APP_API_URL
+    );
+  } else {
+    result.setHeader(
+      'Access-Control-Allow-Origin',
+      `${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_ENDPOINT_PORT}`
+    );
+  }
   result.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
   result.setHeader('Access-Control-Allow-Headers', "Origin, X-Requested-With, Content-Type, Accept");
   result.setHeader('Access-Control-Allow-Credentials', true);

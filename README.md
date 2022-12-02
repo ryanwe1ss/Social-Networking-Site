@@ -9,8 +9,8 @@ users on the network to see, allowing them to follow and message you directly. F
 # Requirements
 - NPM & NodeJS
 - PostgreSQL
-- Web Hosting Software (example: nginx, xampp) for client
-- Enable Read & Write for Server folder: sudo chmod -R 777 /var/www/html/
+- Nginx Web Server (recommended)
+- Enable Read & Write for Server folder: sudo chmod a+rwx -R /var/www/html/
 
 # Working Versions
 - Node v18.12.1
@@ -21,3 +21,9 @@ users on the network to see, allowing them to follow and message you directly. F
 - npm run build
 - node server.js (run server)
 - Rename 'example.env' --> '.env' and change variables based on yours
+
+# React Routing - Config Changes for Nginx
+Modify /etc/nginx/sites-available/default:
+location / {
+  try_files $uri /index.html;
+}
