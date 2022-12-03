@@ -18,7 +18,7 @@ function ProfileEdit(params)
 
     UpdateProfile(body).then((response) => {
       if (response.status === 200) {
-        params.HandleFetch();
+        params.HandleFetchProfile();
         params.setEditForm(false);
       }
     });
@@ -58,6 +58,7 @@ function ProfileEdit(params)
               <select id="status" defaultValue={profile.status}>
                 <option>Single</option>
                 <option>In Relationship</option>
+                <option>Married</option>
               </select><br/></span>
             <span>
               <input type="date" id="birthdate" defaultValue={new Date(

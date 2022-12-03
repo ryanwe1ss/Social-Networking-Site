@@ -296,7 +296,20 @@
   }
 }
 
-.spinner {
+.tiny-spinner {
+  position: relative;
+  top: calc(50% - 20px);
+  margin: 0 auto;
+  width: 40px;
+  height: 40px;
+
+  animation: spin 0.8s linear infinite;
+  border: 6px solid #f3f3f3;
+  border-top: 6px solid #3498db;
+  border-radius: 50%;
+}
+
+.large-spinner {
   margin: auto;
   margin-top: 175px;
   width: 100px;

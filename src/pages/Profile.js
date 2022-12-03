@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Dropdown } from "semantic-ui-react"
 import {
   FetchProfile,
+  FetchPicture,
   SearchAccounts,
   UploadProfilePicture,
   FollowAccount,
@@ -32,53 +33,62 @@ function Profile() {
 
   const [editForm, setEditForm] = useState(false);
   const [isDisabled, setDisabled] = useState(false);
+  const [isRendered, setRendered] = useState(false);
   const [showFollowers, setShowFollowers] = useState(false);
   const [showFollowing, setShowFollowing] = useState(false);
 
   useEffect(() => {
-    HandleFetch();
+    HandleFetchProfile();
+    HandleFetchPicture();
     SearchAccounts(null, accountId).then((result) => {
       setSearchData(result);
     });
   }, []);
 
-  function HandleFetch() {
-    FetchProfile(accountId, profileId).then((result) => {
-      if (!result) {
+  function HandleFetchProfile() {
+    FetchProfile(accountId, profileId).then((profile) => {
+      if (!profile) {
         setProfile([]);
         setDisabled(true);
       
-      } else {
-        setProfile(result.profile);
-        setPicture(result.picture);
-      }
+      } else setProfile(profile);
     });
+  }
+
+  function HandleFetchPicture() {
+    FetchPicture(profileId).then((picture) => {
+      setPicture(picture);
+      setRendered(true);
+    })
   }
 
   function HandleUpload(event) {
     UploadProfilePicture(event, accountId).then((response) => {
       if (response.status === 200) {
-        setTimeout(() => HandleFetch(), 1000);
+        setTimeout(() => {
+          setRendered(false);
+          HandleFetchPicture();
+        }, 100);
       }
     });
   }
 
   function HandleFollow() {
     FollowAccount(accountId, profileId).then((response) => {
-      if (response.status === 200) HandleFetch();
+      if (response.status === 200) HandleFetchProfile();
     });
   }
 
   function HandleUnfollow() {
     UnfollowAccount(accountId, profileId).then((response) => {
-      if (response.status === 200) HandleFetch();
+      if (response.status === 200) HandleFetchProfile();
     })
   }
 
   function HandleRemoveConnection(userId, type) {
     RemoveConnection(accountId, userId, type).then((response) => {
       if (response.status === 200) {
-        HandleFetch();
+        HandleFetchProfile();
       }
     })
   }
@@ -124,12 +134,19 @@ function Profile() {
         
         <div className="wrapper">
           <div className="profile">
-            <img
-              src={picture}
-              onError={(img) => (img.target.src = DefaultProfilePicture)}
-              className="picture"
-              alt="picture"
-            />
+
+            {isRendered ? 
+              <img
+                src={picture}
+                onError={(img) => (img.target.src = DefaultProfilePicture)}
+                className="picture"
+                alt="picture"
+              /> :
+              <div className="picture">
+                <div className="tiny-spinner"/>
+              </div>
+            }
+
             {profileData.map(account => (
               <div className="details" key={account.id}>
                 {accountId == profileId
@@ -157,7 +174,7 @@ function Profile() {
             ))}
           </div>
           {editForm
-            ? <ProfileEdit HandleFetch={HandleFetch} setEditForm={setEditForm} profileData={profileData}/>
+            ? <ProfileEdit HandleFetchProfile={HandleFetchProfile} setEditForm={setEditForm} profileData={profileData}/>
             : <ProfileInformation profileData={profileData} isDisabled={isDisabled}/>
           }
           {showFollowers

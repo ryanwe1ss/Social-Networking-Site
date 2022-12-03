@@ -10,7 +10,7 @@ function ProfileInformation(params)
   } else if (params.profileData.length == 0) {
     return (
       <div className="information">
-        <div className="spinner"/>
+        <div className="large-spinner"/>
       </div>
     );
   

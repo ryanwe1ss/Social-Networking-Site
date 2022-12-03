@@ -23,23 +23,29 @@ export function Register(username, password) {
 
 export function FetchProfile(accountId, profileId)
 {
-  return Promise.all([
-    HttpGet(`/api/profile?id=${accountId}&profileId=${profileId}`),
-    HttpGet(`/api/picture?id=${profileId}`),
-  ])
-  .then(([profile, picture]) => Promise.all([profile.json(), picture.blob()]))
-  .then(([profile, picture]) => {
-    if (profile.length > 0) {
-      profile.map(a => a.username = "@" + a.username)
-      return {
-        profile: profile,
-        picture: URL.createObjectURL(picture),
-      };
-    }
-  })
-  .catch(() => {
-    window.location.href = "/";
-  })
+  return HttpGet(`/api/profile?id=${accountId}&profileId=${profileId}`)
+    .then((profile) => {
+      return profile.json();
+    })
+    .then((profile) => {
+      if (profile.length > 0) {
+        profile.map(a => a.username = "@" + a.username)
+        return profile;
+      }
+    })
+    .catch(() => {
+      window.location.href = "/";
+    })
+}
+
+export function FetchPicture(profileId) {
+  return HttpGet(`/api/picture?id=${profileId}`)
+    .then((picture) => {
+      return picture.blob();
+    })
+    .then((picture) => {
+      return URL.createObjectURL(picture);
+    })
 }
 
 export function UpdateProfile(body)
@@ -62,7 +68,7 @@ export function SearchAccounts(event, accountId)
         names.push({ value: user.id, text: user.username });
       
       }); return names;
-    })
+    });
 }
 
 export function UploadProfilePicture(event, accountId)
