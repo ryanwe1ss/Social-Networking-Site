@@ -2,7 +2,7 @@ import { Dropdown } from "semantic-ui-react"
 import {
   Logout,
   RedirectPage,
-} from "../utilities";
+} from "../utilities/utilities";
 
 function Messages()
 {

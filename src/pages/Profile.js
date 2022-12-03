@@ -11,7 +11,7 @@ import {
   GetFollowing,
   Logout,
   RedirectPage,
-} from "../utilities";
+} from "../utilities/utilities";
 
 import DefaultProfilePicture from "../images/default.png";
 import ProfileInformation from "../components/Profile/ProfileInformation";
@@ -56,12 +56,11 @@ function Profile() {
   }
 
   function HandleUpload(event) {
-    const httpRequest = UploadProfilePicture(event, accountId);
-    httpRequest.onreadystatechange = function() {
-      if (httpRequest.readyState == XMLHttpRequest.DONE && httpRequest.status == 200) {
+    UploadProfilePicture(event, accountId).then((response) => {
+      if (response.status === 200) {
         setTimeout(() => HandleFetch(), 1000);
       }
-    }
+    });
   }
 
   function HandleFollow() {

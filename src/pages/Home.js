@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Login, Register } from "../utilities";
+import { Login, Register } from "../utilities/utilities";
 
 import RegisterForm from "../components/RegisterForm/RegisterForm.js";
 import LoginForm from "../components/LoginForm/LoginForm.js";

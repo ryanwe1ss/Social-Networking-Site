@@ -1,21 +1,22 @@
-import { UpdateProfile } from "../../utilities";
+import { UpdateProfile } from "../../utilities/utilities";
 
 function ProfileEdit(params)
 {
   function HandleUpdate() {
-    UpdateProfile(
-      localStorage.getItem("accountId"),
-      document.getElementById("name").value,
-      document.getElementById("gender").value,
-      document.getElementById("status").value,
-      document.getElementById("birthdate").value,
-      document.getElementById("school").value,
-      document.getElementById("concentration").value,
-      document.getElementById("email").value,
-      document.getElementById("phone_number").value,
-      document.getElementById("bio").value,
-    
-    ).then((response) => {
+    const body = {
+      'id': localStorage.getItem("accountId"),
+      'name': document.getElementById("name").value,
+      'gender': document.getElementById("gender").value,
+      'status': document.getElementById("status").value,
+      'birthdate': document.getElementById("birthdate").value,
+      'school': document.getElementById("school").value,
+      'concentration': document.getElementById("concentration").value,
+      'email': document.getElementById("email").value,
+      'phone_number': document.getElementById("phone_number").value,
+      'bio': document.getElementById("bio").value,
+    };
+
+    UpdateProfile(body).then((response) => {
       if (response.status === 200) {
         params.HandleFetch();
         params.setEditForm(false);
