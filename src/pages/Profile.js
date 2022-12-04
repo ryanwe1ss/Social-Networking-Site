@@ -39,7 +39,6 @@ function Profile() {
 
   useEffect(() => {
     HandleFetchProfile();
-    HandleFetchPicture();
     SearchAccounts(null, accountId).then((result) => {
       setSearchData(result);
     });
@@ -49,9 +48,14 @@ function Profile() {
     FetchProfile(accountId, profileId).then((profile) => {
       if (!profile) {
         setProfile([]);
+        setPicture([]);
+        setRendered(true);
         setDisabled(true);
       
-      } else setProfile(profile);
+      } else {
+        setProfile(profile);
+        HandleFetchPicture();
+      }
     });
   }
 
