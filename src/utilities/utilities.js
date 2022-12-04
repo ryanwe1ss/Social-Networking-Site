@@ -112,6 +112,13 @@ export function GetFollowing(profileId)
     .then((following) => { return following });
 }
 
+export function GetChats(accountId)
+{
+  return HttpGet(`/api/get-chats?id=${accountId}`)
+    .then((result) => { return result.json() })
+    .then((chats) => { return chats });
+}
+
 export function Logout()
 {
   HttpGet('/api/logout')

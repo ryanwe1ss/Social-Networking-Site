@@ -13,6 +13,8 @@ const { RemoveConnection } = require("./handlers/connections/remove-connection")
 const { GetFollowers } = require("./handlers/connections/getfollowers.js");
 const { GetFollowing } = require("./handlers/connections/getfollowing.js");
 
+const { GetChats } = require("./handlers/chats/get-chats");
+
 const express = require("express");
 const session = require("express-session");
 const apiRouter = express();
@@ -132,6 +134,14 @@ apiRouter.get("/api/following", (request, result) => {
     return;
   
   } GetFollowing(request, result);
+});
+
+apiRouter.get("/api/get-chats", (request, result) => {
+  if (request.session.user === undefined) {
+    result.sendStatus(401);
+    return;
+  
+  } GetChats(request, result);
 });
 
 apiRouter.listen(process.env.REACT_APP_API_PORT);

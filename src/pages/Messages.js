@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Dropdown } from "semantic-ui-react"
 import {
+  GetChats,
   SearchAccounts,
   Logout,
   RedirectPage,
@@ -12,10 +13,17 @@ function Messages()
   const [searchData, setSearchData] = useState([]);
 
   useEffect(() => {
+    HandleGetChats();
     SearchAccounts(null, accountId).then((result) => {
       setSearchData(result);
     });
   }, []);
+
+  function HandleGetChats() {
+    GetChats(accountId).then((chats) => {
+      console.log(chats);
+    })
+  }
 
   return (
     <div className="block">
