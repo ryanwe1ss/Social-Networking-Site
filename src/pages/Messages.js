@@ -1,5 +1,7 @@
+import { useState, useEffect } from "react";
 import { Dropdown } from "semantic-ui-react"
 import {
+  SearchAccounts,
   Logout,
   RedirectPage,
 } from "../utilities/utilities";
@@ -7,6 +9,13 @@ import {
 function Messages()
 {
   const accountId = parseInt(localStorage.getItem("accountId"));
+  const [searchData, setSearchData] = useState([]);
+
+  useEffect(() => {
+    SearchAccounts(null, accountId).then((result) => {
+      setSearchData(result);
+    });
+  }, []);
 
   return (
     <div className="block">
@@ -18,8 +27,13 @@ function Messages()
 
           <Dropdown
             id="search"
-            options={null}
+            options={searchData}
             placeholder="Search Network"
+            onKeyUp={(event) => {
+              SearchAccounts(event, accountId).then((query) => {
+                setSearchData(query);
+              });
+            }}
             onChange={(event) => RedirectPage(event, searchData)}
             search
             selection
@@ -29,7 +43,7 @@ function Messages()
         
         <div className="messaging">
           <div className="chats">
-            chats
+            
           </div>
 
           <div className="interface">

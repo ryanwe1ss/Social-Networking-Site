@@ -265,6 +265,7 @@
     .chat-session {
       border: 1px solid black;
       border-left: none;
+      overflow: auto;
       height: 500px;
     }
   

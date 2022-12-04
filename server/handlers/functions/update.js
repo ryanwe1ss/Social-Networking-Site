@@ -3,7 +3,7 @@ sharp.cache(false);
 
 const fs = require("fs");
 const formidable = require("formidable");
-const { database } = require("./db_connect");
+const { database } = require("../../database/db_connect");
 
 function UpdateProfile(request, result) {
   const form = new formidable.IncomingForm();

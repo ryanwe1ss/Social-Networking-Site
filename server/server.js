@@ -1,15 +1,17 @@
-const { Login } = require("./login");
-const { Register } = require("./register");
-const { UpdateProfile } = require("./update");
-const { SearchAccounts } = require("./search");
-const { FetchProfile } = require("./fetchprofile");
-const { FetchPicture } = require("./fetchpicture");
-const { FetchThumbnail } = require("./fetchthumbnail");
-const { FollowAccount } = require("./follow.js");
-const { UnfollowAccount } = require("./unfollow.js");
-const { RemoveConnection } = require("./remove-connection");
-const { GetFollowers } = require("./getfollowers.js");
-const { GetFollowing } = require("./getfollowing.js");
+const { Login } = require("./handlers/user/login");
+const { Register } = require("./handlers/user/register");
+
+const { FetchProfile } = require("./handlers/functions/fetchprofile");
+const { FetchPicture } = require("./handlers/functions/fetchpicture");
+const { FetchThumbnail } = require("./handlers/functions/fetchthumbnail");
+const { UpdateProfile } = require("./handlers/functions/update");
+const { SearchAccounts } = require("./handlers/functions/search");
+
+const { FollowAccount } = require("./handlers/connections/follow.js");
+const { UnfollowAccount } = require("./handlers/connections/unfollow.js");
+const { RemoveConnection } = require("./handlers/connections/remove-connection");
+const { GetFollowers } = require("./handlers/connections/getfollowers.js");
+const { GetFollowing } = require("./handlers/connections/getfollowing.js");
 
 const express = require("express");
 const session = require("express-session");

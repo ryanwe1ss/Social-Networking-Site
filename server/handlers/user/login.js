@@ -1,4 +1,4 @@
-const { database } = require("./db_connect");
+const { database } = require("../../database/db_connect");
 
 function Login(request, result) {
   const credentials = request.body;
