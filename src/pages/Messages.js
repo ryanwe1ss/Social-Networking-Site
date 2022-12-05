@@ -1,3 +1,4 @@
+import DefaultProfilePicture from "../images/default.png";
 import { useState, useEffect } from "react";
 import { Dropdown } from "semantic-ui-react"
 import {
@@ -5,12 +6,21 @@ import {
   SearchAccounts,
   Logout,
   RedirectPage,
+  GetConversation,
+  SendMessage,
 } from "../utilities/utilities";
 
 function Messages()
 {
+
   const accountId = parseInt(localStorage.getItem("accountId"));
+  const username = localStorage.getItem("username");
+  
   const [searchData, setSearchData] = useState([]);
+  const [chats, setChats] = useState([]);
+  const [conversation, setConversation] = useState([]);
+  const [chatId, setChatId] = useState();
+  const [userId, setUserId] = useState();
 
   useEffect(() => {
     HandleGetChats();
@@ -21,7 +31,43 @@ function Messages()
 
   function HandleGetChats() {
     GetChats(accountId).then((chats) => {
-      console.log("chats", chats);
+      const users = chats.map(chat => {
+        if (chat.user_one !== username) {
+          return { id: chat.user_one_id, name: chat.user_one };
+        }
+        if (chat.user_two !== username) {
+          return { id: chat.user_two_id, name: chat.user_two };
+        }
+      });
+      setChats(users);
+    })
+  }
+
+  function HandleFetchConversation(userId) {
+    GetConversation(accountId, userId).then((conversation) => {
+      document.getElementById("message").disabled = false;
+
+      setConversation(conversation);
+      setChatId(conversation[0].chat_id);
+      setUserId(userId);
+    })
+  }
+
+  function HandleSendMessage(message) {
+    if (message.length < 1) return;
+
+    const body = {
+      chat_id: chatId,
+      from_user: accountId,
+      to_user: userId,
+      message: message,
+    };
+
+    SendMessage(body).then((response) => {
+      if (response.status === 200) {
+        HandleFetchConversation(userId);
+        document.getElementById("message").value = null;
+      }
     })
   }
 
@@ -51,19 +97,36 @@ function Messages()
         
         <div className="messaging">
           <div className="chats">
-            
+            <div className="add-chat"><label>Message New Friend</label></div>
+            {chats.map(chat => (
+              <div className="chat" onClick={() => { HandleFetchConversation(chat.id) }} key={chat.id}>
+                <img
+                  src={`${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/api/thumbnail?id=${chat.id}`}
+                  onError={(img) => (img.target.src = DefaultProfilePicture)}
+                  className="thumbnail"
+                  alt="thumbnail"
+                />
+                <span>{chat.name}</span>
+              </div>
+            ))}
           </div>
 
           <div className="interface">
             <div className="chat-session">
-              
+              {conversation.map(message => (
+                <div key={message.id}>
+                  {message.from}: {message.message}
+                </div>
+              ))}
             </div>
 
             <div className="message-box">
-              <textarea/>
+              <textarea disabled id="message"/>
 
               <div className="buttons">
-                <input type="button" value="Send"/>
+                <input type="button" value="Send" onClick={
+                  () => HandleSendMessage(document.getElementById("message").value) }
+                />
                 <input type="button" value="Attach"/>
               </div>
             </div>

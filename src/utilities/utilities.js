@@ -119,6 +119,19 @@ export function GetChats(accountId)
     .then((chats) => { return chats });
 }
 
+export function GetConversation(accountId, userId)
+{
+  return HttpGet(`/api/get-conversation?id=${accountId}&userId=${userId}`)
+    .then((result) => { return result.json() })
+    .then((conversation) => { return conversation });
+}
+
+export function SendMessage(body)
+{
+  return HttpPost("/api/send-message", body)
+    .then((response) => { return response });
+}
+
 export function Logout()
 {
   HttpGet('/api/logout')
