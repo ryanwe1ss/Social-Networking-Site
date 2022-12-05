@@ -21,7 +21,7 @@ function Messages()
 
   function HandleGetChats() {
     GetChats(accountId).then((chats) => {
-      console.log(chats);
+      console.log("chats", chats);
     })
   }
 
