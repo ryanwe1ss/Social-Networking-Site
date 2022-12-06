@@ -5,6 +5,7 @@ users on the network to see, allowing them to follow and message you directly. F
 ![](images/profile.png)<br/>
 ![](images/profile-edit.png)<br/>
 ![](images/connections.png)<br/>
+![](images/chat.png)<br/>
 
 # Requirements
 - NPM & NodeJS

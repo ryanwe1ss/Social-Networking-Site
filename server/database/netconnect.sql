@@ -84,6 +84,42 @@ ALTER SEQUENCE public.accounts_id_seq OWNED BY public.accounts.id;
 
 
 --
+-- Name: active_chats; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.active_chats (
+    id integer NOT NULL,
+    user_one bigint NOT NULL,
+    user_two bigint NOT NULL,
+    date_created timestamp with time zone DEFAULT CURRENT_TIMESTAMP NOT NULL
+);
+
+
+ALTER TABLE public.active_chats OWNER TO postgres;
+
+--
+-- Name: active_chats_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.active_chats_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.active_chats_id_seq OWNER TO postgres;
+
+--
+-- Name: active_chats_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.active_chats_id_seq OWNED BY public.active_chats.id;
+
+
+--
 -- Name: connections; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -119,10 +155,55 @@ ALTER SEQUENCE public.connections_id_seq OWNED BY public.connections.id;
 
 
 --
+-- Name: messages; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.messages (
+    id integer NOT NULL,
+    chat_id bigint NOT NULL,
+    from_user bigint NOT NULL,
+    to_user bigint NOT NULL,
+    message text,
+    date_created timestamp with time zone DEFAULT CURRENT_TIMESTAMP NOT NULL
+);
+
+
+ALTER TABLE public.messages OWNER TO postgres;
+
+--
+-- Name: messages_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.messages_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.messages_id_seq OWNER TO postgres;
+
+--
+-- Name: messages_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.messages_id_seq OWNED BY public.messages.id;
+
+
+--
 -- Name: accounts id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.accounts ALTER COLUMN id SET DEFAULT nextval('public.accounts_id_seq'::regclass);
+
+
+--
+-- Name: active_chats id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.active_chats ALTER COLUMN id SET DEFAULT nextval('public.active_chats_id_seq'::regclass);
 
 
 --
@@ -133,27 +214,50 @@ ALTER TABLE ONLY public.connections ALTER COLUMN id SET DEFAULT nextval('public.
 
 
 --
--- Name: accounts accounts_unique_id; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: messages id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.messages ALTER COLUMN id SET DEFAULT nextval('public.messages_id_seq'::regclass);
+
+
+--
+-- Name: accounts accounts_id_uk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.accounts
-    ADD CONSTRAINT accounts_unique_id UNIQUE (id);
+    ADD CONSTRAINT accounts_id_uk UNIQUE (id);
 
 
 --
--- Name: accounts accounts_unique_username; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: accounts accounts_username_uk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.accounts
-    ADD CONSTRAINT accounts_unique_username UNIQUE (username);
+    ADD CONSTRAINT accounts_username_uk UNIQUE (username);
 
 
 --
--- Name: connections connections_unique_id; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: active_chats active_chats_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.active_chats
+    ADD CONSTRAINT active_chats_pk PRIMARY KEY (id);
+
+
+--
+-- Name: connections connections_id_uk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.connections
-    ADD CONSTRAINT connections_unique_id UNIQUE (id);
+    ADD CONSTRAINT connections_id_uk UNIQUE (id);
+
+
+--
+-- Name: messages messages_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.messages
+    ADD CONSTRAINT messages_pk PRIMARY KEY (id);
 
 
 --
@@ -164,19 +268,59 @@ CREATE TRIGGER date_updated BEFORE UPDATE ON public.accounts FOR EACH ROW EXECUT
 
 
 --
--- Name: connections follower_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: active_chats active_chats_user_one_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.active_chats
+    ADD CONSTRAINT active_chats_user_one_fk FOREIGN KEY (user_one) REFERENCES public.accounts(id);
+
+
+--
+-- Name: active_chats active_chats_user_two_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.active_chats
+    ADD CONSTRAINT active_chats_user_two_fk FOREIGN KEY (user_two) REFERENCES public.accounts(id);
+
+
+--
+-- Name: connections connections_follower_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.connections
-    ADD CONSTRAINT follower_fk FOREIGN KEY (follower) REFERENCES public.accounts(id);
+    ADD CONSTRAINT connections_follower_fk FOREIGN KEY (follower) REFERENCES public.accounts(id);
 
 
 --
--- Name: connections user_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: connections connections_user_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.connections
-    ADD CONSTRAINT user_fk FOREIGN KEY ("user") REFERENCES public.accounts(id);
+    ADD CONSTRAINT connections_user_fk FOREIGN KEY ("user") REFERENCES public.accounts(id);
+
+
+--
+-- Name: messages messages_chat_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.messages
+    ADD CONSTRAINT messages_chat_id_fk FOREIGN KEY (chat_id) REFERENCES public.active_chats(id);
+
+
+--
+-- Name: messages messages_from_user_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.messages
+    ADD CONSTRAINT messages_from_user_fk FOREIGN KEY (from_user) REFERENCES public.accounts(id);
+
+
+--
+-- Name: messages messages_to_user_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.messages
+    ADD CONSTRAINT messages_to_user_fk FOREIGN KEY (to_user) REFERENCES public.accounts(id);
 
 
 --

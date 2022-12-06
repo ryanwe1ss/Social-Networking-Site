@@ -1,6 +1,6 @@
 import DefaultProfilePicture from "../images/default.png";
 import { useState, useEffect } from "react";
-import { Dropdown } from "semantic-ui-react"
+import { Dropdown } from "semantic-ui-react";
 import {
   GetChats,
   SearchAccounts,
@@ -12,13 +12,12 @@ import {
 
 function Messages()
 {
-
   const accountId = parseInt(localStorage.getItem("accountId"));
   const username = localStorage.getItem("username");
-  
+
+  const [conversation, setConversation] = useState([]);
   const [searchData, setSearchData] = useState([]);
   const [chats, setChats] = useState([]);
-  const [conversation, setConversation] = useState([]);
   const [chatId, setChatId] = useState();
   const [userId, setUserId] = useState();
 
@@ -127,7 +126,6 @@ function Messages()
                 <input type="button" value="Send" onClick={
                   () => HandleSendMessage(document.getElementById("message").value) }
                 />
-                <input type="button" value="Attach"/>
               </div>
             </div>
           </div>

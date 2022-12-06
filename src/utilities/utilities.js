@@ -116,7 +116,8 @@ export function GetChats(accountId)
 {
   return HttpGet(`/api/get-chats?id=${accountId}`)
     .then((result) => { return result.json() })
-    .then((chats) => { return chats });
+    .then((chats) => { return chats })
+    .catch(() => { window.location.href = "/" });
 }
 
 export function GetConversation(accountId, userId)
