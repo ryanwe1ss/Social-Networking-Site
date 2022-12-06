@@ -1,4 +1,4 @@
-# Social Networking Site (In Progress)
+# Social Networking Site
 This site gives you the ability to create your own page, having your information for other 
 users on the network to see, allowing them to follow and message you directly. Frontend written in React.JS and backend NodeJS.
 
@@ -21,7 +21,8 @@ users on the network to see, allowing them to follow and message you directly. F
 - npm install
 - npm run build
 - node server.js (run server)
-- Rename 'example.env' --> '.env' and change variables based on yours
+- Execute database file 'netconnect.sql' in postgres (\i netconnect.sql)
+- Rename 'example.env' to '.env' and change variables based on your own
 
 # React Routing - Config Changes for Nginx
 - Modify /etc/nginx/sites-available/default
