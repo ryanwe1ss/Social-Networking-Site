@@ -113,8 +113,11 @@ function Messages()
           <div className="interface">
             <div className="chat-session">
               {conversation.map(message => (
-                <div key={message.id}>
-                  {message.from}: {message.message}
+                <div className="text-chat" key={message.id}>
+                  {message.from == username ?
+                    <div className="you">{message.message}</div> :
+                    <div className="user">{message.message}</div>
+                  }
                 </div>
               ))}
             </div>

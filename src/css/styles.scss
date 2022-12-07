@@ -300,6 +300,35 @@
       border-left: none;
       overflow: auto;
       height: 500px;
+
+      .text-chat {
+        padding: 10px;
+        font-size: 20px;
+
+        margin-top: 30px;
+        display: flex;
+        flex-direction: column;
+
+        .you {
+          background: linear-gradient(to bottom, #00D0EA 0%, #0085D1 100%);
+          color: white;
+
+          border-radius: 20px;
+          padding: 8px 15px;
+          margin-left: auto;
+          max-width: 400px;
+        }
+
+        .user {
+          background: rgb(138, 138, 138);
+          color: white;
+
+          margin-right: auto;
+          max-width: 400px;
+          border-radius: 20px;
+          padding: 8px 15px;
+        }
+      }
     }
   
     .message-box {
