@@ -117,7 +117,7 @@ function Profile() {
         <div className="menu">
           <h1>NetConnect</h1>
           <a href={'/'} onClick={Logout}>Logout</a>
-          <a href={`/messages?id=${accountId}`}>Direct Messages</a>
+          <a href={'/messages'}>Direct Messages</a>
           {accountId !== profileId ? <a href={`/profile?id=${accountId}`}>My Profile</a> : false}
 
           <Dropdown
