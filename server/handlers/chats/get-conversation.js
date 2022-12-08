@@ -2,10 +2,21 @@ const { database } = require("../../database/db_connect");
 
 function GetConversation(request, result)
 {
+  let chatId = null;
+
+  database.query(`
+    SELECT id AS chat_id FROM active_chats
+    WHERE user_one = ${request.query.id} AND user_two = ${request.query.userId}
+    OR user_one = ${request.query.userId} AND user_two = ${request.query.id}`,
+
+    function(error, data) {
+      if (!error) chatId = data.rows[0].chat_id;
+    }
+  )
+
   database.query(`
     SELECT
       id,
-      CAST(chat_id AS INT),
       CAST(from_user AS INT),
       CAST(to_user AS INT),
       (SELECT username FROM accounts WHERE id = from_user) AS from,
@@ -18,7 +29,12 @@ function GetConversation(request, result)
     ORDER BY date_created ASC`,
 
     function(error, data) {
-      if (!error) result.send(data.rows);
+      if (!error) {
+        result.send({
+          chatId: chatId,
+          data: data.rows,
+        });
+      }
     }
   )
 }

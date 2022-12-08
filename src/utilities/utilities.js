@@ -48,6 +48,17 @@ export function FetchPicture(profileId) {
     })
 }
 
+export function FetchThumbnail(id)
+{
+  return HttpGet(`/api/thumbnail?id=${id}`)
+    .then((thumbnail) => {
+      return thumbnail.blob();
+    })
+    .then((thumbnail) => {
+      return URL.createObjectURL(thumbnail);
+    })
+}
+
 export function UpdateProfile(body)
 {
   return HttpPost(`/api/update`, body)

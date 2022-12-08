@@ -6,6 +6,7 @@ import {
   SearchAccounts,
   Logout,
   RedirectPage,
+  FetchThumbnail,
   GetConversation,
   SendMessage,
 } from "../utilities/utilities";
@@ -17,6 +18,7 @@ function Messages()
 
   const [conversation, setConversation] = useState([]);
   const [searchData, setSearchData] = useState([]);
+  const [thumbnails, setThumbnail] = useState([]);
   const [chats, setChats] = useState([]);
   const [chatId, setChatId] = useState();
   const [userId, setUserId] = useState();
@@ -27,6 +29,17 @@ function Messages()
       setSearchData(result);
     });
   }, []);
+
+  function HandleFetchThumbnails(users) {
+    users.forEach(user => {
+      FetchThumbnail(user.id).then((thumbnail) => {
+        setThumbnail(t => [...t, {
+          id: user.id,
+          thumbnail: thumbnail,
+        }])
+      })
+    });
+  }
 
   function HandleGetChats() {
     GetChats(accountId).then((chats) => {
@@ -39,15 +52,21 @@ function Messages()
         }
       });
       setChats(users);
+      HandleFetchThumbnails(users);
     })
   }
 
   function HandleFetchConversation(userId) {
+    document.querySelectorAll(".selected").forEach(selected => {
+      selected.style.display = "none";
+    
+    }); document.getElementById(userId).style.display = "block";
+
     GetConversation(accountId, userId).then((conversation) => {
       document.getElementById("message").disabled = false;
 
-      setConversation(conversation);
-      setChatId(conversation[0].chat_id);
+      setConversation(conversation.data);
+      setChatId(conversation.chatId);
       setUserId(userId);
     })
   }
@@ -100,12 +119,13 @@ function Messages()
             {chats.map(chat => (
               <div className="chat" onClick={() => { HandleFetchConversation(chat.id) }} key={chat.id}>
                 <img
-                  src={`${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/api/thumbnail?id=${chat.id}`}
+                  src={thumbnails.filter(t => t.id == chat.id).map(t => t.thumbnail)}
                   onError={(img) => (img.target.src = DefaultProfilePicture)}
                   className="thumbnail"
                   alt="thumbnail"
                 />
                 <span>{chat.name}</span>
+                <i className="bi bi-chat-fill selected" id={chat.id} style={{display: "none", float: "right"}}/>
               </div>
             ))}
           </div>
@@ -123,7 +143,7 @@ function Messages()
             </div>
 
             <div className="message-box">
-              <textarea disabled id="message"/>
+              <textarea id="message" disabled/>
 
               <div className="buttons">
                 <input type="button" value="Send" onClick={
