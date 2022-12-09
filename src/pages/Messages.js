@@ -68,6 +68,11 @@ function Messages()
       setConversation(conversation.data);
       setChatId(conversation.chatId);
       setUserId(userId);
+
+      setTimeout(() => {
+        document.getElementById("chat").scrollTop =
+          document.getElementById("chat").scrollHeight;
+      }, 1)
     })
   }
 
@@ -131,7 +136,7 @@ function Messages()
           </div>
 
           <div className="interface">
-            <div className="chat-session">
+            <div className="chat-session" id="chat">
               {conversation.map(message => (
                 <div className="text-chat" key={message.id}>
                   {message.from == username ?
