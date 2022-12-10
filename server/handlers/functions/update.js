@@ -52,6 +52,7 @@ function UpdateProfile(request, result) {
       });
       sharp(image)
       .resize(100, 100)
+      .rotate()
       .toFile(thumbnail, (error) => {
         if (error) {
           console.log(`Error Updating Thumbnail for ${request.session.user.username}`);
