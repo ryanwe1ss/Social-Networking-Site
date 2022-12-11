@@ -123,6 +123,12 @@ export function GetFollowing(profileId)
     .then((following) => { return following });
 }
 
+export function CreateChat(accountId, userId)
+{
+  return HttpGet(`/api/create-chat?id=${accountId}&userId=${userId}`)
+    .then((response) => { return response });
+}
+
 export function GetChats(accountId)
 {
   return HttpGet(`/api/get-chats?id=${accountId}`)

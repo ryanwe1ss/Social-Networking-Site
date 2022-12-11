@@ -28,6 +28,9 @@ function Messages()
     SearchAccounts(null, accountId).then((result) => {
       setSearchData(result);
     });
+
+    // const user = parseInt(location.search.split("id=")[1]);
+    // if (user) document.getElementById(`${user}_chat`).click();
   }, []);
 
   function HandleFetchThumbnails(users) {
@@ -41,7 +44,7 @@ function Messages()
     });
   }
 
-  function HandleGetChats() {
+  async function HandleGetChats() {
     GetChats(accountId).then((chats) => {
       const users = chats.map(chat => {
         if (chat.user_one !== username) {
@@ -53,6 +56,27 @@ function Messages()
       });
       setChats(users);
       HandleFetchThumbnails(users);
+
+      let timer = 0;
+      const chatExists = setInterval(function() {
+        const user = parseInt(location.search.split("id=")[1]);
+        const chat = document.getElementById(`${user}_chat`);
+
+        if (chat) {
+           chat.click();
+           clearInterval(chatExists);
+        
+        } else if (!user) {
+          clearInterval(chatExists);
+
+        } else {
+          if (timer > 100) {
+            clearInterval(chatExists);
+          
+          } timer += 1;
+        }
+
+     }, 100);
     })
   }
 
@@ -69,10 +93,15 @@ function Messages()
       setChatId(conversation.chatId);
       setUserId(userId);
 
-      setTimeout(() => {
-        document.getElementById("chat").scrollTop =
-          document.getElementById("chat").scrollHeight;
-      }, 1)
+      const scroll = setInterval(function() {
+        const conversation = document.getElementById("chat");
+        
+        if (conversation.innerText.length > 0) {
+          conversation.scrollTop = conversation.scrollHeight;
+          clearInterval(scroll);
+        }
+
+      }, 25);
     })
   }
 
@@ -122,7 +151,7 @@ function Messages()
           <div className="chats">
             <div className="add-chat"><label>Message New Friend</label></div>
             {chats.map(chat => (
-              <div className="chat" onClick={() => { HandleFetchConversation(chat.id) }} key={chat.id}>
+              <div className="chat" onClick={() => { HandleFetchConversation(chat.id) }} id={`${chat.id}_chat`} key={chat.id}>
                 <img
                   src={thumbnails.filter(t => t.id == chat.id).map(t => t.thumbnail)}
                   onError={(img) => (img.target.src = DefaultProfilePicture)}

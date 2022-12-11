@@ -8,6 +8,7 @@ import {
   FollowAccount,
   UnfollowAccount,
   RemoveConnection,
+  CreateChat,
   GetFollowers,
   GetFollowing,
   Logout,
@@ -111,6 +112,14 @@ function Profile() {
     });
   }
 
+  function HandleMessage() {
+    CreateChat(accountId, profileId).then((response) => {
+      if (response.status === 200) {
+        window.location.href = `/messages?id=${profileId}`;
+      }
+    });
+  }
+
   return (
     <div className="block">
       <div className="border-area">
@@ -165,7 +174,12 @@ function Profile() {
                         <input className="follow" type="button" value="Unfollow" onClick={HandleUnfollow}/> :
                         <input className="follow" type="button" value="Follow" onClick={HandleFollow}/>
                       }
-                      <input className="message" type="button" value="Message"/>
+                      <input
+                        className="message"
+                        type="button"
+                        value="Message"
+                        onClick={HandleMessage}
+                      />
                     </div>
                   </h5>
                 }
