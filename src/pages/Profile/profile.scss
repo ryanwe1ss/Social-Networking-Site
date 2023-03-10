@@ -1,0 +1,101 @@
+.profile-container {
+
+  .outer-border {
+    display: flex;
+    overflow: hidden;
+
+    .side-panel {
+      background-color: grey;
+      border-right: 2px solid black;
+
+      h2 {
+        text-decoration: underline;
+        margin-left: 5px;
+        margin-right: 150px;
+        margin-bottom: 50px;
+      }
+
+      .side-bar {
+        padding: 15px;
+
+        div {
+          margin-top: 25px;
+
+          :hover {
+            color: blue;
+          }
+        }
+
+        a {
+          text-decoration: none;
+          font-style: normal;
+          font-size: 28px;
+          color: black;
+        }
+      }
+    }
+
+    .profile {
+      display: flex;
+      padding: 10px;
+      flex: 1;
+
+      .left-details {
+        display: flex;
+        flex-direction: column;
+        margin-right: 10px;
+
+        .picture {
+          border: 3px solid rgb(83, 127, 189);
+          object-fit: cover;
+          width: 350px;
+          height: 300px;
+        }
+
+        .connection-labels label:hover {
+          cursor: pointer;
+          color: blue;
+        }
+      }
+
+      .right-details {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 1100px) {
+  .side-panel {
+    width: 200px;
+  }
+}
+
+@media only screen and (max-width: 950px) {
+  .profile {
+    flex-direction: column;
+
+    .right-details {
+      margin-left: -10px;
+    }
+
+    .information {
+      border: none;
+
+      .left-labels {
+        width: 125px;
+      }
+
+      .bio {
+        white-space: normal;
+        
+        textarea {
+          background-color: white;
+          white-space: normal;
+        }
+      }
+    }
+  }
+}

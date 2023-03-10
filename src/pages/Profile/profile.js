@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { Dropdown } from "semantic-ui-react"
 import {
   FetchProfile,
   FetchPicture,
@@ -13,14 +12,13 @@ import {
   GetFollowing,
   Logout,
   RedirectPage,
-} from "../utilities/utilities";
+} from "../../utilities/utilities";
 
-import DefaultProfilePicture from "../images/default.png";
-import ProfileInformation from "../components/Profile/ProfileInformation";
-import ProfileEdit from "../components/Profile/ProfileEdit";
-import Followers from "../components/Connections/Followers";
-import Following from "../components/Connections/Following";
-import Footer from "../components/Footer/Footer";
+import DefaultProfilePicture from "../../images/default.png";
+import ProfileDetails from "../../components/Profile/ProfileDetails";
+import Followers from "../../components/Connections/Followers";
+import Following from "../../components/Connections/Following";
+import "./profile.scss";
 
 function Profile() {
   const accountId = parseInt(localStorage.getItem("accountId"));
@@ -120,6 +118,109 @@ function Profile() {
     });
   }
 
+  return (
+    <div className="profile-container">
+      <div className="outer-border">
+
+        <div className="side-panel">
+          <h2>NetConnect</h2>
+
+          <div className="side-bar">
+            <div><a href="/posts" className="bi bi-image"> Posts</a></div>
+            <div><a href="/search" className="bi bi-search"> Search</a></div>
+            <div><a href="/messages" className="bi bi-chat"> Messages</a></div>
+            <div><a href={`/profile?id=${accountId}`} className="bi bi-person-fill"> Profile</a></div>
+            <div><a href="/settings" className="bi bi-gear"> Settings</a></div>
+            <div><a href="/" onClick={Logout} className="bi bi-lock"> Logout</a></div>
+          </div>
+        </div>
+
+        <div className="profile">
+          <div className="left-details">
+            {isRendered ? 
+              <img
+                src={picture}
+                onError={(img) => (img.target.src = DefaultProfilePicture)}
+                className="picture"
+                alt="picture"
+              /> :
+              <div className="picture">
+                <div className="tiny-spinner"/>
+              </div>
+            }
+
+            {profileData.map(account => (
+              <div key={account.id}>
+                {accountId == profileId
+                ? <div>
+                    <input className="mt-2" type="button" value="Edit Profile" onClick={() => setEditForm(editForm ? false : true)}/>
+                    <input className="mt-1" type="file" onChange={HandleUpload}/>
+                  </div> :
+                  <h5>
+                    <label className="username">{account.username}</label>
+                    <div>
+                      {account.is_following ?
+                        <input className="follow" type="button" value="Unfollow" onClick={HandleUnfollow}/> :
+                        <input className="follow" type="button" value="Follow" onClick={HandleFollow}/>
+                      }
+                      <input
+                        className="message"
+                        type="button"
+                        value="Message"
+                        onClick={HandleMessage}
+                      />
+                    </div>
+                  </h5>
+                }
+                <hr/>
+                <div className="connection-labels">
+                  <label onClick={HandleGetFollowers}>Followers</label>: {account.followers} |&nbsp;
+                  <label onClick={HandleGetFollowing}>Following</label>: {account.following}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="right-details">
+            {editForm
+              ? <ProfileDetails
+                  edit={true} profileData={profileData}
+                  HandleFetchProfile={HandleFetchProfile} setEditForm={setEditForm}/>
+
+              : <ProfileDetails
+                edit={false} profileData={profileData} HandleFetchProfile={HandleFetchProfile}
+                setEditForm={setEditForm} isDisabled={isDisabled}/>
+            }
+          </div>
+
+          {showFollowers
+            ? <Followers
+                accountId={accountId}
+                profileId={profileId}
+                followers={followers}
+                setShowFollowers={setShowFollowers}
+                HandleGetFollowers={HandleGetFollowers}
+                HandleRemoveConnection={HandleRemoveConnection}
+              />
+            : false
+          }
+          {showFollowing
+            ? <Following
+                accountId={accountId}
+                profileId={profileId}
+                following={following}
+                setShowFollowing={setShowFollowing}
+                HandleGetFollowing={HandleGetFollowing}
+                HandleRemoveConnection={HandleRemoveConnection}
+              />
+            : false
+          }
+        </div>
+      </div>
+    </div>
+  );
+
+  /*
   return (
     <div className="block">
       <div className="border-area">
@@ -222,5 +323,6 @@ function Profile() {
       </div>
     </div>
   );
+  */
 }
 export default Profile;

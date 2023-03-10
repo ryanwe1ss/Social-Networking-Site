@@ -1,4 +1,4 @@
-import DefaultProfilePicture from "../images/default.png";
+import DefaultProfilePicture from "../../images/default.png";
 import { useState, useEffect } from "react";
 import { Dropdown } from "semantic-ui-react";
 import {
@@ -9,7 +9,7 @@ import {
   FetchThumbnail,
   GetConversation,
   SendMessage,
-} from "../utilities/utilities";
+} from "../../utilities/utilities";
 
 function Messages()
 {

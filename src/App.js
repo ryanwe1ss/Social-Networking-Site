@@ -1,14 +1,17 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Home from "./pages/Home.js";
-import Profile from "./pages/Profile.js";
-import Messages from "./pages/Messages.js";
+import Login from "./pages/Login/login.js";
+import Register from "./pages/Register/register.js";
+import Profile from "./pages/Profile/profile.js";
+import Messages from "./pages/Messages/messages.js";
+import "./css/global.scss";
 
 function App()
 {
   return (
     <Router>
       <Routes>
-        <Route exact path="/" element={<Home/>}/>
+        <Route exact path="/" element={<Login/>}/>
+        <Route exact path="/register" element={<Register/>}/>
         <Route exact path="/profile" element={<Profile/>}/>
         <Route exact path="/messages" element={<Messages/>}/>
       </Routes>

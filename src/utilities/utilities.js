@@ -1,7 +1,7 @@
 import { HttpPost } from "./http-service";
 import { HttpGet } from "./http-service";
 
-export function Login(username, password) {
+export function PerformLogin(username, password) {
   const body = {
     "username": username,
     "password": password,
@@ -11,7 +11,7 @@ export function Login(username, password) {
     .then((response) => { return response.text() });
 }
 
-export function Register(username, password) {
+export function PerformRegister(username, password) {
   const body = {
     "username": username,
     "password": password,

@@ -1,4 +1,5 @@
 import DefaultProfilePicture from "../../images/default.png";
+import "./connections.scss";
 
 function Following(params)
 {

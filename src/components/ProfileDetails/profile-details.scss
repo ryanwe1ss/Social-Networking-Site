@@ -1,0 +1,36 @@
+.information {
+  border-left: 1px solid black;
+  white-space: nowrap;
+  overflow: auto;
+  font-size: 17px;
+  padding: 10px;
+  height: 100%;
+
+  h6 {
+    text-decoration: underline;
+    font-weight: bold;
+    padding-top: 5px;
+  }
+
+  .left-labels {
+    float: left;
+    width: 200px;
+  }
+
+  .right-assertions input, .right-assertions select {
+    font-size: 12px;
+    width: 180px;
+  }
+
+  .bio {
+    white-space: normal;
+    
+    textarea {
+      background-color: white;
+      white-space: nowrap;
+      min-height: 105px;
+      resize: none;
+      width: 100%;
+    }
+  }
+}

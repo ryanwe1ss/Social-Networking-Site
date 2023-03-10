@@ -12,7 +12,6 @@ function Register(request, result)
         result.send("success");
         console.log(`${credentials.username} has been registered`);
       }
-      else if (error.detail.includes("exists")) result.send("exists");
       else result.send("error");
     }
   );

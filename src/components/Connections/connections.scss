@@ -1,0 +1,65 @@
+.modal {
+  padding-top: 100px;
+  background-color: rgba(0,0,0,0.4);
+  display: block;
+
+  .modal-content {
+    padding: 15px;
+    max-width: 400px;
+    height: 400px;
+    margin: 2rem auto;
+    overflow: auto;
+
+    header {
+      h4 {
+        display: inline-block;
+        position: absolute;
+        transform: translateX(-50%);
+        margin-top: 8px;
+        left: 50%;
+      }
+    }
+
+    .followers, .following {
+      label {
+        font-size: 17px;
+        line-height: 20px;
+        cursor: pointer;
+
+        span {
+          font-size: 13px;
+          color: grey;
+        }
+      }
+
+      .thumbnail {
+        position: relative;
+        top: -3px;
+        border-radius: 50%;
+        object-fit: cover;
+        width: 40px;
+        height: 40px;
+
+        margin-right: 5px;
+        margin-bottom: 20px;
+      }
+
+      input {
+        float: right;
+        margin-top: 7px;
+      }
+    }
+
+    #close {
+      color: black;
+      float: right;
+      font-size: 30px;
+      font-weight: bold;
+    }
+    
+    #close:hover {
+      color: red;
+      cursor: pointer;
+    }
+  }
+}
