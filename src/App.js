@@ -3,7 +3,6 @@ import Login from "./pages/Login/login.js";
 import Register from "./pages/Register/register.js";
 import Profile from "./pages/Profile/profile.js";
 import Messages from "./pages/Messages/messages.js";
-import "./css/global.scss";
 
 function App()
 {

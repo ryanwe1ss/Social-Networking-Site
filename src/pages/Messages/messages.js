@@ -1,11 +1,10 @@
-import DefaultProfilePicture from "../../images/default.png";
 import { useState, useEffect } from "react";
-import { Dropdown } from "semantic-ui-react";
+
+import DefaultProfilePicture from "../../images/default.png";
+import SidePanel from "../../components/SidePanel/side-panel";
+import "./messages.scss";
 import {
   GetChats,
-  SearchAccounts,
-  Logout,
-  RedirectPage,
   FetchThumbnail,
   GetConversation,
   SendMessage,
@@ -17,7 +16,6 @@ function Messages()
   const username = localStorage.getItem("username");
 
   const [conversation, setConversation] = useState([]);
-  const [searchData, setSearchData] = useState([]);
   const [thumbnails, setThumbnail] = useState([]);
   const [chats, setChats] = useState([]);
   const [chatId, setChatId] = useState();
@@ -25,12 +23,6 @@ function Messages()
 
   useEffect(() => {
     HandleGetChats();
-    SearchAccounts(null, accountId).then((result) => {
-      setSearchData(result);
-    });
-
-    // const user = parseInt(location.search.split("id=")[1]);
-    // if (user) document.getElementById(`${user}_chat`).click();
   }, []);
 
   function HandleFetchThumbnails(users) {
@@ -123,33 +115,20 @@ function Messages()
     })
   }
 
-  return (
-    <div className="block">
-      <div className="border-area">
-        <div className="menu">
-          <h1>NetConnect</h1>
-          <a href={'/'} onClick={Logout}>Logout</a>
-          <a href={`/profile?id=${accountId}`}>My Profile</a>
+  document.addEventListener("keydown", function(event) {
+    if (event.key === "Enter") {
+      HandleSendMessage(document.getElementById("message").value);
+    }
+  });
 
-          <Dropdown
-            id="search"
-            options={searchData}
-            placeholder="Search Network"
-            onKeyUp={(event) => {
-              SearchAccounts(event, accountId).then((query) => {
-                setSearchData(query);
-              });
-            }}
-            onChange={(event) => RedirectPage(event, searchData)}
-            search
-            selection
-          />
-          <hr/>
-        </div>
-        
-        <div className="messaging">
+  return (
+    <div className="messages-container">
+      <div className="outer-border">
+        <SidePanel/>
+
+        <div className="messages">
           <div className="chats">
-            <div className="add-chat"><label>Message New Friend</label></div>
+            <div className="add-chat"><i className="bi bi-message">Message New Friend</i></div>
             {chats.map(chat => (
               <div className="chat" onClick={() => { HandleFetchConversation(chat.id) }} id={`${chat.id}_chat`} key={chat.id}>
                 <img
@@ -177,12 +156,12 @@ function Messages()
             </div>
 
             <div className="message-box">
-              <textarea id="message" disabled/>
+              <textarea id="message" placeholder="Type Message Here" disabled/>
 
               <div className="buttons">
-                <input type="button" value="Send" onClick={
+                <button onClick={
                   () => HandleSendMessage(document.getElementById("message").value) }
-                />
+                ><i className='bi bi-arrow-right-circle-fill'/></button>
               </div>
             </div>
           </div>

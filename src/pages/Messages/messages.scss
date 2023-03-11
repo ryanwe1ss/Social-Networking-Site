@@ -1,0 +1,132 @@
+.messages-container {
+
+  .outer-border {
+    display: flex;
+    overflow: hidden;
+
+    .messages {
+      display: flex;
+      padding: 10px;
+      flex: 1;
+    
+      .chats {
+        background-color: rgb(61, 61, 61);
+        border: 1px solid black;
+        overflow: auto;
+        color: white;
+        min-width: 200px;
+        max-width: 200px;
+        height: 625px;
+    
+        .add-chat {
+          border-bottom: 1px solid black;
+          text-align: center;
+          padding: 5px;
+
+          i {
+            font-style: normal;
+          }
+
+          i:hover {
+            color: rgb(98, 126, 202);
+            cursor: pointer;
+          }
+        }
+    
+        .chat {
+          border-bottom: 1px solid black;
+          padding: 10px;
+    
+          label {
+            font-size: 16px;
+          }
+      
+          .thumbnail {
+            border-radius: 20%;
+            object-fit: cover;
+            margin-right: 10px;
+            width: 30px;
+            height: 30px;
+          }
+        }
+    
+        .chat:hover, span:hover {
+          background-color: rgb(136, 62, 62);
+          cursor: pointer;
+        }
+      }
+    
+      .interface {
+        width: 100%;
+        word-wrap: break-word;
+        overflow: hidden;
+    
+        .chat-session {
+          background-color: rgb(223, 222, 222);
+          border: 1px solid black;
+          border-left: none;
+          overflow: auto;
+          height: 569px;
+    
+          .text-chat {
+            display: flex;
+            flex-direction: column;
+            padding: 0px 10px;
+            font-size: 20px;
+            margin-top: 15px;
+    
+            .you {
+              background: linear-gradient(to bottom, #00D0EA 0%, #0085D1 0%);
+              color: white;
+    
+              border-radius: 20px;
+              padding: 8px 15px;
+              margin-left: auto;
+              max-width: 400px;
+            }
+    
+            .user {
+              background: rgb(138, 138, 138);
+              color: white;
+    
+              margin-right: auto;
+              max-width: 400px;
+              border-radius: 20px;
+              padding: 8px 15px;
+            }
+          }
+        }
+      
+        .message-box {
+          display: flex;
+      
+          textarea {
+            min-width: 92%;
+            outline: none;
+            resize: none;
+            border: none;
+  
+            background-color: rgb(223, 222, 222);
+            font-weight: 500;
+            border-bottom: 1px solid black;
+            border-right: 1px solid black;
+          }
+      
+          .buttons {
+            width: 100%;
+      
+            button {
+              border: none;
+              border-bottom: 1px solid black;
+              border-right: 1px solid black;
+
+              font-size: 35px;
+              height: 100%;
+              width: 100%;
+            }
+          }
+        }
+      }
+    }
+  }
+}

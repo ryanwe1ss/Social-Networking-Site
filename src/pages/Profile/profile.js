@@ -10,14 +10,14 @@ import {
   CreateChat,
   GetFollowers,
   GetFollowing,
-  Logout,
-  RedirectPage,
 } from "../../utilities/utilities";
 
 import DefaultProfilePicture from "../../images/default.png";
-import ProfileDetails from "../../components/Profile/ProfileDetails";
+import ProfileDetails from "../../components/ProfileDetails/ProfileDetails";
 import Followers from "../../components/Connections/Followers";
 import Following from "../../components/Connections/Following";
+import SidePanel from "../../components/SidePanel/side-panel";
+import Footer from "../../components/Footer/footer";
 import "./profile.scss";
 
 function Profile() {
@@ -121,19 +121,7 @@ function Profile() {
   return (
     <div className="profile-container">
       <div className="outer-border">
-
-        <div className="side-panel">
-          <h2>NetConnect</h2>
-
-          <div className="side-bar">
-            <div><a href="/posts" className="bi bi-image"> Posts</a></div>
-            <div><a href="/search" className="bi bi-search"> Search</a></div>
-            <div><a href="/messages" className="bi bi-chat"> Messages</a></div>
-            <div><a href={`/profile?id=${accountId}`} className="bi bi-person-fill"> Profile</a></div>
-            <div><a href="/settings" className="bi bi-gear"> Settings</a></div>
-            <div><a href="/" onClick={Logout} className="bi bi-lock"> Logout</a></div>
-          </div>
-        </div>
+        <SidePanel/>
 
         <div className="profile">
           <div className="left-details">
@@ -158,13 +146,13 @@ function Profile() {
                   </div> :
                   <h5>
                     <label className="username">{account.username}</label>
-                    <div>
+                    <div className="interact">
                       {account.is_following ?
-                        <input className="follow" type="button" value="Unfollow" onClick={HandleUnfollow}/> :
-                        <input className="follow" type="button" value="Follow" onClick={HandleFollow}/>
+                        <button className="btn btn-secondary btn-sm" onClick={HandleUnfollow}>Unfollow</button> :
+                        <button className="btn btn-secondary btn-sm" onClick={HandleFollow}>Follow</button>
                       }
                       <input
-                        className="message"
+                        className="btn btn-secondary btn-sm"
                         type="button"
                         value="Message"
                         onClick={HandleMessage}
@@ -219,110 +207,5 @@ function Profile() {
       </div>
     </div>
   );
-
-  /*
-  return (
-    <div className="block">
-      <div className="border-area">
-        <div className="menu">
-          <h1>NetConnect</h1>
-          <a href={'/'} onClick={Logout}>Logout</a>
-          <a href={'/messages'}>Direct Messages</a>
-          {accountId !== profileId ? <a href={`/profile?id=${accountId}`}>My Profile</a> : false}
-
-          <Dropdown
-            id="search"
-            options={searchData}
-            placeholder="Search Network"
-            onKeyUp={(event) => {
-              SearchAccounts(event, accountId).then((query) => {
-                setSearchData(query);
-              });
-            }}
-            onChange={(event) => RedirectPage(event, searchData)}
-            search
-            selection
-          />
-          <hr/>
-        </div>
-        
-        <div className="wrapper">
-          <div className="profile">
-
-            {isRendered ? 
-              <img
-                src={picture}
-                onError={(img) => (img.target.src = DefaultProfilePicture)}
-                className="picture"
-                alt="picture"
-              /> :
-              <div className="picture">
-                <div className="tiny-spinner"/>
-              </div>
-            }
-
-            {profileData.map(account => (
-              <div className="details" key={account.id}>
-                {accountId == profileId
-                ? <div>
-                    <input className="mt-2" type="button" value="Edit Profile" onClick={() => setEditForm(editForm ? false : true)}/>
-                    <input className="mt-1" type="file" onChange={HandleUpload}/>
-                  </div> :
-                  <h5>
-                    <label className="username">{account.username}</label>
-                    <div>
-                      {account.is_following ?
-                        <input className="follow" type="button" value="Unfollow" onClick={HandleUnfollow}/> :
-                        <input className="follow" type="button" value="Follow" onClick={HandleFollow}/>
-                      }
-                      <input
-                        className="message"
-                        type="button"
-                        value="Message"
-                        onClick={HandleMessage}
-                      />
-                    </div>
-                  </h5>
-                }
-                <hr/>
-                <div className="interactions">
-                  <label onClick={HandleGetFollowers}>Followers</label>: {account.followers} |&nbsp;
-                  <label onClick={HandleGetFollowing}>Following</label>: {account.following}
-                </div>
-              </div>
-            ))}
-          </div>
-          {editForm
-            ? <ProfileEdit HandleFetchProfile={HandleFetchProfile} setEditForm={setEditForm} profileData={profileData}/>
-            : <ProfileInformation profileData={profileData} isDisabled={isDisabled}/>
-          }
-          {showFollowers
-            ? <Followers
-                accountId={accountId}
-                profileId={profileId}
-                followers={followers}
-                setShowFollowers={setShowFollowers}
-                HandleGetFollowers={HandleGetFollowers}
-                HandleRemoveConnection={HandleRemoveConnection}
-              />
-            : false
-          }
-          {showFollowing
-            ? <Following
-                accountId={accountId}
-                profileId={profileId}
-                following={following}
-                setShowFollowing={setShowFollowing}
-                HandleGetFollowing={HandleGetFollowing}
-                HandleRemoveConnection={HandleRemoveConnection}
-              />
-            : false
-          }
-        </div>
-        <Footer/>
-      </div>
-    </div>
-  );
-  */
 }
 export default Profile;

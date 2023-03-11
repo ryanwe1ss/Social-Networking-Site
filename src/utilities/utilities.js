@@ -11,10 +11,11 @@ export function PerformLogin(username, password) {
     .then((response) => { return response.text() });
 }
 
-export function PerformRegister(username, password) {
+export function PerformRegister(username, password, confirm) {
   const body = {
     "username": username,
     "password": password,
+    "confirm": confirm,
   };
 
   return HttpPost('/api/register', body)
