@@ -1,9 +1,14 @@
+# IGNORE
 /node_modules
 /build
 package-lock.json
+.vscode
 .env
-/server/data/*
-!/server/data/info.txt
+/server/data/images/*
+/server/data/thumbnails/*
+/server/data/posts/*
+
+# ALLOW
 !/server/data/images/info.txt
 !/server/data/thumbnails/info.txt
 !/server/data/posts/info.txt
