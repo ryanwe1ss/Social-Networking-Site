@@ -80,7 +80,7 @@ function Messages()
     GetConversation(accountId, userId).then((conversation) => {
       document.getElementById("message").disabled = false;
 
-      setConversation(conversation.data);
+      setConversation(conversation.messages);
       setChatId(conversation.chatId);
       setUserId(userId);
 

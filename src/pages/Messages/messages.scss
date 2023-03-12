@@ -6,6 +6,7 @@
 
     .messages {
       display: flex;
+      // align-items: flex-end;
       padding: 10px;
       flex: 1;
     
@@ -16,7 +17,7 @@
         color: white;
         min-width: 200px;
         max-width: 200px;
-        height: 625px;
+        min-height: max-content;
     
         .add-chat {
           border-bottom: 1px solid black;
@@ -66,7 +67,7 @@
           border: 1px solid black;
           border-left: none;
           overflow: auto;
-          height: 569px;
+          height: 90%;
     
           .text-chat {
             display: flex;
@@ -99,9 +100,10 @@
       
         .message-box {
           display: flex;
+          height: 10%;
       
           textarea {
-            min-width: 92%;
+            min-width: 86%;
             outline: none;
             resize: none;
             border: none;
@@ -128,5 +130,18 @@
         }
       }
     }
+  }
+}
+
+
+@media only screen and (max-width: 1000px) {
+  textarea {
+    min-width: 80% !important;
+  }
+}
+
+@media only screen and (max-width: 700px) {
+  textarea {
+    min-width: 70% !important;
   }
 }

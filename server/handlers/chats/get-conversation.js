@@ -3,14 +3,21 @@ const { database } = require("../../database/db_connect");
 function GetConversation(request, result)
 {
   let chatId = null;
+  let username = null;
 
   database.query(`
-    SELECT id AS chat_id FROM active_chats
+    SELECT
+      id AS chat_id,
+      (SELECT username FROM accounts WHERE id = ${request.query.userId}) AS user
+    FROM active_chats
     WHERE user_one = ${request.query.id} AND user_two = ${request.query.userId}
     OR user_one = ${request.query.userId} AND user_two = ${request.query.id}`,
 
     function(error, data) {
-      if (!error) chatId = data.rows[0].chat_id;
+      if (!error) {
+        chatId = data.rows[0].chat_id;
+        username = data.rows[0].user;
+      }
     }
   )
 
@@ -32,7 +39,8 @@ function GetConversation(request, result)
       if (!error) {
         result.send({
           chatId: chatId,
-          data: data.rows,
+          username: username,
+          messages: data.rows,
         });
       }
     }
