@@ -13,11 +13,17 @@
     padding: 15px;
 
     div {
-      margin-top: 25px;
+      margin-top: 20px;
 
       :hover {
         color: blue;
       }
+    }
+
+    .bottom {
+      position: fixed;
+      margin-bottom: 25px;
+      bottom: 0;
     }
 
     a {

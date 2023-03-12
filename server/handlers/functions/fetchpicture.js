@@ -4,7 +4,7 @@ function FetchPicture(request, result)
 {
   try {
     result.send(
-      fs.readFileSync(`images/${request.query.id}_profile.png`)
+      fs.readFileSync(`data/images/${request.query.id}_profile.png`)
     );
   
   } catch(error) {

@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-
 import DefaultProfilePicture from "../../images/default.png";
 import SidePanel from "../../components/SidePanel/side-panel";
 import "./messages.scss";

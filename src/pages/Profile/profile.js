@@ -17,7 +17,6 @@ import ProfileDetails from "../../components/ProfileDetails/ProfileDetails";
 import Followers from "../../components/Connections/Followers";
 import Following from "../../components/Connections/Following";
 import SidePanel from "../../components/SidePanel/side-panel";
-import Footer from "../../components/Footer/footer";
 import "./profile.scss";
 
 function Profile() {

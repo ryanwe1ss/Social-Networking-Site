@@ -6,6 +6,10 @@
   padding: 10px;
   height: 100%;
 
+  i {
+    font-style: normal;
+  }
+
   h6 {
     text-decoration: underline;
     font-weight: bold;
@@ -23,12 +27,9 @@
   }
 
   .bio {
-    white-space: normal;
-    
     textarea {
       background-color: white;
-      white-space: nowrap;
-      min-height: 105px;
+      min-height: 100px;
       resize: none;
       width: 100%;
     }

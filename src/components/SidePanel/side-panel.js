@@ -13,8 +13,10 @@ function SidePanel() {
         <div><a href="/search" className="bi bi-search"> Search</a></div>
         <div><a href="/messages" className="bi bi-chat"> Messages</a></div>
         <div><a href={`/profile?id=${accountId}`} className="bi bi-person-fill"> Profile</a></div>
-        <div><a href="/settings" className="bi bi-gear"> Settings</a></div>
+        <div className="bottom">
         <div><a href="/" onClick={Logout} className="bi bi-lock"> Logout</a></div>
+        <div><a href="/settings" className="bi bi-gear"> Settings</a></div>
+        </div>
       </div>
     </div>
   );

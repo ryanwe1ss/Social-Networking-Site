@@ -1,4 +1,5 @@
 import { UpdateProfile } from "../../utilities/utilities";
+import Posts from "../Posts/posts";
 import "./profile-details.scss";
 
 function ProfileDetails(props) {
@@ -39,7 +40,6 @@ function ProfileDetails(props) {
       </div>
     );
   
-  
   } else {
     if (props.edit) {
       return (
@@ -48,9 +48,9 @@ function ProfileDetails(props) {
             <div key={"profile"}>
               <h6>Account Information</h6>
               <div className="left-labels">
-                <span>Name:</span><br/>
-                <span>Member Since:</span><br/>
-                <span>Last Updated:</span><br/>
+                <i className="bi bi-person-fill"> Name:</i><br/>
+                <i className="bi bi-calendar-minus"> Member Since:</i><br/>
+                <i className="bi bi-calendar-plus"> Last Updated:</i><br/>
               </div>
               <div className="right-assertions">
                 <span><input type="text" id="name" defaultValue={profile.name}/></span><br/>
@@ -59,11 +59,11 @@ function ProfileDetails(props) {
               </div>
               <h6>Basic Information</h6>
               <div className="left-labels">
-                <span>Gender:<br/></span>
-                <span>Status:<br/></span>
-                <span>Birthday:<br/></span>
-                <span>School:<br/></span>
-                <span>Concentration:<br/></span>
+              <i className="bi bi-gender-ambiguous"> Gender:<br/></i>
+                <i className="bi bi-activity"> Status:<br/></i>
+                <i className="bi bi-balloon"> Birthday:<br/></i>
+                <i className="bi bi-building"> School:<br/></i>
+                <i className="bi bi-book"> Major:<br/></i>
               </div>
               <div className="right-assertions">
                 <span>
@@ -87,8 +87,8 @@ function ProfileDetails(props) {
               </div>
               <h6>Contact Information</h6>
               <div className="left-labels">
-                <span>Email:</span><br/>
-                <span>Phone Number:</span><br/>
+                <i className="bi bi-envelope"> Email:</i><br/>
+                <i className="bi bi-phone"> Phone Number:</i><br/>
               </div>
               <div className="right-assertions">
                 <span><input type="text" id="email" defaultValue={profile.email}/></span><br/>
@@ -96,11 +96,12 @@ function ProfileDetails(props) {
               </div>
               <hr/>
               <div className="bio">
-                <textarea id="bio" defaultValue={profile.bio}/>
+                <textarea id="bio" defaultValue={profile.bio} placeholder="Type Bio Here..."/>
               </div>
             </div>
           ))}
           <input type="button" onClick={HandleUpdate} className="update" value="Update"/>
+          <Posts username={props.profileData[0].username}/>
       </div>
       );
     
@@ -111,9 +112,9 @@ function ProfileDetails(props) {
             <div key={"profile"}>
               <h6>Account Information</h6>
               <div className="left-labels">
-                <span>Name:</span><br/>
-                <span>Member Since:</span><br/>
-                <span>Last Updated:</span><br/>
+                <i className="bi bi-person-fill"> Name:</i><br/>
+                <i className="bi bi-calendar-minus"> Member Since:</i><br/>
+                <i className="bi bi-calendar-plus"> Last Updated:</i><br/>
               </div>
               <div className="right-assertions">
                 <span>{profile.name}</span><br/>
@@ -122,11 +123,11 @@ function ProfileDetails(props) {
               </div>
               <h6>Basic Information</h6>
               <div className="left-labels">
-                <span>Gender:<br/></span>
-                <span>Status:<br/></span>
-                <span>Birthday:<br/></span>
-                <span>School:<br/></span>
-                <span>Concentration:<br/></span>
+                <i className="bi bi-gender-ambiguous"> Gender:<br/></i>
+                <i className="bi bi-activity"> Status:<br/></i>
+                <i className="bi bi-balloon"> Birthday:<br/></i>
+                <i className="bi bi-building"> School:<br/></i>
+                <i className="bi bi-book"> Major:<br/></i>
               </div>
               <div className="right-assertions">
                 <span>{profile.gender}<br/></span>
@@ -137,17 +138,18 @@ function ProfileDetails(props) {
               </div>
               <h6>Contact Information</h6>
               <div className="left-labels">
-                <span>Email:</span><br/>
-                <span>Phone Number:</span><br/>
+                <i className="bi bi-envelope"> Email:</i><br/>
+                <i className="bi bi-phone"> Phone Number:</i><br/>
               </div>
               <div className="right-assertions">
                 <span>{profile.email}</span><br/>
                 <span>{profile.phone_number}</span><br/>
               </div>
               <hr/>
-              <div className="bio">{profile.bio}</div>
+              <div className="bio">{profile.bio == null ? 'No Bio Yet...' : profile.bio}</div>
             </div>
           ))}
+          <Posts username={props.profileData[0].username}/>
         </div>
       );
     }

@@ -40,8 +40,8 @@ function UpdateProfile(request, result) {
 
   } else {
     form.on("file", function (field, file) {
-      const image = `images/${request.query.id}_profile.png`;
-      const thumbnail = `images/thumbnails/${request.query.id}_profile_thumbnail.png`;
+      const image = `data/images/${request.query.id}_profile.png`;
+      const thumbnail = `data/thumbnails/${request.query.id}_profile_thumbnail.png`;
 
       fs.renameSync(file.filepath, image, (error) => {
         if (error) {

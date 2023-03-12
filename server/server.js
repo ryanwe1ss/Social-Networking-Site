@@ -4,6 +4,7 @@ const { Register } = require("./handlers/user/register");
 const { FetchProfile } = require("./handlers/functions/fetchprofile");
 const { FetchPicture } = require("./handlers/functions/fetchpicture");
 const { FetchThumbnail } = require("./handlers/functions/fetchthumbnail");
+const { FetchPosts } = require("./handlers/functions/fetchposts");
 const { UpdateProfile } = require("./handlers/functions/update");
 const { SearchAccounts } = require("./handlers/functions/search");
 
@@ -97,6 +98,14 @@ apiRouter.get("/api/picture", (request, result) => {
 
 apiRouter.get("/api/thumbnail", (request, result) => {
   FetchThumbnail(request, result);
+});
+
+apiRouter.get("/api/posts", (request, result) => {
+  if (request.session.user === undefined) {
+    result.sendStatus(401);
+    return;
+  
+  } FetchPosts(request, result);
 });
 
 apiRouter.get("/api/follow", (request, result) => {

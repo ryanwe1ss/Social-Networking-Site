@@ -2,8 +2,8 @@
 /build
 package-lock.json
 .env
-/server/images/*
-/server/images/thumbnails/*
-!server/images/info.txt
-!server/images/thumbnails/info.txt
-!server/images/thumbnails
+/server/data/*
+!/server/data/info.txt
+!/server/data/images/info.txt
+!/server/data/thumbnails/info.txt
+!/server/data/posts/info.txt

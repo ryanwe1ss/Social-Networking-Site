@@ -1,4 +1,5 @@
-export function HttpPost(route, body, stringify=true, headers=true) {
+export function HttpPost(route, body, stringify=true, headers=true)
+{
   return fetch(`${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}${route}`, {
     method: 'POST',
     credentials: 'include',
@@ -10,7 +11,8 @@ export function HttpPost(route, body, stringify=true, headers=true) {
   })
 }
 
-export function HttpGet(route) {
+export function HttpGet(route)
+{
   return fetch(`${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}${route}`, {
     method: 'GET',
     credentials: 'include',

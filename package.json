@@ -24,7 +24,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "env-cmd -f .env react-scripts build",
-    "staging": "cd server && concurrently \"node --watch server.js\" \"npm start\""
+    "staging": "cd server && concurrently \"npm start \" \"node --watch server.js\""
   },
   "browserslist": {
     "production": [

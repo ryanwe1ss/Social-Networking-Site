@@ -1,5 +1,4 @@
-import { HttpPost } from "./http-service";
-import { HttpGet } from "./http-service";
+import { HttpGet, HttpPost } from "./http-service";
 
 export function PerformLogin(username, password) {
   const body = {
@@ -58,6 +57,19 @@ export function FetchThumbnail(id)
     .then((thumbnail) => {
       return URL.createObjectURL(thumbnail);
     })
+}
+
+export function FetchPosts(profileId)
+{
+  return HttpGet(`/api/posts?id=${profileId}`)
+    .then(response => {
+      if (response.status == 200) {
+        return response.json();
+      }
+    })
+    .then(posts => {
+      return posts;
+    });
 }
 
 export function UpdateProfile(body)
