@@ -80,8 +80,10 @@ export function UpdateProfile(body)
 
 export function SearchAccounts(event, accountId)
 {
-  const searchQuery = event ? event.target.value : '';
-  const names = [];
+  const searchQuery = event.target.value;
+  const accounts = [];
+
+  if (searchQuery.length == 0) return Promise.resolve([]);
 
   return HttpGet(`/api/search?id=${accountId}&searchQuery=${searchQuery}`)
     .then((result) => {
@@ -89,9 +91,12 @@ export function SearchAccounts(event, accountId)
     })
     .then((users) => {
       users.map(user => {
-        names.push({ value: user.id, text: user.username });
-      
-      }); return names;
+        accounts.push({
+          id: user.id,
+          username: user.username,
+        });
+      });
+      return accounts;
     });
 }
 
@@ -107,7 +112,7 @@ export function UploadProfilePicture(event, accountId)
 export function FollowAccount(accountId, profileId)
 {
   return HttpGet(`/api/follow?id=${accountId}&profileId=${profileId}`)
-    .then((response) => { return response })
+    .then((response) => { return response });
 }
 
 export function UnfollowAccount(accountId, profileId)
@@ -169,10 +174,7 @@ export function Logout()
     .then(() => { localStorage.clear() })
 }
 
-export function RedirectPage(event, searchData)
+export function RedirectPage(profileId)
 {
-  if (event.target.innerText.length > 0) {
-    const accountId = searchData.find(n => n.text == event.target.innerText).value;
-    window.location.href = `/profile?id=${accountId}`;
-  }
+  window.location.href = `/profile?id=${profileId}`;
 }

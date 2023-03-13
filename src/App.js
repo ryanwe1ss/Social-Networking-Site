@@ -3,6 +3,7 @@ import Login from "./pages/Login/login.js";
 import Register from "./pages/Register/register.js";
 import Profile from "./pages/Profile/profile.js";
 import Messages from "./pages/Messages/messages.js";
+import Search from "./pages/Search/search.js";
 
 function App()
 {
@@ -13,6 +14,7 @@ function App()
         <Route exact path="/register" element={<Register/>}/>
         <Route exact path="/profile" element={<Profile/>}/>
         <Route exact path="/messages" element={<Messages/>}/>
+        <Route exact path="/search" element={<Search/>}/>
       </Routes>
     </Router>
   );

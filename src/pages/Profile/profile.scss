@@ -1,8 +1,7 @@
 .profile-container {
 
   .outer-border {
-    display: flex;
-    overflow: hidden;
+    
 
     .profile {
       display: flex;
@@ -20,6 +19,18 @@
           object-fit: cover;
           width: 350px;
           height: 300px;
+        }
+
+        .profile-interact {
+
+          button, input {
+            margin-top: 10px;
+            margin-bottom: -8px;
+          }
+
+          input[type="file"] {
+            display: none;
+          }
         }
 
         .interact button, input {

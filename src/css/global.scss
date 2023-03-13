@@ -2,10 +2,12 @@ body {
   background-color: darkgrey;
 }
 
-.profile-container, .messages-container {
+.profile-container, .messages-container, .search-container {
   padding: 5px;
 
   .outer-border {
+    display: flex;
+    overflow: hidden;
     height: 98.5vh;
     border: 3px solid black;
   }

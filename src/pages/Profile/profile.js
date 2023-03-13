@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import {
   FetchProfile,
   FetchPicture,
-  SearchAccounts,
   UploadProfilePicture,
   FollowAccount,
   UnfollowAccount,
@@ -25,7 +24,6 @@ function Profile() {
 
   const [profileData, setProfile] = useState([]);
   const [picture, setPicture] = useState([]);
-  const [searchData, setSearchData] = useState([]);
   const [followers, setFollowers] = useState([]);
   const [following, setFollowing] = useState([]);
 
@@ -37,9 +35,6 @@ function Profile() {
 
   useEffect(() => {
     HandleFetchProfile();
-    SearchAccounts(null, accountId).then((result) => {
-      setSearchData(result);
-    });
   }, []);
 
   function HandleFetchProfile() {
@@ -139,9 +134,10 @@ function Profile() {
             {profileData.map(account => (
               <div key={account.id}>
                 {accountId == profileId
-                ? <div>
-                    <input className="mt-2" type="button" value="Edit Profile" onClick={() => setEditForm(editForm ? false : true)}/>
-                    <input className="mt-1" type="file" onChange={HandleUpload}/>
+                ? <div className="profile-interact">
+                    <input className="btn btn-secondary btn-sm" type="button" value="Edit Profile" onClick={() => setEditForm(editForm ? false : true)}/>
+                    <input id="profile-picture" onChange={HandleUpload} type="file"/>
+                    <button className="btn btn-secondary btn-sm" onClick={() => document.getElementById("profile-picture").click()}>Edit Profile Picture</button>
                   </div> :
                   <h5>
                     <label className="username">{account.username}</label>

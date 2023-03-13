@@ -1,12 +1,9 @@
 .messages-container {
 
   .outer-border {
-    display: flex;
-    overflow: hidden;
 
     .messages {
       display: flex;
-      // align-items: flex-end;
       padding: 10px;
       flex: 1;
     
