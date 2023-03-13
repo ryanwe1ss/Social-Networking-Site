@@ -1,4 +1,5 @@
 const { database } = require("../../database/db_connect");
+const fs = require("fs");
 
 function Register(request, result)
 {
@@ -31,12 +32,21 @@ function Register(request, result)
       INSERT INTO accounts (username, password)
       VALUES ('${credentials.username}', '${credentials.password}')`,
       
-      (error, rows) => {
+      (error, data) => {
         if (error) {
           result.send(error);
           return;
-        
-        } result.send("success");
+        } {
+          result.send("success");
+          database.query(`SELECT id FROM accounts WHERE username = '${credentials.username}'`, function(error, data) {
+            fs.mkdir(`./data/posts/${data.rows[0].id}`, { recursive: true }, (error) => {
+              if (error) {
+                console.log("Error Creating folder in /data/posts/ for new account: " + error);
+                return;
+              }
+            });
+          });
+        }
       });
   });
 }
