@@ -1,5 +1,21 @@
 .user-posts {
 
+  input[type="file"] {
+    display: none;
+  }
+
+  .share-post {
+    color: #3f51b5;
+    font-size: 22px;
+    font-weight: bold;
+    text-align: center;
+    cursor: pointer;
+
+    &:hover {
+      color: #303f9f;
+    }
+  }
+
   .posts {
     display: flex;
     flex-wrap: wrap;
@@ -18,6 +34,60 @@
           transition: transform 0.5s;
           cursor: pointer;
         }
+      }
+    }
+
+    .no-posts {
+      margin: 0 auto;
+      font-size: 1.5rem;
+    }
+  }
+
+  .modal {
+    padding-top: 12px;
+    background-color: rgba(0,0,0,0.4);
+    display: none;
+  
+    .modal-content {
+      max-width: 650px;
+      height: 650px;
+      overflow: auto;
+
+      .post-block {
+        display: flex;
+        flex-direction: column;
+
+        .post-image {
+          margin: 0 auto;
+          margin-bottom: 5px;
+  
+          .upload button {
+            display: inline-block;
+            margin-right: 10px;
+          }
+        }
+  
+        .preview-block {
+          background-color: rgb(204, 204, 204);
+          margin: 0 auto;
+  
+          img {
+            height: 480px;
+            width: 500px;
+          }
+        }
+      }
+
+      #close {
+        color: black;
+        float: right;
+        font-size: 30px;
+        font-weight: bold;
+      }
+      
+      #close:hover {
+        color: red;
+        cursor: pointer;
       }
     }
   }

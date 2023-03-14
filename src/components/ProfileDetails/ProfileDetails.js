@@ -1,4 +1,5 @@
 import { UpdateProfile } from "../../utilities/utilities";
+import LoadingBar from "../LoadingBar/loading-bar";
 import Posts from "../Posts/posts";
 import "./profile-details.scss";
 
@@ -36,7 +37,7 @@ function ProfileDetails(props) {
   } else if (props.profileData.length == 0) {
     return (
       <div className="information">
-        <div className="large-spinner"/>
+        <LoadingBar size="large"/>
       </div>
     );
   

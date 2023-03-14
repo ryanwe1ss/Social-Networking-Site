@@ -16,6 +16,7 @@ import ProfileDetails from "../../components/ProfileDetails/ProfileDetails";
 import Followers from "../../components/Connections/Followers";
 import Following from "../../components/Connections/Following";
 import SidePanel from "../../components/SidePanel/side-panel";
+import LoadingBar from "../../components/LoadingBar/loading-bar";
 import "./profile.scss";
 
 function Profile() {
@@ -127,7 +128,7 @@ function Profile() {
                 alt="picture"
               /> :
               <div className="picture">
-                <div className="tiny-spinner"/>
+                <LoadingBar size="small"/>
               </div>
             }
 

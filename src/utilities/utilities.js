@@ -75,7 +75,16 @@ export function FetchPosts(profileId)
 export function UpdateProfile(body)
 {
   return HttpPost(`/api/update`, body)
-    .then((response) => { return response })
+    .then((response) => { return response });
+}
+
+export function UploadPost(accountId, image)
+{
+  const formData = new FormData();
+  formData.append("data", image);
+
+  return HttpPost(`/api/post?id=${accountId}`, formData, false, false)
+    .then((response) => { return response });
 }
 
 export function SearchAccounts(event, accountId)
