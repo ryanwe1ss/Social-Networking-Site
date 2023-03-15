@@ -16,9 +16,19 @@
     }
   }
 
+  .load-more {
+    text-align: center;
+  }
+
   .posts {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(210px, max-content));
+    justify-content: center;
+
+    .spinner {
+      margin: 0 auto;
+      margin-top: 25px;
+    }
 
     .post {
       padding: 20px;

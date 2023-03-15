@@ -6,7 +6,6 @@ function UploadPost(request, result)
   const form = new formidable.IncomingForm();
   form.on("file", function (field, file) {
 
-    console.log(file);
     fs.readdir(`./data/posts/${request.query.id}/`, (err, files) => {
       fs.renameSync(
         file.filepath,

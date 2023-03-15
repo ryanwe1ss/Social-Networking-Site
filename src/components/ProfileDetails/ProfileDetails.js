@@ -102,7 +102,6 @@ function ProfileDetails(props) {
             </div>
           ))}
           <input type="button" onClick={HandleUpdate} className="update" value="Update"/>
-          <Posts username={props.profileData[0].username}/>
       </div>
       );
     

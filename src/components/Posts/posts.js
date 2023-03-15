@@ -6,15 +6,28 @@ import "./posts.scss";
 function Posts(props) {
   const profileId = parseInt(location.search.split("id=")[1]);
   const accountId = parseInt(localStorage.getItem("accountId"));
-  const [loading, setLoading] = useState(false);
+
   const [uploaded, setUploaded] = useState(false);
+  const [loaded, setLoaded] = useState(false);
+  const [posted, setPosted] = useState(false);
+
+  const [refresh , setRefresh] = useState(0);
+  const [limit, setLimit] = useState(3);
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
-    FetchPosts(profileId).then((posts) => {
-      if (posts) setPosts(posts);
+    FetchPosts(profileId, limit).then((result) => {
+      setPosts(result.posts);
+      setLoaded(true);
+
+      setTimeout(() => {
+        if (result.count <= limit)
+          document.querySelector(".load-more").style.display = "none";
+      
+      }, 250);
     });
-  }, []);
+
+  }, [limit, refresh]);
 
   function DisplayImage(event) {
     const reader = new FileReader();
@@ -31,15 +44,15 @@ function Posts(props) {
 
     UploadPost(accountId, image).then((response) => {
       if (response.status == 200) {
-        setLoading(true);
+        setPosted(true);
 
         setTimeout(() => {
           document.getElementById("postModal").style.display = "none";
-          FetchPosts(profileId).then((posts) => {
-            setLoading(false);
-            if (posts) setPosts(posts);
-          });
-        }, 4000);
+          setRefresh(refresh + 1);
+          setLoaded(false);
+          setPosted(false);
+
+        }, 1000);
       
       } else alert("Error: " + response.status);
     });
@@ -47,8 +60,7 @@ function Posts(props) {
 
   return (
     <div className="user-posts">
-      <input type="file" id="post"/>
-      <hr/>
+      <input type="file" id="post"/><hr/>
 
       {profileId == accountId ? 
         <div className="share-post" onClick={() => document.getElementById("postModal").style.display = "block"}>
@@ -56,17 +68,32 @@ function Posts(props) {
         </div> : null }
 
       <div className="posts">
-        {profileId == accountId || posts.length > 0 ?
+        {loaded ? posts.length > 0 ?
           posts.map(post => (
             <div className="post" key={post.id}>
               <img src={`data:image/jpeg;base64,${post.image}`} alt="thumbnail"/>
             </div>
           )) :
-        <div className="no-posts">
-          {props.username.replace("@", "") + " has no posts"}
-        </div>
+          
+          accountId != profileId ?
+            <div className="no-posts">
+              {props.username.replace("@", "") + " has no posts"}
+            </div> : null :
+
+          <div className="spinner">
+            <LoadingBar size="small"/>
+          </div>
         }
       </div>
+      {loaded ? 
+        <div className="load-more">
+          <input type="button" className="btn btn-secondary btn-sm" value="Load More"
+          onClick={() => {
+            setLimit(limit + 3);
+            setLoaded(false);
+          }}/>
+        </div> : null
+      }
 
       <div id="postModal" className="modal">
         <div className="modal-content">
@@ -75,32 +102,33 @@ function Posts(props) {
             <span onClick={() => { document.getElementById("postModal").style.display = "none"}} id="close">&times;</span>
           </header><hr/>
 
-          {loading ? <LoadingBar size="large"/> :
+          {posted ? <LoadingBar size="large"/> :
 
-          <div className="post-block">
-            <div className="post-image">
-              <div className="upload">
-                <input type="file" id="selectImage" onChange={DisplayImage}/>
-                <button
-                  id="selectImageButton"
-                  className="btn btn-secondary"
-                  onClick={() => { document.getElementById("selectImage").click()}}
-                  >Select Image
-                </button>
-                <button
-                  id="postImageButton"
-                  className="btn btn-secondary"
-                  onClick={PostImage}
-                  disabled={!uploaded}
-                  >Post Image
-                </button>
+            <div className="post-block">
+              <div className="post-image">
+                <div className="upload">
+                  <input type="file" id="selectImage" onChange={DisplayImage}/>
+                  <button
+                    id="selectImageButton"
+                    className="btn btn-secondary"
+                    onClick={() => { document.getElementById("selectImage").click()}}
+                    >Select Image
+                  </button>
+                  <button
+                    id="postImageButton"
+                    className="btn btn-secondary"
+                    onClick={PostImage}
+                    disabled={!uploaded}
+                    >Post Image
+                  </button>
+                </div>
+              </div>
+
+              <div className="preview-block">
+                <img id="preview"/>
               </div>
             </div>
-
-            <div className="preview-block">
-              <img id="preview"/>
-            </div>
-          </div>}
+          }
         </div>
       </div>
     </div>

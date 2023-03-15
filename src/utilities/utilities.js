@@ -59,9 +59,9 @@ export function FetchThumbnail(id)
     })
 }
 
-export function FetchPosts(profileId)
+export function FetchPosts(profileId, limit=3)
 {
-  return HttpGet(`/api/posts?id=${profileId}`)
+  return HttpGet(`/api/posts?id=${profileId}&limit=${limit}`)
     .then(response => {
       if (response.status == 200) {
         return response.json();
