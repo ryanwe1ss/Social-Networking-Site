@@ -78,6 +78,18 @@ export function UpdateProfile(body)
     .then((response) => { return response });
 }
 
+export function UpdatePrivacy(accountId, isPrivate)
+{
+  return HttpGet(`/api/update-privacy?id=${accountId}&private=${isPrivate}`)
+    .then((response) => { return response });
+}
+
+export function UpdateUsername(accountId, username)
+{
+  return HttpGet(`/api/update-username?id=${accountId}&username=${username}`)
+    .then((response) => { return response });
+}
+
 export function UploadPost(accountId, image)
 {
   const formData = new FormData();

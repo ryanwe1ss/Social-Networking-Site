@@ -4,6 +4,7 @@ import Register from "./pages/Register/register.js";
 import Profile from "./pages/Profile/profile.js";
 import Messages from "./pages/Messages/messages.js";
 import Search from "./pages/Search/search.js";
+import Settings from "./pages/Settings/settings.js";
 
 function App()
 {
@@ -15,6 +16,7 @@ function App()
         <Route exact path="/profile" element={<Profile/>}/>
         <Route exact path="/messages" element={<Messages/>}/>
         <Route exact path="/search" element={<Search/>}/>
+        <Route exact path="/settings" element={<Settings/>}/>
       </Routes>
     </Router>
   );

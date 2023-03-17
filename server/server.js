@@ -6,6 +6,8 @@ const { FetchPicture } = require("./handlers/functions/fetchpicture");
 const { FetchThumbnail } = require("./handlers/functions/fetchthumbnail");
 const { FetchPosts } = require("./handlers/functions/fetchposts");
 const { UpdateProfile } = require("./handlers/functions/update");
+const { UpdatePrivacy } = require("./handlers/functions/update-privacy");
+const { UpdateUsername } = require("./handlers/functions/update-username");
 const { UploadPost } = require("./handlers/functions/post");
 const { SearchAccounts } = require("./handlers/functions/search");
 
@@ -71,6 +73,22 @@ apiRouter.post("/api/update", (request, result) => {
     return;
   
   } UpdateProfile(request, result);
+});
+
+apiRouter.get("/api/update-privacy", (request, result) => {
+  if (request.session.user === undefined) {
+    result.sendStatus(401);
+    return;
+  
+  } UpdatePrivacy(request, result);
+});
+
+apiRouter.get("/api/update-username", (request, result) => {
+  if (request.session.user === undefined) {
+    result.sendStatus(401);
+    return;
+  
+  } UpdateUsername(request, result);
 });
 
 apiRouter.post("/api/post", (request, result) => {
@@ -189,4 +207,6 @@ apiRouter.post("/api/send-message", (request, result) => {
   } SendMessage(request, result);
 });
 
-apiRouter.listen(process.env.REACT_APP_API_PORT);
+apiRouter.listen(process.env.REACT_APP_API_PORT, () => {
+  console.log(`API listening on port ${process.env.REACT_APP_API_PORT}`);
+});

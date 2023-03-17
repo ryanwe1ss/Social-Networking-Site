@@ -3,7 +3,22 @@ const { database } = require("../../database/db_connect");
 function FetchProfile(request, result)
 {
   database.query(`
-    SELECT accounts.id, username, name, date_created, date_updated, gender, status, birthdate, school, concentration, email, phone_number, bio,
+    SELECT
+      accounts.id,
+      username,
+      name,
+      date_created,
+      date_updated,
+      gender,
+      status,
+      birthdate,
+      school,
+      concentration,
+      email,
+      phone_number,
+      bio,
+      enabled,
+      private,
     
     (SELECT COUNT(*) FROM accounts
       LEFT JOIN connections ON connections.follower = accounts.id
