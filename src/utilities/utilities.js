@@ -59,6 +59,19 @@ export function FetchThumbnail(id)
     })
 }
 
+export function FetchPost(profileId, postId)
+{
+  return HttpGet(`/api/post?id=${profileId}&post=${postId}`)
+    .then((response) => {
+      if (response.status == 200) {
+        return response.json();
+      }
+    })
+    .then((post) => {
+      return post;
+    })
+}
+
 export function FetchPosts(profileId, limit=3)
 {
   return HttpGet(`/api/posts?id=${profileId}&limit=${limit}`)
@@ -67,7 +80,7 @@ export function FetchPosts(profileId, limit=3)
         return response.json();
       }
     })
-    .then(posts => {
+    .then((posts) => {
       return posts;
     });
 }
@@ -90,13 +103,15 @@ export function UpdateUsername(accountId, username)
     .then((response) => { return response });
 }
 
-export function UploadPost(accountId, image)
+export function UploadPost(accountId, description, comment, like, image)
 {
   const formData = new FormData();
   formData.append("data", image);
 
-  return HttpPost(`/api/post?id=${accountId}`, formData, false, false)
-    .then((response) => { return response });
+  return HttpPost(`/api/post?id=${accountId}&description=${description}&comment=${comment}&like=${like}`,
+    formData, false, false
+  
+  ).then((response) => { return response });
 }
 
 export function DeletePost(accountId, postId)

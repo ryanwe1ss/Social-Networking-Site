@@ -20,8 +20,6 @@ function Posts(props) {
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
-    console.log("here?");
-
     FetchPosts(profileId, limit).then((result) => {
       setPosts(result.posts);
       setLoaded(true);
@@ -62,10 +60,8 @@ function Posts(props) {
     reader.readAsDataURL(event.target.files[0]);
   }
 
-  function HandlePostImage() {
-    const image = document.getElementById("selectImage").files[0];
-
-    UploadPost(accountId, image).then((response) => {
+  function HandlePostImage(description, comment, like, image) {
+    UploadPost(accountId, description, comment, like, image).then((response) => {
       if (response.status == 200) {
         setPosted(true);
 
@@ -98,7 +94,7 @@ function Posts(props) {
       <div className="posts">
         {loaded ? posts.length > 0 ?
           posts.map(post => (
-            <div className="post" key={post.id}>
+            <a className="post" href={!editMode ? `/post?id=${profileId}&post=${post.id}` : null} key={post.id}>
               <img src={`data:image/jpeg;base64,${post.image}`} id={post.id} alt="thumbnail"/>
               { editMode ?
                 <span
@@ -107,7 +103,7 @@ function Posts(props) {
                 >✕
                 </span>
               : null }
-            </div>
+            </a>
           )) :
           
           accountId != profileId ?
@@ -140,6 +136,22 @@ function Posts(props) {
           {posted ? <LoadingBar size="large"/> :
 
             <div className="post-block">
+              <div className="post-form">
+                <div className="row">
+                  <div className="form-group">
+                    <input className="form-control" id="description" type="text" placeholder="Write a Description..."/><br/>
+                    
+                    <input type="checkbox" id="comment" defaultChecked={true}/>
+                    <label>&nbsp; Enable Commenting?</label>
+
+                    <span className="gap"/>
+                    
+                    <input type="checkbox" id="like" defaultChecked={true}/>
+                    <label>&nbsp; Enable Liking?</label>
+                  </div>
+                </div>
+              </div><hr/>
+
               <div className="post-image">
                 <div className="upload">
                   <input type="file" id="selectImage" onChange={DisplayImage}/>
@@ -152,9 +164,14 @@ function Posts(props) {
                   <button
                     id="postImageButton"
                     className="btn btn-secondary"
-                    onClick={HandlePostImage}
+                    onClick={() => HandlePostImage(
+                      document.getElementById("description").value,
+                      document.getElementById("comment").checked,
+                      document.getElementById("like").checked,
+                      document.getElementById("selectImage").files[0]
+                    )}
                     disabled={!uploaded}
-                    >Post Image
+                    >Create Post
                   </button>
                 </div>
               </div>

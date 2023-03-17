@@ -8,7 +8,7 @@ function FetchPicture(request, result)
     );
   
   } catch(error) {
-    result.sendStatus(204);
+    result.sendStatus(500);
   }
 }
 module.exports = { FetchPicture }

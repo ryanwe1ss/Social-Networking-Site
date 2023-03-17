@@ -12,6 +12,7 @@ const { FetchPicture } = require("./handlers/get/fetch-picture");
 const { FetchProfile } = require("./handlers/get/fetch-profile");
 const { FetchChats } = require("./handlers/get/fetch-chats");
 const { FetchPosts } = require("./handlers/get/fetch-posts");
+const { FetchPost } = require("./handlers/get/fetch-post");
 
 const { UpdateUsername } = require("./handlers/update/update-username");
 const { UpdatePrivacy } = require("./handlers/update/update-privacy");
@@ -139,6 +140,14 @@ apiRouter.get("/api/picture", (request, result) => {
 
 apiRouter.get("/api/thumbnail", (request, result) => {
   FetchThumbnail(request, result);
+});
+
+apiRouter.get("/api/post", (request, result) => {
+  if (request.session.user === undefined) {
+    result.sendStatus(401);
+    return;
+  
+  } FetchPost(request, result);
 });
 
 apiRouter.get("/api/posts", (request, result) => {

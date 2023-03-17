@@ -20,7 +20,8 @@ import SidePanel from "../../components/SidePanel/side-panel";
 import LoadingBar from "../../components/LoadingBar/loading-bar";
 import "./profile.scss";
 
-function Profile() {
+function Profile()
+{
   const accountId = parseInt(localStorage.getItem("accountId"));
   const profileId = parseInt(location.search.split("id=")[1]);
 

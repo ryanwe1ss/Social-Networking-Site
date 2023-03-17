@@ -42,7 +42,7 @@
         height: 175px;
 
         &:hover {
-          transform: scale(1.1);
+          transform: scale(1.05);
           transition: transform 0.5s;
           cursor: pointer;
         }
@@ -79,6 +79,15 @@
       .post-block {
         display: flex;
         flex-direction: column;
+
+        .post-form {
+          margin: 0 auto;
+
+          .gap {
+            margin-left: 10px;
+            margin-right: 10px;
+          }
+        }
 
         .post-image {
           margin: 0 auto;
