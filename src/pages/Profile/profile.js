@@ -29,6 +29,7 @@ function Profile() {
   const [followers, setFollowers] = useState([]);
   const [following, setFollowing] = useState([]);
 
+  const [saved, setSaved] = useState(false);
   const [editForm, setEditForm] = useState(false);
   const [isDisabled, setDisabled] = useState(false);
   const [isRendered, setRendered] = useState(false);
@@ -59,6 +60,29 @@ function Profile() {
       setPicture(picture);
       setRendered(true);
     })
+  }
+
+  function HandleUpdate() {
+    const body = {
+      'id': localStorage.getItem("accountId"),
+      'name': document.getElementById("name").value,
+      'gender': document.getElementById("gender").value,
+      'status': document.getElementById("status").value,
+      'birthdate': document.getElementById("birthdate").value,
+      'school': document.getElementById("school").value,
+      'concentration': document.getElementById("concentration").value,
+      'email': document.getElementById("email").value,
+      'phone_number': document.getElementById("phone_number").value,
+      'bio': document.getElementById("bio").value,
+    };
+
+    UpdateProfile(body).then((response) => {
+      if (response.status === 200) {
+        HandleFetchProfile();
+        setEditForm(false);
+        setSaved(true);
+      }
+    });
   }
 
   function HandleUpload(event) {
@@ -110,28 +134,6 @@ function Profile() {
     CreateChat(accountId, profileId).then((response) => {
       if (response.status === 200) {
         window.location.href = `/messages?id=${profileId}`;
-      }
-    });
-  }
-
-  function HandleUpdate() {
-    const body = {
-      'id': localStorage.getItem("accountId"),
-      'name': document.getElementById("name").value,
-      'gender': document.getElementById("gender").value,
-      'status': document.getElementById("status").value,
-      'birthdate': document.getElementById("birthdate").value,
-      'school': document.getElementById("school").value,
-      'concentration': document.getElementById("concentration").value,
-      'email': document.getElementById("email").value,
-      'phone_number': document.getElementById("phone_number").value,
-      'bio': document.getElementById("bio").value,
-    };
-
-    UpdateProfile(body).then((response) => {
-      if (response.status === 200) {
-        HandleFetchProfile();
-        setEditForm(false);
       }
     });
   }
@@ -209,12 +211,23 @@ function Profile() {
           <div className="right-details">
             {editForm
               ? <ProfileDetails
-                  edit={true} profileData={profileData}
-                  HandleFetchProfile={HandleFetchProfile} setEditForm={setEditForm}/>
+                  edit={true}
+                  saved={saved}
+                  profileData={profileData}
+                  HandleFetchProfile={HandleFetchProfile}
+                  setEditForm={setEditForm}
+                  setSaved={setSaved}
+                />
 
               : <ProfileDetails
-                edit={false} profileData={profileData} HandleFetchProfile={HandleFetchProfile}
-                setEditForm={setEditForm} isDisabled={isDisabled}/>
+                  edit={false}
+                  saved={saved}
+                  profileData={profileData}
+                  HandleFetchProfile={HandleFetchProfile}
+                  setEditForm={setEditForm}
+                  setSaved={setSaved}
+                  isDisabled={isDisabled}
+                />
             }
           </div>
 

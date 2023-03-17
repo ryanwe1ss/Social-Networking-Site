@@ -13,14 +13,19 @@ function ProfileDetails(props) {
   if (props.isDisabled) {
     return (
       <div className="information">
-        This profile doesn't exist or has been disabled...
+        <h4>
+          <i className="bi bi-info-circle"/>
+          &nbsp;This profile doesn't exist or has been disabled
+        </h4>
       </div>
     );
 
   } else if (!isFollowing && accountId !== profileId && isPrivate) {
     return (
       <div className="information">
-        <h4><i className="bi bi-lock-fill"/>Private Account</h4>
+        <h4>
+          <i className="bi bi-lock-fill"/>Private Account
+        </h4>
       </div>
     );
 
@@ -91,8 +96,7 @@ function ProfileDetails(props) {
               </div>
             </div>
           ))}
-          <Posts username={username} editMode={true}/>
-          {/* <input type="button" onClick={HandleUpdate} className="update" value="Update"/> */}
+          <Posts username={username} editMode={true} saved={props.saved} setSaved={props.setSaved}/>
       </div>
       );
     
@@ -140,7 +144,7 @@ function ProfileDetails(props) {
               <div className="bio">{profile.bio == null ? 'No Bio Yet...' : profile.bio}</div>
             </div>
           ))}
-          <Posts username={username} editMode={false}/>
+          <Posts username={username} editMode={false} saved={props.saved} setSaved={props.setSaved}/>
         </div>
       );
     }

@@ -13,10 +13,15 @@ function Posts(props) {
   const [posted, setPosted] = useState(false);
 
   const [refresh , setRefresh] = useState(0);
-  const [limit, setLimit] = useState(3);
+  const [limit, setLimit] = useState(6);
+
+
+  const [tempPosts, setTempPosts] = useState([]);
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
+    console.log("here?");
+
     FetchPosts(profileId, limit).then((result) => {
       setPosts(result.posts);
       setLoaded(true);
@@ -28,6 +33,24 @@ function Posts(props) {
     });
 
   }, [limit, refresh]);
+
+  useEffect(() => {
+    tempPosts.forEach(postId => {
+      if (props.saved) {
+        DeletePost(accountId, postId).then((response) => {
+          if (response.status != 200) {
+            alert("Error Deleting Post(s), try again");
+          }
+        })
+      }
+      document.getElementById(postId).style.border = "inherit";
+    });
+
+    if (props.saved) setRefresh(refresh + 1);
+    setTempPosts([]);
+    props.setSaved(false);
+
+  }, [editMode])
 
   function DisplayImage(event) {
     const reader = new FileReader();
@@ -58,13 +81,9 @@ function Posts(props) {
     });
   }
 
-  function HandleDeletePost(postId) {
-    DeletePost(accountId, postId).then((response) => {
-      if (response.status == 200) {
-        setRefresh(refresh + 1);
-      
-      } else alert("Error Deleting Post, try again");
-    })
+  function SelectPost(postId) {
+    setTempPosts(id => [...id, postId]);
+    document.getElementById(postId).style.border = "4px solid red";
   }
 
   return (
@@ -80,11 +99,11 @@ function Posts(props) {
         {loaded ? posts.length > 0 ?
           posts.map(post => (
             <div className="post" key={post.id}>
-              <img src={`data:image/jpeg;base64,${post.image}`} alt="thumbnail"/>
+              <img src={`data:image/jpeg;base64,${post.image}`} id={post.id} alt="thumbnail"/>
               { editMode ?
                 <span
                   className="delete"
-                  onClick={() => HandleDeletePost(post.id)}
+                  onClick={() => SelectPost(post.id)}
                 >✕
                 </span>
               : null }
