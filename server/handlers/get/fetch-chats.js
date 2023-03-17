@@ -1,6 +1,6 @@
 const { database } = require("../../database/db_connect");
 
-function GetChats(request, result)
+function FetchChats(request, result)
 {
   database.query(`
     SELECT
@@ -16,4 +16,4 @@ function GetChats(request, result)
     }
   )
 }
-module.exports = { GetChats }
+module.exports = { FetchChats }

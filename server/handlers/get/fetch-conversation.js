@@ -1,6 +1,6 @@
 const { database } = require("../../database/db_connect");
 
-function GetConversation(request, result)
+function FetchConversation(request, result)
 {
   let chatId = null;
   let username = null;
@@ -46,4 +46,4 @@ function GetConversation(request, result)
     }
   )
 }
-module.exports = { GetConversation }
+module.exports = { FetchConversation }

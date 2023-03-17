@@ -13,6 +13,7 @@ function Login(request, result) {
         if (data.rows.length > 0) {
           request.session.user = { username: credentials.username };
           request.session.save();
+          
           result.send({
             'id': data.rows[0].id,
             'username': data.rows[0].username,

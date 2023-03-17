@@ -1,6 +1,6 @@
 const { database } = require("../../database/db_connect");
 
-function GetFollowing(request, result)
+function FetchFollowing(request, result)
 {
   database.query(`
     SELECT accounts.id, username, name FROM accounts
@@ -10,4 +10,4 @@ function GetFollowing(request, result)
     }
   );
 }
-module.exports = { GetFollowing }
+module.exports = { FetchFollowing }

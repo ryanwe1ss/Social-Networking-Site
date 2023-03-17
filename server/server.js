@@ -1,26 +1,31 @@
-const { Login } = require("./handlers/user/login");
-const { Register } = require("./handlers/user/register");
+// --------------- MODULES --------------- //
 
-const { FetchProfile } = require("./handlers/functions/fetchprofile");
-const { FetchPicture } = require("./handlers/functions/fetchpicture");
-const { FetchThumbnail } = require("./handlers/functions/fetchthumbnail");
-const { FetchPosts } = require("./handlers/functions/fetchposts");
-const { UpdateProfile } = require("./handlers/functions/update");
-const { UpdatePrivacy } = require("./handlers/functions/update-privacy");
-const { UpdateUsername } = require("./handlers/functions/update-username");
-const { UploadPost } = require("./handlers/functions/post");
-const { SearchAccounts } = require("./handlers/functions/search");
+const { Login } = require("./handlers/auth/login");
+const { Register } = require("./handlers/auth/register");
 
-const { FollowAccount } = require("./handlers/connections/follow.js");
-const { UnfollowAccount } = require("./handlers/connections/unfollow.js");
-const { RemoveConnection } = require("./handlers/connections/remove-connection");
-const { GetFollowers } = require("./handlers/connections/getfollowers.js");
-const { GetFollowing } = require("./handlers/connections/getfollowing.js");
+const { FetchProfile } = require("./handlers/get/fetch-profile");
+const { FetchPicture } = require("./handlers/get/fetch-picture");
+const { FetchThumbnail } = require("./handlers/get/fetch-thumbnail");
+const { FetchFollowers } = require("./handlers/get/fetch-followers");
+const { FetchFollowing } = require("./handlers/get/fetch-following");
+const { FetchChats } = require("./handlers/get/fetch-chats");
+const { FetchConversation } = require("./handlers/get/fetch-conversation");
+const { FetchPosts } = require("./handlers/get/fetch-posts");
+const { SearchAccounts } = require("./handlers/get/search-accounts");
 
-const { CreateChat } = require("./handlers/chats/create-chat");
-const { GetChats } = require("./handlers/chats/get-chats");
-const { GetConversation } = require("./handlers/chats/get-conversation");
-const { SendMessage } = require("./handlers/chats/send-message");
+const { UpdateProfile } = require("./handlers/update/update-profile");
+const { UpdatePrivacy } = require("./handlers/update/update-privacy");
+const { UpdateUsername } = require("./handlers/update/update-username");
+
+const { UploadPost } = require("./handlers/interact/post");
+const { FollowAccount } = require("./handlers/interact/follow");
+const { UnfollowAccount } = require("./handlers/interact/unfollow");
+const { RemoveConnection } = require("./handlers/interact/remove-connection");
+
+const { CreateChat } = require("./handlers/communicate/create-chat");
+const { SendMessage } = require("./handlers/communicate/send-message");
+
+// --------------- EXPRESS --------------- //
 
 const express = require("express");
 const session = require("express-session");
@@ -44,6 +49,8 @@ apiRouter.use(function(request, result, next) {
   next();
 });
 
+// --------------- SESSION --------------- //
+
 apiRouter.use(express.json());
 apiRouter.use(session({
   resave: true,
@@ -55,6 +62,11 @@ apiRouter.use(session({
 }));
 
 // --------------- ROUTES --------------- //
+
+apiRouter.get("/api/test", (request, result) => {
+  result.send(request.headers);
+});
+
 apiRouter.post("/api/login", (request, result) => {
   Login(request, result);
 });
@@ -164,7 +176,7 @@ apiRouter.get("/api/followers", (request, result) => {
     result.sendStatus(401);
     return;
   
-  } GetFollowers(request, result);
+  } FetchFollowers(request, result);
 });
 
 apiRouter.get("/api/following", (request, result) => {
@@ -172,7 +184,7 @@ apiRouter.get("/api/following", (request, result) => {
     result.sendStatus(401);
     return;
   
-  } GetFollowing(request, result);
+  } FetchFollowing(request, result);
 });
 
 apiRouter.get("/api/create-chat", (request, result) => {
@@ -188,7 +200,7 @@ apiRouter.get("/api/get-chats", (request, result) => {
     result.sendStatus(401);
     return;
   
-  } GetChats(request, result);
+  } FetchChats(request, result);
 });
 
 apiRouter.get("/api/get-conversation", (request, result) => {
@@ -196,7 +208,7 @@ apiRouter.get("/api/get-conversation", (request, result) => {
     result.sendStatus(401);
     return;
   
-  } GetConversation(request, result);
+  } FetchConversation(request, result);
 });
 
 apiRouter.post("/api/send-message", (request, result) => {

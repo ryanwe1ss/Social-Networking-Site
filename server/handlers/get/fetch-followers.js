@@ -1,6 +1,6 @@
 const { database } = require("../../database/db_connect");
 
-function GetFollowers(request, result)
+function FetchFollowers(request, result)
 {
   database.query(`
     SELECT accounts.id, username, name from accounts
@@ -10,4 +10,4 @@ function GetFollowers(request, result)
     }
   );
 }
-module.exports = { GetFollowers }
+module.exports = { FetchFollowers }
