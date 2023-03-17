@@ -36,9 +36,7 @@ function Profile() {
   const [showFollowers, setShowFollowers] = useState(false);
   const [showFollowing, setShowFollowing] = useState(false);
 
-  useEffect(() => {
-    HandleFetchProfile();
-  }, []);
+  useEffect(() => { HandleFetchProfile() }, []);
 
   function HandleFetchProfile() {
     FetchProfile(accountId, profileId).then((profile) => {

@@ -9,7 +9,7 @@ function SearchAccounts(request, result)
     FROM
       accounts
     WHERE username ILIKE '%${request.query.searchQuery}%'
-    AND id != ${request.query.id} AND enabled = TRUE LIMIT 20`, function(error, data) {
+    AND id != ${request.query.id} AND enabled = TRUE`, function(error, data) {
       if (!error) result.send(data.rows);
   });
 }
