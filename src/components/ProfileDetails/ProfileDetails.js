@@ -1,4 +1,3 @@
-import { UpdateProfile } from "../../utilities/utilities";
 import LoadingBar from "../LoadingBar/loading-bar";
 import Posts from "../Posts/posts";
 import "./profile-details.scss";
@@ -10,28 +9,6 @@ function ProfileDetails(props) {
   const username = props.profileData.length > 0 ? props.profileData[0].username : null;
   const isFollowing = props.profileData.length > 0 ? props.profileData[0].is_following : false;
   const isPrivate = props.profileData.length > 0 ? props.profileData[0].private : false;
-
-  function HandleUpdate() {
-    const body = {
-      'id': localStorage.getItem("accountId"),
-      'name': document.getElementById("name").value,
-      'gender': document.getElementById("gender").value,
-      'status': document.getElementById("status").value,
-      'birthdate': document.getElementById("birthdate").value,
-      'school': document.getElementById("school").value,
-      'concentration': document.getElementById("concentration").value,
-      'email': document.getElementById("email").value,
-      'phone_number': document.getElementById("phone_number").value,
-      'bio': document.getElementById("bio").value,
-    };
-
-    UpdateProfile(body).then((response) => {
-      if (response.status === 200) {
-        props.HandleFetchProfile();
-        props.setEditForm(false);
-      }
-    });
-  }
 
   if (props.isDisabled) {
     return (
@@ -115,7 +92,7 @@ function ProfileDetails(props) {
             </div>
           ))}
           <Posts username={username} editMode={true}/>
-          <input type="button" onClick={HandleUpdate} className="update" value="Update"/>
+          {/* <input type="button" onClick={HandleUpdate} className="update" value="Update"/> */}
       </div>
       );
     

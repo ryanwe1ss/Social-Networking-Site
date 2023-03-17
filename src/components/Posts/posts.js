@@ -61,8 +61,9 @@ function Posts(props) {
   function HandleDeletePost(postId) {
     DeletePost(accountId, postId).then((response) => {
       if (response.status == 200) {
-        console.log(response);
-      }
+        setRefresh(refresh + 1);
+      
+      } else alert("Error Deleting Post, try again");
     })
   }
 
@@ -70,7 +71,7 @@ function Posts(props) {
     <div className="user-posts">
       <input type="file" id="post"/><hr/>
 
-      {profileId == accountId ? 
+      {profileId == accountId && !props.editMode ? 
         <div className="share-post" onClick={() => document.getElementById("postModal").style.display = "block"}>
           <i className="bi bi-plus-circle"/> Share a post
         </div> : null }

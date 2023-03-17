@@ -5,11 +5,14 @@ function UploadPost(request, result)
 {
   const form = new formidable.IncomingForm();
   form.on("file", function (field, file) {
-
     fs.readdir(`./data/posts/${request.query.id}/`, (err, files) => {
+      const latestFile = files.length > 0
+        ? parseInt(files[files.length - 1].split('.')[0]) + 1
+        : 1;
+
       fs.renameSync(
         file.filepath,
-        `./data/posts/${request.query.id}/${files.length + 1}.png`,
+        `./data/posts/${request.query.id}/${latestFile}.png`,
         
         (error) => {
           if (error) {
