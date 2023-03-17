@@ -9,7 +9,7 @@ function FetchPosts(request, result)
   for (let file = files.length - 1; file >= 0; file--)
   {
     posts.push({
-      id: file,
+      id: files[file].split('.')[0],
       image: fs.readFileSync(`data/posts/${profileId}/${files[file]}`, "base64"),
     });
   }

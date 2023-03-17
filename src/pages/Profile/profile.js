@@ -5,7 +5,7 @@ import {
   UploadProfilePicture,
   FollowAccount,
   UnfollowAccount,
-  RemoveConnection,
+  DeleteConnection,
   CreateChat,
   GetFollowers,
   GetFollowing,
@@ -83,8 +83,8 @@ function Profile() {
     })
   }
 
-  function HandleRemoveConnection(userId, type) {
-    RemoveConnection(accountId, userId, type).then((response) => {
+  function HandleDeleteConnection(userId, type) {
+    DeleteConnection(accountId, userId, type).then((response) => {
       if (response.status === 200) {
         HandleFetchProfile();
       }
@@ -157,7 +157,7 @@ function Profile() {
                   </h5>
                 }
                 <hr/>
-                <div className="connection-labels">
+                <div className="connection-labels" style={{pointerEvents: accountId == profileId || profileData[0].is_following ? "all" : "none"}}>
                   <label onClick={HandleGetFollowers}>Followers</label>: {account.followers} |&nbsp;
                   <label onClick={HandleGetFollowing}>Following</label>: {account.following}
                 </div>
@@ -184,7 +184,7 @@ function Profile() {
                 followers={followers}
                 setShowFollowers={setShowFollowers}
                 HandleGetFollowers={HandleGetFollowers}
-                HandleRemoveConnection={HandleRemoveConnection}
+                HandleDeleteConnection={HandleDeleteConnection}
               />
             : false
           }
@@ -195,7 +195,7 @@ function Profile() {
                 following={following}
                 setShowFollowing={setShowFollowing}
                 HandleGetFollowing={HandleGetFollowing}
-                HandleRemoveConnection={HandleRemoveConnection}
+                HandleDeleteConnection={HandleDeleteConnection}
               />
             : false
           }

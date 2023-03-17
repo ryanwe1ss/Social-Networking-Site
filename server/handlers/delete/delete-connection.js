@@ -1,6 +1,6 @@
 const { database } = require("../../database/db_connect");
 
-function RemoveConnection(request, result)
+function DeleteConnection(request, result)
 {
   const sessionId = request.query.id;
   const userId = request.query.userId;
@@ -27,4 +27,4 @@ function RemoveConnection(request, result)
     );
   }
 }
-module.exports = { RemoveConnection }
+module.exports = { DeleteConnection }

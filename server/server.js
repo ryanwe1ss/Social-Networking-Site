@@ -3,24 +3,26 @@
 const { Login } = require("./handlers/auth/login");
 const { Register } = require("./handlers/auth/register");
 
-const { FetchProfile } = require("./handlers/get/fetch-profile");
-const { FetchPicture } = require("./handlers/get/fetch-picture");
-const { FetchThumbnail } = require("./handlers/get/fetch-thumbnail");
+const { FetchConversation } = require("./handlers/get/fetch-conversation");
 const { FetchFollowers } = require("./handlers/get/fetch-followers");
 const { FetchFollowing } = require("./handlers/get/fetch-following");
-const { FetchChats } = require("./handlers/get/fetch-chats");
-const { FetchConversation } = require("./handlers/get/fetch-conversation");
-const { FetchPosts } = require("./handlers/get/fetch-posts");
+const { FetchThumbnail } = require("./handlers/get/fetch-thumbnail");
 const { SearchAccounts } = require("./handlers/get/search-accounts");
+const { FetchPicture } = require("./handlers/get/fetch-picture");
+const { FetchProfile } = require("./handlers/get/fetch-profile");
+const { FetchChats } = require("./handlers/get/fetch-chats");
+const { FetchPosts } = require("./handlers/get/fetch-posts");
 
-const { UpdateProfile } = require("./handlers/update/update-profile");
-const { UpdatePrivacy } = require("./handlers/update/update-privacy");
 const { UpdateUsername } = require("./handlers/update/update-username");
+const { UpdatePrivacy } = require("./handlers/update/update-privacy");
+const { UpdateProfile } = require("./handlers/update/update-profile");
 
-const { UploadPost } = require("./handlers/interact/post");
-const { FollowAccount } = require("./handlers/interact/follow");
 const { UnfollowAccount } = require("./handlers/interact/unfollow");
-const { RemoveConnection } = require("./handlers/interact/remove-connection");
+const { FollowAccount } = require("./handlers/interact/follow");
+const { UploadPost } = require("./handlers/interact/post");
+
+const { DeleteConnection } = require("./handlers/delete/delete-connection");
+const { DeletePost } = require("./handlers/delete/delete-post");
 
 const { CreateChat } = require("./handlers/communicate/create-chat");
 const { SendMessage } = require("./handlers/communicate/send-message");
@@ -163,12 +165,20 @@ apiRouter.get("/api/unfollow", (request, result) => {
   } UnfollowAccount(request, result);
 });
 
-apiRouter.get("/api/rmvconnection", (request, result) => {
+apiRouter.get("/api/delete-connection", (request, result) => {
   if (request.session.user === undefined) {
     result.sendStatus(401);
     return;
   
-  } RemoveConnection(request, result);
+  } DeleteConnection(request, result);
+});
+
+apiRouter.get("/api/delete-post", (request, result) => {
+  if (request.session.user === undefined) {
+    result.sendStatus(401);
+    return;
+  
+  } DeletePost(request, result);
 });
 
 apiRouter.get("/api/followers", (request, result) => {

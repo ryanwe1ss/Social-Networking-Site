@@ -30,7 +30,7 @@ function Following(params)
               {params.accountId !== params.profileId
                 ? null
                 : <input type="button" className="btn btn-secondary btn-sm" value="Remove" onClick={() => {
-                    params.HandleRemoveConnection(account.id, "following");
+                    params.HandleDeleteConnection(account.id, "following");
                     params.HandleGetFollowing();
                   }}/>
               }

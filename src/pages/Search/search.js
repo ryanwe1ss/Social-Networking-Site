@@ -26,7 +26,7 @@ function Search() {
                 setHasSearched(true);
               });
 
-            }} placeholder="Search" />
+            }} placeholder="Search" autoFocus={true}/>
           </div>
 
           <div className="search-results">

@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { FetchPosts, UploadPost } from "../../utilities/utilities";
+import { FetchPosts, UploadPost, DeletePost } from "../../utilities/utilities";
 import LoadingBar from "../LoadingBar/loading-bar";
 import "./posts.scss";
 
 function Posts(props) {
   const profileId = parseInt(location.search.split("id=")[1]);
   const accountId = parseInt(localStorage.getItem("accountId"));
+  const editMode = props.editMode;
 
   const [uploaded, setUploaded] = useState(false);
   const [loaded, setLoaded] = useState(false);
@@ -19,7 +20,6 @@ function Posts(props) {
     FetchPosts(profileId, limit).then((result) => {
       setPosts(result.posts);
       setLoaded(true);
-
       setTimeout(() => {
         if (result.count <= limit)
           document.querySelector(".load-more").style.display = "none";
@@ -39,7 +39,7 @@ function Posts(props) {
     reader.readAsDataURL(event.target.files[0]);
   }
 
-  function PostImage() {
+  function HandlePostImage() {
     const image = document.getElementById("selectImage").files[0];
 
     UploadPost(accountId, image).then((response) => {
@@ -58,6 +58,14 @@ function Posts(props) {
     });
   }
 
+  function HandleDeletePost(postId) {
+    DeletePost(accountId, postId).then((response) => {
+      if (response.status == 200) {
+        console.log(response);
+      }
+    })
+  }
+
   return (
     <div className="user-posts">
       <input type="file" id="post"/><hr/>
@@ -72,6 +80,13 @@ function Posts(props) {
           posts.map(post => (
             <div className="post" key={post.id}>
               <img src={`data:image/jpeg;base64,${post.image}`} alt="thumbnail"/>
+              { editMode ?
+                <span
+                  className="delete"
+                  onClick={() => HandleDeletePost(post.id)}
+                >✕
+                </span>
+              : null }
             </div>
           )) :
           
@@ -117,7 +132,7 @@ function Posts(props) {
                   <button
                     id="postImageButton"
                     className="btn btn-secondary"
-                    onClick={PostImage}
+                    onClick={HandlePostImage}
                     disabled={!uploaded}
                     >Post Image
                   </button>

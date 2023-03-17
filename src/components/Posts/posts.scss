@@ -22,8 +22,8 @@
 
   .posts {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(210px, max-content));
     justify-content: center;
+    grid-template-columns: repeat(auto-fit, minmax(250px, max-content));
 
     .spinner {
       margin: 0 auto;
@@ -32,6 +32,8 @@
 
     .post {
       padding: 20px;
+      position: relative;
+      display: inline-block;
 
       img {
         border: 2px solid black;
@@ -44,6 +46,17 @@
           transition: transform 0.5s;
           cursor: pointer;
         }
+      }
+
+      .delete {
+        background-color: rgb(255, 78, 78);
+        border-radius: 100%;
+        padding: 0px 5px;
+        color: white;
+
+        cursor: pointer;
+        position: absolute;
+        top: 0;
       }
     }
 

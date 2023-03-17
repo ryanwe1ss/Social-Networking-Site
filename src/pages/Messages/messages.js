@@ -127,7 +127,7 @@ function Messages()
 
         <div className="messages">
           <div className="chats">
-            <div className="add-chat"><i className="bi bi-message">Message New Friend</i></div>
+            <div className="chat-header">Message Friend</div>
             {chats.map(chat => (
               <div className="chat" onClick={() => { HandleFetchConversation(chat.id) }} id={`${chat.id}_chat`} key={chat.id}>
                 <img

@@ -16,19 +16,10 @@
         max-width: 200px;
         min-height: max-content;
     
-        .add-chat {
+        .chat-header {
           border-bottom: 1px solid black;
           text-align: center;
           padding: 5px;
-
-          i {
-            font-style: normal;
-          }
-
-          i:hover {
-            color: rgb(98, 126, 202);
-            cursor: pointer;
-          }
         }
     
         .chat {

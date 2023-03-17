@@ -99,6 +99,12 @@ export function UploadPost(accountId, image)
     .then((response) => { return response });
 }
 
+export function DeletePost(accountId, postId)
+{
+  return HttpGet(`/api/delete-post?id=${accountId}&post=${postId}`)
+    .then((response) => { return response });
+}
+
 export function SearchAccounts(event, accountId)
 {
   const searchQuery = event.target.value;
@@ -142,9 +148,9 @@ export function UnfollowAccount(accountId, profileId)
     .then((response) => { return response })
 }
 
-export function RemoveConnection(accountId, userId, type)
+export function DeleteConnection(accountId, userId, type)
 {
-  return HttpGet(`/api/rmvconnection?id=${accountId}&userId=${userId}&type=${type}`)
+  return HttpGet(`/api/delete-connection?id=${accountId}&userId=${userId}&type=${type}`)
     .then((response) => { return response });
 }
 
