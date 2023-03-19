@@ -59,9 +59,9 @@ export function FetchThumbnail(id)
     })
 }
 
-export function FetchPost(profileId, postId)
+export function FetchPost(accountId, profileId, postId)
 {
-  return HttpGet(`/api/post?id=${profileId}&post=${postId}`)
+  return HttpGet(`/api/post?accountId=${accountId}&profileId=${profileId}&post=${postId}`)
     .then((response) => {
       if (response.status == 200) {
         return response.json();
@@ -83,6 +83,18 @@ export function FetchPosts(profileId, limit=3)
     .then((posts) => {
       return posts;
     });
+}
+
+export function LikePost(accountId, postId)
+{
+  return HttpGet(`/api/like?id=${accountId}&post=${postId}`)
+    .then((response) => { return response });
+}
+
+export function CommentPost(accountId, postId, comment)
+{
+  return HttpGet(`/api/comment?id=${accountId}&post=${postId}&comment=${comment}`)
+    .then((response) => { return response });
 }
 
 export function UpdateProfile(body)

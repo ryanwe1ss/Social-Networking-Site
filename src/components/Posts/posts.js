@@ -15,7 +15,6 @@ function Posts(props) {
   const [refresh , setRefresh] = useState(0);
   const [limit, setLimit] = useState(6);
 
-
   const [tempPosts, setTempPosts] = useState([]);
   const [posts, setPosts] = useState([]);
 

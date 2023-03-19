@@ -21,6 +21,8 @@ const { UpdateProfile } = require("./handlers/update/update-profile");
 const { UnfollowAccount } = require("./handlers/interact/unfollow");
 const { FollowAccount } = require("./handlers/interact/follow");
 const { UploadPost } = require("./handlers/interact/post");
+const { CommentPost } = require("./handlers/interact/comment");
+const { LikePost } = require("./handlers/interact/like");
 
 const { DeleteConnection } = require("./handlers/delete/delete-connection");
 const { DeletePost } = require("./handlers/delete/delete-post");
@@ -148,6 +150,22 @@ apiRouter.get("/api/post", (request, result) => {
     return;
   
   } FetchPost(request, result);
+});
+
+apiRouter.get("/api/comment", (request, result) => {
+  if (request.session.user === undefined) {
+    result.sendStatus(401);
+    return;
+  
+  } CommentPost(request, result);
+});
+
+apiRouter.get("/api/like", (request, result) => {
+  if (request.session.user === undefined) {
+    result.sendStatus(401);
+    return;
+  
+  } LikePost(request, result);
 });
 
 apiRouter.get("/api/posts", (request, result) => {

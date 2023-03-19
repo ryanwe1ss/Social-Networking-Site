@@ -3,27 +3,39 @@ const fs = require("fs");
 
 function FetchPost(request, result)
 {
+  console.log(request.query);
+
   database.query(`
     SELECT
-      (SELECT username FROM accounts WHERE id = ${request.query.id}) as username,
-      JSON_AGG((SELECT commenter, comment FROM post_comments WHERE post_id = ${request.query.id})) as comments,
-      CAST((SELECT COUNT(*) FROM post_likes WHERE post_id = ${request.query.id}) AS INT) as likes,
+      (SELECT username FROM accounts WHERE id = ${request.query.profileId}) as username,
+      (SELECT EXISTS(SELECT * FROM post_likes
+        WHERE liker = ${request.query.accountId}
+        AND post_id = ${request.query.post})
+        AS is_liked),
+
+      (SELECT JSON_AGG(JSON_BUILD_OBJECT(
+        'id', id,
+        'commenter', JSON_BUILD_OBJECT('id', commenter, 'username', (SELECT username FROM accounts WHERE id = commenter)),
+        'comment', comment,
+        'date_created', date_created
+      )) AS comments FROM post_comments WHERE post_id = ${request.query.post}) as comments,
+
+      CAST((SELECT COUNT(*) FROM post_likes WHERE post_id = ${request.query.post}) AS INT) as likes,
       CAST(creator AS INT),
-      description
+      CAST(id AS INT),
+      description,
+      comment AS comments_enabled,
+      "like" AS likes_enabled
     FROM
       posts
     WHERE
-      creator = ${request.query.id} AND
-      file = ${request.query.post}`,
+      id = ${request.query.post} AND creator = ${request.query.profileId}`,
     
     function(error, data) {
-      console.log(error);
-      // GET COMMENTS for single post
-      
       if (!error) {
         result.send({
           creator: data.rows[0],
-          post: fs.readFileSync(`data/posts/${request.query.id}/${request.query.post}.png`, "base64"),
+          post: fs.readFileSync(`data/posts/${request.query.profileId}/${request.query.post}.png`, "base64"),
         });
       
       } else result.sendStatus(500);
