@@ -2,8 +2,30 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 14.5 (Ubuntu 14.5-0ubuntu0.22.04.1)
--- Dumped by pg_dump version 14.5 (Ubuntu 14.5-0ubuntu0.22.04.1)
+-- Dumped from database version 15.1
+-- Dumped by pg_dump version 15.1
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- Name: netconnect; Type: DATABASE; Schema: -; Owner: postgres
+--
+
+CREATE DATABASE netconnect WITH TEMPLATE = template0 ENCODING = 'UTF8' LOCALE_PROVIDER = libc LOCALE = 'English_Canada.1252';
+
+
+ALTER DATABASE netconnect OWNER TO postgres;
+
+\connect netconnect
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -55,7 +77,8 @@ CREATE TABLE public.accounts (
     bio character varying,
     date_created timestamp with time zone DEFAULT CURRENT_TIMESTAMP,
     date_updated timestamp with time zone DEFAULT CURRENT_TIMESTAMP,
-    enabled boolean DEFAULT true NOT NULL
+    enabled boolean DEFAULT true NOT NULL,
+    private boolean DEFAULT false NOT NULL
 );
 
 
@@ -193,6 +216,117 @@ ALTER SEQUENCE public.messages_id_seq OWNED BY public.messages.id;
 
 
 --
+-- Name: post_comments; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.post_comments (
+    id integer NOT NULL,
+    post_id bigint NOT NULL,
+    commenter bigint NOT NULL,
+    comment text,
+    date_created timestamp with time zone DEFAULT CURRENT_TIMESTAMP
+);
+
+
+ALTER TABLE public.post_comments OWNER TO postgres;
+
+--
+-- Name: post_comments_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.post_comments_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.post_comments_id_seq OWNER TO postgres;
+
+--
+-- Name: post_comments_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.post_comments_id_seq OWNED BY public.post_comments.id;
+
+
+--
+-- Name: post_likes; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.post_likes (
+    id integer NOT NULL,
+    post_id bigint NOT NULL,
+    liker bigint NOT NULL,
+    date_created timestamp with time zone DEFAULT CURRENT_TIMESTAMP
+);
+
+
+ALTER TABLE public.post_likes OWNER TO postgres;
+
+--
+-- Name: post_likes_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.post_likes_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.post_likes_id_seq OWNER TO postgres;
+
+--
+-- Name: post_likes_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.post_likes_id_seq OWNED BY public.post_likes.id;
+
+
+--
+-- Name: posts; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.posts (
+    id integer NOT NULL,
+    creator bigint NOT NULL,
+    description text,
+    comment boolean DEFAULT true NOT NULL,
+    "like" boolean DEFAULT true NOT NULL,
+    date_created timestamp with time zone DEFAULT CURRENT_TIMESTAMP
+);
+
+
+ALTER TABLE public.posts OWNER TO postgres;
+
+--
+-- Name: posts_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.posts_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.posts_id_seq OWNER TO postgres;
+
+--
+-- Name: posts_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.posts_id_seq OWNED BY public.posts.id;
+
+
+--
 -- Name: accounts id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -218,6 +352,27 @@ ALTER TABLE ONLY public.connections ALTER COLUMN id SET DEFAULT nextval('public.
 --
 
 ALTER TABLE ONLY public.messages ALTER COLUMN id SET DEFAULT nextval('public.messages_id_seq'::regclass);
+
+
+--
+-- Name: post_comments id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.post_comments ALTER COLUMN id SET DEFAULT nextval('public.post_comments_id_seq'::regclass);
+
+
+--
+-- Name: post_likes id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.post_likes ALTER COLUMN id SET DEFAULT nextval('public.post_likes_id_seq'::regclass);
+
+
+--
+-- Name: posts id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.posts ALTER COLUMN id SET DEFAULT nextval('public.posts_id_seq'::regclass);
 
 
 --
@@ -258,6 +413,14 @@ ALTER TABLE ONLY public.connections
 
 ALTER TABLE ONLY public.messages
     ADD CONSTRAINT messages_pk PRIMARY KEY (id);
+
+
+--
+-- Name: posts posts_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.posts
+    ADD CONSTRAINT posts_pk PRIMARY KEY (id);
 
 
 --
@@ -324,5 +487,46 @@ ALTER TABLE ONLY public.messages
 
 
 --
+-- Name: post_comments post_comments_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.post_comments
+    ADD CONSTRAINT post_comments_fk FOREIGN KEY (post_id) REFERENCES public.posts(id) ON DELETE CASCADE;
+
+
+--
+-- Name: post_comments post_comments_fk_1; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.post_comments
+    ADD CONSTRAINT post_comments_fk_1 FOREIGN KEY (commenter) REFERENCES public.accounts(id);
+
+
+--
+-- Name: post_likes post_likes_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.post_likes
+    ADD CONSTRAINT post_likes_fk FOREIGN KEY (post_id) REFERENCES public.posts(id) ON DELETE CASCADE;
+
+
+--
+-- Name: post_likes post_likes_fk_1; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.post_likes
+    ADD CONSTRAINT post_likes_fk_1 FOREIGN KEY (liker) REFERENCES public.accounts(id);
+
+
+--
+-- Name: posts posts_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.posts
+    ADD CONSTRAINT posts_fk FOREIGN KEY (creator) REFERENCES public.accounts(id);
+
+
+--
 -- PostgreSQL database dump complete
 --
+
