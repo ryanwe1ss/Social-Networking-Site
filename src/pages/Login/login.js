@@ -7,9 +7,6 @@ function Login() {
     PerformLogin(username, password).then((response) => {
       if (response !== "invalid") {
         response = JSON.parse(response);
-
-        localStorage.setItem("accountId", response.id);
-        localStorage.setItem("username", response.username);
         window.location.href = `/profile?id=${response.id}`;
   
       } else {

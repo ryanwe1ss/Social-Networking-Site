@@ -28,7 +28,7 @@ function UpdateProfile(request, result) {
       email=${account.email},
       phone_number=${account.phone_number},
       bio=${account.bio}
-      WHERE id=${account.id}`,
+      WHERE id=${request.session.user.id}`,
       
       function (error, data) {
         if (!error) {
@@ -40,8 +40,8 @@ function UpdateProfile(request, result) {
 
   } else {
     form.on("file", function (field, file) {
-      const image = `data/images/${request.query.id}_profile.png`;
-      const thumbnail = `data/thumbnails/${request.query.id}_profile_thumbnail.png`;
+      const image = `data/images/${request.session.user.id}_profile.png`;
+      const thumbnail = `data/thumbnails/${request.session.user.id}_profile_thumbnail.png`;
 
       fs.renameSync(file.filepath, image, (error) => {
         if (error) {

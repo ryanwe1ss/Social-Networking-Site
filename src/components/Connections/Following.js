@@ -27,7 +27,7 @@ function Following(params)
                 {account.username}
                 <br/><span>{account.name && account.name.trim().length > 0 ? account.name : "No Name"}</span>
               </label>
-              {params.accountId !== params.profileId
+              {params.sessionId !== params.profileId
                 ? null
                 : <input type="button" className="btn btn-secondary btn-sm" value="Remove" onClick={() => {
                     params.HandleDeleteConnection(account.id, "following");

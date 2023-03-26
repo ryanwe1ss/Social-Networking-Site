@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import {
+  FetchSession,
   FetchProfile,
   FetchPicture,
   UpdateProfile,
@@ -22,11 +23,10 @@ import "./profile.scss";
 
 function Profile()
 {
-  const accountId = parseInt(localStorage.getItem("accountId"));
   const profileId = parseInt(location.search.split("id=")[1]);
 
-  const [profileData, setProfile] = useState([]);
   const [picture, setPicture] = useState([]);
+  const [profile, setProfile] = useState([]);
   const [followers, setFollowers] = useState([]);
   const [following, setFollowing] = useState([]);
 
@@ -37,10 +37,20 @@ function Profile()
   const [showFollowers, setShowFollowers] = useState(false);
   const [showFollowing, setShowFollowing] = useState(false);
 
-  useEffect(() => { HandleFetchProfile() }, []);
+  const [session, setSession] = useState({
+    id: null,
+    username: null,
+  });
+
+  useEffect(() => {
+    FetchSession().then((session) => {
+      setSession({ id: session.id, username: session.username });
+      HandleFetchProfile();
+    });
+  }, []);
 
   function HandleFetchProfile() {
-    FetchProfile(accountId, profileId).then((profile) => {
+    FetchProfile(profileId).then((profile) => {
       if (!profile) {
         setProfile([]);
         setPicture([]);
@@ -63,7 +73,6 @@ function Profile()
 
   function HandleUpdate() {
     const body = {
-      'id': localStorage.getItem("accountId"),
       'name': document.getElementById("name").value,
       'gender': document.getElementById("gender").value,
       'status': document.getElementById("status").value,
@@ -85,7 +94,7 @@ function Profile()
   }
 
   function HandleUpload(event) {
-    UploadProfilePicture(event, accountId).then((response) => {
+    UploadProfilePicture(event).then((response) => {
       if (response.status === 200) {
         setTimeout(() => {
           setRendered(false);
@@ -96,19 +105,19 @@ function Profile()
   }
 
   function HandleFollow() {
-    FollowAccount(accountId, profileId).then((response) => {
+    FollowAccount(profileId).then((response) => {
       if (response.status === 200) HandleFetchProfile();
     });
   }
 
   function HandleUnfollow() {
-    UnfollowAccount(accountId, profileId).then((response) => {
+    UnfollowAccount(profileId).then((response) => {
       if (response.status === 200) HandleFetchProfile();
     })
   }
 
   function HandleDeleteConnection(userId, type) {
-    DeleteConnection(accountId, userId, type).then((response) => {
+    DeleteConnection(userId, type).then((response) => {
       if (response.status === 200) {
         HandleFetchProfile();
       }
@@ -130,131 +139,134 @@ function Profile()
   }
 
   function HandleMessage() {
-    CreateChat(accountId, profileId).then((response) => {
+    CreateChat(profileId).then((response) => {
       if (response.status === 200) {
         window.location.href = `/messages?id=${profileId}`;
       }
     });
   }
 
-  return (
-    <div className="profile-container">
-      <div className="outer-border">
-        <SidePanel/>
-
-        <div className="profile">
-          <div className="left-details">
-            {isRendered ? 
-              <img
-                src={picture}
-                onError={(img) => (img.target.src = DefaultProfilePicture)}
-                className="picture"
-                alt="picture"
-              /> :
-              <div className="picture">
-                <LoadingBar size="small"/>
-              </div>
-            }
-
-            {profileData.map(account => (
-              <div key={account.id}>
-                {accountId == profileId
-                ? <div className="profile-interact">
-                    {
-                      !editForm ?
-                        <input className="btn btn-secondary btn-sm" type="button" value="Edit Profile" 
-                          onClick={() => setEditForm(true)}
-                        /> :
-                        <span>
-                          <button className="btn btn-success btn-sm" onClick={HandleUpdate}>
-                            <i className="bi bi-check-lg"/>
-                          </button>
-                          
-                          <button className="btn btn-danger btn-sm" onClick={() => setEditForm(false)}>
-                            <i className="bi bi-x-lg"/>
-                          </button>
-                        </span>
-                    }
-
-                    <input id="profile-picture" onChange={HandleUpload} type="file"/>
-                    <button className="btn btn-secondary btn-sm"
-                      onClick={() => document.getElementById("profile-picture").click()}
-                    >Edit Profile Picture
-                    </button>
-                  </div> :
-                  <h5>
-                    <label className="username">{account.username}</label>
-                    <div className="interact">
-                      {account.is_following ?
-                        <button className="btn btn-secondary btn-sm" onClick={HandleUnfollow}>Unfollow</button> :
-                        <button className="btn btn-secondary btn-sm" onClick={HandleFollow}>Follow</button>
-                      }
-                      <input
-                        className="btn btn-secondary btn-sm"
-                        type="button"
-                        value="Message"
-                        onClick={HandleMessage}
-                      />
-                    </div>
-                  </h5>
-                }
-                <hr/>
-                <div className="connection-labels" style={{pointerEvents: accountId == profileId || profileData[0].is_following ? "all" : "none"}}>
-                  <label onClick={HandleGetFollowers}>Followers</label>: {account.followers} |&nbsp;
-                  <label onClick={HandleGetFollowing}>Following</label>: {account.following}
+  if (session.id) {
+    return (
+      <div className="profile-container">
+        <div className="outer-border">
+          <SidePanel/>
+  
+          <div className="profile">
+            <div className="left-details">
+              {isRendered ? 
+                <img
+                  src={picture}
+                  onError={(img) => (img.target.src = DefaultProfilePicture)}
+                  className="picture"
+                  alt="picture"
+                /> :
+                <div className="picture">
+                  <LoadingBar size="small"/>
                 </div>
-              </div>
-            ))}
-          </div>
-
-          <div className="right-details">
-            {editForm
-              ? <ProfileDetails
-                  edit={true}
-                  saved={saved}
-                  profileData={profileData}
-                  HandleFetchProfile={HandleFetchProfile}
-                  setEditForm={setEditForm}
-                  setSaved={setSaved}
+              }
+  
+              {profile.map(account => (
+                <div key={account.id}>
+                  {session.id == profileId
+                  ? <div className="profile-interact">
+                      {
+                        !editForm ?
+                          <input className="btn btn-secondary btn-sm" type="button" value="Edit Profile" 
+                            onClick={() => setEditForm(true)}
+                          /> :
+                          <span>
+                            <button className="btn btn-success btn-sm" onClick={HandleUpdate}>
+                              <i className="bi bi-check-lg"/>
+                            </button>
+                            
+                            <button className="btn btn-danger btn-sm" onClick={() => setEditForm(false)}>
+                              <i className="bi bi-x-lg"/>
+                            </button>
+                          </span>
+                      }
+  
+                      <input id="profile-picture" onChange={HandleUpload} type="file"/>
+                      <button className="btn btn-secondary btn-sm"
+                        onClick={() => document.getElementById("profile-picture").click()}
+                      >Edit Profile Picture
+                      </button>
+                    </div> :
+                    <h5>
+                      <label className="username">{account.username}</label>
+                      <div className="interact">
+                        {account.is_following ?
+                          <button className="btn btn-secondary btn-sm" onClick={HandleUnfollow}>Unfollow</button> :
+                          <button className="btn btn-secondary btn-sm" onClick={HandleFollow}>Follow</button>
+                        }
+                        <input
+                          className="btn btn-secondary btn-sm"
+                          type="button"
+                          value="Message"
+                          onClick={HandleMessage}
+                        />
+                      </div>
+                    </h5>
+                  }
+                  <hr/>
+                  <div className="connection-labels" style={{pointerEvents: session.id == profileId || profile[0].is_following ? "all" : "none"}}>
+                    <label onClick={HandleGetFollowers}>Followers</label>: {account.followers} |&nbsp;
+                    <label onClick={HandleGetFollowing}>Following</label>: {account.following}
+                  </div>
+                </div>
+              ))}
+            </div>
+  
+            <div className="right-details">
+              {editForm
+                ? <ProfileDetails
+                    edit={true}
+                    saved={saved}
+                    profile={profile}
+                    HandleFetchProfile={HandleFetchProfile}
+                    setEditForm={setEditForm}
+                    setSaved={setSaved}
+                  />
+  
+                : <ProfileDetails
+                    edit={false}
+                    saved={saved}
+                    profile={profile}
+                    HandleFetchProfile={HandleFetchProfile}
+                    setEditForm={setEditForm}
+                    setSaved={setSaved}
+                    isDisabled={isDisabled}
+                  />
+              }
+            </div>
+  
+            {showFollowers
+              ? <Followers
+                  sessionId={session.id}
+                  profileId={profileId}
+                  followers={followers}
+                  setShowFollowers={setShowFollowers}
+                  HandleGetFollowers={HandleGetFollowers}
+                  HandleDeleteConnection={HandleDeleteConnection}
                 />
-
-              : <ProfileDetails
-                  edit={false}
-                  saved={saved}
-                  profileData={profileData}
-                  HandleFetchProfile={HandleFetchProfile}
-                  setEditForm={setEditForm}
-                  setSaved={setSaved}
-                  isDisabled={isDisabled}
+              : false
+            }
+            {showFollowing
+              ? <Following
+                  sessionId={session.id}
+                  profileId={profileId}
+                  following={following}
+                  setShowFollowing={setShowFollowing}
+                  HandleGetFollowing={HandleGetFollowing}
+                  HandleDeleteConnection={HandleDeleteConnection}
                 />
+              : false
             }
           </div>
-
-          {showFollowers
-            ? <Followers
-                accountId={accountId}
-                profileId={profileId}
-                followers={followers}
-                setShowFollowers={setShowFollowers}
-                HandleGetFollowers={HandleGetFollowers}
-                HandleDeleteConnection={HandleDeleteConnection}
-              />
-            : false
-          }
-          {showFollowing
-            ? <Following
-                accountId={accountId}
-                profileId={profileId}
-                following={following}
-                setShowFollowing={setShowFollowing}
-                HandleGetFollowing={HandleGetFollowing}
-                HandleDeleteConnection={HandleDeleteConnection}
-              />
-            : false
-          }
         </div>
       </div>
-    </div>
-  );
+    );
+  
+  } else return <LoadingBar size="large"/>
 }
 export default Profile;

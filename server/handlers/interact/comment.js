@@ -4,7 +4,7 @@ function CommentPost(request, result)
 {
   database.query(`
     INSERT INTO post_comments (post_id, commenter, comment)
-    VALUES (${request.query.post}, ${request.query.id}, '${request.query.comment}')`,
+    VALUES (${request.query.post}, ${request.session.user.id}, '${request.query.comment}')`,
     
     function(error, data) {
       if (!error) result.sendStatus(200);

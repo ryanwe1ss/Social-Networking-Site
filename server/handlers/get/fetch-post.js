@@ -7,7 +7,7 @@ function FetchPost(request, result)
     SELECT
       (SELECT username FROM accounts WHERE id = ${request.query.profileId}) as username,
       (SELECT EXISTS(SELECT * FROM post_likes
-        WHERE liker = ${request.query.accountId}
+        WHERE liker = ${request.session.user.id}
         AND post_id = ${request.query.post})
         AS is_liked),
 

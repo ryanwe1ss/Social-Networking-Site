@@ -4,7 +4,7 @@ function FollowAccount(request, result)
 {
   database.query(`
     INSERT INTO connections ("follower", "user")
-    VALUES ('${request.query.id}', '${request.query.profileId}')`,
+    VALUES ('${request.session.user.id}', '${request.query.profileId}')`,
     
     function(error, data) {
       if (error) result.sendStatus(500);

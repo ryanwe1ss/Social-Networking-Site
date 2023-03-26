@@ -1,18 +1,24 @@
 import { useState, useEffect } from "react";
-import DefaultProfilePicture from "../../images/default.png";
-import SidePanel from "../../components/SidePanel/side-panel";
-import "./messages.scss";
+
 import {
-  GetChats,
+  FetchSession,
   FetchThumbnail,
   GetConversation,
   SendMessage,
+  GetChats,
 } from "../../utilities/utilities";
+
+import DefaultProfilePicture from "../../images/default.png";
+import SidePanel from "../../components/SidePanel/side-panel";
+import LoadingBar from "../../components/LoadingBar/loading-bar";
+import "./messages.scss";
 
 function Messages()
 {
-  const accountId = parseInt(localStorage.getItem("accountId"));
-  const username = localStorage.getItem("username");
+  const [session, setSession] = useState({
+    id: null,
+    username: null,
+  });
 
   const [conversation, setConversation] = useState([]);
   const [thumbnails, setThumbnail] = useState([]);
@@ -21,7 +27,10 @@ function Messages()
   const [userId, setUserId] = useState();
 
   useEffect(() => {
-    HandleGetChats();
+    FetchSession().then((session) => {
+      setSession({ id: session.id, username: session.username });
+      HandleGetChats(session);
+    });
   }, []);
 
   function HandleFetchThumbnails(users) {
@@ -35,13 +44,13 @@ function Messages()
     });
   }
 
-  async function HandleGetChats() {
-    GetChats(accountId).then((chats) => {
+  function HandleGetChats(session) {
+    GetChats(session.id).then((chats) => {
       const users = chats.map(chat => {
-        if (chat.user_one !== username) {
+        if (chat.user_one !== session.username) {
           return { id: chat.user_one_id, name: chat.user_one };
         }
-        if (chat.user_two !== username) {
+        if (chat.user_two !== session.username) {
           return { id: chat.user_two_id, name: chat.user_two };
         }
       });
@@ -77,7 +86,7 @@ function Messages()
     
     }); document.getElementById(userId).style.display = "block";
 
-    GetConversation(accountId, userId).then((conversation) => {
+    GetConversation(session.id, userId).then((conversation) => {
       document.getElementById("message").disabled = false;
 
       setConversation(conversation.messages);
@@ -101,7 +110,6 @@ function Messages()
 
     const body = {
       chat_id: chatId,
-      from_user: accountId,
       to_user: userId,
       message: message,
     };
@@ -114,53 +122,60 @@ function Messages()
     })
   }
 
-  return (
-    <div className="messages-container">
-      <div className="outer-border">
-        <SidePanel/>
-
-        <div className="messages">
-          <div className="chats">
-            <div className="chat-header">Message Friend</div>
-            {chats.map(chat => (
-              <div className="chat" onClick={() => { HandleFetchConversation(chat.id) }} id={`${chat.id}_chat`} key={chat.id}>
-                <img
-                  src={thumbnails.filter(t => t.id == chat.id).map(t => t.thumbnail)}
-                  onError={(img) => (img.target.src = DefaultProfilePicture)}
-                  className="thumbnail"
-                  alt="thumbnail"
-                />
-                <span>{chat.name}</span>
-                <i className="bi bi-chat-fill selected" id={chat.id} style={{display: "none", float: "right"}}/>
-              </div>
-            ))}
-          </div>
-
-          <div className="interface">
-            <div className="chat-session" id="chat">
-              {conversation.map(message => (
-                <div className="text-chat" key={message.id}>
-                  {message.from == username ?
-                    <div className="you">{message.message}</div> :
-                    <div className="user">{message.message}</div>
-                  }
+  if (session.id) {
+    return (
+      <div className="messages-container">
+        <div className="outer-border">
+          <SidePanel/>
+  
+          <div className="messages">
+            <div className="chats">
+              <div className="chat-header">Message Friend</div>
+              {chats.map(chat => (
+                <div className="chat" onClick={() => { HandleFetchConversation(chat.id) }} id={`${chat.id}_chat`} key={chat.id}>
+                  <img
+                    src={thumbnails.filter(t => t.id == chat.id).map(t => t.thumbnail)}
+                    onError={(img) => (img.target.src = DefaultProfilePicture)}
+                    className="thumbnail"
+                    alt="thumbnail"
+                  />
+                  <span>{chat.name}</span>
+                  <i className="bi bi-chat-fill selected" id={chat.id} style={{display: "none", float: "right"}}/>
                 </div>
               ))}
             </div>
-
-            <div className="message-box">
-              <textarea id="message" placeholder="Type Message Here" disabled/>
-
-              <div className="buttons">
-                <button onClick={
-                  () => HandleSendMessage(document.getElementById("message").value) }
-                ><i className='bi bi-arrow-right-circle-fill'/></button>
+  
+            <div className="interface">
+              <div className="chat-session" id="chat">
+                {conversation.map(message => (
+                  <div className="text-chat" key={message.id}>
+                    {message.from == session.username ?
+                      <div className="you">{message.message}</div> :
+                      <div className="user">{message.message}</div>
+                    }
+                  </div>
+                ))}
+              </div>
+  
+              <div className="message-box">
+                <textarea id="message" placeholder="Type Message Here" disabled/>
+  
+                <div className="buttons">
+                  <button onClick={
+                    () => HandleSendMessage(document.getElementById("message").value) }
+                  ><i className='bi bi-arrow-right-circle-fill'/></button>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  );
+    );
+  
+  } else {
+    return (
+      <LoadingBar size="large"/>
+    );
+  }
 }
 export default Messages;

@@ -4,7 +4,7 @@ function UnfollowAccount(request, result)
 {
   database.query(`
     DELETE FROM connections
-    WHERE follower = ${request.query.id} AND
+    WHERE follower = ${request.session.user.id} AND
     "user" = ${request.query.profileId}`,
     
     function(error, data) {

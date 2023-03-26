@@ -29,7 +29,7 @@ function FetchProfile(request, result)
       WHERE connections.follower = ${request.query.profileId} AND is_enabled=true) as following,
 
     (SELECT EXISTS(SELECT * FROM connections
-      WHERE follower = ${request.query.id}
+      WHERE follower = ${request.session.user.id}
       AND "user" = ${request.query.profileId})
       AS is_following)
 

@@ -60,16 +60,19 @@ apiRouter.use(express.json());
 apiRouter.use(session({
   resave: true,
   saveUninitialized: true,
-  secret: "secret",
+  secret: "token",
   cookie: {
     maxAge: 3600000,
   }
 }));
 
 // --------------- ROUTES --------------- //
-
-apiRouter.get("/api/test", (request, result) => {
-  result.send(request.headers);
+apiRouter.get("/api/session", (request, result) => {
+  if (request.session.user === undefined) {
+    result.sendStatus(401);
+    return;
+  
+  } result.send(request.session.user);
 });
 
 apiRouter.post("/api/login", (request, result) => {

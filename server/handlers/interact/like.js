@@ -6,13 +6,13 @@ function LikePost(request, result)
     SELECT COUNT(*)
     FROM post_likes
     WHERE post_id = ${request.query.post} AND
-    liker = ${request.query.id}`,
+    liker = ${request.session.user.id}`,
   
   function(error, data) {
     if (data.rows[0].count == 0) {
       database.query(`
         INSERT INTO post_likes (post_id, liker)
-        VALUES (${request.query.post}, ${request.query.id})`,
+        VALUES (${request.query.post}, ${request.session.user.id})`,
         
         function(error, data) {
           if (error) result.sendStatus(500);
@@ -24,7 +24,7 @@ function LikePost(request, result)
       database.query(`
         DELETE FROM post_likes
         WHERE post_id = ${request.query.post} AND
-        liker = ${request.query.id}`,
+        liker = ${request.session.user.id}`,
         
         function(error, data) {
           if (error) result.sendStatus(500);

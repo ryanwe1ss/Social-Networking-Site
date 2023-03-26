@@ -3,13 +3,13 @@ const fs = require('fs');
 
 function DeletePost(request, result)
 {
-  const post = `data/posts/${request.query.id}/${request.query.post}.png`;
+  const post = `data/posts/${request.session.user.id}/${request.query.post}.png`;
   
   if (fs.existsSync(post)) {
     database.query(`
       DELETE FROM posts
       WHERE id = ${request.query.post} AND
-      creator = ${request.query.id}`,
+      creator = ${request.session.user.id}`,
       
       function(error, data) {
         if (error) result.sendStatus(500);

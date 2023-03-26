@@ -1,5 +1,19 @@
 import { HttpGet, HttpPost } from "./http-service";
 
+export function FetchSession()
+{
+  return HttpGet('/api/session')
+    .then((response) => {
+      return response.json();
+    })
+    .then((session) => {
+      return session;
+    })
+    .catch(() => {
+      window.location.href = "/";
+    })
+}
+
 export function PerformLogin(username, password) {
   const body = {
     "username": username,
@@ -21,9 +35,9 @@ export function PerformRegister(username, password, confirm) {
     .then((response) => { return response.text() });
 }
 
-export function FetchProfile(accountId, profileId)
+export function FetchProfile(profileId)
 {
-  return HttpGet(`/api/profile?id=${accountId}&profileId=${profileId}`)
+  return HttpGet(`/api/profile?profileId=${profileId}`)
     .then((profile) => {
       return profile.json();
     })
@@ -32,9 +46,6 @@ export function FetchProfile(accountId, profileId)
         profile.map(a => a.username = "@" + a.username)
         return profile;
       }
-    })
-    .catch(() => {
-      window.location.href = "/";
     })
 }
 
@@ -59,9 +70,9 @@ export function FetchThumbnail(id)
     })
 }
 
-export function FetchPost(accountId, profileId, postId)
+export function FetchPost(profileId, postId)
 {
-  return HttpGet(`/api/post?accountId=${accountId}&profileId=${profileId}&post=${postId}`)
+  return HttpGet(`/api/post?profileId=${profileId}&post=${postId}`)
     .then((response) => {
       if (response.status == 200) {
         return response.json();
@@ -85,15 +96,15 @@ export function FetchPosts(profileId, limit=3)
     });
 }
 
-export function LikePost(accountId, postId)
+export function LikePost(postId)
 {
-  return HttpGet(`/api/like?id=${accountId}&post=${postId}`)
+  return HttpGet(`/api/like?post=${postId}`)
     .then((response) => { return response });
 }
 
-export function CommentPost(accountId, postId, comment)
+export function CommentPost(postId, comment)
 {
-  return HttpGet(`/api/comment?id=${accountId}&post=${postId}&comment=${comment}`)
+  return HttpGet(`/api/comment?post=${postId}&comment=${comment}`)
     .then((response) => { return response });
 }
 
@@ -103,43 +114,43 @@ export function UpdateProfile(body)
     .then((response) => { return response });
 }
 
-export function UpdatePrivacy(accountId, isPrivate)
+export function UpdatePrivacy(isPrivate)
 {
-  return HttpGet(`/api/update-privacy?id=${accountId}&private=${isPrivate}`)
+  return HttpGet(`/api/update-privacy?private=${isPrivate}`)
     .then((response) => { return response });
 }
 
-export function UpdateUsername(accountId, username)
+export function UpdateUsername(username)
 {
-  return HttpGet(`/api/update-username?id=${accountId}&username=${username}`)
+  return HttpGet(`/api/update-username?username=${username}`)
     .then((response) => { return response });
 }
 
-export function UploadPost(accountId, description, comment, like, image)
+export function UploadPost(description, comment, like, image)
 {
   const formData = new FormData();
   formData.append("data", image);
 
-  return HttpPost(`/api/post?id=${accountId}&description=${description}&comment=${comment}&like=${like}`,
+  return HttpPost(`/api/post?description=${description}&comment=${comment}&like=${like}`,
     formData, false, false
   
   ).then((response) => { return response });
 }
 
-export function DeletePost(accountId, postId)
+export function DeletePost(postId)
 {
-  return HttpGet(`/api/delete-post?id=${accountId}&post=${postId}`)
+  return HttpGet(`/api/delete-post?post=${postId}`)
     .then((response) => { return response });
 }
 
-export function SearchAccounts(event, accountId)
+export function SearchAccounts(event)
 {
   const searchQuery = event.target.value;
   const accounts = [];
 
   if (searchQuery.length == 0) return Promise.resolve([]);
 
-  return HttpGet(`/api/search?id=${accountId}&searchQuery=${searchQuery}`)
+  return HttpGet(`/api/search?searchQuery=${searchQuery}`)
     .then((result) => {
       return result.json();
     })
@@ -154,30 +165,30 @@ export function SearchAccounts(event, accountId)
     });
 }
 
-export function UploadProfilePicture(event, accountId)
+export function UploadProfilePicture(event)
 {
   const formData = new FormData();
   formData.append("data", event.target.files[0]);
 
-  return HttpPost(`/api/update?id=${accountId}`, formData, false, false)
+  return HttpPost(`/api/update`, formData, false, false)
     .then((response) => { return response });
 }
 
-export function FollowAccount(accountId, profileId)
+export function FollowAccount(profileId)
 {
-  return HttpGet(`/api/follow?id=${accountId}&profileId=${profileId}`)
+  return HttpGet(`/api/follow?profileId=${profileId}`)
     .then((response) => { return response });
 }
 
-export function UnfollowAccount(accountId, profileId)
+export function UnfollowAccount(profileId)
 {
-  return HttpGet(`/api/unfollow?id=${accountId}&profileId=${profileId}`)
+  return HttpGet(`/api/unfollow?profileId=${profileId}`)
     .then((response) => { return response })
 }
 
-export function DeleteConnection(accountId, userId, type)
+export function DeleteConnection(userId, type)
 {
-  return HttpGet(`/api/delete-connection?id=${accountId}&userId=${userId}&type=${type}`)
+  return HttpGet(`/api/delete-connection?userId=${userId}&type=${type}`)
     .then((response) => { return response });
 }
 
@@ -195,23 +206,23 @@ export function GetFollowing(profileId)
     .then((following) => { return following });
 }
 
-export function CreateChat(accountId, userId)
+export function CreateChat(userId)
 {
-  return HttpGet(`/api/create-chat?id=${accountId}&userId=${userId}`)
+  return HttpGet(`/api/create-chat?userId=${userId}`)
     .then((response) => { return response });
 }
 
-export function GetChats(accountId)
+export function GetChats()
 {
-  return HttpGet(`/api/get-chats?id=${accountId}`)
+  return HttpGet(`/api/get-chats`)
     .then((result) => { return result.json() })
     .then((chats) => { return chats })
     .catch(() => { window.location.href = "/" });
 }
 
-export function GetConversation(accountId, userId)
+export function GetConversation(userId)
 {
-  return HttpGet(`/api/get-conversation?id=${accountId}&userId=${userId}`)
+  return HttpGet(`/api/get-conversation?userId=${userId}`)
     .then((result) => { return result.json() })
     .then((conversation) => { return conversation });
 }

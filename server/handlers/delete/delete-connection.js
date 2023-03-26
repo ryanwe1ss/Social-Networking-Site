@@ -2,7 +2,7 @@ const { database } = require("../../database/db_connect");
 
 function DeleteConnection(request, result)
 {
-  const sessionId = request.query.id;
+  const sessionId = request.session.user.id;
   const userId = request.query.userId;
   const type = request.query.type;
 

@@ -6,7 +6,7 @@ function SendMessage(request, result)
     INSERT INTO messages (chat_id, from_user, to_user, message)
     VALUES(
       ${request.body.chat_id},
-      ${request.body.from_user},
+      ${request.session.user.id},
       ${request.body.to_user},
       '${request.body.message}'
     )`,

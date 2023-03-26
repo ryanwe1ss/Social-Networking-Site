@@ -18,7 +18,10 @@ function Login(request, result) {
     function (error, data) {
       if (!error) {
         if (data.rows.length > 0) {
-          request.session.user = { username: credentials.username };
+          request.session.user = {
+            id: data.rows[0].id,
+            username: credentials.username
+          };
           request.session.save();
           
           result.send({

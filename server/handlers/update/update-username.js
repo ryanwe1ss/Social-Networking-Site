@@ -22,7 +22,7 @@ function UpdateUsername(request, result)
     database.query(`
       UPDATE accounts
       SET username = '${username}'
-      WHERE id = ${request.query.id}`,
+      WHERE id = ${request.session.user.id}`,
 
       function (error, data) {
         if (error) {

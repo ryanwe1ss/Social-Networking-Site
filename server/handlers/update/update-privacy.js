@@ -7,7 +7,7 @@ function UpdatePrivacy(request, result)
   database.query(`
     UPDATE accounts
     SET is_private = ${private}
-    WHERE id = ${request.query.id}`,
+    WHERE id = ${request.session.user.id}`,
     
     function (error, data) {
       if (error) {
