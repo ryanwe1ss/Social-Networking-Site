@@ -1,30 +1,16 @@
-import { useEffect, useState } from "react";
-import { FetchSession } from "../../utilities/utilities";
-
 import LoadingBar from "../LoadingBar/loading-bar";
 import Posts from "../Posts/posts";
 import "./profile-details.scss";
 
-function ProfileDetails(props) {
-
-  const [session, setSession] = useState({
-    id: null,
-    username: null,
-  });
+function ProfileDetails(args) {
 
   const profileId = parseInt(location.search.split("id=")[1]);
-  const username = props.profile.length > 0 ? props.profile[0].username : null;
-  const isFollowing = props.profile.length > 0 ? props.profile[0].is_following : false;
-  const isPrivate = props.profile.length > 0 ? props.profile[0].is_private : false;
+  const username = args.profile.length > 0 ? args.profile[0].username : null;
+  const isFollowing = args.profile.length > 0 ? args.profile[0].is_following : false;
+  const isPrivate = args.profile.length > 0 ? args.profile[0].is_private : false;
 
-  useEffect(() => {
-    FetchSession().then((session) => {
-      setSession({ id: session.id, username: session.username });
-    });
-  }, []);
-
-  if (session.id) {
-    if (props.isDisabled) {
+  if (args.sessionId) {
+    if (args.isDisabled) {
       return (
         <div className="information">
           <h4>
@@ -34,7 +20,7 @@ function ProfileDetails(props) {
         </div>
       );
   
-    } else if (!isFollowing && session.id !== profileId && isPrivate) {
+    } else if (!isFollowing && args.sessionId !== profileId && isPrivate) {
       return (
         <div className="information">
           <h4>
@@ -43,7 +29,7 @@ function ProfileDetails(props) {
         </div>
       );
   
-    } else if (props.profile.length == 0) {
+    } else if (args.profile.length == 0) {
       return (
         <div className="information">
           <LoadingBar size="large"/>
@@ -51,10 +37,10 @@ function ProfileDetails(props) {
       );
     
     } else {
-      if (props.edit) {
+      if (args.edit) {
         return (
           <div className="information" style={{backgroundColor: "lightblue"}}>
-            {props.profile.map(profile => (
+            {args.profile.map(profile => (
               <div key={"profile"}>
                 <h6>Account Information</h6>
                 <div className="left-labels">
@@ -110,14 +96,20 @@ function ProfileDetails(props) {
                 </div>
               </div>
             ))}
-            <Posts username={username} editMode={true} saved={props.saved} setSaved={props.setSaved}/>
+            <Posts
+              sessionId={args.sessionId}
+              username={username}
+              editMode={true}
+              saved={args.saved}
+              setSaved={args.setSaved}
+            />
         </div>
         );
       
       } else {
         return (
           <div className="information">
-            {props.profile.map(profile => (
+            {args.profile.map(profile => (
               <div key={"profile"}>
                 <h6>Account Information</h6>
                 <div className="left-labels">
@@ -158,7 +150,13 @@ function ProfileDetails(props) {
                 <div className="bio">{profile.bio == null ? 'No Bio Yet...' : profile.bio}</div>
               </div>
             ))}
-            <Posts username={username} editMode={false} saved={props.saved} setSaved={props.setSaved}/>
+            <Posts
+              sessionId={args.sessionId}
+              username={username}
+              editMode={false}
+              saved={args.saved}
+              setSaved={args.setSaved}
+            />
           </div>
         );
       }

@@ -10,8 +10,8 @@ function FetchConversation(request, result)
       id AS chat_id,
       (SELECT username FROM accounts WHERE id = ${request.query.userId}) AS user
     FROM active_chats
-    WHERE user_one = ${request.query.id} AND user_two = ${request.query.userId}
-    OR user_one = ${request.query.userId} AND user_two = ${request.query.id}`,
+    WHERE user_one = ${request.session.user.id} AND user_two = ${request.query.userId}
+    OR user_one = ${request.query.userId} AND user_two = ${request.session.user.id}`,
 
     function(error, data) {
       if (!error) {
@@ -31,8 +31,8 @@ function FetchConversation(request, result)
       message,
       date_created
     FROM messages
-    WHERE from_user = ${request.query.id} AND to_user = ${request.query.userId}
-    OR from_user = ${request.query.userId} AND to_user = ${request.query.id}
+    WHERE from_user = ${request.session.user.id} AND to_user = ${request.query.userId}
+    OR from_user = ${request.query.userId} AND to_user = ${request.session.user.id}
     ORDER BY date_created ASC`,
 
     function(error, data) {

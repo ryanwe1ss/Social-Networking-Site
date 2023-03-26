@@ -1,7 +1,7 @@
 import DefaultProfilePicture from "../../images/default.png";
 import "./connections.scss";
 
-function Followers(params) {
+function Followers(args) {
   return (
     <div className="modal" id="modal">
       <div className="modal-content">
@@ -9,11 +9,11 @@ function Followers(params) {
           <h4>Followers</h4>
           <span onClick={() => {
             document.getElementById("modal").style.display = "none";
-            params.setShowFollowers(false);
+            args.setShowFollowers(false);
             
           }} id="close">&times;</span>
         </header><hr/>
-        {params.followers.map(account => (
+        {args.followers.map(account => (
           <div className="followers" key={account.id}>
             <div className="account">
               <img
@@ -26,11 +26,11 @@ function Followers(params) {
                 {account.username}
                 <br/><span>{account.name && account.name.trim().length > 0 ? account.name : "No Name"}</span>
               </label>
-              {params.sessionId !== params.profileId
+              {args.sessionId !== args.profileId
                 ? null
                 : <input type="button" className="btn btn-secondary btn-sm" value="Remove" onClick={() => {
-                    params.HandleDeleteConnection(account.id, "followers");
-                    params.HandleGetFollowers();
+                    args.HandleDeleteConnection(account.id, "followers");
+                    args.HandleGetFollowers();
                   }}/>
               }
             </div>

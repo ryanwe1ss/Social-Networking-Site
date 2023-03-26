@@ -1,5 +1,10 @@
 import { useState, useEffect } from "react";
 
+import DefaultProfilePicture from "../../images/default.png";
+import SidePanel from "../../components/SidePanel/side-panel";
+import LoadingBar from "../../components/LoadingBar/loading-bar";
+import "./messages.scss";
+
 import {
   FetchSession,
   FetchThumbnail,
@@ -8,23 +13,18 @@ import {
   GetChats,
 } from "../../utilities/utilities";
 
-import DefaultProfilePicture from "../../images/default.png";
-import SidePanel from "../../components/SidePanel/side-panel";
-import LoadingBar from "../../components/LoadingBar/loading-bar";
-import "./messages.scss";
-
 function Messages()
 {
-  const [session, setSession] = useState({
-    id: null,
-    username: null,
-  });
-
   const [conversation, setConversation] = useState([]);
   const [thumbnails, setThumbnail] = useState([]);
   const [chats, setChats] = useState([]);
   const [chatId, setChatId] = useState();
   const [userId, setUserId] = useState();
+
+  const [session, setSession] = useState({
+    id: null,
+    username: null,
+  });
 
   useEffect(() => {
     FetchSession().then((session) => {
@@ -45,7 +45,7 @@ function Messages()
   }
 
   function HandleGetChats(session) {
-    GetChats(session.id).then((chats) => {
+    GetChats().then((chats) => {
       const users = chats.map(chat => {
         if (chat.user_one !== session.username) {
           return { id: chat.user_one_id, name: chat.user_one };
@@ -86,7 +86,7 @@ function Messages()
     
     }); document.getElementById(userId).style.display = "block";
 
-    GetConversation(session.id, userId).then((conversation) => {
+    GetConversation(userId).then((conversation) => {
       document.getElementById("message").disabled = false;
 
       setConversation(conversation.messages);
@@ -126,7 +126,7 @@ function Messages()
     return (
       <div className="messages-container">
         <div className="outer-border">
-          <SidePanel/>
+          <SidePanel sessionId={session.id}/>
   
           <div className="messages">
             <div className="chats">

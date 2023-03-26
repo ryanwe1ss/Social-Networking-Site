@@ -150,7 +150,7 @@ function Profile()
     return (
       <div className="profile-container">
         <div className="outer-border">
-          <SidePanel/>
+          <SidePanel sessionId={session.id}/>
   
           <div className="profile">
             <div className="left-details">
@@ -223,6 +223,7 @@ function Profile()
                     edit={true}
                     saved={saved}
                     profile={profile}
+                    sessionId={session.id}
                     HandleFetchProfile={HandleFetchProfile}
                     setEditForm={setEditForm}
                     setSaved={setSaved}
@@ -232,6 +233,7 @@ function Profile()
                     edit={false}
                     saved={saved}
                     profile={profile}
+                    sessionId={session.id}
                     HandleFetchProfile={HandleFetchProfile}
                     setEditForm={setEditForm}
                     setSaved={setSaved}

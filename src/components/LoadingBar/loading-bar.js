@@ -1,10 +1,10 @@
 import "./loading-bar.scss";
 
-function LoadingBar(props) {
-  if (props.size == "large") {
+function LoadingBar(args) {
+  if (args.size == "large") {
     return (<div className="large-spinner"/>);
   
-  } else if (props.size == "small") {
+  } else if (args.size == "small") {
     return (<div className="small-spinner"/>);
   }
 }

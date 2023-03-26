@@ -9,7 +9,7 @@ function FetchChats(request, result)
       (SELECT username FROM accounts WHERE id = active_chats.user_one) AS user_one,
       (SELECT username FROM accounts WHERE id = active_chats.user_two) AS user_two
     FROM active_chats
-    WHERE user_one = ${request.query.id} or user_two = ${request.query.id}`,
+    WHERE user_one = ${request.session.user.id} or user_two = ${request.session.user.id}`,
 
     function(error, data) {
       if (!error) result.send(data.rows);

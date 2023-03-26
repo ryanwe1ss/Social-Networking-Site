@@ -1,18 +1,7 @@
-import { useEffect, useState } from "react";
-import { FetchSession, Logout } from "../../utilities/utilities";
+import { Logout } from "../../utilities/utilities";
 import "./side-panel.scss";
 
-function SidePanel() {
-  const [session, setSession] = useState({
-    id: null,
-    username: null,
-  });
-
-  useEffect(() => {
-    FetchSession().then((session) => {
-      setSession({ id: session.id, username: session.username });
-    });
-  }, []);
+function SidePanel(args) {
 
   return (
     <div className="side-panel">
@@ -22,7 +11,7 @@ function SidePanel() {
         <div><a href="/posts" className="bi bi-image"> Posts</a></div>
         <div><a href="/search" className="bi bi-search"> Search</a></div>
         <div><a href="/messages" className="bi bi-chat"> Messages</a></div>
-        <div><a href={`/profile?id=${session.id}`} className="bi bi-person-fill"> Profile</a></div>
+        <div><a href={`/profile?id=${args.sessionId}`} className="bi bi-person-fill"> Profile</a></div>
         <div className="bottom">
         <div><a href="/" onClick={Logout} className="bi bi-lock"> Logout</a></div>
         <div><a href="/settings" className="bi bi-gear"> Settings</a></div>

@@ -31,7 +31,7 @@ function Search() {
     return (
       <div className="search-container">
         <div className="outer-border">
-          <SidePanel/>
+          <SidePanel sessionId={session.id}/>
   
           <div className="search-content">
             <div className="search-header">

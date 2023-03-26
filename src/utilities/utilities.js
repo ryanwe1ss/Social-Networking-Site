@@ -214,10 +214,9 @@ export function CreateChat(userId)
 
 export function GetChats()
 {
-  return HttpGet(`/api/get-chats`)
+  return HttpGet('/api/get-chats')
     .then((result) => { return result.json() })
-    .then((chats) => { return chats })
-    .catch(() => { window.location.href = "/" });
+    .then((chats) => { return chats });
 }
 
 export function GetConversation(userId)
@@ -235,8 +234,7 @@ export function SendMessage(body)
 
 export function Logout()
 {
-  HttpGet('/api/logout')
-    .then(() => { localStorage.clear() })
+  HttpGet('/api/logout');
 }
 
 export function RedirectPage(profileId)

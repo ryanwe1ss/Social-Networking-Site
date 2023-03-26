@@ -1,11 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { FetchPosts, UploadPost, DeletePost, FetchSession } from "../../utilities/utilities";
 import LoadingBar from "../LoadingBar/loading-bar";
 import "./posts.scss";
 
-function Posts(props) {
+import {
+  FetchPosts,
+  UploadPost,
+  DeletePost
+} from "../../utilities/utilities";
+
+function Posts(args) {
   const profileId = parseInt(location.search.split("id=")[1]);
-  const editMode = props.editMode;
+  const editMode = args.editMode;
 
   const [uploaded, setUploaded] = useState(false);
   const [loaded, setLoaded] = useState(false);
@@ -17,32 +22,22 @@ function Posts(props) {
   const [tempPosts, setTempPosts] = useState([]);
   const [posts, setPosts] = useState([]);
 
-  const [session, setSession] = useState({
-    id: null,
-    username: null,
-  });
-
   useEffect(() => {
-    
-    FetchSession().then((session) => {
-      setSession({ id: session.id, username: session.username });
-
-      FetchPosts(profileId, limit).then((result) => {
-        setPosts(result.posts);
-        setLoaded(true);
-        setTimeout(() => {
-          if (result.count <= limit)
-            document.querySelector(".load-more").style.display = "none";
-        
-        }, 250);
-      });
+    FetchPosts(profileId, limit).then((result) => {
+      setPosts(result.posts);
+      setLoaded(true);
+      setTimeout(() => {
+        if (result.count <= limit)
+          document.querySelector(".load-more").style.display = "none";
+      
+      }, 250);
     });
 
   }, [limit, refresh]);
 
   useEffect(() => {
     tempPosts.forEach(postId => {
-      if (props.saved) {
+      if (args.saved) {
         DeletePost(postId).then((response) => {
           if (response.status != 200) {
             alert("Error Deleting Post(s), try again");
@@ -52,9 +47,9 @@ function Posts(props) {
       document.getElementById(postId).style.border = "2px solid black";
     });
 
-    if (props.saved) setRefresh(refresh + 1);
+    if (args.saved) setRefresh(refresh + 1);
     setTempPosts([]);
-    props.setSaved(false);
+    args.setSaved(false);
 
   }, [editMode]);
 
@@ -90,12 +85,12 @@ function Posts(props) {
     document.getElementById(postId).style.border = "4px solid red";
   }
 
-  if (session.id) {
+  if (args.sessionId) {
     return (
       <div className="user-posts">
         <input type="file" id="post"/><hr/>
   
-        {profileId == session.id && !props.editMode ? 
+        {profileId == args.sessionId && !args.editMode ? 
           <div className="share-post" onClick={() => document.getElementById("postModal").style.display = "block"}>
             <i className="bi bi-plus-circle"/> Share a post
           </div> : null }
@@ -115,9 +110,9 @@ function Posts(props) {
               </a>
             )) :
             
-            session.id != profileId ?
+            args.sessionId != profileId ?
               <div className="no-posts">
-                {props.username.replace("@", "") + " has no posts"}
+                {args.username.replace("@", "") + " has no posts"}
               </div> : null :
   
             <div className="spinner">

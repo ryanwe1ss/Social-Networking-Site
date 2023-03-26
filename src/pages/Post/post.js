@@ -61,7 +61,7 @@ function Post()
     return (
       <div className="post-container">
         <div className="outer-border">
-          <SidePanel/>
+          <SidePanel sessionId={session.id}/>
   
           <div className="post">
             <div className="header-img">

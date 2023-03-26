@@ -68,7 +68,7 @@ function Settings() {
     return (
       <div className="settings-container">
         <div className="outer-border">
-          <SidePanel/>
+          <SidePanel sessionId={session.id}/>
   
           <div className="settings">
             <div className="settings-panel">
