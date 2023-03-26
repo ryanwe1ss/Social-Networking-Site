@@ -14,7 +14,7 @@ function Settings() {
 
   useEffect(() => {
     FetchProfile(accountId, accountId).then(data => {
-      if (data[0].private) setPrivate(true);
+      if (data[0].is_private) setPrivate(true);
     });
   }, []);
 

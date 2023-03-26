@@ -6,7 +6,6 @@ function Register() {
   function HandleRegister(username, password, confirm) {
     PerformRegister(username, password, confirm).then((response) => {
       document.getElementById("response").style.color = "red";
-      console.log(response);
 
       switch (response) {
         case "success":

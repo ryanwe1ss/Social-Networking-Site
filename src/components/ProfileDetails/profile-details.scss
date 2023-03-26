@@ -25,6 +25,9 @@
   }
 
   .bio {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+
     textarea {
       background-color: white;
       min-height: 100px;

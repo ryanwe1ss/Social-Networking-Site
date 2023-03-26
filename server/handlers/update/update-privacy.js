@@ -6,7 +6,7 @@ function UpdatePrivacy(request, result)
   
   database.query(`
     UPDATE accounts
-    SET private = ${private}
+    SET is_private = ${private}
     WHERE id = ${request.query.id}`,
     
     function (error, data) {
@@ -16,7 +16,6 @@ function UpdatePrivacy(request, result)
       }
     }
   );
-
   result.sendStatus(200);
 }
 module.exports = { UpdatePrivacy }

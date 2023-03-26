@@ -11,15 +11,19 @@
       .header-img {
         display: inline-block;
 
-        label {
-          font-weight: 650;
+        .user {
+          font-weight: 500;
           font-size: 24px;
+        }
+
+        .date {
+          float: right;
         }
 
         img {
           border: 3px solid black;
+          max-height: 80%;
           width: 500px;
-          height: 95%;
         }
       }
 

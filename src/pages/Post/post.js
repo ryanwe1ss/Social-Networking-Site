@@ -17,7 +17,6 @@ function Post()
 
   function HandleFetchPost() {
     FetchPost(accountId, profileId, postId).then((result) => {
-      console.log(result);
       setPost(result.creator);
       setPicture(result.post);
     });
@@ -49,13 +48,15 @@ function Post()
 
         <div className="post">
           <div className="header-img">
-            <label>({post.username}) - {post.description}</label>
-            
             <img
               src={`data:image/jpeg;base64,${picture}`}
               onError={(img) => (img.target.src = DefaultProfilePicture)}
               alt="post"
             />
+            <label class="user">@{post.username}</label>
+            <label class="date">{new Date(post.date_created).toLocaleString()}</label>
+            <hr/>
+            <label class="description">{post.description}</label>
           </div>
 
           <div className="interact">

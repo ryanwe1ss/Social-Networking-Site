@@ -97,7 +97,7 @@ function Messages()
   }
 
   function HandleSendMessage(message) {
-    if (message.length < 1) return;
+    if (message.trim().length < 1) return;
 
     const body = {
       chat_id: chatId,
@@ -113,12 +113,6 @@ function Messages()
       }
     })
   }
-
-  document.addEventListener("keydown", function(event) {
-    if (event.key === "Enter") {
-      HandleSendMessage(document.getElementById("message").value);
-    }
-  });
 
   return (
     <div className="messages-container">

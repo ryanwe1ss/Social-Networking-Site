@@ -7,26 +7,26 @@ function FetchProfile(request, result)
       accounts.id,
       username,
       name,
-      date_created,
-      date_updated,
       gender,
       status,
       birthdate,
       school,
-      concentration,
+      major,
       email,
       phone_number,
       bio,
-      enabled,
-      private,
+      is_enabled,
+      is_private,
+      date_created,
+      date_updated,
     
     (SELECT COUNT(*) FROM accounts
       LEFT JOIN connections ON connections.follower = accounts.id
-      WHERE connections.user = ${request.query.profileId} AND enabled=true) as followers,
+      WHERE connections.user = ${request.query.profileId} AND is_enabled=true) as followers,
 
     (SELECT COUNT(*) FROM accounts
       LEFT JOIN connections ON connections.user = accounts.id 
-      WHERE connections.follower = ${request.query.profileId} AND enabled=true) as following,
+      WHERE connections.follower = ${request.query.profileId} AND is_enabled=true) as following,
 
     (SELECT EXISTS(SELECT * FROM connections
       WHERE follower = ${request.query.id}
@@ -34,8 +34,10 @@ function FetchProfile(request, result)
       AS is_following)
 
     FROM accounts
-    WHERE accounts.id=${request.query.profileId} AND enabled=TRUE`, function(error, data) {
-    if (!error) result.send(data.rows);
-  });
+    WHERE accounts.id=${request.query.profileId} AND is_enabled=TRUE`,
+    
+    function(error, data) {
+      if (!error) result.send(data.rows);
+    });
 }
 module.exports = { FetchProfile }

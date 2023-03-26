@@ -8,7 +8,7 @@ function ProfileDetails(props) {
   const profileId = parseInt(location.search.split("id=")[1]);
   const username = props.profileData.length > 0 ? props.profileData[0].username : null;
   const isFollowing = props.profileData.length > 0 ? props.profileData[0].is_following : false;
-  const isPrivate = props.profileData.length > 0 ? props.profileData[0].private : false;
+  const isPrivate = props.profileData.length > 0 ? props.profileData[0].is_private : false;
 
   if (props.isDisabled) {
     return (
@@ -79,7 +79,7 @@ function ProfileDetails(props) {
                   /><br/>
                 </span>
                 <span><input type="text" id="school" defaultValue={profile.school}/><br/></span>
-                <span><input type="text" id="concentration" defaultValue={profile.concentration}/><br/></span>
+                <span><input type="text" id="major" defaultValue={profile.major}/><br/></span>
               </div>
               <h6>Contact Information</h6>
               <div className="left-labels">
@@ -129,7 +129,7 @@ function ProfileDetails(props) {
                 <span>{profile.status}<br/></span>
                 <span>{new Date(profile.birthdate).toLocaleDateString()}<br/></span>
                 <span>{profile.school}<br/></span>
-                <span>{profile.concentration}<br/></span>
+                <span>{profile.major}<br/></span>
               </div>
               <h6>Contact Information</h6>
               <div className="left-labels">

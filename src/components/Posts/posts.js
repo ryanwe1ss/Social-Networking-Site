@@ -40,7 +40,7 @@ function Posts(props) {
           }
         })
       }
-      document.getElementById(postId).style.border = "inherit";
+      document.getElementById(postId).style.border = "2px solid black";
     });
 
     if (props.saved) setRefresh(refresh + 1);

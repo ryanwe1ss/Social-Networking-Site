@@ -4,9 +4,16 @@ function Login(request, result) {
   const credentials = request.body;
   
   database.query(`
-    SELECT id, username, password FROM accounts
-    WHERE username='${credentials.username}' AND password='${credentials.password}'
-    AND enabled = TRUE`,
+    SELECT
+      id,
+      username,
+      password
+    FROM
+      accounts
+    WHERE
+      username='${credentials.username}' AND
+      password='${credentials.password}' AND
+      is_enabled = TRUE`,
 
     function (error, data) {
       if (!error) {

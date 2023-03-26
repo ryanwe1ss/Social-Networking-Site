@@ -69,7 +69,7 @@ function Profile()
       'status': document.getElementById("status").value,
       'birthdate': document.getElementById("birthdate").value,
       'school': document.getElementById("school").value,
-      'concentration': document.getElementById("concentration").value,
+      'major': document.getElementById("major").value,
       'email': document.getElementById("email").value,
       'phone_number': document.getElementById("phone_number").value,
       'bio': document.getElementById("bio").value,

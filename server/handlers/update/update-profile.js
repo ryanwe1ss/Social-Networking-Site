@@ -24,7 +24,7 @@ function UpdateProfile(request, result) {
       status=${account.status},
       birthdate=${account.birthdate},
       school=${account.school},
-      concentration=${account.concentration},
+      major=${account.major},
       email=${account.email},
       phone_number=${account.phone_number},
       bio=${account.bio}
