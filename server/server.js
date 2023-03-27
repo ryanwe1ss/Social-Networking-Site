@@ -30,12 +30,11 @@ const { DeletePost } = require("./handlers/delete/delete-post");
 const { CreateChat } = require("./handlers/communicate/create-chat");
 const { SendMessage } = require("./handlers/communicate/send-message");
 
-// --------------- EXPRESS --------------- //
-
 const express = require("express");
 const session = require("express-session");
 const apiRouter = express();
 
+// --------------- CORS --------------- //
 apiRouter.use(function(request, result, next) {
   if (process.env.REACT_APP_ENDPOINT_PORT === "80") {
     result.setHeader(
@@ -55,7 +54,6 @@ apiRouter.use(function(request, result, next) {
 });
 
 // --------------- SESSION --------------- //
-
 apiRouter.use(express.json());
 apiRouter.use(session({
   resave: true,
@@ -67,14 +65,6 @@ apiRouter.use(session({
 }));
 
 // --------------- ROUTES --------------- //
-apiRouter.get("/api/session", (request, result) => {
-  if (request.session.user === undefined) {
-    result.sendStatus(401);
-    return;
-  
-  } result.send(request.session.user);
-});
-
 apiRouter.post("/api/login", (request, result) => {
   Login(request, result);
 });
@@ -85,6 +75,14 @@ apiRouter.post("/api/register", (request, result) => {
 
 apiRouter.get("/api/logout", (request) => {
   request.session.destroy();
+});
+
+apiRouter.get("/api/session", (request, result) => {
+  if (request.session.user === undefined) {
+    result.sendStatus(401);
+    return;
+  
+  } result.send(request.session.user);
 });
 
 apiRouter.post("/api/update", (request, result) => {
