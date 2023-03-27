@@ -5,14 +5,14 @@
   }
 
   .share-post {
-    color: #3f51b5;
+    color: black;
     font-size: 22px;
     font-weight: bold;
     text-align: center;
     cursor: pointer;
 
     &:hover {
-      color: #303f9f;
+      color: rgb(15, 51, 255);
     }
   }
 
@@ -67,9 +67,10 @@
   }
 
   .modal {
-    padding-top: 12px;
     background-color: rgba(0,0,0,0.4);
+    padding-top: 12px;
     display: none;
+    color: black;
   
     .modal-content {
       max-width: 650px;

@@ -39,7 +39,7 @@ function ProfileDetails(args) {
     } else {
       if (args.edit) {
         return (
-          <div className="information" style={{backgroundColor: "lightblue"}}>
+          <div className="information" style={{backgroundColor: "#537699"}}>
             {args.profile.map(profile => (
               <div key={"profile"}>
                 <h6>Account Information</h6>

@@ -16,7 +16,9 @@ import {
 function Settings() {
 
   const [isPrivate, setPrivate] = useState(false);
-  const [option, setOption] = useState(1);
+  const [component, setComponent] = useState(1);
+  const [account, setAccount] = useState([]);
+
   const [session, setSession] = useState({
     id: null,
     username: null,
@@ -26,28 +28,29 @@ function Settings() {
     FetchSession().then((session) => {
       setSession({ id: session.id, username: session.username });
       
-      FetchProfile(session.id).then(data => {
-        if (data[0].is_private) setPrivate(true);
+      FetchProfile(session.id).then(account => {
+        setAccount(account);
+        if (account[0].is_private) setPrivate(true);
       });
     });
   }, []);
 
   function UpdateAccountType(type) {
-    UpdatePrivacy(type).then(data => {
-      if (data.status === 200) {
+    UpdatePrivacy(type).then(response => {
+      if (response.status === 200) {
         setPrivate(!isPrivate);
       }
     });
   }
 
   function UpdateAccountUsername() {
-    UpdateUsername(document.getElementById("newUsername").value).then(data => {
+    UpdateUsername(document.getElementById("newUsername").value).then(response => {
       document.getElementById("result").style.color = "red";
       
-      switch (data.status) {
+      switch (response.status) {
         case 200:
           document.getElementById("result").style.color = "green";
-          document.getElementById("result").innerHTML = "Username updated successfully";
+          document.getElementById("result").innerHTML = "Your username has been successfully updated";
           break;
 
         case 409:
@@ -72,8 +75,8 @@ function Settings() {
   
           <div className="settings">
             <div className="settings-panel">
-              <label onClick={() => { setOption(1) }}>Privacy Settings</label>
-              <label onClick={() => { setOption(2) }}>Username Change</label>
+              <label onClick={() => { setComponent(1) }}>Privacy Settings</label>
+              <label onClick={() => { setComponent(2) }}>Username Change</label>
               <label>Password Change</label>
               <label>Blocked Users</label>
               <label>Deactivate Account</label>
@@ -81,8 +84,8 @@ function Settings() {
   
             <div className="settings-block">
               {
-                option === 1 ? <PrivacySettings UpdateAccountType={UpdateAccountType} isPrivate={isPrivate}/> :
-                option === 2 ? <UsernameChange UpdateAccountUsername={UpdateAccountUsername}/> : null
+                component === 1 ? <PrivacySettings UpdateAccountType={UpdateAccountType} isPrivate={isPrivate}/> :
+                component === 2 ? <UsernameChange UpdateAccountUsername={UpdateAccountUsername} account={account}/> : null
               }
             </div>
           </div>

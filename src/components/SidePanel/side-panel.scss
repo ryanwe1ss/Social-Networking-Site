@@ -1,5 +1,5 @@
 .side-panel {
-  background-color: grey;
+  background-color: #2B2B2B;
   border-right: 2px solid black;
 
   h2 {
@@ -16,7 +16,7 @@
       margin-top: 20px;
 
       :hover {
-        color: blue;
+        color: rgb(83, 93, 223);
       }
     }
 
@@ -29,8 +29,9 @@
     a {
       text-decoration: none;
       font-style: normal;
+      font-weight: 600;
       font-size: 28px;
-      color: black;
+      color: rgb(236, 236, 236);;
     }
   }
 }

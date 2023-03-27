@@ -71,9 +71,10 @@ function Post()
                 alt="post"
               />
               <label className="user">@{post.username}</label>
-              <label className="date">{new Date(post.date_created).toLocaleString()}</label>
+              <label className="date">{new Date(post.date_created).toLocaleDateString()}</label>
               <hr/>
               <label className="description">{post.description}</label>
+              <hr/>
             </div>
   
             <div className="interact">
@@ -81,9 +82,9 @@ function Post()
                 {
                   post.likes_enabled ?
                     <span><i className="bi bi-heart-fill" id={post.is_liked ? 'liked' : null} onClick={HandleLikePost}/> {post.likes} Likes</span> :
-                    <span><i className="bi bi-heart-fill" id="disabled"/> Liking has been disabled</span>
+                    <span><i className="bi bi-heart-fill" id="disabled"/> Likes have been disabled</span>
                 }
-              </div><hr/>
+              </div>
   
               <div className="comments">
                 { post.comments && post.comments_enabled ?
@@ -96,10 +97,13 @@ function Post()
                         alt="thumbnail"
                       />
                       <span className="commenter"> <a href={`/profile?id=${comment.commenter.id}`}>{comment.commenter.username}</a></span>
-                      <span className="comment"> {comment.comment}</span>
-                      <span className="date">{new Date(comment.date_created).toLocaleTimeString()}</span>
+                      <span className="comment"> {comment.comment}</span><br/>
+                      <span className="date">Sent on {new Date(comment.date_created).toLocaleString()}</span>
                     </div>
-                  )) : !post.comments_enabled ? <div className="comments-disabled">Comments are disabled</div> : null
+                  )) : !post.comments_enabled
+                     ? <div className="comments-disabled">Comments are disabled</div>
+                     : !post.comments ? <div className="no-comments">No comments yet...</div>
+                     : null
                 }
               </div>
   
@@ -112,7 +116,7 @@ function Post()
                   disabled={!post.comments_enabled}
                 />
                 <button
-                  className="form-control"
+                  className="form-control btn btn-primary"
                   onClick={HandleCommentPost}
                   disabled={!post.comments_enabled}
                 >Send</button>

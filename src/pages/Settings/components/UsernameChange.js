@@ -1,8 +1,18 @@
 function UsernameChange(args) {
   return (
-    <div className="username-change">
-      <input type="text" placeholder="New Username" id="newUsername"/>
-      <input type="button" className="btn btn-secondary" onClick={args.UpdateAccountUsername} value="Update"/>
+    <div className="change-username-container">
+
+      <div className="left-elements">
+        <h5>Current Username:</h5><br/>
+        <h5>New Username:</h5>
+      </div>
+
+      <div className="right-elements">
+        <label>{args.account[0].username}</label><br/><br/>
+        <input type="text" placeholder="Enter Here" id="newUsername"/>
+      </div>
+
+      <button className="btn btn-primary" onClick={args.UpdateAccountUsername}>Update Username</button>
       <div id="result"/>
     </div>
   );

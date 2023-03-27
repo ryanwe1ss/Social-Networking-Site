@@ -20,7 +20,8 @@
 
           &:hover {
             cursor: pointer;
-            color: blue;
+            color: rgb(19, 20, 22);
+            text-decoration: underline;
           }
         }
       }
@@ -45,20 +46,24 @@
           }
         }
 
-        .username-change {
+        .change-username-container {
+          white-space: nowrap;
 
-          input {
-            display: block;
+          .left-elements {
+            float: left;
+            width: 250px;
           }
 
-          input[type="text"] {
-            border: 3px solid black;
-            margin-bottom: 10px;
-            margin-top: 10px;
-            font-size: 24px;
+          .right-elements {
+            margin-bottom: 20px;
+            
+            label {
+              font-size: 18px;
+            }
           }
         }
       }
     }
   }
 }
+

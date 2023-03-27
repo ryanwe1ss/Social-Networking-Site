@@ -16,6 +16,7 @@
         position: absolute;
         transform: translateX(-50%);
         margin-top: 8px;
+        color: black;
         left: 50%;
       }
     }
@@ -23,13 +24,13 @@
     .followers, .following {
 
       label {
-        font-size: 17px;
-        line-height: 20px;
         cursor: pointer;
+        line-height: 20px;
+        font-size: 17px;
+        color: black;
 
         span {
-          font-size: 13px;
-          color: grey;
+          font-size: 12px;
         }
       }
 
@@ -49,6 +50,10 @@
         float: right;
         margin-top: 5px;
       }
+    }
+
+    hr {
+      color: black;
     }
 
     #close {
