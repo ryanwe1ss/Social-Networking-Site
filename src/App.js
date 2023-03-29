@@ -4,8 +4,9 @@ import Register from "./pages/Register/register.js";
 import Profile from "./pages/Profile/profile.js";
 import Messages from "./pages/Messages/messages.js";
 import Search from "./pages/Search/search.js";
-import Post from "./pages/Post/post.js";
 import Settings from "./pages/Settings/settings.js";
+import Posts from "./pages/Posts/posts.js";
+import Post from "./pages/Post/post.js";
 
 function App()
 {
@@ -14,11 +15,12 @@ function App()
       <Routes>
         <Route exact path="/" element={<Login/>}/>
         <Route exact path="/register" element={<Register/>}/>
-        <Route exact path="/profile" element={<Profile/>}/>
-        <Route exact path="/messages" element={<Messages/>}/>
+        <Route exact path="/posts" element={<Posts/>}/>
         <Route exact path="/search" element={<Search/>}/>
-        <Route exact path="/post" element={<Post/>}/>
+        <Route exact path="/messages" element={<Messages/>}/>
+        <Route exact path="/profile" element={<Profile/>}/>
         <Route exact path="/settings" element={<Settings/>}/>
+        <Route exact path="/post" element={<Post/>}/>
       </Routes>
     </Router>
   );
