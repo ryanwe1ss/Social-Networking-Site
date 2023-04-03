@@ -29,7 +29,6 @@ function UpdateUsername(request, result)
           result.sendStatus(500);
           return;
         }
-
         result.sendStatus(200);
       }
     );

@@ -15,6 +15,7 @@ const { FetchPosts } = require("./handlers/get/fetch-posts");
 const { FetchPost } = require("./handlers/get/fetch-post");
 
 const { UpdateUsername } = require("./handlers/update/update-username");
+const { UpdatePassword } = require("./handlers/update/update-password");
 const { UpdatePrivacy } = require("./handlers/update/update-privacy");
 const { UpdateProfile } = require("./handlers/update/update-profile");
 
@@ -107,6 +108,14 @@ apiRouter.get("/api/update-username", (request, result) => {
     return;
   
   } UpdateUsername(request, result);
+});
+
+apiRouter.get("/api/update-password", (request, result) => {
+  if (request.session.user === undefined) {
+    result.sendStatus(401);
+    return;
+
+  } UpdatePassword(request, result);
 });
 
 apiRouter.post("/api/post", (request, result) => {

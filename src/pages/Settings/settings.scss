@@ -46,7 +46,7 @@
           }
         }
 
-        .change-username-container {
+        .change-username-container, .change-password-container {
           white-space: nowrap;
 
           .left-elements {
@@ -56,6 +56,18 @@
 
           .right-elements {
             margin-bottom: 20px;
+
+            .show {
+              background-color: rgb(255, 0, 0);
+              border: 2px solid rgb(0, 0, 0);
+              font-weight: 500;
+              margin-left: 5px;
+              color: white;
+
+              &:hover {
+                background-color: rgb(255, 49, 49);
+              }
+            }
             
             label {
               font-size: 18px;

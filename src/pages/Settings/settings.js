@@ -10,8 +10,10 @@ import {
   FetchProfile,
   FetchSession,
   UpdatePrivacy,
-  UpdateUsername
+  UpdateUsername,
+  UpdatePassword,
 } from "../../utilities/utilities";
+import PasswordChange from "./components/PasswordChange";
 
 function Settings() {
 
@@ -29,7 +31,7 @@ function Settings() {
       setSession({ id: session.id, username: session.username });
       
       FetchProfile(session.id).then(account => {
-        setAccount(account);
+        setAccount(account[0]);
         if (account[0].is_private) setPrivate(true);
       });
     });
@@ -43,26 +45,28 @@ function Settings() {
     });
   }
 
-  function UpdateAccountUsername() {
-    UpdateUsername(document.getElementById("newUsername").value).then(response => {
-      document.getElementById("result").style.color = "red";
+  function UpdateCredential(type) {
+    const Update = type === "Username" ? UpdateUsername : UpdatePassword;
+
+    Update(document.getElementById(`new${type}`).value).then(response => {
+      document.getElementById("result").style.color = "#000000";
       
       switch (response.status) {
         case 200:
-          document.getElementById("result").style.color = "green";
-          document.getElementById("result").innerHTML = "Your username has been successfully updated";
+          document.getElementById("result").style.color = "#00D21C";
+          document.getElementById("result").innerHTML = `Your ${type.toLowerCase()} has been successfully updated`;
           break;
 
         case 409:
-          document.getElementById("result").innerHTML = "Username already exists";
+          document.getElementById("result").innerHTML = `${type} already exists`;
           break;
 
         case 400:
-          document.getElementById("result").innerHTML = "Username must be between 5 and 12 characters";
+          document.getElementById("result").innerHTML = `${type} must be between 5 and 12 characters`;
           break;
 
         default:
-          document.getElementById("result").innerHTML = "Error Updating Username, try again";
+          document.getElementById("result").innerHTML = `Error Updating ${type}, try again`;
       }
     });
   }
@@ -77,7 +81,7 @@ function Settings() {
             <div className="settings-panel">
               <label onClick={() => { setComponent(1) }}>Privacy Settings</label>
               <label onClick={() => { setComponent(2) }}>Username Change</label>
-              <label>Password Change</label>
+              <label onClick={() => { setComponent(3) }}>Password Change</label>
               <label>Blocked Users</label>
               <label>Deactivate Account</label>
             </div>
@@ -85,7 +89,8 @@ function Settings() {
             <div className="settings-block">
               {
                 component === 1 ? <PrivacySettings UpdateAccountType={UpdateAccountType} isPrivate={isPrivate}/> :
-                component === 2 ? <UsernameChange UpdateAccountUsername={UpdateAccountUsername} account={account}/> : null
+                component === 2 ? <UsernameChange UpdateCredential={UpdateCredential} account={account}/> :
+                component === 3 ? <PasswordChange UpdateCredential={UpdateCredential} account={account}/> : null
               }
             </div>
           </div>

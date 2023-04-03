@@ -6,6 +6,7 @@ function FetchProfile(request, result)
     SELECT
       accounts.id,
       username,
+      password,
       name,
       gender,
       status,

@@ -8,11 +8,11 @@ function UsernameChange(args) {
       </div>
 
       <div className="right-elements">
-        <label>{args.account[0].username}</label><br/><br/>
+        <input type="text" disabled={true} value={args.account.username}/><br/><br/>
         <input type="text" placeholder="Enter Here" id="newUsername"/>
       </div>
 
-      <button className="btn btn-primary" onClick={args.UpdateAccountUsername}>Update Username</button>
+      <button className="btn btn-primary" onClick={() => {args.UpdateCredential('Username')}}>Update Username</button>
       <div id="result"/>
     </div>
   );

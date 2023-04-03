@@ -126,6 +126,12 @@ export function UpdateUsername(username)
     .then((response) => { return response });
 }
 
+export function UpdatePassword(password)
+{
+  return HttpGet(`/api/update-password?password=${password}`)
+    .then((response) => { return response });
+}
+
 export function UploadPost(description, comment, like, image)
 {
   const formData = new FormData();
