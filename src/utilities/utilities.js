@@ -106,6 +106,12 @@ export function FetchBlocked()
     });
 }
 
+export function BlockAccount(accountId)
+{
+  return HttpGet(`/api/block?id=${accountId}`)
+    .then((response) => { return response });
+}
+
 export function UnblockAccount(accountId)
 {
   return HttpGet(`/api/unblock?id=${accountId}`)
@@ -206,6 +212,12 @@ export function UnfollowAccount(profileId)
 {
   return HttpGet(`/api/unfollow?profileId=${profileId}`)
     .then((response) => { return response })
+}
+
+export function ReportAccount(profileId, reportMsg)
+{
+  return HttpGet(`/api/report?id=${profileId}&message=${reportMsg}`)
+    .then((response) => { return response });
 }
 
 export function DeleteConnection(userId, type)

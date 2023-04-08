@@ -12,6 +12,7 @@ import {
   CreateChat,
   GetFollowers,
   GetFollowing,
+  BlockAccount,
 } from "../../utilities/utilities";
 
 import DefaultProfilePicture from "../../images/default.png";
@@ -21,6 +22,7 @@ import Following from "../../components/Connections/Following";
 import SidePanel from "../../components/SidePanel/side-panel";
 import LoadingBar from "../../components/LoadingBar/loading-bar";
 import "./profile.scss";
+import AccountSettings from "../../components/AccountSettings/account-settings";
 
 function Profile()
 {
@@ -35,6 +37,7 @@ function Profile()
   const [editForm, setEditForm] = useState(false);
   const [isDisabled, setDisabled] = useState(false);
   const [isRendered, setRendered] = useState(false);
+  const [showSettings, setShowSettings] = useState(false);
   const [showFollowers, setShowFollowers] = useState(false);
   const [showFollowing, setShowFollowing] = useState(false);
 
@@ -52,8 +55,6 @@ function Profile()
 
   function HandleFetchProfile() {
     FetchProfile(profileId).then((profile) => {
-      console.log(profile);
-      
       if (!profile || profile.is_blocked) {
         setProfile([]);
         setPicture([]);
@@ -119,6 +120,15 @@ function Profile()
     })
   }
 
+  function HandleBlock() {
+    BlockAccount(profileId).then(response => {
+      if (response.status == 200) {
+        HandleFetchProfile();
+        setShowSettings(false);
+      }
+    });
+  }
+
   function HandleUnblock() {
     UnblockAccount(profileId).then(response => {
       if (response.status == 200) {
@@ -175,9 +185,7 @@ function Profile()
                 <div className="picture">
                   <LoadingBar size="small"/>
                 </div>
-              }
-
-              {
+              } {
                 <div>
                   {session.id == profileId ?
                     <div className="profile-interact">
@@ -201,39 +209,42 @@ function Profile()
                         className="btn btn-secondary btn-sm"
                         onClick={() => document.getElementById("profile-picture").click()}>Edit Profile Picture
                       </button>
-                    </div> :
-                    <div>
-                      <h5>
-                        <label className="username">@{profile.username}</label>
-                        <div className="interact">
-                          {profile.is_blocking == false ?
-                            <span>
-                              {profile.is_following ?
-                                <button className="btn btn-secondary btn-sm" onClick={HandleUnfollow}>Unfollow</button> :
-                                <button className="btn btn-secondary btn-sm" onClick={HandleFollow}>Follow</button>
-                              }
-                              <input
-                                className="btn btn-secondary btn-sm"
-                                type="button"
-                                value="Message"
-                                onClick={HandleMessage}
-                              />
-                            </span> :
-                              <input type="button" className="btn btn-secondary btn-sm" value="Unblock Account" onClick={() => {
-                                HandleUnblock();
-                              }}/>
-                          }
-                        </div>
-                      </h5>
-                    </div>
+                    </div> : profile.is_blocked == false ?
+                      <div>
+                        <h5>
+                          <label className="username">@{profile.username}</label>
+                          <div className="interact">
+                            {profile.is_blocking == false ?
+                              <div>
+                                {profile.is_following ?
+                                  <button className="btn btn-secondary btn-sm" onClick={HandleUnfollow}>Unfollow</button> :
+                                  <button className="btn btn-secondary btn-sm" onClick={HandleFollow}>Follow</button>
+                                }
+                                <input
+                                  className="btn btn-secondary btn-sm"
+                                  type="button"
+                                  value="Message"
+                                  onClick={HandleMessage}
+                                />
+                                <i className="bi bi-gear-fill" onClick={() => setShowSettings(true)}/>
+                              </div> :
+                                <input type="button" className="btn btn-secondary btn-sm" value="Unblock Account" onClick={() => {
+                                  HandleUnblock();
+                                }}/>
+                            }
+                          </div>
+                        </h5>
+                      </div> : null
                   }
-                  <hr/>
-                  <div className="connection-labels" style={{pointerEvents: session.id == profileId || profile.is_following ? "all" : "none"}}>
-                    <label onClick={HandleGetFollowers}>Followers</label>: {profile.followers} |&nbsp;
-                    <label onClick={HandleGetFollowing}>Following</label>: {profile.following}
-                  </div>
                 </div>
               }
+              <div style={{display: profile.is_blocked == false ? "block" : "none"}}>
+                <hr style={{marginTop: session.id == profileId ? null : "5px"}}/>
+                <div className="connection-labels" style={{pointerEvents: session.id == profileId || !profile.is_private || profile.is_following ? "all" : "none"}}>
+                  <label onClick={HandleGetFollowers}>Followers</label>: {profile.followers} |&nbsp;
+                  <label onClick={HandleGetFollowing}>Following</label>: {profile.following}
+                </div>
+              </div>
             </div>
   
             <div className="right-details">
@@ -282,6 +293,14 @@ function Profile()
                   HandleDeleteConnection={HandleDeleteConnection}
                 />
               : false
+            }
+            {showSettings
+              ? <AccountSettings
+                profileId={profileId}
+                HandleBlock={HandleBlock}
+                setShowSettings={setShowSettings}
+              />
+            : false
             }
           </div>
         </div>

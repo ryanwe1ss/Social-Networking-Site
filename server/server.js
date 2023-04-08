@@ -20,7 +20,9 @@ const { UpdatePassword } = require("./handlers/update/update-password");
 const { UpdatePrivacy } = require("./handlers/update/update-privacy");
 const { UpdateProfile } = require("./handlers/update/update-profile");
 
+const { BlockAccount } = require("./handlers/interact/block");
 const { UnblockAccount } = require("./handlers/interact/unblock");
+const { ReportAccount } = require("./handlers/interact/report");
 const { UnfollowAccount } = require("./handlers/interact/unfollow");
 const { FollowAccount } = require("./handlers/interact/follow");
 const { UploadPost } = require("./handlers/interact/post");
@@ -172,6 +174,14 @@ apiRouter.get("/api/post", (request, result) => {
   } FetchPost(request, result);
 });
 
+apiRouter.get("/api/block", (request, result) => {
+  if (request.session.user === undefined) {
+    result.sendStatus(401);
+    return;
+  
+  } BlockAccount(request, result);
+});
+
 apiRouter.get("/api/unblock", (request, result) => {
   if (request.session.user === undefined) {
     result.sendStatus(401);
@@ -210,6 +220,14 @@ apiRouter.get("/api/follow", (request, result) => {
     return;
   
   } FollowAccount(request, result);
+});
+
+apiRouter.get("/api/report", (request, result) => {
+  if (request.session.user === undefined) {
+    result.sendStatus(401);
+    return;
+  
+  } ReportAccount(request, result);
 });
 
 apiRouter.get("/api/unfollow", (request, result) => {

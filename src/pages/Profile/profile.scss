@@ -32,14 +32,25 @@
           }
         }
 
-        .interact button, input {
+        .interact {
           margin-top: 5px;
-          margin-right: 5px;
+          
+          button, input {
+            margin-bottom: 5px;
+            margin-right: 5px;
+          }
+
+          i {
+            &:hover {
+              cursor: pointer;
+              color: lightblue;
+            }
+          }
         }
 
         .connection-labels label:hover {
           cursor: pointer;
-          color: blue;
+          color: lightblue;
         }
       }
 

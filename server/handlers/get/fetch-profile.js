@@ -26,11 +26,11 @@ function FetchProfile(request, result)
     
       (SELECT COUNT(*) FROM accounts
         LEFT JOIN connections ON connections.follower = accounts.id
-        WHERE connections.user = ${request.query.profileId} AND is_enabled=true) as followers,
+        WHERE connections.user = ${request.query.profileId} AND is_enabled=TRUE) AS followers,
 
       (SELECT COUNT(*) FROM accounts
         LEFT JOIN connections ON connections.user = accounts.id 
-        WHERE connections.follower = ${request.query.profileId} AND is_enabled=true) as following,
+        WHERE connections.follower = ${request.query.profileId} AND is_enabled=TRUE) AS following,
 
       (SELECT EXISTS(SELECT * FROM connections
         WHERE follower = ${request.session.user.id}

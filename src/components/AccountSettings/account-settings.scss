@@ -1,0 +1,58 @@
+.modal {
+  padding-top: 100px;
+  background-color: rgba(0,0,0,0.4);
+  display: block;
+
+  .modal-content {
+    padding: 15px;
+    max-width: 400px;
+    height: 450px;
+    margin: 2rem auto;
+    overflow: auto;
+
+    header {
+      h4 {
+        display: inline-block;
+        position: absolute;
+        transform: translateX(-50%);
+        margin-top: 8px;
+        color: black;
+        left: 50%;
+      }
+    }
+
+    .modal-body {
+      
+      input {
+        margin-top: 10px;
+        display: block;
+        width: 100%;
+      }
+
+      .report {
+        margin-top: 10px;
+
+        label {
+          margin-bottom: 5px;
+          color: black;
+        }
+        
+        #result {
+          color: red;
+        }
+      }
+    }
+
+    #close {
+      color: black;
+      float: right;
+      font-size: 30px;
+      font-weight: bold;
+    }
+    
+    #close:hover {
+      color: red;
+      cursor: pointer;
+    }
+  }
+}
