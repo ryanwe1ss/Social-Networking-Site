@@ -1,21 +1,42 @@
 import { useState } from "react";
 
-import { ReportAccount } from "./../../utilities/utilities";
+import {
+  ReportAccount,
+  BlockAccount
+} from "./../../utilities/utilities";
 import "./account-settings.scss";
 
 function AccountSettings(args)
 {
   const [report, setShowReport] = useState(false);
 
+  function HandleBlock() {
+    BlockAccount(args.profileId).then(response => {
+      if (response.status == 200) {
+        args.HandleFetchProfile();
+        args.setShowSettings(false);
+      }
+    });
+  }
+
   function HandleReportAccount(reportMsg) {
-    if (reportMsg.length < 5 || reportMsg.length > 250) {
-      document.getElementById("result").innerHTML = "Must be between 5 - 250 characters.";
-    
-    } else {
-      ReportAccount(args.profileId, reportMsg).then(() => {
-        document.getElementById("result").innerHTML = "Your report has been submitted.";
-      });
+    const reportBody = {
+      id: args.profileId,
+      message: reportMsg
     }
+
+    ReportAccount(reportBody).then((response) => {
+      if (response.status == 200) {
+        document.getElementById("result").innerHTML = "Your report has been submitted.";
+      
+      } else if (response.status == 400) {
+        document.getElementById("result").innerHTML = "Must be between 5 - 250 characters.";
+      
+      } else if (response.status == 429) {
+        document.getElementById("result").innerHTML = "You can submit a report once every 3 hours.";
+      
+      } else document.getElementById("result").innerHTML = "Something went wrong.";
+    });
   }
 
   return (
@@ -32,7 +53,7 @@ function AccountSettings(args)
         </header><hr/>
 
         <div className="modal-body">
-          <input className="btn btn-secondary" type="button" value="Block" onClick={args.HandleBlock}/>
+          <input className="btn btn-secondary" type="button" value="Block" onClick={HandleBlock}/>
           <input className="btn btn-secondary" type="button" value="Report" onClick={() => setShowReport(true)}/>
 
           {report && <div className="report">

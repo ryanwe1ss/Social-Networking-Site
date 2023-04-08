@@ -222,7 +222,7 @@ apiRouter.get("/api/follow", (request, result) => {
   } FollowAccount(request, result);
 });
 
-apiRouter.get("/api/report", (request, result) => {
+apiRouter.post("/api/report", (request, result) => {
   if (request.session.user === undefined) {
     result.sendStatus(401);
     return;

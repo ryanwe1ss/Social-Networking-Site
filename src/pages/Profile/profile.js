@@ -120,15 +120,6 @@ function Profile()
     })
   }
 
-  function HandleBlock() {
-    BlockAccount(profileId).then(response => {
-      if (response.status == 200) {
-        HandleFetchProfile();
-        setShowSettings(false);
-      }
-    });
-  }
-
   function HandleUnblock() {
     UnblockAccount(profileId).then(response => {
       if (response.status == 200) {
@@ -297,8 +288,8 @@ function Profile()
             {showSettings
               ? <AccountSettings
                 profileId={profileId}
-                HandleBlock={HandleBlock}
                 setShowSettings={setShowSettings}
+                HandleFetchProfile={HandleFetchProfile}
               />
             : false
             }

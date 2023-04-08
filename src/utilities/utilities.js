@@ -214,9 +214,9 @@ export function UnfollowAccount(profileId)
     .then((response) => { return response })
 }
 
-export function ReportAccount(profileId, reportMsg)
+export function ReportAccount(body)
 {
-  return HttpGet(`/api/report?id=${profileId}&message=${reportMsg}`)
+  return HttpPost('/api/report', body)
     .then((response) => { return response });
 }
 
