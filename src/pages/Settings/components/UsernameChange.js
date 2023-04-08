@@ -1,6 +1,6 @@
 function UsernameChange(args) {
   return (
-    <div className="change-username-container">
+    <div className="settings-change-username-container">
 
       <div className="left-elements">
         <h5>Current Username:</h5><br/>
@@ -12,7 +12,7 @@ function UsernameChange(args) {
         <input type="text" placeholder="Enter Here" id="newUsername"/>
       </div>
 
-      <button className="btn btn-primary" onClick={() => {args.UpdateCredential('Username')}}>Update Username</button>
+      <button className="btn btn-primary" onClick={() => {args.HandleUpdateCredential('Username')}}>Update Username</button>
       <div id="result"/>
     </div>
   );

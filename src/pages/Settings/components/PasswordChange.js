@@ -8,7 +8,7 @@ function PasswordChange(args) {
   }
 
   return (
-    <div className="change-password-container">
+    <div className="settings-change-password-container">
 
       <div className="left-elements">
         <h5>Current Password:</h5><br/>
@@ -23,7 +23,7 @@ function PasswordChange(args) {
         <input type="text" placeholder="Enter Here" id="newPassword"/>
       </div>
 
-      <button className="btn btn-primary" onClick={() => args.UpdateCredential("Password")}>Update Password</button>
+      <button className="btn btn-primary" onClick={() => args.HandleUpdateCredential("Password")}>Update Password</button>
       <div id="result"/>
     </div>
   );

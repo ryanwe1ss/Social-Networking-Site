@@ -3,6 +3,7 @@ import {
   FetchSession,
   FetchProfile,
   FetchPicture,
+  UnblockAccount,
   UpdateProfile,
   UploadProfilePicture,
   FollowAccount,
@@ -51,7 +52,9 @@ function Profile()
 
   function HandleFetchProfile() {
     FetchProfile(profileId).then((profile) => {
-      if (!profile) {
+      console.log(profile);
+      
+      if (!profile || profile.is_blocked) {
         setProfile([]);
         setPicture([]);
         setRendered(true);
@@ -116,6 +119,14 @@ function Profile()
     })
   }
 
+  function HandleUnblock() {
+    UnblockAccount(profileId).then(response => {
+      if (response.status == 200) {
+        HandleFetchProfile();
+      }
+    });
+  }
+
   function HandleDeleteConnection(userId, type) {
     DeleteConnection(userId, type).then((response) => {
       if (response.status === 200) {
@@ -165,11 +176,11 @@ function Profile()
                   <LoadingBar size="small"/>
                 </div>
               }
-  
-              {profile.map(account => (
-                <div key={account.id}>
-                  {session.id == profileId
-                  ? <div className="profile-interact">
+
+              {
+                <div>
+                  {session.id == profileId ?
+                    <div className="profile-interact">
                       {
                         !editForm ?
                           <input className="btn btn-secondary btn-sm" type="button" value="Edit Profile" 
@@ -185,36 +196,44 @@ function Profile()
                             </button>
                           </span>
                       }
-  
                       <input id="profile-picture" onChange={HandleUpload} type="file"/>
-                      <button className="btn btn-secondary btn-sm"
-                        onClick={() => document.getElementById("profile-picture").click()}
-                      >Edit Profile Picture
+                      <button
+                        className="btn btn-secondary btn-sm"
+                        onClick={() => document.getElementById("profile-picture").click()}>Edit Profile Picture
                       </button>
                     </div> :
-                    <h5>
-                      <label className="username">{account.username}</label>
-                      <div className="interact">
-                        {account.is_following ?
-                          <button className="btn btn-secondary btn-sm" onClick={HandleUnfollow}>Unfollow</button> :
-                          <button className="btn btn-secondary btn-sm" onClick={HandleFollow}>Follow</button>
-                        }
-                        <input
-                          className="btn btn-secondary btn-sm"
-                          type="button"
-                          value="Message"
-                          onClick={HandleMessage}
-                        />
-                      </div>
-                    </h5>
+                    <div>
+                      <h5>
+                        <label className="username">@{profile.username}</label>
+                        <div className="interact">
+                          {profile.is_blocking == false ?
+                            <span>
+                              {profile.is_following ?
+                                <button className="btn btn-secondary btn-sm" onClick={HandleUnfollow}>Unfollow</button> :
+                                <button className="btn btn-secondary btn-sm" onClick={HandleFollow}>Follow</button>
+                              }
+                              <input
+                                className="btn btn-secondary btn-sm"
+                                type="button"
+                                value="Message"
+                                onClick={HandleMessage}
+                              />
+                            </span> :
+                              <input type="button" className="btn btn-secondary btn-sm" value="Unblock Account" onClick={() => {
+                                HandleUnblock();
+                              }}/>
+                          }
+                        </div>
+                      </h5>
+                    </div>
                   }
                   <hr/>
-                  <div className="connection-labels" style={{pointerEvents: session.id == profileId || profile[0].is_following ? "all" : "none"}}>
-                    <label onClick={HandleGetFollowers}>Followers</label>: {account.followers} |&nbsp;
-                    <label onClick={HandleGetFollowing}>Following</label>: {account.following}
+                  <div className="connection-labels" style={{pointerEvents: session.id == profileId || profile.is_following ? "all" : "none"}}>
+                    <label onClick={HandleGetFollowers}>Followers</label>: {profile.followers} |&nbsp;
+                    <label onClick={HandleGetFollowing}>Following</label>: {profile.following}
                   </div>
                 </div>
-              ))}
+              }
             </div>
   
             <div className="right-details">

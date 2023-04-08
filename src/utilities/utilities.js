@@ -42,10 +42,7 @@ export function FetchProfile(profileId)
       return profile.json();
     })
     .then((profile) => {
-      if (profile.length > 0) {
-        profile.map(a => a.username = "@" + a.username)
-        return profile;
-      }
+      return profile;
     })
 }
 
@@ -94,6 +91,25 @@ export function FetchPosts(profileId, limit=3)
     .then((posts) => {
       return posts;
     });
+}
+
+export function FetchBlocked()
+{
+  return HttpGet('/api/blocked')
+    .then((response) => {
+      if (response.status == 200) {
+        return response.json();
+      }
+    })
+    .then((users) => {
+      return users;
+    });
+}
+
+export function UnblockAccount(accountId)
+{
+  return HttpGet(`/api/unblock?id=${accountId}`)
+    .then((response) => { return response });
 }
 
 export function LikePost(postId)

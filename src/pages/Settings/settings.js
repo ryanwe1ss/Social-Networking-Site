@@ -3,12 +3,14 @@ import React, { useEffect, useState } from "react";
 import SidePanel from "../../components/SidePanel/side-panel";
 import UsernameChange from "./components/UsernameChange";
 import PrivacySettings from "./components/PrivacySettings";
+import BlockedUsers from "./components/BlockedUsers";
 import LoadingBar from "../../components/LoadingBar/loading-bar";
 import "./settings.scss";
 
 import {
-  FetchProfile,
   FetchSession,
+  FetchProfile,
+  FetchBlocked,
   UpdatePrivacy,
   UpdateUsername,
   UpdatePassword,
@@ -17,8 +19,12 @@ import PasswordChange from "./components/PasswordChange";
 
 function Settings() {
 
+  const selectedColour = "#FFD100";
+
   const [isPrivate, setPrivate] = useState(false);
+  const [selected, setSelected] = useState(null);
   const [component, setComponent] = useState(1);
+  const [blocked, setBlocked] = useState([]);
   const [account, setAccount] = useState([]);
 
   const [session, setSession] = useState({
@@ -29,15 +35,26 @@ function Settings() {
   useEffect(() => {
     FetchSession().then((session) => {
       setSession({ id: session.id, username: session.username });
-      
-      FetchProfile(session.id).then(account => {
-        setAccount(account[0]);
-        if (account[0].is_private) setPrivate(true);
-      });
+
+      HandleFetchProfile(session.id);
+      HandleFetchBlocked();
     });
   }, []);
 
-  function UpdateAccountType(type) {
+  function HandleFetchProfile(sessionId) {
+    FetchProfile(sessionId).then(account => {
+      if (account.is_private) setPrivate(true);
+      setAccount(account);
+    });
+  }
+
+  function HandleFetchBlocked() {
+    FetchBlocked().then(users => {
+      setBlocked(users);
+    });
+  }
+
+  function HandleUpdateAccountType(type) {
     UpdatePrivacy(type).then(response => {
       if (response.status === 200) {
         setPrivate(!isPrivate);
@@ -45,7 +62,7 @@ function Settings() {
     });
   }
 
-  function UpdateCredential(type) {
+  function HandleUpdateCredential(type) {
     const Update = type === "Username" ? UpdateUsername : UpdatePassword;
 
     Update(document.getElementById(`new${type}`).value).then(response => {
@@ -71,6 +88,11 @@ function Settings() {
     });
   }
 
+  function RenderComponent(id) {
+    setComponent(id);
+    setSelected(id);
+  }
+
   if (session.id) {
     return (
       <div className="settings-container">
@@ -79,18 +101,19 @@ function Settings() {
   
           <div className="settings">
             <div className="settings-panel">
-              <label onClick={() => { setComponent(1) }}>Privacy Settings</label>
-              <label onClick={() => { setComponent(2) }}>Username Change</label>
-              <label onClick={() => { setComponent(3) }}>Password Change</label>
-              <label>Blocked Users</label>
+              <label onClick={() => { RenderComponent(1) }} className={selected == 1 ? "active" : null}>Privacy Settings</label>
+              <label onClick={() => { RenderComponent(2) }} className={selected == 2 ? "active" : null}>Username Change</label>
+              <label onClick={() => { RenderComponent(3) }} className={selected == 3 ? "active" : null}>Password Change</label>
+              <label onClick={() => { RenderComponent(4) }} className={selected == 4 ? "active" : null}>Blocked Users</label>
               <label>Deactivate Account</label>
             </div>
   
             <div className="settings-block">
               {
-                component === 1 ? <PrivacySettings UpdateAccountType={UpdateAccountType} isPrivate={isPrivate}/> :
-                component === 2 ? <UsernameChange UpdateCredential={UpdateCredential} account={account}/> :
-                component === 3 ? <PasswordChange UpdateCredential={UpdateCredential} account={account}/> : null
+                component === 1 ? <PrivacySettings HandleUpdateAccountType={HandleUpdateAccountType} isPrivate={isPrivate}/> :
+                component === 2 ? <UsernameChange HandleUpdateCredential={HandleUpdateCredential} account={account}/> :
+                component === 3 ? <PasswordChange HandleUpdateCredential={HandleUpdateCredential} account={account}/> :
+                component === 4 ? <BlockedUsers HandleFetchBlocked={HandleFetchBlocked} blocked={blocked}/> : null
               }
             </div>
           </div>

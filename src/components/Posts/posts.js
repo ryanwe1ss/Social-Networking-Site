@@ -112,7 +112,7 @@ function Posts(args) {
             
             args.sessionId != profileId ?
               <div className="no-posts">
-                {args.username.replace("@", "") + " has no posts"}
+                {args.username + " has no posts"}
               </div> : null :
   
             <div className="spinner">

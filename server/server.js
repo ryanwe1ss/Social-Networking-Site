@@ -10,6 +10,7 @@ const { FetchThumbnail } = require("./handlers/get/fetch-thumbnail");
 const { SearchAccounts } = require("./handlers/get/search-accounts");
 const { FetchPicture } = require("./handlers/get/fetch-picture");
 const { FetchProfile } = require("./handlers/get/fetch-profile");
+const { FetchBlocked } = require("./handlers/get/fetch-blocked");
 const { FetchChats } = require("./handlers/get/fetch-chats");
 const { FetchPosts } = require("./handlers/get/fetch-posts");
 const { FetchPost } = require("./handlers/get/fetch-post");
@@ -19,6 +20,7 @@ const { UpdatePassword } = require("./handlers/update/update-password");
 const { UpdatePrivacy } = require("./handlers/update/update-privacy");
 const { UpdateProfile } = require("./handlers/update/update-profile");
 
+const { UnblockAccount } = require("./handlers/interact/unblock");
 const { UnfollowAccount } = require("./handlers/interact/unfollow");
 const { FollowAccount } = require("./handlers/interact/follow");
 const { UploadPost } = require("./handlers/interact/post");
@@ -142,6 +144,14 @@ apiRouter.get("/api/profile", (request, result) => {
   } FetchProfile(request, result);
 });
 
+apiRouter.get("/api/blocked", (request, result) => {
+  if (request.session.user === undefined) {
+    result.sendStatus(401);
+    return;
+  
+  } FetchBlocked(request, result);
+});
+
 apiRouter.get("/api/picture", (request, result) => {
   if (request.session.user === undefined) {
     result.sendStatus(401);
@@ -160,6 +170,14 @@ apiRouter.get("/api/post", (request, result) => {
     return;
   
   } FetchPost(request, result);
+});
+
+apiRouter.get("/api/unblock", (request, result) => {
+  if (request.session.user === undefined) {
+    result.sendStatus(401);
+    return;
+  
+  } UnblockAccount(request, result);
 });
 
 apiRouter.get("/api/comment", (request, result) => {
