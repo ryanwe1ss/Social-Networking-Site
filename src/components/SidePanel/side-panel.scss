@@ -10,6 +10,8 @@
   }
 
   .side-bar {
+    white-space: nowrap;
+    overflow: hidden;
     padding: 15px;
 
     div {
@@ -17,6 +19,21 @@
 
       :hover {
         color: rgb(83, 93, 223);
+      }
+    }
+
+    .notification {
+      position: relative;
+
+      .badge {
+        font-size: 16px;
+        position: absolute;
+        top: -0px;
+        right: -22px;
+        padding: 2px 6px;
+        border-radius: 50%;
+        background-color: rgb(189, 48, 48);
+        color: white;
       }
     }
 
@@ -38,6 +55,6 @@
 
 @media only screen and (max-width: 1100px) {
   .side-panel {
-    width: 200px;
+    width: 250px;
   }
 }

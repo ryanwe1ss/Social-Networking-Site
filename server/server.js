@@ -4,6 +4,7 @@ const { Login } = require("./handlers/auth/login");
 const { Register } = require("./handlers/auth/register");
 
 const { FetchConversation } = require("./handlers/get/fetch-conversation");
+const { FetchNotifications } = require("./handlers/get/fetch-notifications");
 const { FetchFollowers } = require("./handlers/get/fetch-followers");
 const { FetchFollowing } = require("./handlers/get/fetch-following");
 const { FetchThumbnail } = require("./handlers/get/fetch-thumbnail");
@@ -212,6 +213,14 @@ apiRouter.get("/api/posts", (request, result) => {
     return;
   
   } FetchPosts(request, result);
+});
+
+apiRouter.get("/api/notifications", (request, result) => {
+  if (request.session.user === undefined) {
+    result.sendStatus(401);
+    return;
+  
+  } FetchNotifications(request, result);
 });
 
 apiRouter.get("/api/follow", (request, result) => {

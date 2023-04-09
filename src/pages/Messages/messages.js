@@ -172,10 +172,6 @@ function Messages()
       </div>
     );
   
-  } else {
-    return (
-      <LoadingBar size="large"/>
-    );
-  }
+  } else return <LoadingBar size="large"/>
 }
 export default Messages;

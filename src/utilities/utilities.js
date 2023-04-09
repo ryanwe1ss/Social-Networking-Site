@@ -93,6 +93,19 @@ export function FetchPosts(profileId, limit=3)
     });
 }
 
+export function FetchNotifications(countOnly=false)
+{
+  return HttpGet(`/api/notifications${countOnly ? '?countOnly=true' : ''}`)
+    .then((response) => {
+      if (response.status == 200) {
+        return response.json();
+      }
+    })
+    .then((notifications) => {
+      return notifications;
+    });
+}
+
 export function FetchBlocked()
 {
   return HttpGet('/api/blocked')

@@ -15,6 +15,8 @@ function ReportAccount(request, result)
       reported_id = ${request.body.id}`,
   
     function (error, data) {
+      if (error) return result.sendStatus(500);
+      
       const lastReported = data.rows[0].last_reported;
       if (lastReported && (new Date() - new Date(lastReported)) < 10800000) return result.sendStatus(429);
       
