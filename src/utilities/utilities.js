@@ -1,5 +1,6 @@
 import { HttpGet, HttpPost } from "./http-service";
 
+// ----- AUTHENTICATION ----- //
 export function FetchSession()
 {
   return HttpGet('/api/session')
@@ -35,6 +36,12 @@ export function PerformRegister(username, password, confirm) {
     .then((response) => { return response.text() });
 }
 
+export function Logout()
+{
+  HttpGet('/api/logout');
+}
+
+// ----- USER GET REQUESTS ----- //
 export function FetchProfile(profileId)
 {
   return HttpGet(`/api/profile?profileId=${profileId}`)
@@ -44,6 +51,33 @@ export function FetchProfile(profileId)
     .then((profile) => {
       return profile;
     })
+}
+
+export function FetchFollowers(profileId)
+{
+  return HttpGet(`/api/followers?id=${profileId}`)
+    .then((result) => { return result.json() })
+    .then((followers) => { return followers });
+}
+
+export function FetchFollowing(profileId)
+{
+  return HttpGet(`/api/following?id=${profileId}`)
+    .then((result) => { return result.json() })
+    .then((following) => { return following });
+}
+
+export function FetchBlocked()
+{
+  return HttpGet('/api/blocked')
+    .then((response) => {
+      if (response.status == 200) {
+        return response.json();
+      }
+    })
+    .then((users) => {
+      return users;
+    });
 }
 
 export function FetchPicture(profileId) {
@@ -67,103 +101,13 @@ export function FetchThumbnail(id)
     })
 }
 
-export function FetchPost(profileId, postId)
+// ----- FILE UPLOADS ----- //
+export function UploadProfilePicture(event)
 {
-  return HttpGet(`/api/post?profileId=${profileId}&post=${postId}`)
-    .then((response) => {
-      if (response.status == 200) {
-        return response.json();
-      }
-    })
-    .then((post) => {
-      return post;
-    })
-}
+  const formData = new FormData();
+  formData.append("data", event.target.files[0]);
 
-export function FetchPosts(profileId, limit=3)
-{
-  return HttpGet(`/api/posts?id=${profileId}&limit=${limit}`)
-    .then(response => {
-      if (response.status == 200) {
-        return response.json();
-      }
-    })
-    .then((posts) => {
-      return posts;
-    });
-}
-
-export function FetchNotifications(countOnly=false)
-{
-  return HttpGet(`/api/notifications${countOnly ? '?countOnly=true' : ''}`)
-    .then((response) => {
-      if (response.status == 200) {
-        return response.json();
-      }
-    })
-    .then((notifications) => {
-      return notifications;
-    });
-}
-
-export function FetchBlocked()
-{
-  return HttpGet('/api/blocked')
-    .then((response) => {
-      if (response.status == 200) {
-        return response.json();
-      }
-    })
-    .then((users) => {
-      return users;
-    });
-}
-
-export function BlockAccount(accountId)
-{
-  return HttpGet(`/api/block?id=${accountId}`)
-    .then((response) => { return response });
-}
-
-export function UnblockAccount(accountId)
-{
-  return HttpGet(`/api/unblock?id=${accountId}`)
-    .then((response) => { return response });
-}
-
-export function LikePost(postId)
-{
-  return HttpGet(`/api/like?post=${postId}`)
-    .then((response) => { return response });
-}
-
-export function CommentPost(postId, comment)
-{
-  return HttpGet(`/api/comment?post=${postId}&comment=${comment}`)
-    .then((response) => { return response });
-}
-
-export function UpdateProfile(body)
-{
-  return HttpPost(`/api/update`, body)
-    .then((response) => { return response });
-}
-
-export function UpdatePrivacy(isPrivate)
-{
-  return HttpGet(`/api/update-privacy?private=${isPrivate}`)
-    .then((response) => { return response });
-}
-
-export function UpdateUsername(username)
-{
-  return HttpGet(`/api/update-username?username=${username}`)
-    .then((response) => { return response });
-}
-
-export function UpdatePassword(password)
-{
-  return HttpGet(`/api/update-password?password=${password}`)
+  return HttpPost(`/api/update`, formData, false, false)
     .then((response) => { return response });
 }
 
@@ -178,40 +122,76 @@ export function UploadPost(description, comment, like, image)
   ).then((response) => { return response });
 }
 
+// ----- POST GET REQUESTS ----- //
+export function FetchPosts(profileId, limit=3)
+{
+  return HttpGet(`/api/posts?id=${profileId}&limit=${limit}`)
+    .then(response => {
+      if (response.status == 200) {
+        return response.json();
+      }
+    })
+    .then((posts) => {
+      return posts;
+    });
+}
+
+export function FetchPost(profileId, postId)
+{
+  return HttpGet(`/api/post?profileId=${profileId}&post=${postId}`)
+    .then((response) => {
+      if (response.status == 200) {
+        return response.json();
+      }
+    })
+    .then((post) => {
+      return post;
+    })
+}
+
+// ----- POST ACTIONS ----- //
+export function LikePost(postId)
+{
+  return HttpGet(`/api/like?post=${postId}`)
+    .then((response) => { return response });
+}
+
+export function CommentPost(postId, comment)
+{
+  return HttpGet(`/api/comment?post=${postId}&comment=${comment}`)
+    .then((response) => { return response });
+}
+
 export function DeletePost(postId)
 {
   return HttpGet(`/api/delete-post?post=${postId}`)
     .then((response) => { return response });
 }
 
-export function SearchAccounts(event)
+// ----- NOTIFICATIONS ----- //
+export function FetchNotifications(countOnly=false)
 {
-  const searchQuery = event.target.value;
-  const accounts = [];
-
-  if (searchQuery.length == 0) return Promise.resolve([]);
-
-  return HttpGet(`/api/search?searchQuery=${searchQuery}`)
-    .then((result) => {
-      return result.json();
+  return HttpGet(`/api/notifications${countOnly ? '?countOnly=true' : ''}`)
+    .then((response) => {
+      if (response.status == 200) {
+        return response.json();
+      }
     })
-    .then((users) => {
-      users.map(user => {
-        accounts.push({
-          id: user.id,
-          username: user.username,
-        });
-      });
-      return accounts;
+    .then((notifications) => {
+      return notifications;
     });
 }
 
-export function UploadProfilePicture(event)
+// ----- ACCOUNT ACTIONS ----- //
+export function BlockAccount(accountId)
 {
-  const formData = new FormData();
-  formData.append("data", event.target.files[0]);
+  return HttpGet(`/api/block?id=${accountId}`)
+    .then((response) => { return response });
+}
 
-  return HttpPost(`/api/update`, formData, false, false)
+export function UnblockAccount(accountId)
+{
+  return HttpGet(`/api/unblock?id=${accountId}`)
     .then((response) => { return response });
 }
 
@@ -239,18 +219,67 @@ export function DeleteConnection(userId, type)
     .then((response) => { return response });
 }
 
-export function GetFollowers(profileId)
+// ----- UPDATE ----- //
+export function UpdateProfile(body)
 {
-  return HttpGet(`/api/followers?id=${profileId}`)
-    .then((result) => { return result.json() })
-    .then((followers) => { return followers });
+  return HttpPost(`/api/update`, body)
+    .then((response) => { return response });
 }
 
-export function GetFollowing(profileId)
+export function UpdatePrivacy(isPrivate)
 {
-  return HttpGet(`/api/following?id=${profileId}`)
+  return HttpGet(`/api/update-privacy?private=${isPrivate}`)
+    .then((response) => { return response });
+}
+
+export function UpdateUsername(username)
+{
+  return HttpGet(`/api/update-username?username=${username}`)
+    .then((response) => { return response });
+}
+
+export function UpdatePassword(password)
+{
+  return HttpGet(`/api/update-password?password=${password}`)
+    .then((response) => { return response });
+}
+
+// ----- SEARCH ----- //
+export function SearchAccounts(event)
+{
+  const searchQuery = event.target.value;
+  const accounts = [];
+
+  if (searchQuery.length == 0) return Promise.resolve([]);
+
+  return HttpGet(`/api/search?searchQuery=${searchQuery}`)
+    .then((result) => {
+      return result.json();
+    })
+    .then((users) => {
+      users.map(user => {
+        accounts.push({
+          id: user.id,
+          username: user.username,
+        });
+      });
+      return accounts;
+    });
+}
+
+// ----- MESSAGING ----- //
+export function FetchChats()
+{
+  return HttpGet('/api/get-chats')
     .then((result) => { return result.json() })
-    .then((following) => { return following });
+    .then((chats) => { return chats });
+}
+
+export function FetchConversation(userId)
+{
+  return HttpGet(`/api/get-conversation?userId=${userId}`)
+    .then((result) => { return result.json() })
+    .then((conversation) => { return conversation });
 }
 
 export function CreateChat(userId)
@@ -259,31 +288,13 @@ export function CreateChat(userId)
     .then((response) => { return response });
 }
 
-export function GetChats()
-{
-  return HttpGet('/api/get-chats')
-    .then((result) => { return result.json() })
-    .then((chats) => { return chats });
-}
-
-export function GetConversation(userId)
-{
-  return HttpGet(`/api/get-conversation?userId=${userId}`)
-    .then((result) => { return result.json() })
-    .then((conversation) => { return conversation });
-}
-
 export function SendMessage(body)
 {
   return HttpPost("/api/send-message", body)
     .then((response) => { return response });
 }
 
-export function Logout()
-{
-  HttpGet('/api/logout');
-}
-
+// ----- MISCELLANEOUS ----- //
 export function RedirectPage(profileId)
 {
   window.location.href = `/profile?id=${profileId}`;

@@ -10,9 +10,8 @@ import {
   UnfollowAccount,
   DeleteConnection,
   CreateChat,
-  GetFollowers,
-  GetFollowing,
-  BlockAccount,
+  FetchFollowers,
+  FetchFollowing,
 } from "../../utilities/utilities";
 
 import DefaultProfilePicture from "../../images/default.png";
@@ -136,15 +135,15 @@ function Profile()
     })
   }
 
-  function HandleGetFollowers() {
-    GetFollowers(profileId).then((followers) => {
+  function HandleFetchFollowers() {
+    FetchFollowers(profileId).then((followers) => {
       setFollowers(followers);
       setShowFollowers(true);
     });
   }
 
-  function HandleGetFollowing() {
-    GetFollowing(profileId).then((following) => {
+  function HandleFetchFollowing() {
+    FetchFollowing(profileId).then((following) => {
       setFollowing(following);
       setShowFollowing(true);
     });
@@ -232,8 +231,8 @@ function Profile()
               <div style={{display: profile.is_blocked == false ? "block" : "none"}}>
                 <hr style={{marginTop: session.id == profileId ? null : "5px"}}/>
                 <div className="connection-labels" style={{pointerEvents: session.id == profileId || !profile.is_private || profile.is_following ? "all" : "none"}}>
-                  <label onClick={HandleGetFollowers}>Followers</label>: {profile.followers} |&nbsp;
-                  <label onClick={HandleGetFollowing}>Following</label>: {profile.following}
+                  <label onClick={HandleFetchFollowers}>Followers</label>: {profile.followers} |&nbsp;
+                  <label onClick={HandleFetchFollowing}>Following</label>: {profile.following}
                 </div>
               </div>
             </div>
@@ -269,7 +268,7 @@ function Profile()
                   profileId={profileId}
                   followers={followers}
                   setShowFollowers={setShowFollowers}
-                  HandleGetFollowers={HandleGetFollowers}
+                  HandleFetchFollowers={HandleFetchFollowers}
                   HandleDeleteConnection={HandleDeleteConnection}
                 />
               : false
@@ -280,7 +279,7 @@ function Profile()
                   profileId={profileId}
                   following={following}
                   setShowFollowing={setShowFollowing}
-                  HandleGetFollowing={HandleGetFollowing}
+                  HandleFetchFollowing={HandleFetchFollowing}
                   HandleDeleteConnection={HandleDeleteConnection}
                 />
               : false

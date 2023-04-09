@@ -8,9 +8,9 @@ import "./messages.scss";
 import {
   FetchSession,
   FetchThumbnail,
-  GetConversation,
+  FetchConversation,
   SendMessage,
-  GetChats,
+  FetchChats,
 } from "../../utilities/utilities";
 
 function Messages()
@@ -29,7 +29,7 @@ function Messages()
   useEffect(() => {
     FetchSession().then((session) => {
       setSession({ id: session.id, username: session.username });
-      HandleGetChats(session);
+      HandleFetchChats(session);
     });
   }, []);
 
@@ -44,8 +44,8 @@ function Messages()
     });
   }
 
-  function HandleGetChats(session) {
-    GetChats().then((chats) => {
+  function HandleFetchChats(session) {
+    FetchChats().then((chats) => {
       const users = chats.map(chat => {
         if (chat.user_one !== session.username) {
           return { id: chat.user_one_id, name: chat.user_one };
@@ -86,7 +86,7 @@ function Messages()
     
     }); document.getElementById(userId).style.display = "block";
 
-    GetConversation(userId).then((conversation) => {
+    FetchConversation(userId).then((conversation) => {
       document.getElementById("message").disabled = false;
 
       setConversation(conversation.messages);

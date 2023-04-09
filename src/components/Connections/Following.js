@@ -31,7 +31,7 @@ function Following(args)
                 ? null
                 : <input type="button" className="btn btn-secondary btn-sm" value="Remove" onClick={() => {
                     args.HandleDeleteConnection(account.id, "following");
-                    args.HandleGetFollowing();
+                    args.HandleFetchFollowing();
                   }}/>
               }
             </div>
