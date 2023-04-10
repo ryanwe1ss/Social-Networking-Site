@@ -12,12 +12,11 @@ function DeletePost(request, result)
       creator = ${request.session.user.id}`,
       
       function(error, data) {
-        if (error) result.sendStatus(500);
-        return;
+        if (error) return result.sendStatus(500);
+        fs.unlinkSync(post);
+        result.sendStatus(200);
       }
     );
-    fs.unlinkSync(post);
-    result.sendStatus(200);
   
   } else result.sendStatus(500);
 }

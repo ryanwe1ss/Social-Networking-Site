@@ -31,8 +31,6 @@ function Notifications()
         const days = Math.ceil(time / (1000 * 3600 * 24));
         notification.days = Math.abs(days) == 0 ? "today" : Math.abs(days) + " days ago";
       });
-
-      console.log(notifications);
     });
   }
 
