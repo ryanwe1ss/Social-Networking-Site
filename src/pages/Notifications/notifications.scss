@@ -5,6 +5,7 @@
     .notifications {
       display: flex;
       flex-direction: column;
+      overflow: auto;
       padding: 10px;
       width: 100%;
 
@@ -13,6 +14,18 @@
         flex-direction: row;
         white-space: nowrap;
         padding: 8px;
+
+        .thumbnail {
+          position: relative;
+          top: -3px;
+          border-radius: 50%;
+          object-fit: cover;
+          width: 35px;
+          height: 35px;
+  
+          margin-right: 5px;
+          margin-bottom: 20px;
+        }
 
         .username {
           text-decoration: none;
@@ -37,6 +50,7 @@
           .accept, .decline {
             margin-left: 10px;
             border-radius: 5px;
+            height: 35px;
           }
         }
       }

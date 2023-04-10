@@ -65,6 +65,12 @@ function Notifications()
               <div>
                 {followRequests.length > 0 ? followRequests.map((request) => (
                   <div className="notification" key={request.id}>
+                    <img
+                      src={`${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/api/thumbnail?id=${request.follower.id}`}
+                      onError={(img) => (img.target.src = DefaultProfilePicture)}
+                      className="thumbnail"
+                      alt="thumbnail"
+                    />
                     {request.accepted ? (
                       <>
                         You have accepted&nbsp;

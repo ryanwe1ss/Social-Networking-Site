@@ -26,11 +26,11 @@ function Register() {
           break;
 
         case "username-length":
-          document.getElementById("response").innerHTML = "Username must be 5-12 characters";
+          document.getElementById("response").innerHTML = "Username must be 5-20 characters";
           break;
 
         case "password-length":
-          document.getElementById("response").innerHTML = "Password must be 5-12 characters";
+          document.getElementById("response").innerHTML = "Password must be 5-20 characters";
           break;
       }
     });

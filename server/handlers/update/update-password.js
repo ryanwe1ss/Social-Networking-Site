@@ -3,7 +3,7 @@ const { database } = require("../../database/db_connect");
 function UpdatePassword(request, result)
 {
   const password = request.query.password;
-  if (password.length < 5 || password.length > 12) {
+  if (password.length < 5 || password.length > 20) {
     result.sendStatus(400);
     return;
   }

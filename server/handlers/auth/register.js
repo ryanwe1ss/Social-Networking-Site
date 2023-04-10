@@ -8,11 +8,11 @@ function Register(request, result)
     result.send("mismatch");
     return;
   
-  } else if (credentials.username.length < 5 || credentials.username.length > 12) {
+  } else if (credentials.username.length < 5 || credentials.username.length > 20) {
     result.send("username-length");
     return;
   
-  } else if (credentials.password.length < 5 || credentials.password.length > 12) {
+  } else if (credentials.password.length < 5 || credentials.password.length > 20) {
     result.send("password-length");
     return;
   }
