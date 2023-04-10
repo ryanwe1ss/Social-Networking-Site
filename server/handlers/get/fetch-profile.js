@@ -26,11 +26,19 @@ function FetchProfile(request, result)
     
       (SELECT COUNT(*) FROM accounts
         LEFT JOIN connections ON connections.follower = accounts.id
-        WHERE connections.account = ${request.query.profileId} AND is_enabled=TRUE) AS followers,
+        WHERE
+          connections.account = ${request.query.profileId}
+          AND NOT (SELECT EXISTS(SELECT * FROM "blocked" WHERE "user" = ${request.session.user.id} AND blocker = accounts.id))
+          AND is_enabled=TRUE
+      ) AS followers,
 
       (SELECT COUNT(*) FROM accounts
         LEFT JOIN connections ON connections.account = accounts.id 
-        WHERE connections.follower = ${request.query.profileId} AND is_enabled=TRUE) AS following,
+        WHERE
+          connections.follower = ${request.query.profileId}
+          AND NOT (SELECT EXISTS(SELECT * FROM "blocked" WHERE "user" = ${request.session.user.id} AND blocker = accounts.id))
+          AND is_enabled=TRUE
+      ) AS following,
 
       (SELECT EXISTS(SELECT * FROM connections
         WHERE follower = ${request.session.user.id}

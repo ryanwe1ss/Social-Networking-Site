@@ -36,7 +36,7 @@ function Search() {
           <div className="search-content">
             <div className="search-header">
               <input type="text" className="form-control" onChange={() => {
-                SearchAccounts(event, session.id).then((result) => {
+                SearchAccounts(event).then((result) => {
                   setSearchResults(result);
                   setHasSearched(true);
                 });

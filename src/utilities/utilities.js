@@ -55,7 +55,7 @@ export function FetchProfile(profileId)
 
 export function FetchFollowers(profileId)
 {
-  return HttpGet(`/api/followers?id=${profileId}`)
+  return HttpGet(`/api/followers?profileId=${profileId}`)
     .then((result) => { return result.json() })
     .then((followers) => { return followers });
 }
@@ -185,13 +185,13 @@ export function FetchNotifications(countOnly=false)
 // ----- ACCOUNT ACTIONS ----- //
 export function BlockAccount(accountId)
 {
-  return HttpGet(`/api/block?id=${accountId}`)
+  return HttpGet(`/api/block?profileId=${accountId}`)
     .then((response) => { return response });
 }
 
 export function UnblockAccount(accountId)
 {
-  return HttpGet(`/api/unblock?id=${accountId}`)
+  return HttpGet(`/api/unblock?profileId=${accountId}`)
     .then((response) => { return response });
 }
 

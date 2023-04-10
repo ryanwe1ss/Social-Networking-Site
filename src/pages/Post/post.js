@@ -27,12 +27,14 @@ function Post()
   useEffect(() => {
     FetchSession().then((session) => {
       setSession({ id: session.id, username: session.username });
-      HandleFetchPost();
+      HandleFetchPost(session);
     });
   }, []);
 
-  function HandleFetchPost() {
+  function HandleFetchPost(session) {
     FetchPost(profileId, postId).then((result) => {
+      if (!result) location.href = `/profile?id=${session.id}`;
+
       setPost(result.creator);
       setPicture(result.post);
     });

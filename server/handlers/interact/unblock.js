@@ -5,7 +5,7 @@ function UnblockAccount(request, result)
   database.query(`
     DELETE FROM "blocked"
     WHERE blocker = ${request.session.user.id} AND
-    "user" = ${request.query.id}`,
+    "user" = ${request.query.profileId}`,
     
     function(error, data) {
       if (error) result.sendStatus(500);

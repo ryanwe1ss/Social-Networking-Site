@@ -28,10 +28,12 @@ function FetchPost(request, result)
     FROM
       posts
     WHERE
-      id = ${request.query.post} AND creator = ${request.query.profileId}`,
+      id = ${request.query.post}
+      AND creator = ${request.query.profileId}
+      AND NOT (SELECT EXISTS(SELECT * FROM "blocked" WHERE "user" = ${request.session.user.id} AND blocker = creator))`,
     
     function(error, data) {
-      if (!error) {
+      if (!error && data.rows[0] !== undefined) {
         result.send({
           creator: data.rows[0],
           post: fs.readFileSync(`data/posts/${request.query.profileId}/${request.query.post}.png`, "base64"),
