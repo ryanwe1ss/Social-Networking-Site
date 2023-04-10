@@ -22,7 +22,7 @@ function SidePanel(args) {
         <div><a href="/messages" className="bi bi-chat"> Messages</a></div>
         <div>
           <a href="/notifications" className="bi bi-bell notification"> Notifications
-            <span className="badge">{notification.count}</span>
+            <span className="badge" style={{display: notification.count == 0 ? "none" : "block"}}>{notification.count}</span>
           </a>
         </div>
         <div><a href={`/profile?id=${args.sessionId}`} className="bi bi-person-fill"> Profile</a></div>

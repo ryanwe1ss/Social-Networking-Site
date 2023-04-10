@@ -4,7 +4,7 @@ function FetchFollowing(request, result)
 {
   database.query(`
     SELECT accounts.id, username, name FROM accounts
-    LEFT JOIN connections ON connections.user = accounts.id
+    LEFT JOIN connections ON connections.account = accounts.id
     WHERE connections.follower = ${request.query.id} AND is_enabled=TRUE`, function(error, data) {
       if (!error) result.send(data.rows);
     }

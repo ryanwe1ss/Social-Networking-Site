@@ -26,6 +26,10 @@ const { UnblockAccount } = require("./handlers/interact/unblock");
 const { ReportAccount } = require("./handlers/interact/report");
 const { UnfollowAccount } = require("./handlers/interact/unfollow");
 const { FollowAccount } = require("./handlers/interact/follow");
+
+const { AcceptFollowRequest } = require("./handlers/interact/accept-follow");
+const { DeclineFollowRequest } = require("./handlers/interact/decline-follow");
+
 const { UploadPost } = require("./handlers/interact/post");
 const { CommentPost } = require("./handlers/interact/comment");
 const { LikePost } = require("./handlers/interact/like");
@@ -223,14 +227,6 @@ apiRouter.get("/api/notifications", (request, result) => {
   } FetchNotifications(request, result);
 });
 
-apiRouter.get("/api/follow", (request, result) => {
-  if (request.session.user === undefined) {
-    result.sendStatus(401);
-    return;
-  
-  } FollowAccount(request, result);
-});
-
 apiRouter.post("/api/report", (request, result) => {
   if (request.session.user === undefined) {
     result.sendStatus(401);
@@ -239,12 +235,36 @@ apiRouter.post("/api/report", (request, result) => {
   } ReportAccount(request, result);
 });
 
+apiRouter.get("/api/follow", (request, result) => {
+  if (request.session.user === undefined) {
+    result.sendStatus(401);
+    return;
+  
+  } FollowAccount(request, result);
+});
+
 apiRouter.get("/api/unfollow", (request, result) => {
   if (request.session.user === undefined) {
     result.sendStatus(401);
     return;
   
   } UnfollowAccount(request, result);
+});
+
+apiRouter.get("/api/accept-follow", (request, result) => {
+  if (request.session.user === undefined) {
+    result.sendStatus(401);
+    return;
+  
+  } AcceptFollowRequest(request, result);
+});
+
+apiRouter.get("/api/decline-follow", (request, result) => {
+  if (request.session.user === undefined) {
+    result.sendStatus(401);
+    return;
+  
+  } DeclineFollowRequest(request, result);
 });
 
 apiRouter.get("/api/delete-connection", (request, result) => {

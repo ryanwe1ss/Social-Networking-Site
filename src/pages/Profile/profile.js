@@ -207,7 +207,8 @@ function Profile()
                             {profile.is_blocking == false ?
                               <div>
                                 {profile.is_following ?
-                                  <button className="btn btn-secondary btn-sm" onClick={HandleUnfollow}>Unfollow</button> :
+                                  <button className="btn btn-secondary btn-sm" onClick={HandleUnfollow}>Unfollow</button> : profile.is_requested ?
+                                  <button className="btn btn-secondary btn-sm">Requested</button> :
                                   <button className="btn btn-secondary btn-sm" onClick={HandleFollow}>Follow</button>
                                 }
                                 <input

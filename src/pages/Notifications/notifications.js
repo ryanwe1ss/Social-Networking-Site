@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import {
   FetchSession,
   FetchNotifications,
+  AcceptFollowRequest,
+  DeclineFollowRequest
 } from "../../utilities/utilities";
 
 import LoadingBar from "../../components/LoadingBar/loading-bar";
@@ -23,7 +25,30 @@ function Notifications()
   function HandleGetNotifications() {
     FetchNotifications().then((notifications) => {
       setFollowRequests(notifications);
+
+      notifications.forEach(notification => {
+        const time = new Date(notification.date_created).getTime() - new Date().getTime();
+        const days = Math.ceil(time / (1000 * 3600 * 24));
+        notification.days = Math.abs(days) == 0 ? "today" : Math.abs(days) + " days ago";
+      });
+
       console.log(notifications);
+    });
+  }
+
+  function HandleAcceptFollow(id, followerId) {
+    AcceptFollowRequest(id, followerId).then((response) => {
+      if (response.status == 200) {
+        HandleGetNotifications();
+      }
+    });
+  }
+
+  function HandleDeclineFollow(id, followerId) {
+    DeclineFollowRequest(id, followerId).then((response) => {
+      if (response.status == 200) {
+        HandleGetNotifications();
+      }
     });
   }
 
@@ -40,11 +65,45 @@ function Notifications()
               </div>
 
               <div>
-                {followRequests.map((request) => (
+                {followRequests.length > 0 ? followRequests.map((request) => (
                   <div className="notification" key={request.id}>
-                    
+                    {request.accepted ? (
+                      <>
+                        You have accepted&nbsp;
+                        <a href={`/profile?id=${request.follower.id}`} className="username">{request.follower.username}'s</a>
+                        &nbsp;request to follow you
+
+                        <div className="timestamp">
+                          <label>{new Date(request.date_created).toLocaleString()}</label>
+                        </div>
+                      </>
+                    ) : request.declined ? (
+                      <>
+                        You have declined&nbsp;
+                        <a href={`/profile?id=${request.follower.id}`} className="username">{request.follower.username}'s</a>
+                        &nbsp;request to follow you
+
+                        <div className="timestamp">
+                          <label>{new Date(request.date_created).toLocaleString()}</label>
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        <a href={`/profile?id=${request.follower.id}`} className="username">{request.follower.username}</a>
+                        <label className="message">requested to follow you · {request.days}</label>
+
+                        <div className="buttons">
+                          <button className="btn btn-success btn-sm accept" onClick={() => HandleAcceptFollow(request.id, request.follower.id)}>Accept</button>
+                          <button className="btn btn-danger btn-sm decline" onClick={() => HandleDeclineFollow(request.id, request.follower.id)}>Decline</button>
+                        </div>
+                      </>
+                    )}
                   </div>
-                ))}
+                )) :
+                  <div className="no-notifications">
+                    <center>You have 0 notifications</center>
+                  </div>
+                }
               </div>
 
             </div>

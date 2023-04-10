@@ -207,6 +207,18 @@ export function UnfollowAccount(profileId)
     .then((response) => { return response })
 }
 
+export function AcceptFollowRequest(id, followerId)
+{
+  return HttpGet(`/api/accept-follow?id=${id}&followerId=${followerId}`)
+    .then((response) => { return response });
+}
+
+export function DeclineFollowRequest(id, followerId)
+{
+  return HttpGet(`/api/decline-follow?id=${id}&followerId=${followerId}`)
+    .then((response) => { return response });
+}
+
 export function ReportAccount(body)
 {
   return HttpPost('/api/report', body)

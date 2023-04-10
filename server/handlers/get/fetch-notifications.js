@@ -9,7 +9,9 @@ function FetchNotifications(request, result)
       FROM
         follow_requests
       WHERE
-        account_id = ${request.session.user.id}`,
+        account_id = ${request.session.user.id} AND
+        accepted = FALSE AND
+        declined = FALSE`,
 
       function(error, data) {
         if (!error) result.send(data.rows[0]);
@@ -39,7 +41,9 @@ function FetchNotifications(request, result)
         follow_requests ON follow_requests.account_id = accounts.id
       WHERE
         follow_requests.account_id = ${request.session.user.id} AND
-        is_enabled = TRUE`,
+        is_enabled = TRUE
+      ORDER BY
+        follow_requests.date_created DESC`,
     
       function(error, data) {
         if (!error) result.send(data.rows);
