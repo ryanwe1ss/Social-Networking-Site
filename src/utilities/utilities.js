@@ -311,3 +311,10 @@ export function RedirectPage(profileId)
 {
   window.location.href = `/profile?id=${profileId}`;
 }
+
+// ----- DELETE ----- //
+export function DeactivateAccount()
+{
+  return HttpGet('/api/deactivate')
+    .then((response) => { return response });
+}

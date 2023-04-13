@@ -40,6 +40,8 @@ const { DeletePost } = require("./handlers/delete/delete-post");
 const { CreateChat } = require("./handlers/communicate/create-chat");
 const { SendMessage } = require("./handlers/communicate/send-message");
 
+const { DeactivateAccount } = require("./handlers/delete/deactivate");
+
 const express = require("express");
 const session = require("express-session");
 const apiRouter = express();
@@ -329,6 +331,14 @@ apiRouter.post("/api/send-message", (request, result) => {
     return;
   
   } SendMessage(request, result);
+});
+
+apiRouter.get("/api/deactivate", (request, result) => {
+  if (request.session.user === undefined) {
+    result.sendStatus(401);
+    return;
+  
+  } DeactivateAccount(request, result);
 });
 
 apiRouter.listen(process.env.REACT_APP_API_PORT, () => {

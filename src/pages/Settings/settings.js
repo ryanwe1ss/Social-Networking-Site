@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
-
 import SidePanel from "../../components/SidePanel/side-panel";
-import UsernameChange from "./components/UsernameChange";
-import PrivacySettings from "./components/PrivacySettings";
-import BlockedUsers from "./components/BlockedUsers";
 import LoadingBar from "../../components/LoadingBar/loading-bar";
 import "./settings.scss";
+
+import BlockedUsers from "./components/BlockedUsers";
+import UsernameChange from "./components/UsernameChange";
+import PasswordChange from "./components/PasswordChange";
+import PrivacySettings from "./components/PrivacySettings";
+import Deactivate from "./components/Deactivate";
 
 import {
   FetchSession,
@@ -15,12 +17,9 @@ import {
   UpdateUsername,
   UpdatePassword,
 } from "../../utilities/utilities";
-import PasswordChange from "./components/PasswordChange";
 
-function Settings() {
-
-  const selectedColour = "#FFD100";
-
+function Settings()
+{
   const [isPrivate, setPrivate] = useState(false);
   const [selected, setSelected] = useState(null);
   const [component, setComponent] = useState(1);
@@ -105,7 +104,7 @@ function Settings() {
               <label onClick={() => { RenderComponent(2) }} className={selected == 2 ? "active" : null}>Username Change</label>
               <label onClick={() => { RenderComponent(3) }} className={selected == 3 ? "active" : null}>Password Change</label>
               <label onClick={() => { RenderComponent(4) }} className={selected == 4 ? "active" : null}>Blocked Users</label>
-              <label>Deactivate Account</label>
+              <label onClick={() => { RenderComponent(5) }} className={selected == 5 ? "active" : null}>Deactivate Account</label>
             </div>
   
             <div className="settings-block">
@@ -113,7 +112,8 @@ function Settings() {
                 component === 1 ? <PrivacySettings HandleUpdateAccountType={HandleUpdateAccountType} isPrivate={isPrivate}/> :
                 component === 2 ? <UsernameChange HandleUpdateCredential={HandleUpdateCredential} account={account}/> :
                 component === 3 ? <PasswordChange HandleUpdateCredential={HandleUpdateCredential} account={account}/> :
-                component === 4 ? <BlockedUsers HandleFetchBlocked={HandleFetchBlocked} blocked={blocked}/> : null
+                component === 4 ? <BlockedUsers HandleFetchBlocked={HandleFetchBlocked} blocked={blocked}/> :
+                component === 5 ? <Deactivate/> : null
               }
             </div>
           </div>
