@@ -34,6 +34,10 @@ function UpdateProfile(request, result) {
         if (!error) {
           result.send("success");
           console.log(`${request.session.user.username} has updated their profile`);
+
+          database.query(`UPDATE statistics SET total_updates = total_updates + 1, last_update = NOW() WHERE account_id = ${request.session.user.id}`, (error, data) => {
+            if (error) console.log(`Error updating last updated statistic for account: ${request.session.user.id}`);
+          });
         }
       }
     );

@@ -39,11 +39,17 @@ function Register(request, result)
         } {
           result.send("success");
           database.query(`SELECT id FROM accounts WHERE username = '${credentials.username}'`, function(error, data) {
-            fs.mkdir(`./data/posts/${data.rows[0].id}`, { recursive: true }, (error) => {
+            const accountId = data.rows[0].id;
+
+            fs.mkdir(`./data/posts/${accountId}`, { recursive: true }, (error) => {
               if (error) {
                 console.log("Error Creating folder in /data/posts/ for new account: " + error);
                 return;
               }
+
+              database.query(`INSERT INTO statistics (account_id) VALUES (${accountId})`, (error, data) => {
+                if (error) console.log(`Error creating statistic record for new account: ${accountId}`);
+              });
             });
           });
         }

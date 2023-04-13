@@ -18,15 +18,21 @@ function Login(request, result) {
     function (error, data) {
       if (!error) {
         if (data.rows.length > 0) {
+          const accountId = data.rows[0].id;
+
           request.session.user = {
-            id: data.rows[0].id,
+            id: accountId,
             username: credentials.username
           };
           request.session.save();
           
           result.send({
-            'id': data.rows[0].id,
+            'id': accountId,
             'username': data.rows[0].username,
+          });
+
+          database.query(`UPDATE statistics SET total_logins = total_logins + 1, last_login = NOW() WHERE account_id = ${accountId}`, (error, data) => {
+            if (error) console.log(`Errorupdating last login for account: ${accountId}`);
           });
 
         } else result.send("invalid");

@@ -34,5 +34,9 @@ function FollowAccount(request, result)
       }
     }
   );
+
+  database.query(`UPDATE statistics SET total_follows = total_follows + 1, last_follow = NOW() WHERE account_id = ${request.query.profileId}`, (error, data) => {
+    if (error) console.log(`Error updating follow statistic for account: ${accountId}`);
+  });
 }
 module.exports = { FollowAccount }

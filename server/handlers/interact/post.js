@@ -40,6 +40,10 @@ function UploadPost(request, result)
                 return;
               }
           });
+
+          database.query(`UPDATE statistics SET total_posts = total_posts + 1, last_post = NOW() WHERE account_id = ${request.session.user.id}`, (error, data) => {
+            if (error) console.log(`Error updating post statistic for account: ${request.session.user.id}`);
+          });
         });
       })
     });

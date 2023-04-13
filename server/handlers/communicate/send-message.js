@@ -13,7 +13,14 @@ function SendMessage(request, result)
 
     function(error, response) {
       if (error) result.sendStatus(500);
-      else result.sendStatus(200);
+      else {
+        result.sendStatus(200);
+
+        database.query(`UPDATE statistics SET total_messages_sent = total_messages_sent + 1, last_message_sent = NOW() WHERE account_id = ${request.session.user.id}`,
+          (error, data) => {
+            if (error) console.log(`Error updating sent messages statistic for account: ${request.session.user.id}`);
+          });
+      }
     }
   );
 }
