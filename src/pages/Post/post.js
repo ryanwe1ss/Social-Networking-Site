@@ -18,6 +18,7 @@ function Post()
 
   const [post, setPost] = useState([]);
   const [picture, setPicture] = useState([]);
+  const [isRendered, setRendered] = useState(false);
 
   const [session, setSession] = useState({
     id: null,
@@ -37,6 +38,7 @@ function Post()
 
       setPost(result.creator);
       setPicture(result.post);
+      setRendered(true);
     });
   }
 
@@ -67,47 +69,60 @@ function Post()
   
           <div className="post">
             <div className="header-img">
-              <img
-                src={`data:image/jpeg;base64,${picture}`}
-                onError={(img) => (img.target.src = DefaultProfilePicture)}
-                alt="post"
-              />
-              <label className="user">@{post.username}</label>
-              <label className="date">{new Date(post.date_created).toLocaleDateString()}</label>
-              <hr/>
-              <label className="description">{post.description}</label>
-              <hr/>
+              {isRendered ? 
+                <>
+                  <img
+                    src={`data:image/jpeg;base64,${picture}`}
+                    onError={(img) => (img.target.src = DefaultProfilePicture)}
+                    className="picture"
+                    alt="picture"
+                  />
+                  <label className="user">@{post.username}</label>
+                  <label className="date">{new Date(post.date_created).toLocaleDateString()}</label><hr/>
+                  <label className="description">{post.description}</label><hr/>
+                </> : <>
+                <div className="picture">
+                  <LoadingBar size="small"/>
+                </div>
+
+                Loading Post...
+                </>
+              }
             </div>
   
             <div className="interact">
               <div className="likes">
-                {
-                  post.likes_enabled ?
-                    <span><i className="bi bi-heart-fill" id={post.is_liked ? 'liked' : null} onClick={HandleLikePost}/> {post.likes} Likes</span> :
-                    <span><i className="bi bi-heart-fill" id="disabled"/> Likes have been disabled</span>
+                {post.likes_enabled ?
+                  <span><i className="bi bi-heart-fill" id={post.is_liked ? 'liked' : null} onClick={HandleLikePost}/> {post.likes} Likes</span> :
+                  <span><i className="bi bi-heart-fill" id="disabled"/> {isRendered ? "Likes have been disabled" : null}</span>
                 }
               </div>
   
-              <div className="comments">
-                { post.comments && post.comments_enabled ?
-                  post.comments.map((comment) => (
-                    <div className="comment" key={comment.id}>
-                      <img
-                        src={`${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/api/thumbnail?id=${comment.commenter.id}`}
-                        onError={(img) => (img.target.src = DefaultProfilePicture)}
-                        className="thumbnail"
-                        alt="thumbnail"
-                      />
-                      <span className="commenter"> <a href={`/profile?id=${comment.commenter.id}`}>{comment.commenter.username}</a></span>
-                      <span className="comment"> {comment.comment}</span><br/>
-                      <span className="date">Sent on {new Date(comment.date_created).toLocaleString()}</span>
-                    </div>
-                  )) : !post.comments_enabled
-                     ? <div className="comments-disabled">Comments are disabled</div>
-                     : !post.comments ? <div className="no-comments">No comments yet...</div>
-                     : null
-                }
-              </div>
+              {isRendered ? 
+                <div className="comments">
+                  { post.comments && post.comments_enabled ?
+                    post.comments.map((comment) => (
+                      <div className="comment" key={comment.id}>
+                        <img
+                          src={`${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/api/thumbnail?id=${comment.commenter.id}`}
+                          onError={(img) => (img.target.src = DefaultProfilePicture)}
+                          className="thumbnail"
+                          alt="thumbnail"
+                        />
+                        <span className="commenter"> <a href={`/profile?id=${comment.commenter.id}`}>{comment.commenter.username}</a></span>
+                        <span className="comment"> {comment.comment}</span><br/>
+                        <span className="date">Sent on {new Date(comment.date_created).toLocaleString()}</span>
+                      </div>
+                    )) : !post.comments_enabled
+                      ? <div className="comments-disabled">Comments are disabled</div>
+                      : !post.comments ? <div className="no-comments">No comments yet...</div>
+                      : null
+                  }
+                </div> :
+                <div className="comments">
+                  <LoadingBar size="large"/>
+                </div>
+              }
   
               <div className="inputs">
                 <input
