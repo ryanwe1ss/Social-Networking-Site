@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { FetchNotifications, Logout } from "../../utilities/utilities";
-import "./side-panel.scss";
+import { FetchNotifications, Logout } from "../../../utilities/utilities";
+import "./../side-panel.scss";
 
 function SidePanel(args) {
 
@@ -14,7 +14,7 @@ function SidePanel(args) {
 
   return (
     <div className="side-panel">
-      <h2>NetConnect</h2>
+      <img src={`${process.env.PUBLIC_URL}/images/sidepanel-logo.png`} alt="logo" />
 
       <div className="side-bar">
         <div><a href="/posts" className="bi bi-image"> Posts</a></div>
@@ -27,8 +27,8 @@ function SidePanel(args) {
         </div>
         <div><a href={`/profile?id=${args.sessionId}`} className="bi bi-person-fill"> Profile</a></div>
         <div className="bottom">
-        <div><a href="/" onClick={Logout} className="bi bi-lock"> Logout</a></div>
-        <div><a href="/settings" className="bi bi-gear"> Settings</a></div>
+          <div><a href="/" onClick={Logout} className="bi bi-lock"> Logout</a></div>
+          <div><a href="/settings" className="bi bi-gear"> Settings</a></div>
         </div>
       </div>
     </div>

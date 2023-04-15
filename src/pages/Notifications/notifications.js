@@ -7,7 +7,7 @@ import {
 } from "../../utilities/utilities";
 
 import LoadingBar from "../../components/LoadingBar/loading-bar";
-import SidePanel from "../../components/SidePanel/side-panel";
+import SidePanel from "../../components/SidePanel/user/side-panel";
 import "./notifications.scss";
 
 function Notifications()
@@ -53,65 +53,65 @@ function Notifications()
   if (session.id) {
     return (
       <div className="notifications-container">
-          <div className="outer-border">
-            <SidePanel sessionId={session.id}/>
+        <div className="outer-border">
+          <SidePanel sessionId={session.id}/>
 
-            <div className="notifications">
-              <div className="notifications-header">
-                <h1>Notifications</h1>
-                <hr/>
-              </div>
-
-              <div>
-                {followRequests.length > 0 ? followRequests.map((request) => (
-                  <div className="notification" key={request.id}>
-                    <img
-                      src={`${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/api/thumbnail?id=${request.follower.id}`}
-                      onError={(img) => (img.target.src = DefaultProfilePicture)}
-                      className="thumbnail"
-                      alt="thumbnail"
-                    />
-                    {request.accepted ? (
-                      <>
-                        You have accepted&nbsp;
-                        <a href={`/profile?id=${request.follower.id}`} className="username">{request.follower.username}'s</a>
-                        &nbsp;request to follow you
-
-                        <div className="timestamp">
-                          <label>{new Date(request.date_created).toLocaleString()}</label>
-                        </div>
-                      </>
-                    ) : request.declined ? (
-                      <>
-                        You have declined&nbsp;
-                        <a href={`/profile?id=${request.follower.id}`} className="username">{request.follower.username}'s</a>
-                        &nbsp;request to follow you
-
-                        <div className="timestamp">
-                          <label>{new Date(request.date_created).toLocaleString()}</label>
-                        </div>
-                      </>
-                    ) : (
-                      <>
-                        <a href={`/profile?id=${request.follower.id}`} className="username">{request.follower.username}</a>
-                        <label className="message">requested to follow you · {request.days}</label>
-
-                        <div className="buttons">
-                          <button className="btn btn-success btn-sm accept" onClick={() => HandleAcceptFollow(request.id, request.follower.id)}>Accept</button>
-                          <button className="btn btn-danger btn-sm decline" onClick={() => HandleDeclineFollow(request.id, request.follower.id)}>Decline</button>
-                        </div>
-                      </>
-                    )}
-                  </div>
-                )) :
-                  <div className="no-notifications">
-                    <center>You have 0 notifications</center>
-                  </div>
-                }
-              </div>
-
+          <div className="notifications">
+            <div className="notifications-header">
+              <h1>Notifications</h1>
+              <hr/>
             </div>
+
+            <div>
+              {followRequests.length > 0 ? followRequests.map((request) => (
+                <div className="notification" key={request.id}>
+                  <img
+                    src={`${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/api/thumbnail?id=${request.follower.id}`}
+                    onError={(img) => (img.target.src = DefaultProfilePicture)}
+                    className="thumbnail"
+                    alt="thumbnail"
+                  />
+                  {request.accepted ? (
+                    <>
+                      You have accepted&nbsp;
+                      <a href={`/profile?id=${request.follower.id}`} className="username">{request.follower.username}'s</a>
+                      &nbsp;request to follow you
+
+                      <div className="timestamp">
+                        <label>{new Date(request.date_created).toLocaleString()}</label>
+                      </div>
+                    </>
+                  ) : request.declined ? (
+                    <>
+                      You have declined&nbsp;
+                      <a href={`/profile?id=${request.follower.id}`} className="username">{request.follower.username}'s</a>
+                      &nbsp;request to follow you
+
+                      <div className="timestamp">
+                        <label>{new Date(request.date_created).toLocaleString()}</label>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <a href={`/profile?id=${request.follower.id}`} className="username">{request.follower.username}</a>
+                      <label className="message">requested to follow you · {request.days}</label>
+
+                      <div className="buttons">
+                        <button className="btn btn-success btn-sm accept" onClick={() => HandleAcceptFollow(request.id, request.follower.id)}>Accept</button>
+                        <button className="btn btn-danger btn-sm decline" onClick={() => HandleDeclineFollow(request.id, request.follower.id)}>Decline</button>
+                      </div>
+                    </>
+                  )}
+                </div>
+              )) :
+                <div className="no-notifications">
+                  <center>You have 0 notifications</center>
+                </div>
+              }
+            </div>
+
           </div>
+        </div>
       </div>
     );
   

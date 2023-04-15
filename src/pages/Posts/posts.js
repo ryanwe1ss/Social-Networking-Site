@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { FetchSession } from "../../utilities/utilities";
 
-import SidePanel from "../../components/SidePanel/side-panel";
+import SidePanel from "../../components/SidePanel/user/side-panel";
 import LoadingBar from "../../components/LoadingBar/loading-bar";
 import "./posts.scss";
 

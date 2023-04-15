@@ -1,4 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+
+// User Components
 import Login from "./pages/Login/login.js";
 import Register from "./pages/Register/register.js";
 import Profile from "./pages/Profile/profile.js";
@@ -9,11 +11,15 @@ import Settings from "./pages/Settings/settings.js";
 import Posts from "./pages/Posts/posts.js";
 import Post from "./pages/Post/post.js";
 
+// Admin Components
+import AdminPanel from "./pages/AdminPanel/admin-panel.js";
+
 function App()
 {
   return (
     <Router>
       <Routes>
+        {/* User Account Routes */}
         <Route exact path="/" element={<Login/>}/>
         <Route exact path="/register" element={<Register/>}/>
         <Route exact path="/posts" element={<Posts/>}/>
@@ -23,6 +29,9 @@ function App()
         <Route exact path="/profile" element={<Profile/>}/>
         <Route exact path="/settings" element={<Settings/>}/>
         <Route exact path="/post" element={<Post/>}/>
+
+        {/* Admin Account Routes */}
+        <Route exact path="/admin" element={<AdminPanel/>}/>
       </Routes>
     </Router>
   );

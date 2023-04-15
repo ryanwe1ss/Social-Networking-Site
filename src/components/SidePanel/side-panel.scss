@@ -2,11 +2,13 @@
   background-color: #2B2B2B;
   border-right: 2px solid black;
 
-  h2 {
-    text-decoration: underline;
-    margin-left: 5px;
-    margin-right: 150px;
-    margin-bottom: 50px;
+  img {
+    border-bottom: 2px solid black;
+    object-fit: cover;
+
+    margin-right: 200px;
+    height: 100px;
+    width: 100%;
   }
 
   .side-bar {

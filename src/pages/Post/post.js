@@ -8,7 +8,7 @@ import {
 
 import LoadingBar from "../../components/LoadingBar/loading-bar";
 import DefaultProfilePicture from "../../images/default.png";
-import SidePanel from "../../components/SidePanel/side-panel";
+import SidePanel from "../../components/SidePanel/user/side-panel";
 import "./post.scss";
 
 function Post()

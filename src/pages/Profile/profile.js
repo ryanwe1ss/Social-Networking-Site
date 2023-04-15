@@ -18,7 +18,7 @@ import DefaultProfilePicture from "../../images/default.png";
 import ProfileDetails from "../../components/ProfileDetails/ProfileDetails";
 import Followers from "../../components/Connections/Followers";
 import Following from "../../components/Connections/Following";
-import SidePanel from "../../components/SidePanel/side-panel";
+import SidePanel from "../../components/SidePanel/user/side-panel";
 import LoadingBar from "../../components/LoadingBar/loading-bar";
 import "./profile.scss";
 import AccountSettings from "../../components/AccountSettings/account-settings";

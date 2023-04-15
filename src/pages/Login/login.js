@@ -5,13 +5,13 @@ function Login() {
 
   function HandleLogin(username, password) {
     PerformLogin(username, password).then((response) => {
-      if (response !== "invalid") {
-        response = JSON.parse(response);
-        window.location.href = `/profile?id=${response.id}`;
-  
-      } else {
+      if (response.status == 401) {
         document.getElementById("response").style.color = "red";
         document.getElementById("response").innerHTML = "Login failed, try again";
+      
+      } else if (response.status == 200) {
+        if (response.type == "admin") window.location.href = "/admin";
+        else window.location.href = `/profile?id=${response.id}`;
       }
     });
   }

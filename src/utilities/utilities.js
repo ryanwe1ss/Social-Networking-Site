@@ -22,7 +22,7 @@ export function PerformLogin(username, password) {
   };
 
   return HttpPost('/api/login', body)
-    .then((response) => { return response.text() });
+    .then((response) => { return response.json() });
 }
 
 export function PerformRegister(username, password, confirm) {
