@@ -7,18 +7,16 @@ import "./posts.scss";
 
 function Posts()
 {
-  const [session, setSession] = useState({
-    id: null,
-    username: null,
-  });
+  const [session, setSession] = useState([]);
 
   useEffect(() => {
     FetchSession().then((session) => {
-      setSession({ id: session.id, username: session.username });
+      if (session.type === "admin") window.location.href = "/admin";
+      setSession({ id: session.id, username: session.username, type: session.type });
     });
   }, []);
 
-  if (session.id) {
+  if (session.id && session.type === "user") {
     return (
       <div className="posts-container">
         <div className="outer-border">

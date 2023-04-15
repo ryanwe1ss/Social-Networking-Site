@@ -15,20 +15,18 @@ import {
 
 function Messages()
 {
+  const [session, setSession] = useState([]);
   const [conversation, setConversation] = useState([]);
   const [thumbnails, setThumbnail] = useState([]);
   const [chats, setChats] = useState([]);
   const [chatId, setChatId] = useState();
   const [userId, setUserId] = useState();
 
-  const [session, setSession] = useState({
-    id: null,
-    username: null,
-  });
-
   useEffect(() => {
     FetchSession().then((session) => {
-      setSession({ id: session.id, username: session.username });
+      if (session.type === "admin") window.location.href = "/admin";
+      
+      setSession({ id: session.id, username: session.username, type: session.type });
       HandleFetchChats(session);
     });
   }, []);
@@ -122,7 +120,7 @@ function Messages()
     })
   }
 
-  if (session.id) {
+  if (session.id && session.type === "user") {
     return (
       <div className="messages-container">
         <div className="outer-border">

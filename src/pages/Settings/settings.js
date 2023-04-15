@@ -20,21 +20,18 @@ import {
 
 function Settings()
 {
+  const [session, setSession] = useState([]);
   const [isPrivate, setPrivate] = useState(false);
   const [selected, setSelected] = useState(null);
   const [component, setComponent] = useState(1);
   const [blocked, setBlocked] = useState([]);
   const [account, setAccount] = useState([]);
 
-  const [session, setSession] = useState({
-    id: null,
-    username: null,
-  });
-
   useEffect(() => {
     FetchSession().then((session) => {
-      setSession({ id: session.id, username: session.username });
+      if (session.type === "admin") window.location.href = "/admin";
 
+      setSession({ id: session.id, username: session.username, type: session.type });
       HandleFetchProfile(session.id);
       HandleFetchBlocked();
     });
@@ -92,7 +89,7 @@ function Settings()
     setSelected(id);
   }
 
-  if (session.id) {
+  if (session.id && session.type === "user") {
     return (
       <div className="settings-container">
         <div className="outer-border">

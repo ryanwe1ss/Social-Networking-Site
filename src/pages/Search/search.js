@@ -11,23 +11,20 @@ import {
   SearchAccounts
 } from "../../utilities/utilities";
 
-function Search() {
-
-  const [session, setSession] = useState({
-    id: null,
-    username: null,
-  });
-
+function Search()
+{
+  const [session, setSession] = useState([]);
   const [searchResults, setSearchResults] = useState([]);
   const [hasSearched, setHasSearched] = useState(false);
 
   useEffect(() => {
     FetchSession().then((session) => {
-      setSession({ id: session.id, username: session.username });
+      if (session.type === "admin") window.location.href = "/admin";
+      setSession({ id: session.id, username: session.username, type: session.type });
     });
   }, []);
 
-  if (session.id) {
+  if (session.id && session.type === "user") {
     return (
       <div className="search-container">
         <div className="outer-border">

@@ -15,19 +15,17 @@ function Post()
 {
   const profileId = parseInt(location.search.split("id=")[1]);
   const postId = parseInt(location.search.split("post=")[1]);
+  const [session, setSession] = useState([]);
 
   const [post, setPost] = useState([]);
   const [picture, setPicture] = useState([]);
   const [isRendered, setRendered] = useState(false);
 
-  const [session, setSession] = useState({
-    id: null,
-    username: null,
-  });
-
   useEffect(() => {
     FetchSession().then((session) => {
-      setSession({ id: session.id, username: session.username });
+      if (session.type === "admin") window.location.href = "/admin";
+      
+      setSession({ id: session.id, username: session.username, type: session.type });
       HandleFetchPost(session);
     });
   }, []);
@@ -61,7 +59,7 @@ function Post()
     }
   }
 
-  if (session.id) {
+  if (session.id && session.type === "user") {
     return (
       <div className="post-container">
         <div className="outer-border">

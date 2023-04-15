@@ -20,13 +20,14 @@ import Followers from "../../components/Connections/Followers";
 import Following from "../../components/Connections/Following";
 import SidePanel from "../../components/SidePanel/user/side-panel";
 import LoadingBar from "../../components/LoadingBar/loading-bar";
-import "./profile.scss";
 import AccountSettings from "../../components/AccountSettings/account-settings";
+import "./profile.scss";
 
 function Profile()
 {
   const profileId = parseInt(location.search.split("id=")[1]);
-
+  const [session, setSession] = useState([]);
+  
   const [picture, setPicture] = useState([]);
   const [profile, setProfile] = useState([]);
   const [followers, setFollowers] = useState([]);
@@ -40,14 +41,11 @@ function Profile()
   const [showFollowers, setShowFollowers] = useState(false);
   const [showFollowing, setShowFollowing] = useState(false);
 
-  const [session, setSession] = useState({
-    id: null,
-    username: null,
-  });
-
   useEffect(() => {
     FetchSession().then((session) => {
-      setSession({ id: session.id, username: session.username });
+      if (session.type === "admin") window.location.href = "/admin";
+      
+      setSession({ id: session.id, username: session.username, type: session.type });
       HandleFetchProfile();
     });
   }, []);
@@ -157,7 +155,7 @@ function Profile()
     });
   }
 
-  if (session.id) {
+  if (session.id && session.type === "user") {
     return (
       <div className="profile-container">
         <div className="outer-border">

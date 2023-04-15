@@ -17,7 +17,9 @@ function Notifications()
 
   useEffect(() => {
     FetchSession().then((session) => {
-      setSession({ id: session.id, username: session.username });
+      if (session.type === "admin") window.location.href = "/admin";
+      
+      setSession({ id: session.id, username: session.username, type: session.type });
       HandleGetNotifications();
     });
   }, []);
@@ -50,7 +52,7 @@ function Notifications()
     });
   }
 
-  if (session.id) {
+  if (session.id && session.type === "user") {
     return (
       <div className="notifications-container">
         <div className="outer-border">
