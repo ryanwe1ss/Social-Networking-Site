@@ -1,8 +1,8 @@
-// --------------- MODULES --------------- //
-
+// Auth Modules
 const { Login } = require("./handlers/auth/login");
 const { Register } = require("./handlers/auth/register");
 
+// User Modules
 const { FetchConversation } = require("./handlers/get/fetch-conversation");
 const { FetchNotifications } = require("./handlers/get/fetch-notifications");
 const { FetchFollowers } = require("./handlers/get/fetch-followers");
@@ -42,6 +42,9 @@ const { SendMessage } = require("./handlers/communicate/send-message");
 
 const { DeactivateAccount } = require("./handlers/delete/deactivate");
 
+// Admin Modules
+const { FetchStatistics } = require("./handlers/admin/fetch-statistics");
+
 const express = require("express");
 const session = require("express-session");
 const apiRouter = express();
@@ -76,7 +79,7 @@ apiRouter.use(session({
   }
 }));
 
-// --------------- ROUTES --------------- //
+// --------------- AUTHENTICATION ROUTES --------------- //
 apiRouter.post("/api/login", (request, result) => {
   Login(request, result);
 });
@@ -97,6 +100,16 @@ apiRouter.get("/api/session", (request, result) => {
   } result.send(request.session.user);
 });
 
+// --------------- ADMIN ROUTES --------------- //
+apiRouter.get("/api/statistics", (request, result) => {
+  if (request.session.user === undefined || request.session.user.type !== "admin") {
+    result.sendStatus(401);
+    return;
+  
+  } FetchStatistics(request, result);
+});
+
+// --------------- USER ROUTES --------------- //
 apiRouter.post("/api/update", (request, result) => {
   if (request.session.user === undefined) {
     result.sendStatus(401);

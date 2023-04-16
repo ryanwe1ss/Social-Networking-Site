@@ -7,6 +7,60 @@
       overflow: auto;
       padding: 10px;
       flex: 1;
+
+      .statistics, .search {
+        display: flex;
+        flex-direction: column;
+        margin: 10px;
+      }
+
+      .statistics {
+        border: 1px solid black;
+        overflow: auto;
+        flex: 1;
+
+        .statistics-header, .statistics-body {
+          padding: 10px;
+        }
+
+        .statistics-header {
+          border-bottom: 2px dotted black;
+
+          h4 {
+            text-decoration: underline;
+            font-style: italic;
+          }
+        }
+
+        .statistics-body {
+          label {
+            background-color: rgb(228, 228, 228);
+            color: darkblue;
+            font-weight: bold;
+            padding: 0px 2px;
+            width: 100%;
+          }
+
+          .first-user {
+            text-align: center;
+            font-weight: bold;
+            color: black;
+            padding: 5px;
+          }
+        }
+      }
+
+      .search {
+        border: 1px solid black;
+        padding: 10px;
+        flex: 1;
+
+        .search-body {
+          input {
+            width: 100%;
+          }
+        }
+      }
     }
   }
 }

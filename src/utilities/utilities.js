@@ -41,6 +41,14 @@ export function Logout()
   HttpGet('/api/logout');
 }
 
+// ----- ADMIN GET REQUESTS ----- //
+export function FetchStatistics()
+{
+  return HttpGet('/api/statistics')
+    .then((response) => { return response.json() })
+    .then((statistics) => { return statistics });
+}
+
 // ----- USER GET REQUESTS ----- //
 export function FetchProfile(profileId)
 {
