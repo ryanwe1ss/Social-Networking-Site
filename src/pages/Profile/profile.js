@@ -14,7 +14,6 @@ import {
   FetchFollowing,
 } from "../../utilities/utilities";
 
-import DefaultProfilePicture from "../../images/default.png";
 import ProfileDetails from "../../components/ProfileDetails/ProfileDetails";
 import Followers from "../../components/Connections/Followers";
 import Following from "../../components/Connections/Following";
@@ -164,7 +163,7 @@ function Profile()
               {isRendered ? 
                 <img
                   src={picture}
-                  onError={(img) => (img.target.src = DefaultProfilePicture)}
+                  onError={(img) => (img.target.src = `${process.env.PUBLIC_URL}/images/default-profile.png`)}
                   className="picture"
                   alt="picture"
                 /> :
@@ -266,7 +265,7 @@ function Profile()
   
             {showFollowers
               ? <Followers
-                  sessionId={session.id}
+                  session={session}
                   profileId={profileId}
                   followers={followers}
                   setShowFollowers={setShowFollowers}
@@ -277,7 +276,7 @@ function Profile()
             }
             {showFollowing
               ? <Following
-                  sessionId={session.id}
+                  session={session}
                   profileId={profileId}
                   following={following}
                   setShowFollowing={setShowFollowing}

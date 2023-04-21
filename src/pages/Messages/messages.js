@@ -1,6 +1,4 @@
 import { useState, useEffect } from "react";
-
-import DefaultProfilePicture from "../../images/default.png";
 import SidePanel from "../../components/SidePanel/side-panel";
 import LoadingBar from "../../components/LoadingBar/loading-bar";
 import "./messages.scss";
@@ -133,7 +131,7 @@ function Messages()
                 <div className="chat" onClick={() => { HandleFetchConversation(chat.id) }} id={`${chat.id}_chat`} key={chat.id}>
                   <img
                     src={thumbnails.filter(t => t.id == chat.id).map(t => t.thumbnail)}
-                    onError={(img) => (img.target.src = DefaultProfilePicture)}
+                    onError={(img) => (img.target.src = `${process.env.PUBLIC_URL}/images/default-profile.png`)}
                     className="thumbnail"
                     alt="thumbnail"
                   />

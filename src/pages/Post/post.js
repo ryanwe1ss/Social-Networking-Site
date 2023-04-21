@@ -7,7 +7,6 @@ import {
 } from "../../utilities/utilities";
 
 import LoadingBar from "../../components/LoadingBar/loading-bar";
-import DefaultProfilePicture from "../../images/default.png";
 import SidePanel from "../../components/SidePanel/side-panel";
 import "./post.scss";
 
@@ -101,7 +100,7 @@ function Post()
                       <div className="comment" key={comment.id}>
                         <img
                           src={`${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/api/thumbnail?id=${comment.commenter.id}`}
-                          onError={(img) => (img.target.src = DefaultProfilePicture)}
+                          onError={(img) => (img.target.src = `${process.env.PUBLIC_URL}/images/default-profile.png`)}
                           className="thumbnail"
                           alt="thumbnail"
                         />

@@ -17,19 +17,18 @@ function Posts()
 
       FetchFeed().then((feed) => {
         setFeed(feed.posts);
-        console.log(feed);
       });
     });
   }, []);
 
-  if (session.id && session.type === "user" && feed.length > 0) {
+  if (session.id && session.type === "user") {
     return (
       <div className="posts-container">
         <div className="outer-border">
           <SidePanel sessionId={session.id} type={session.type}/>
 
           <div className="posts">
-            {feed.map((post) => (
+            {feed.length > 0 && feed.map((post) => (
               <div className="post" key={post.id}>
 
                 <div className="header">
@@ -51,7 +50,7 @@ function Posts()
                 </div><hr/>
 
               </div>
-            ))}
+            )) || <div className="no-feed">Your feed is currently empty</div>}
           </div>
         </div>
       </div>

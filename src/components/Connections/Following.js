@@ -1,4 +1,3 @@
-import DefaultProfilePicture from "../../images/default.png";
 import "./connections.scss";
 
 function Following(args)
@@ -14,12 +13,13 @@ function Following(args)
             
           }} id="close">&times;</span>
         </header><hr/>
-        {args.following.map(account => (
-          <div className="following" key={account.id}>
-            <div className="account">
+
+        <div className="following">
+          {args.following.map(account => (
+            <div className="account" key={account.id}>
               <img
                 src={`${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/api/thumbnail?id=${account.id}`}
-                onError={(img) => (img.target.src = DefaultProfilePicture)}
+                onError={(img) => (img.target.src = `${process.env.PUBLIC_URL}/images/default-profile.png`)}
                 className="thumbnail"
                 alt="thumbnail"
               />
@@ -27,7 +27,7 @@ function Following(args)
                 {account.username}
                 <br/><span>{account.name && account.name.trim().length > 0 ? account.name : "No Name"}</span>
               </label>
-              {args.sessionId !== args.profileId
+              {args.session.id != args.profileId || args.session.type == "admin"
                 ? null
                 : <input type="button" className="btn btn-secondary btn-sm" value="Remove" onClick={() => {
                     args.HandleDeleteConnection(account.id, "following");
@@ -35,8 +35,8 @@ function Following(args)
                   }}/>
               }
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </div>
   );

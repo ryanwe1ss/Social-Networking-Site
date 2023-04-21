@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from "react";
-
-import DefaultProfilePicture from "../../images/default.png"
 import SidePanel from "../../components/SidePanel/side-panel";
 import LoadingBar from "../../components/LoadingBar/loading-bar";
 import "./search.scss";
@@ -46,7 +44,7 @@ function Search()
                 <div onClick={() => RedirectPage(account.id)} className="account" id="profile-page" key={account.id}>
                   <img
                     src={`${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/api/thumbnail?id=${account.id}`}
-                    onError={(img) => (img.target.src = DefaultProfilePicture)}
+                    onError={(img) => (img.target.src = `${process.env.PUBLIC_URL}/images/default-profile.png`)}
                     alt="thumbnail"
                   />
                   <label>{account.username}</label>
