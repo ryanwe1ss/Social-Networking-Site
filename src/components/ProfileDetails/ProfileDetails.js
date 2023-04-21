@@ -9,7 +9,7 @@ function ProfileDetails(args) {
   const isFollowing = Object.keys(args.profile).length > 0 ? args.profile.is_following : false;
   const isPrivate = Object.keys(args.profile).length > 0 ? args.profile.is_private : false;
 
-  if (args.sessionId) {
+  if (args.session.id) {
     if (args.isDisabled) {
       return (
         <div className="information">
@@ -20,7 +20,7 @@ function ProfileDetails(args) {
         </div>
       );
   
-    } else if (!isFollowing && args.sessionId !== profileId && isPrivate) {
+    } else if (!isFollowing && args.session.id !== profileId && args.session.type !== "admin" && isPrivate) {
       return (
         <div className="information">
           <h4>
@@ -95,7 +95,7 @@ function ProfileDetails(args) {
               </div>
             </div>
             <Posts
-              sessionId={args.sessionId}
+              session={args.session}
               username={username}
               editMode={true}
               saved={args.saved}
@@ -147,7 +147,7 @@ function ProfileDetails(args) {
               <div className="bio">{args.profile.bio == null ? 'No Bio Yet...' : args.profile.bio}</div>
             </div>
             <Posts
-              sessionId={args.sessionId}
+              session={args.session}
               username={username}
               editMode={false}
               saved={args.saved}

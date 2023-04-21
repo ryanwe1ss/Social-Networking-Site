@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { FetchSession } from "../../utilities/utilities";
 
-import SidePanel from "../../components/SidePanel/user/side-panel";
+import SidePanel from "../../components/SidePanel/side-panel";
 import LoadingBar from "../../components/LoadingBar/loading-bar";
 import "./posts.scss";
 
@@ -20,7 +20,7 @@ function Posts()
     return (
       <div className="posts-container">
         <div className="outer-border">
-          <SidePanel sessionId={session.id}/>
+          <SidePanel sessionId={session.id} type={session.type}/>
 
           <div className="posts">
             Hello

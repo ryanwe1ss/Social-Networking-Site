@@ -1,7 +1,24 @@
-import { PerformLogin } from "../../utilities/utilities";
+import { useEffect } from "react";
+import { FetchSession, PerformLogin } from "../../utilities/utilities";
 import "./login.scss";
 
-function Login() {
+function Login()
+{
+  useEffect(() => {
+    FetchSession(true).then((session) => {
+      if (session) {
+        switch (session.type) {
+          case "admin":
+            window.location.href = "/admin";
+            break;
+
+          case "user":
+            window.location.href = `/profile?id=${session.id}`;
+            break;
+        }
+      }
+    });
+  }, []);
 
   function HandleLogin(username, password) {
     PerformLogin(username, password).then((response) => {

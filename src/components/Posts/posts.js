@@ -85,12 +85,12 @@ function Posts(args) {
     document.getElementById(postId).style.border = "4px solid red";
   }
 
-  if (args.sessionId) {
+  if (args.session.id) {
     return (
       <div className="user-posts">
         <input type="file" id="post"/><hr/>
   
-        {profileId == args.sessionId && !args.editMode ? 
+        {profileId == args.session.id && args.session.type !== "admin" && !args.editMode ? 
           <div className="share-post" onClick={() => document.getElementById("postModal").style.display = "block"}>
             <i className="bi bi-plus-circle"/> Share a post
           </div> : null }
@@ -110,7 +110,7 @@ function Posts(args) {
               </a>
             )) :
             
-            args.sessionId != profileId ?
+            args.session.id != profileId ?
               <div className="no-posts">
                 {args.username + " has no posts"}
               </div> : null :

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 import DefaultProfilePicture from "../../images/default.png"
-import SidePanel from "../../components/SidePanel/user/side-panel";
+import SidePanel from "../../components/SidePanel/side-panel";
 import LoadingBar from "../../components/LoadingBar/loading-bar";
 import "./search.scss";
 
@@ -28,7 +28,7 @@ function Search()
     return (
       <div className="search-container">
         <div className="outer-border">
-          <SidePanel sessionId={session.id}/>
+          <SidePanel sessionId={session.id} type={session.type}/>
   
           <div className="search-content">
             <div className="search-header">

@@ -1,7 +1,24 @@
-import { PerformRegister } from "../../utilities/utilities";
+import { useEffect } from "react";
+import { FetchSession, PerformRegister } from "../../utilities/utilities";
 import "./register.scss";
 
-function Register() {
+function Register()
+{
+  useEffect(() => {
+    FetchSession(true).then((session) => {
+      if (session) {
+        switch (session.type) {
+          case "admin":
+            window.location.href = "/admin";
+            break;
+
+          case "user":
+            window.location.href = `/profile?id=${session.id}`;
+            break;
+        }
+      }
+    });
+  }, []);
 
   function HandleRegister(username, password, confirm) {
     PerformRegister(username, password, confirm).then((response) => {

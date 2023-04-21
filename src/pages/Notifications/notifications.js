@@ -7,7 +7,7 @@ import {
 } from "../../utilities/utilities";
 
 import LoadingBar from "../../components/LoadingBar/loading-bar";
-import SidePanel from "../../components/SidePanel/user/side-panel";
+import SidePanel from "../../components/SidePanel/side-panel";
 import "./notifications.scss";
 
 function Notifications()
@@ -56,7 +56,7 @@ function Notifications()
     return (
       <div className="notifications-container">
         <div className="outer-border">
-          <SidePanel sessionId={session.id}/>
+          <SidePanel sessionId={session.id} type={session.type}/>
 
           <div className="notifications">
             <div className="notifications-header">

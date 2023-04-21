@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import SidePanel from "../../components/SidePanel/user/side-panel";
+import SidePanel from "../../components/SidePanel/side-panel";
 import LoadingBar from "../../components/LoadingBar/loading-bar";
 import "./settings.scss";
 
@@ -93,7 +93,7 @@ function Settings()
     return (
       <div className="settings-container">
         <div className="outer-border">
-          <SidePanel sessionId={session.id}/>
+          <SidePanel sessionId={session.id} type={session.type}/>
   
           <div className="settings">
             <div className="settings-panel">

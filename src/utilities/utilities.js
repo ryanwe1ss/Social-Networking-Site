@@ -1,7 +1,7 @@
 import { HttpGet, HttpPost } from "./http-service";
 
 // ----- AUTHENTICATION ----- //
-export function FetchSession()
+export function FetchSession(onHomeScreens=false)
 {
   return HttpGet('/api/session')
     .then((response) => {
@@ -11,7 +11,7 @@ export function FetchSession()
       return session;
     })
     .catch(() => {
-      window.location.href = "/";
+      if (!onHomeScreens) window.location.href = "/";
     })
 }
 
@@ -265,14 +265,14 @@ export function UpdatePassword(password)
 }
 
 // ----- SEARCH ----- //
-export function SearchAccounts(event)
+export function SearchAccounts(event, override=false, all=false)
 {
-  const searchQuery = event.target.value;
+  const searchQuery = event ? event.target.value : [];
   const accounts = [];
 
-  if (searchQuery.length == 0) return Promise.resolve([]);
+  if (searchQuery.length == 0 && !override) return Promise.resolve([]);
 
-  return HttpGet(`/api/search?searchQuery=${searchQuery}`)
+  return HttpGet(`/api/search?searchQuery=${searchQuery}${all ? '&all=true' : ''}`)
     .then((result) => {
       return result.json();
     })
@@ -310,7 +310,7 @@ export function CreateChat(userId)
 
 export function SendMessage(body)
 {
-  return HttpPost("/api/send-message", body)
+  return HttpPost('/api/send-message', body)
     .then((response) => { return response });
 }
 

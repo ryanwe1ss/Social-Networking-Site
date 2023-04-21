@@ -1,4 +1,4 @@
-// Auth Modules
+// Authentication Modules
 const { Login } = require("./handlers/auth/login");
 const { Register } = require("./handlers/auth/register");
 
@@ -45,9 +45,23 @@ const { DeactivateAccount } = require("./handlers/delete/deactivate");
 // Admin Modules
 const { FetchStatistics } = require("./handlers/admin/fetch-statistics");
 
+// Middleware
+const { middleware } = require("./middleware/middleware");
+
+// --------------- SESSION --------------- //
 const express = require("express");
 const session = require("express-session");
 const apiRouter = express();
+
+apiRouter.use(express.json());
+apiRouter.use(session({
+  resave: true,
+  saveUninitialized: true,
+  secret: "token",
+  cookie: {
+    maxAge: 3600000,
+  }
+}));
 
 // --------------- CORS --------------- //
 apiRouter.use(function(request, result, next) {
@@ -68,17 +82,6 @@ apiRouter.use(function(request, result, next) {
   next();
 });
 
-// --------------- SESSION --------------- //
-apiRouter.use(express.json());
-apiRouter.use(session({
-  resave: true,
-  saveUninitialized: true,
-  secret: "token",
-  cookie: {
-    maxAge: 3600000,
-  }
-}));
-
 // --------------- AUTHENTICATION ROUTES --------------- //
 apiRouter.post("/api/login", (request, result) => {
   Login(request, result);
@@ -88,270 +91,142 @@ apiRouter.post("/api/register", (request, result) => {
   Register(request, result);
 });
 
-apiRouter.get("/api/logout", (request) => {
+apiRouter.get("/api/logout", middleware, (request) => {
   request.session.destroy();
 });
 
-apiRouter.get("/api/session", (request, result) => {
-  if (request.session.user === undefined) {
-    result.sendStatus(401);
-    return;
-  
-  } result.send(request.session.user);
+apiRouter.get("/api/session", middleware, (request, result) => {
+  result.send(request.session.user);
 });
 
 // --------------- ADMIN ROUTES --------------- //
-apiRouter.get("/api/statistics", (request, result) => {
-  if (request.session.user === undefined || request.session.user.type !== "admin") {
-    result.sendStatus(401);
-    return;
-  
-  } FetchStatistics(request, result);
+apiRouter.get("/api/statistics", middleware, (request, result) => {
+  FetchStatistics(request, result);
 });
 
 // --------------- USER ROUTES --------------- //
-apiRouter.post("/api/update", (request, result) => {
-  if (request.session.user === undefined) {
-    result.sendStatus(401);
-    return;
-  
-  } UpdateProfile(request, result);
+apiRouter.post("/api/update", middleware, (request, result) => {
+  UpdateProfile(request, result);
 });
 
-apiRouter.get("/api/update-privacy", (request, result) => {
-  if (request.session.user === undefined) {
-    result.sendStatus(401);
-    return;
-  
-  } UpdatePrivacy(request, result);
+apiRouter.get("/api/update-privacy", middleware, (request, result) => {
+  UpdatePrivacy(request, result);
 });
 
-apiRouter.get("/api/update-username", (request, result) => {
-  if (request.session.user === undefined) {
-    result.sendStatus(401);
-    return;
-  
-  } UpdateUsername(request, result);
+apiRouter.get("/api/update-username", middleware, (request, result) => {
+  UpdateUsername(request, result);
 });
 
-apiRouter.get("/api/update-password", (request, result) => {
-  if (request.session.user === undefined) {
-    result.sendStatus(401);
-    return;
-
-  } UpdatePassword(request, result);
+apiRouter.get("/api/update-password", middleware, (request, result) => {
+  UpdatePassword(request, result);
 });
 
-apiRouter.post("/api/post", (request, result) => {
-  if (request.session.user === undefined) {
-    result.sendStatus(401);
-    return;
-  
-  } UploadPost(request, result);
+apiRouter.post("/api/post", middleware, (request, result) => {
+  UploadPost(request, result);
 });
 
-apiRouter.get("/api/search", (request, result) => {
-  if (request.session.user === undefined) {
-    result.sendStatus(401);
-    return;
-  
-  } SearchAccounts(request, result);
+apiRouter.get("/api/search", middleware, (request, result) => {
+  SearchAccounts(request, result);
 });
 
-apiRouter.get("/api/profile", (request, result) => {
-  if (request.session.user === undefined) {
-    result.sendStatus(401);
-    return;
-  
-  } FetchProfile(request, result);
+apiRouter.get("/api/profile", middleware, (request, result) => {
+  FetchProfile(request, result);
 });
 
-apiRouter.get("/api/blocked", (request, result) => {
-  if (request.session.user === undefined) {
-    result.sendStatus(401);
-    return;
-  
-  } FetchBlocked(request, result);
+apiRouter.get("/api/blocked", middleware, (request, result) => {
+  FetchBlocked(request, result);
 });
 
-apiRouter.get("/api/picture", (request, result) => {
-  if (request.session.user === undefined) {
-    result.sendStatus(401);
-    return;
-  
-  } FetchPicture(request, result);
+apiRouter.get("/api/picture", middleware, (request, result) => {
+  FetchPicture(request, result);
 });
 
-apiRouter.get("/api/thumbnail", (request, result) => {
+apiRouter.get("/api/thumbnail", middleware, (request, result) => {
   FetchThumbnail(request, result);
 });
 
-apiRouter.get("/api/post", (request, result) => {
-  if (request.session.user === undefined) {
-    result.sendStatus(401);
-    return;
-  
-  } FetchPost(request, result);
+apiRouter.get("/api/post", middleware, (request, result) => {
+  FetchPost(request, result);
 });
 
-apiRouter.get("/api/block", (request, result) => {
-  if (request.session.user === undefined) {
-    result.sendStatus(401);
-    return;
-  
-  } BlockAccount(request, result);
+apiRouter.get("/api/block", middleware, (request, result) => {
+  BlockAccount(request, result);
 });
 
-apiRouter.get("/api/unblock", (request, result) => {
-  if (request.session.user === undefined) {
-    result.sendStatus(401);
-    return;
-  
-  } UnblockAccount(request, result);
+apiRouter.get("/api/unblock", middleware, (request, result) => {
+  UnblockAccount(request, result);
 });
 
-apiRouter.get("/api/comment", (request, result) => {
-  if (request.session.user === undefined) {
-    result.sendStatus(401);
-    return;
-  
-  } CommentPost(request, result);
+apiRouter.get("/api/comment", middleware, (request, result) => {
+  CommentPost(request, result);
 });
 
-apiRouter.get("/api/like", (request, result) => {
-  if (request.session.user === undefined) {
-    result.sendStatus(401);
-    return;
-  
-  } LikePost(request, result);
+apiRouter.get("/api/like", middleware, (request, result) => {
+  LikePost(request, result);
 });
 
-apiRouter.get("/api/posts", (request, result) => {
-  if (request.session.user === undefined) {
-    result.sendStatus(401);
-    return;
-  
-  } FetchPosts(request, result);
+apiRouter.get("/api/posts", middleware, (request, result) => {
+  FetchPosts(request, result);
 });
 
-apiRouter.get("/api/notifications", (request, result) => {
-  if (request.session.user === undefined) {
-    result.sendStatus(401);
-    return;
-  
-  } FetchNotifications(request, result);
+apiRouter.get("/api/notifications", middleware, (request, result) => {
+  FetchNotifications(request, result);
 });
 
-apiRouter.post("/api/report", (request, result) => {
-  if (request.session.user === undefined) {
-    result.sendStatus(401);
-    return;
-  
-  } ReportAccount(request, result);
+apiRouter.post("/api/report", middleware, (request, result) => {
+  ReportAccount(request, result);
 });
 
-apiRouter.get("/api/follow", (request, result) => {
-  if (request.session.user === undefined) {
-    result.sendStatus(401);
-    return;
-  
-  } FollowAccount(request, result);
+apiRouter.get("/api/follow", middleware, (request, result) => {
+  FollowAccount(request, result);
 });
 
-apiRouter.get("/api/unfollow", (request, result) => {
-  if (request.session.user === undefined) {
-    result.sendStatus(401);
-    return;
-  
-  } UnfollowAccount(request, result);
+apiRouter.get("/api/unfollow", middleware, (request, result) => {
+  UnfollowAccount(request, result);
 });
 
-apiRouter.get("/api/accept-follow", (request, result) => {
-  if (request.session.user === undefined) {
-    result.sendStatus(401);
-    return;
-  
-  } AcceptFollowRequest(request, result);
+apiRouter.get("/api/accept-follow", middleware, (request, result) => {
+  AcceptFollowRequest(request, result);
 });
 
-apiRouter.get("/api/decline-follow", (request, result) => {
-  if (request.session.user === undefined) {
-    result.sendStatus(401);
-    return;
-  
-  } DeclineFollowRequest(request, result);
+apiRouter.get("/api/decline-follow", middleware, (request, result) => {
+  DeclineFollowRequest(request, result);
 });
 
-apiRouter.get("/api/delete-connection", (request, result) => {
-  if (request.session.user === undefined) {
-    result.sendStatus(401);
-    return;
-  
-  } DeleteConnection(request, result);
+apiRouter.get("/api/delete-connection", middleware, (request, result) => {
+  DeleteConnection(request, result);
 });
 
-apiRouter.get("/api/delete-post", (request, result) => {
-  if (request.session.user === undefined) {
-    result.sendStatus(401);
-    return;
-  
-  } DeletePost(request, result);
+apiRouter.get("/api/delete-post", middleware, (request, result) => {
+  DeletePost(request, result);
 });
 
-apiRouter.get("/api/followers", (request, result) => {
-  if (request.session.user === undefined) {
-    result.sendStatus(401);
-    return;
-  
-  } FetchFollowers(request, result);
+apiRouter.get("/api/followers", middleware, (request, result) => {
+  FetchFollowers(request, result);
 });
 
-apiRouter.get("/api/following", (request, result) => {
-  if (request.session.user === undefined) {
-    result.sendStatus(401);
-    return;
-  
-  } FetchFollowing(request, result);
+apiRouter.get("/api/following", middleware, (request, result) => {
+  FetchFollowing(request, result);
 });
 
-apiRouter.get("/api/create-chat", (request, result) => {
-  if (request.session.user === undefined) {
-    result.sendStatus(401);
-    return;
-  
-  } CreateChat(request, result);
+apiRouter.get("/api/create-chat", middleware, (request, result) => {
+  CreateChat(request, result);
 })
 
-apiRouter.get("/api/get-chats", (request, result) => {
-  if (request.session.user === undefined) {
-    result.sendStatus(401);
-    return;
-  
-  } FetchChats(request, result);
+apiRouter.get("/api/get-chats", middleware, (request, result) => {
+  FetchChats(request, result);
 });
 
-apiRouter.get("/api/get-conversation", (request, result) => {
-  if (request.session.user === undefined) {
-    result.sendStatus(401);
-    return;
-  
-  } FetchConversation(request, result);
+apiRouter.get("/api/get-conversation", middleware, (request, result) => {
+  FetchConversation(request, result);
 });
 
-apiRouter.post("/api/send-message", (request, result) => {
-  if (request.session.user === undefined) {
-    result.sendStatus(401);
-    return;
-  
-  } SendMessage(request, result);
+apiRouter.post("/api/send-message", middleware, (request, result) => {
+  SendMessage(request, result);
 });
 
-apiRouter.get("/api/deactivate", (request, result) => {
-  if (request.session.user === undefined) {
-    result.sendStatus(401);
-    return;
-  
-  } DeactivateAccount(request, result);
+apiRouter.get("/api/deactivate", middleware, (request, result) => {
+  DeactivateAccount(request, result);
 });
 
 apiRouter.listen(process.env.REACT_APP_API_PORT, () => {

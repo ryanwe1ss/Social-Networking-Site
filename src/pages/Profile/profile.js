@@ -18,7 +18,7 @@ import DefaultProfilePicture from "../../images/default.png";
 import ProfileDetails from "../../components/ProfileDetails/ProfileDetails";
 import Followers from "../../components/Connections/Followers";
 import Following from "../../components/Connections/Following";
-import SidePanel from "../../components/SidePanel/user/side-panel";
+import SidePanel from "../../components/SidePanel/side-panel";
 import LoadingBar from "../../components/LoadingBar/loading-bar";
 import AccountSettings from "../../components/AccountSettings/account-settings";
 import "./profile.scss";
@@ -43,8 +43,6 @@ function Profile()
 
   useEffect(() => {
     FetchSession().then((session) => {
-      if (session.type === "admin") window.location.href = "/admin";
-      
       setSession({ id: session.id, username: session.username, type: session.type });
       HandleFetchProfile();
     });
@@ -155,11 +153,11 @@ function Profile()
     });
   }
 
-  if (session.id && session.type === "user") {
+  if (session.id) {
     return (
       <div className="profile-container">
         <div className="outer-border">
-          <SidePanel sessionId={session.id}/>
+          <SidePanel sessionId={session.id} type={session.type}/>
   
           <div className="profile">
             <div className="left-details">
@@ -175,7 +173,7 @@ function Profile()
                 </div>
               } {
                 <div>
-                  {session.id == profileId ?
+                  {session.id == profileId && session.type != "admin" ?
                     <div className="profile-interact">
                       {
                         !editForm ?
@@ -197,7 +195,7 @@ function Profile()
                         className="btn btn-secondary btn-sm"
                         onClick={() => document.getElementById("profile-picture").click()}>Edit Profile Picture
                       </button>
-                    </div> : profile.is_blocked == false ?
+                    </div> : profile.is_blocked == false && session.type != "admin" ?
                       <div>
                         <h5>
                           <label className="username">@{profile.username}</label>
@@ -229,7 +227,12 @@ function Profile()
               }
               <div style={{display: profile.is_blocked == false ? "block" : "none"}}>
                 <hr style={{marginTop: session.id == profileId ? null : "5px"}}/>
-                <div className="connection-labels" style={{pointerEvents: session.id == profileId || !profile.is_private || profile.is_following ? "all" : "none"}}>
+                <div className="connection-labels" style={{
+                  pointerEvents:
+                    session.id == profileId || session.type == "admin" || !profile.is_private || profile.is_following
+                    ? "all"
+                    : "none"
+                }}>
                   <label onClick={HandleFetchFollowers}>Followers</label>: {profile.followers} |&nbsp;
                   <label onClick={HandleFetchFollowing}>Following</label>: {profile.following}
                 </div>
@@ -242,7 +245,7 @@ function Profile()
                     edit={true}
                     saved={saved}
                     profile={profile}
-                    sessionId={session.id}
+                    session={session}
                     HandleFetchProfile={HandleFetchProfile}
                     setEditForm={setEditForm}
                     setSaved={setSaved}
@@ -252,7 +255,7 @@ function Profile()
                     edit={false}
                     saved={saved}
                     profile={profile}
-                    sessionId={session.id}
+                    session={session}
                     HandleFetchProfile={HandleFetchProfile}
                     setEditForm={setEditForm}
                     setSaved={setSaved}

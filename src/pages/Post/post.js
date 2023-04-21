@@ -8,7 +8,7 @@ import {
 
 import LoadingBar from "../../components/LoadingBar/loading-bar";
 import DefaultProfilePicture from "../../images/default.png";
-import SidePanel from "../../components/SidePanel/user/side-panel";
+import SidePanel from "../../components/SidePanel/side-panel";
 import "./post.scss";
 
 function Post()
@@ -23,8 +23,6 @@ function Post()
 
   useEffect(() => {
     FetchSession().then((session) => {
-      if (session.type === "admin") window.location.href = "/admin";
-      
       setSession({ id: session.id, username: session.username, type: session.type });
       HandleFetchPost(session);
     });
@@ -59,11 +57,11 @@ function Post()
     }
   }
 
-  if (session.id && session.type === "user") {
+  if (session.id) {
     return (
       <div className="post-container">
         <div className="outer-border">
-          <SidePanel sessionId={session.id}/>
+          <SidePanel sessionId={session.id} type={session.type}/>
   
           <div className="post">
             <div className="header-img">
