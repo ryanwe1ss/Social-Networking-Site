@@ -131,6 +131,19 @@ export function UploadPost(description, comment, like, image)
 }
 
 // ----- POST GET REQUESTS ----- //
+export function FetchFeed(limit=10)
+{
+  return HttpGet(`/api/feed?limit=${limit}`)
+    .then((response) => {
+      if (response.status == 200) {
+        return response.json();
+      }
+    })
+    .then((posts) => {
+      return posts;
+    });
+}
+
 export function FetchPosts(profileId, limit=3)
 {
   return HttpGet(`/api/posts?id=${profileId}&limit=${limit}`)

@@ -12,6 +12,7 @@ const allRoutes = [
   
   "/api/posts",
   "/api/post",
+  "/api/feed",
 
   "/api/followers",
   "/api/following",

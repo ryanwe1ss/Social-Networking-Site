@@ -19,7 +19,7 @@ function FetchPost(request, result)
       )) AS comments FROM post_comments WHERE post_id = ${request.query.post}) as comments,
 
       CAST((SELECT COUNT(*) FROM post_likes WHERE post_id = ${request.query.post}) AS INT) as likes,
-      CAST(creator AS INT),
+      CAST(creator_id AS INT),
       CAST(id AS INT),
       description,
       comment AS comments_enabled,
@@ -29,8 +29,8 @@ function FetchPost(request, result)
       posts
     WHERE
       id = ${request.query.post}
-      AND creator = ${request.query.profileId}
-      AND NOT (SELECT EXISTS(SELECT * FROM "blocked" WHERE "user" = ${request.session.user.id} AND blocker = creator))`,
+      AND creator_id = ${request.query.profileId}
+      AND NOT (SELECT EXISTS(SELECT * FROM "blocked" WHERE "user" = ${request.session.user.id} AND blocker = creator_id))`,
     
     function(error, data) {
       if (!error && data.rows[0] !== undefined) {

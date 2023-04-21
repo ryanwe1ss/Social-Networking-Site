@@ -11,12 +11,13 @@ function UploadPost(request, result)
 
       database.query(`
         INSERT INTO posts
-        (creator, description, "comment", "like")
+        (creator_id, description, "comment", "like", file_path)
         VALUES (
           ${request.session.user.id},
           '${request.query.description}',
           ${request.query.comment},
-          ${request.query.like}
+          ${request.query.like},
+          'data/posts/${request.session.user.id}/' || CURRVAL('posts_id_seq') || '.png'
         )`,
       
       function(error, data) {
@@ -45,8 +46,8 @@ function UploadPost(request, result)
             if (error) console.log(`Error updating post statistic for account: ${request.session.user.id}`);
           });
         });
-      })
-    });
+      });
+    })
   });
   form.parse(request);
   result.sendStatus(200);

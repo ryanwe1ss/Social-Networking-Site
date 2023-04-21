@@ -9,7 +9,7 @@ function DeletePost(request, result)
     database.query(`
       DELETE FROM posts
       WHERE id = ${request.query.post} AND
-      creator = ${request.session.user.id}`,
+      creator_id = ${request.session.user.id}`,
       
       function(error, data) {
         if (error) return result.sendStatus(500);

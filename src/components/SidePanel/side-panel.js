@@ -36,7 +36,7 @@ function SidePanel(args)
         <img src={`${process.env.PUBLIC_URL}/images/sidepanel-logo.png`} alt="logo" />
 
         <div className="side-bar">
-          <div><a href="/posts" className="bi bi-image"> Posts</a></div>
+          <div><a href="/posts" className="bi bi-image"> Feed</a></div>
           <div><a href="/search" className="bi bi-search"> Search</a></div>
           <div><a href="/messages" className="bi bi-chat"> Messages</a></div>
           <div>

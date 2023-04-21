@@ -13,6 +13,7 @@ const { FetchPicture } = require("./handlers/get/fetch-picture");
 const { FetchProfile } = require("./handlers/get/fetch-profile");
 const { FetchBlocked } = require("./handlers/get/fetch-blocked");
 const { FetchChats } = require("./handlers/get/fetch-chats");
+const { FetchFeed } = require("./handlers/get/fetch-feed");
 const { FetchPosts } = require("./handlers/get/fetch-posts");
 const { FetchPost } = require("./handlers/get/fetch-post");
 
@@ -163,6 +164,10 @@ apiRouter.get("/api/comment", middleware, (request, result) => {
 
 apiRouter.get("/api/like", middleware, (request, result) => {
   LikePost(request, result);
+});
+
+apiRouter.get("/api/feed", middleware, (request, result) => {
+  FetchFeed(request, result);
 });
 
 apiRouter.get("/api/posts", middleware, (request, result) => {

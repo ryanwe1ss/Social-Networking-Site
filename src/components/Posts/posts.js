@@ -54,13 +54,21 @@ function Posts(args) {
   }, [editMode]);
 
   function DisplayImage(event) {
-    const reader = new FileReader();
-    setUploaded(true);
+    const image = event.target.files[0];
 
-    reader.onload = (event) => {
-      document.getElementById("preview").src = event.target.result;
+    if (image) {
+      const reader = new FileReader();
+      setUploaded(true);
+
+      reader.onload = (event) => {
+        document.getElementById("preview").src = event.target.result;
+      }
+      reader.readAsDataURL(image);
+    
+    } else {
+      document.getElementById("preview").src = null;
+      setUploaded(false);
     }
-    reader.readAsDataURL(event.target.files[0]);
   }
 
   function HandlePostImage(description, comment, like, image) {
