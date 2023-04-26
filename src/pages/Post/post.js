@@ -88,7 +88,7 @@ function Post()
             <div className="interact">
               <div className="likes">
                 {post.likes_enabled ?
-                  <span><i className="bi bi-heart-fill" id={post.is_liked ? 'liked' : null} onClick={HandleLikePost}/> {post.likes} Likes</span> :
+                  <span><i className="bi bi-heart-fill" id={post.is_liked ? 'liked' : null} onClick={HandleLikePost}/> {post.likes} {post.likes > 1 ? 'Likes' : 'Like'}</span> :
                   <span><i className="bi bi-heart-fill" id="disabled"/> {isRendered ? "Likes have been disabled" : null}</span>
                 }
               </div>

@@ -85,13 +85,57 @@ function FetchNotifications(request, result)
                 creator_id = ${request.session.user.id}`,
 
             function(error, comments) {
-              if (error) return result.sendStatus(500);
-              comments.rows.forEach(comment => {
-                comment.post.image = fs.readFileSync(comment.file_path, "base64");
-              });
+              if (!error) {
+                comments.rows.forEach(comment => {
+                  comment.post.image = fs.readFileSync(comment.file_path, "base64");
+                });
+  
+                notifications.push(comments.rows);
+                database.query(`
+                  SELECT
+                    CAST(post_likes.id AS INT),
+                    (SELECT JSON_BUILD_OBJECT(
+                        'id', posts.id,
+                        'account', JSON_BUILD_OBJECT(
+                          'id', id,
+                          'username', username
+                        )
+                      ) AS post
+                        FROM accounts
+                        WHERE id = ${request.session.user.id}
+                      ),
+                    (SELECT JSON_BUILD_OBJECT(
+                        'id', id,
+                        'username', username
+                      ) AS liker
+                        FROM accounts
+                        WHERE id = liker
+                      ),
+                    posts.file_path,
+                    post_likes.date_created
+                  FROM
+                    posts
+                  LEFT JOIN
+                    post_likes ON post_likes.post_id = posts.id
+                  WHERE
+                    post_likes.id IS NOT NULL AND
+                    creator_id = ${request.session.user.id} AND
+                    liker != ${request.session.user.id}`,
 
-              notifications.push(comments.rows);
-              result.send(notifications);
+                  function(error, likes) {
+                    if (!error) {
+                      likes.rows.forEach(like => {
+                        like.post.image = fs.readFileSync(like.file_path, "base64");
+                      });
+
+                      notifications.push(likes.rows);
+                      result.send(notifications);
+                    }
+                    else return result.sendStatus(500);
+                  }
+                )
+              }
+              else return result.sendStatus(500);
             }
           )
         }

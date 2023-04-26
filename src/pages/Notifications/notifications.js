@@ -26,7 +26,9 @@ function Notifications()
 
   function HandleGetNotifications() {
     FetchNotifications().then((notifications) => {
-      notifications[0].concat(notifications[1]).forEach(notification => {
+      let key = 0;
+
+      notifications[0].concat(notifications[1], notifications[2]).forEach(notification => {
         const time = new Date(notification.date_created).getTime() - new Date().getTime();
         const seconds = Math.abs(Math.floor(time / 1000));
         const minutes = Math.abs(Math.floor(seconds / 60));
@@ -49,15 +51,20 @@ function Notifications()
         } else if (years >= 1) {
           notification.date = years > 1 ? years + " years ago" : "1 year ago";
         }
+
+        notification.key = key;
+        key++;
       });
 
-      const combinedNotifications = [...notifications[0], ...notifications[1]];
+      const combinedNotifications = [...notifications[0], ...notifications[1], ...notifications[2]];
       combinedNotifications.sort((a, b) => new Date(b.date_created) - new Date(a.date_created));
       combinedNotifications.forEach((notification) => {
         if (notification.follower) {
           notification.tag = "follow_request";
         } else if (notification.commenter) {
           notification.tag = "comment";
+        } else if (notification.liker) {
+          notification.tag = "like";
         }
       });
 
@@ -96,7 +103,7 @@ function Notifications()
 
             <div>
               {notifications.length > 0 ? notifications.map((notification) => (
-                <div key={notification.id}>
+                <div key={notification.key}>
                   {notification.tag == "follow_request" ?
                   <div className="notification">
                     <img
@@ -130,27 +137,47 @@ function Notifications()
                         </div>
                       </>
                     )}
-                  </div> :
-                  <div className="notification">
-                    <img
-                      src={`${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/api/thumbnail?id=${notification.commenter.id}`}
-                      onError={(img) => (img.target.src = `${process.env.PUBLIC_URL}/images/default-profile.png`)}
-                      className="thumbnail"
-                      alt="thumbnail"
-                    />
-                    
-                    <a href={`/profile?id=${notification.commenter.id}&post=${notification.post.id}`} className="username">{notification.commenter.username}</a>
-                    &nbsp;commented on your post:<div className="comment">{notification.comment}</div>
-                    <label className="timestamp">· {notification.date}</label>
-
-                    <a href={`/post?id=${notification.post.account.id}&post=${notification.post.id}`} className="post">
+                  </div> : notification.tag == "comment" ?
+                    <div className="notification">
                       <img
-                        src={`data:image/jpeg;base64,${notification.post.image}`}
+                        src={`${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/api/thumbnail?id=${notification.commenter.id}`}
                         onError={(img) => (img.target.src = `${process.env.PUBLIC_URL}/images/default-profile.png`)}
-                        alt="post"
+                        className="thumbnail"
+                        alt="thumbnail"
                       />
-                    </a>
-                  </div>
+                      
+                      <a href={`/profile?id=${notification.commenter.id}&post=${notification.post.id}`} className="username">{notification.commenter.username}</a>
+                      &nbsp;commented on your post:<div className="comment">{notification.comment}</div>
+                      <label className="timestamp">· {notification.date}</label>
+
+                      <a href={`/post?id=${notification.post.account.id}&post=${notification.post.id}`} className="post">
+                        <img
+                          src={`data:image/jpeg;base64,${notification.post.image}`}
+                          onError={(img) => (img.target.src = `${process.env.PUBLIC_URL}/images/default-profile.png`)}
+                          alt="post"
+                        />
+                      </a>
+                    </div> :
+                    <div className="notification">
+                      <img
+                        src={`${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/api/thumbnail?id=${notification.liker.id}`}
+                        onError={(img) => (img.target.src = `${process.env.PUBLIC_URL}/images/default-profile.png`)}
+                        className="thumbnail"
+                        alt="thumbnail"
+                      />
+
+                      <a href={`/profile?id=${notification.liker.id}&post=${notification.post.id}`} className="username">{notification.liker.username}</a>
+                      &nbsp;liked your post
+                      <label className="timestamp">· {notification.date}</label>
+
+                      <a href={`/post?id=${notification.post.account.id}&post=${notification.post.id}`} className="post">
+                        <img
+                          src={`data:image/jpeg;base64,${notification.post.image}`}
+                          onError={(img) => (img.target.src = `${process.env.PUBLIC_URL}/images/default-profile.png`)}
+                          alt="post"
+                        />
+                      </a>
+                    </div>
                   }
                 </div>
               )) :
