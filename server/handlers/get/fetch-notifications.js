@@ -82,7 +82,8 @@ function FetchNotifications(request, result)
                 post_comments ON post_comments.post_id = posts.id
             WHERE
                 post_comments.id IS NOT NULL AND
-                creator_id = ${request.session.user.id}`,
+                creator_id = ${request.session.user.id} AND
+                commenter != ${request.session.user.id}`,
 
             function(error, comments) {
               if (!error) {

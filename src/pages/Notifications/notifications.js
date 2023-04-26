@@ -6,6 +6,10 @@ import {
   DeclineFollowRequest
 } from "../../utilities/utilities";
 
+import FollowRequests from "./components/FollowRequests";
+import Comments from "./components/Comments";
+import Likes from "./components/Likes";
+
 import LoadingBar from "../../components/LoadingBar/loading-bar";
 import SidePanel from "../../components/SidePanel/side-panel";
 import "./notifications.scss";
@@ -13,6 +17,7 @@ import "./notifications.scss";
 function Notifications()
 {
   const [session, setSession] = useState([]);
+  const [loaded, setLoaded] = useState(false);
   const [notifications, setNotifications] = useState([]);
 
   useEffect(() => {
@@ -69,7 +74,7 @@ function Notifications()
       });
 
       setNotifications(combinedNotifications);
-      console.log(combinedNotifications);
+      setLoaded(true);
     });
   }
 
@@ -97,96 +102,31 @@ function Notifications()
 
           <div className="notifications">
             <div className="notifications-header">
-              <h1>Notifications</h1>
+              <h1>Your Notifications</h1>
               <hr/>
             </div>
 
-            <div>
-              {notifications.length > 0 ? notifications.map((notification) => (
-                <div key={notification.key}>
-                  {notification.tag == "follow_request" ?
-                  <div className="notification">
-                    <img
-                      src={`${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/api/thumbnail?id=${notification.follower.id}`}
-                      onError={(img) => (img.target.src = `${process.env.PUBLIC_URL}/images/default-profile.png`)}
-                      className="thumbnail"
-                      alt="thumbnail"
-                    />
-                    {notification.accepted ? (
-                      <>
-                        You have accepted&nbsp;
-                        <a href={`/profile?id=${notification.follower.id}`} className="username">{notification.follower.username}'s</a>
-                        &nbsp;request to follow you
-                        <label className="timestamp">· {notification.date}</label>
-                      </>
-                    ) : notification.declined ? (
-                      <>
-                        You have declined&nbsp;
-                        <a href={`/profile?id=${notification.follower.id}`} className="username">{notification.follower.username}'s</a>
-                        &nbsp;request to follow you
-                        <label className="timestamp">· {notification.date}</label>
-                      </>
-                    ) : (
-                      <>
-                        <a href={`/profile?id=${notification.follower.id}`} className="username">{notification.follower.username}</a>
-                        <label className="timestamp">requested to follow you · {notification.date}</label>
-
-                        <div className="buttons">
-                          <button className="btn btn-success btn-sm accept" onClick={() => HandleAcceptFollow(notification.id, notification.follower.id)}>Accept</button>
-                          <button className="btn btn-danger btn-sm decline" onClick={() => HandleDeclineFollow(notification.id, notification.follower.id)}>Decline</button>
-                        </div>
-                      </>
-                    )}
-                  </div> : notification.tag == "comment" ?
-                    <div className="notification">
-                      <img
-                        src={`${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/api/thumbnail?id=${notification.commenter.id}`}
-                        onError={(img) => (img.target.src = `${process.env.PUBLIC_URL}/images/default-profile.png`)}
-                        className="thumbnail"
-                        alt="thumbnail"
-                      />
-                      
-                      <a href={`/profile?id=${notification.commenter.id}&post=${notification.post.id}`} className="username">{notification.commenter.username}</a>
-                      &nbsp;commented on your post:<div className="comment">{notification.comment}</div>
-                      <label className="timestamp">· {notification.date}</label>
-
-                      <a href={`/post?id=${notification.post.account.id}&post=${notification.post.id}`} className="post">
-                        <img
-                          src={`data:image/jpeg;base64,${notification.post.image}`}
-                          onError={(img) => (img.target.src = `${process.env.PUBLIC_URL}/images/default-profile.png`)}
-                          alt="post"
-                        />
-                      </a>
-                    </div> :
-                    <div className="notification">
-                      <img
-                        src={`${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/api/thumbnail?id=${notification.liker.id}`}
-                        onError={(img) => (img.target.src = `${process.env.PUBLIC_URL}/images/default-profile.png`)}
-                        className="thumbnail"
-                        alt="thumbnail"
-                      />
-
-                      <a href={`/profile?id=${notification.liker.id}&post=${notification.post.id}`} className="username">{notification.liker.username}</a>
-                      &nbsp;liked your post
-                      <label className="timestamp">· {notification.date}</label>
-
-                      <a href={`/post?id=${notification.post.account.id}&post=${notification.post.id}`} className="post">
-                        <img
-                          src={`data:image/jpeg;base64,${notification.post.image}`}
-                          onError={(img) => (img.target.src = `${process.env.PUBLIC_URL}/images/default-profile.png`)}
-                          alt="post"
-                        />
-                      </a>
-                    </div>
-                  }
-                </div>
-              )) :
-                <div className="no-notifications">
-                  <center>You have 0 notifications</center>
-                </div>
-              }
-            </div>
-
+            {loaded ? 
+              <div>
+                {notifications.length > 0 ? notifications.map((notification) => (
+                  <div key={notification.key}>
+                    {
+                    notification.tag == "follow_request" ?
+                      <FollowRequests notification={notification} HandleAcceptFollow={HandleAcceptFollow} HandleDeclineFollow={HandleDeclineFollow}/>
+                    : notification.tag == "comment" ?
+                      <Comments notification={notification}/>
+                    : notification.tag == "like" ?
+                      <Likes notification={notification}/>
+                    : null
+                    }
+                  </div>
+                )) :
+                  <div className="no-notifications">
+                    <center>You have 0 notifications</center>
+                  </div>
+                }
+              </div> : <LoadingBar size="large"/>
+            }
           </div>
         </div>
       </div>
