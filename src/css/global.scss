@@ -4,6 +4,7 @@ body {
   font-weight: 600;
 }
 
+// User Containers
 .profile-container,
 .messages-container, 
 .notifications-container,
@@ -11,7 +12,12 @@ body {
 .posts-container,
 .post-container,
 .settings-container,
-.admin-panel-container
+
+// Admin Containers
+.statistics-container,
+.monitor-posts-container,
+.user-settings-container,
+.reports-container
 {
   padding: 5px;
 

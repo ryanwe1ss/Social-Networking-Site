@@ -9,7 +9,7 @@ function Register()
       if (session) {
         switch (session.type) {
           case "admin":
-            window.location.href = "/admin";
+            window.location.href = "/statistics";
             break;
 
           case "user":

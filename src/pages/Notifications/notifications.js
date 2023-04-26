@@ -17,7 +17,7 @@ function Notifications()
 
   useEffect(() => {
     FetchSession().then((session) => {
-      if (session.type === "admin") window.location.href = "/admin";
+      if (session.type === "admin") window.location.href = "/statistics";
       
       setSession({ id: session.id, username: session.username, type: session.type });
       HandleGetNotifications();
@@ -56,7 +56,7 @@ function Notifications()
     return (
       <div className="notifications-container">
         <div className="outer-border">
-          <SidePanel sessionId={session.id} type={session.type}/>
+          <SidePanel session={session}/>
 
           <div className="notifications">
             <div className="notifications-header">

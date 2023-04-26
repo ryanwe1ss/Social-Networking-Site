@@ -54,6 +54,7 @@ const userRoutes = [
 
 const adminRoutes = [
   "/api/statistics",
+  "/api/admin-permissions"
 ];
 
 module.exports = { allRoutes, userRoutes, adminRoutes };

@@ -327,6 +327,14 @@ export function SendMessage(body)
     .then((response) => { return response });
 }
 
+// ----- PERMISSIONS ----- //
+export function CheckAdminPermissions()
+{
+  return HttpGet('/api/admin-permissions')
+    .then((response) => { return response.json() })
+    .then((permissions) => { return permissions });
+}
+
 // ----- MISCELLANEOUS ----- //
 export function RedirectPage(profileId)
 {

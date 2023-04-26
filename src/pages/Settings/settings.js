@@ -29,7 +29,7 @@ function Settings()
 
   useEffect(() => {
     FetchSession().then((session) => {
-      if (session.type === "admin") window.location.href = "/admin";
+      if (session.type === "admin") window.location.href = "/statistics";
 
       setSession({ id: session.id, username: session.username, type: session.type });
       HandleFetchProfile(session.id);
@@ -93,7 +93,7 @@ function Settings()
     return (
       <div className="settings-container">
         <div className="outer-border">
-          <SidePanel sessionId={session.id} type={session.type}/>
+          <SidePanel session={session}/>
   
           <div className="settings">
             <div className="settings-panel">

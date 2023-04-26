@@ -3,16 +3,16 @@ import { FetchSession, FetchFeed } from "../../utilities/utilities";
 
 import SidePanel from "../../components/SidePanel/side-panel";
 import LoadingBar from "../../components/LoadingBar/loading-bar";
-import "./posts.scss";
+import "./feed.scss";
 
-function Posts()
+function Feed()
 {
   const [session, setSession] = useState([]);
   const [feed, setFeed] = useState([]);
 
   useEffect(() => {
     FetchSession().then((session) => {
-      if (session.type === "admin") return window.location.href = "/admin";
+      if (session.type === "admin") return window.location.href = "/statistics";
       setSession({ id: session.id, username: session.username, type: session.type });
 
       FetchFeed().then((feed) => {
@@ -25,7 +25,7 @@ function Posts()
     return (
       <div className="posts-container">
         <div className="outer-border">
-          <SidePanel sessionId={session.id} type={session.type}/>
+          <SidePanel session={session}/>
 
           <div className="posts">
             {feed.length > 0 && feed.map((post) => (
@@ -58,4 +58,4 @@ function Posts()
   
   } else return <LoadingBar size="large"/>
 }
-export default Posts;
+export default Feed;

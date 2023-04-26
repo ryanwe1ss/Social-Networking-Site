@@ -1,0 +1,12 @@
+.reports-container {
+
+  .outer-border {
+
+    .reports {
+      display: flex;
+      overflow: auto;
+      padding: 10px;
+      flex: 1;
+    }
+  }
+}

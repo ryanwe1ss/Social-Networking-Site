@@ -9,7 +9,7 @@ function Login()
       if (session) {
         switch (session.type) {
           case "admin":
-            window.location.href = "/admin";
+            window.location.href = "/statistics";
             break;
 
           case "user":
@@ -27,7 +27,7 @@ function Login()
         document.getElementById("response").innerHTML = "Login failed, try again";
       
       } else if (response.status == 200) {
-        if (response.type == "admin") window.location.href = "/admin";
+        if (response.type == "admin") window.location.href = "/statistics";
         else window.location.href = `/profile?id=${response.id}`;
       }
     });

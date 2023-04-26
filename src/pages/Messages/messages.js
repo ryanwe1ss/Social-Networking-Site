@@ -22,7 +22,7 @@ function Messages()
 
   useEffect(() => {
     FetchSession().then((session) => {
-      if (session.type === "admin") window.location.href = "/admin";
+      if (session.type === "admin") window.location.href = "/statistics";
       
       setSession({ id: session.id, username: session.username, type: session.type });
       HandleFetchChats(session);
@@ -122,7 +122,7 @@ function Messages()
     return (
       <div className="messages-container">
         <div className="outer-border">
-          <SidePanel sessionId={session.id} type={session.type}/>
+          <SidePanel session={session}/>
   
           <div className="messages">
             <div className="chats">

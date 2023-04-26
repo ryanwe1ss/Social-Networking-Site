@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
-import { FetchSession, FetchStatistics, SearchAccounts, RedirectPage } from "../../utilities/utilities";
+import { FetchSession, FetchStatistics, SearchAccounts, RedirectPage } from "../../../utilities/utilities";
 
-import SidePanel from "../../components/SidePanel/side-panel";
-import "./admin-panel.scss";
+import SidePanel from "../../../components/SidePanel/side-panel";
+import "./statistics.scss";
 
 function AdminPanel()
 {
@@ -33,11 +33,11 @@ function AdminPanel()
 
   if (session.id) {
     return (
-      <div className="admin-panel-container">
+      <div className="statistics-container">
         <div className="outer-border">
-          <SidePanel type={session.type}/>
+          <SidePanel session={session}/>
   
-          <div className="admin-panel">
+          <div className="panel">
             <div className="statistics">
               <div className="statistics-header">
                 <h4>Social Network Statistics</h4>

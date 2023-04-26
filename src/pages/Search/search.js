@@ -17,7 +17,7 @@ function Search()
 
   useEffect(() => {
     FetchSession().then((session) => {
-      if (session.type === "admin") window.location.href = "/admin";
+      if (session.type === "admin") window.location.href = "/statistics";
       setSession({ id: session.id, username: session.username, type: session.type });
     });
   }, []);
@@ -26,7 +26,7 @@ function Search()
     return (
       <div className="search-container">
         <div className="outer-border">
-          <SidePanel sessionId={session.id} type={session.type}/>
+          <SidePanel session={session}/>
   
           <div className="search-content">
             <div className="search-header">

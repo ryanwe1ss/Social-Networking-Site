@@ -156,7 +156,7 @@ function Profile()
     return (
       <div className="profile-container">
         <div className="outer-border">
-          <SidePanel sessionId={session.id} type={session.type}/>
+          <SidePanel session={session}/>
   
           <div className="profile">
             <div className="left-details">

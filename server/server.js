@@ -45,6 +45,7 @@ const { DeactivateAccount } = require("./handlers/delete/deactivate");
 
 // Admin Modules
 const { FetchStatistics } = require("./handlers/admin/fetch-statistics");
+const { CheckAdminPermissions } = require("./handlers/admin/admin-permissions");
 
 // Middleware
 const { middleware } = require("./middleware/middleware");
@@ -228,6 +229,10 @@ apiRouter.get("/api/get-conversation", middleware, (request, result) => {
 
 apiRouter.post("/api/send-message", middleware, (request, result) => {
   SendMessage(request, result);
+});
+
+apiRouter.get("/api/admin-permissions", middleware, (request, result) => {
+  CheckAdminPermissions(request, result);
 });
 
 apiRouter.get("/api/deactivate", middleware, (request, result) => {
