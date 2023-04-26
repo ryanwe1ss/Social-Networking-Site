@@ -1,7 +1,10 @@
+const fs = require("fs");
 const { database } = require("../../database/db_connect");
 
 function FetchNotifications(request, result)
 {
+  const notifications = [];
+
   if (request.query.countOnly) {
     database.query(`
       SELECT
@@ -15,13 +18,14 @@ function FetchNotifications(request, result)
 
       function(error, data) {
         if (!error) result.send(data.rows[0]);
+        else result.sendStatus(500);
       }
     );
   
   } else {
     database.query(`
       SELECT
-        follow_requests.id,
+        CAST(follow_requests.id AS INT),
         JSON_BUILD_OBJECT(
           'id', account_id,
           'username', username,
@@ -45,8 +49,53 @@ function FetchNotifications(request, result)
       ORDER BY
         follow_requests.date_created DESC`,
     
-      function(error, data) {
-        if (!error) result.send(data.rows);
+      function(error, followRequests) {
+        if (!error) {
+          notifications.push(followRequests.rows);
+
+          database.query(`
+            SELECT
+              CAST(post_comments.id AS INT),
+              (SELECT JSON_BUILD_OBJECT(
+                'id', id,
+                'username', username
+              ) AS commenter
+                FROM accounts
+                WHERE id = commenter
+              ),
+              (SELECT JSON_BUILD_OBJECT(
+                'id', posts.id,
+                'account', JSON_BUILD_OBJECT(
+                  'id', id,
+                  'username', username
+                )
+              ) AS post
+                FROM accounts
+                WHERE id = ${request.session.user.id}
+              ),
+              posts.file_path,
+              post_comments.comment,
+              post_comments.date_created
+            FROM
+                posts
+            LEFT JOIN
+                post_comments ON post_comments.post_id = posts.id
+            WHERE
+                post_comments.id IS NOT NULL AND
+                creator_id = ${request.session.user.id}`,
+
+            function(error, comments) {
+              if (error) return result.sendStatus(500);
+              comments.rows.forEach(comment => {
+                comment.post.image = fs.readFileSync(comment.file_path, "base64");
+              });
+
+              notifications.push(comments.rows);
+              result.send(notifications);
+            }
+          )
+        }
+        else return result.sendStatus(500);
       }
     );
   }
