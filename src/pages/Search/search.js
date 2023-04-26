@@ -1,6 +1,9 @@
-import React, { useEffect, useState } from "react";
-import SidePanel from "../../components/SidePanel/side-panel";
+import { useEffect, useState } from "react";
 import LoadingBar from "../../components/LoadingBar/loading-bar";
+
+import SidePanel from "../../components/SidePanel/side-panel";
+import Footer from "../../components/Footer/footer";
+
 import "./search.scss";
 
 import {
@@ -58,6 +61,7 @@ function Search()
             </div>
           </div>
         </div>
+        <Footer/>
       </div>
     );
   

@@ -17,6 +17,7 @@ import {
   UpdateUsername,
   UpdatePassword,
 } from "../../utilities/utilities";
+import Footer from "../../components/Footer/footer";
 
 function Settings()
 {
@@ -115,6 +116,7 @@ function Settings()
             </div>
           </div>
         </div>
+        <Footer/>
       </div>
     );
   

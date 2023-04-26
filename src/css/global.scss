@@ -24,7 +24,10 @@ body {
   .outer-border {
     display: flex;
     overflow: hidden;
-    height: 98.5vh;
-    border: 3px solid black;
+    height: 87.7vh;
+
+    border-left: 3px solid black;
+    border-right: 3px solid black;
+    border-top: 3px solid black;
   }
 }

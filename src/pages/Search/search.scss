@@ -5,6 +5,7 @@
     .search-content {
       display: flex;
       flex-direction: column;
+      overflow: auto;
       flex: 1;
 
       .search-header {

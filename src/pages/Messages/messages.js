@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
-import SidePanel from "../../components/SidePanel/side-panel";
 import LoadingBar from "../../components/LoadingBar/loading-bar";
+
+import SidePanel from "../../components/SidePanel/side-panel";
+import Footer from "../../components/Footer/footer";
 import "./messages.scss";
 
 import {
@@ -10,6 +12,7 @@ import {
   SendMessage,
   FetchChats,
 } from "../../utilities/utilities";
+
 
 function Messages()
 {
@@ -165,6 +168,7 @@ function Messages()
             </div>
           </div>
         </div>
+        <Footer/>
       </div>
     );
   

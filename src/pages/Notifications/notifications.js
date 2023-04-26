@@ -12,6 +12,8 @@ import Likes from "./components/Likes";
 
 import LoadingBar from "../../components/LoadingBar/loading-bar";
 import SidePanel from "../../components/SidePanel/side-panel";
+import Footer from "../../components/Footer/footer";
+
 import "./notifications.scss";
 
 function Notifications()
@@ -129,6 +131,7 @@ function Notifications()
             }
           </div>
         </div>
+        <Footer/>
       </div>
     );
   

@@ -4,6 +4,7 @@ import { FetchSession, FetchFeed } from "../../utilities/utilities";
 import SidePanel from "../../components/SidePanel/side-panel";
 import LoadingBar from "../../components/LoadingBar/loading-bar";
 import "./feed.scss";
+import Footer from "../../components/Footer/footer";
 
 function Feed()
 {
@@ -53,6 +54,7 @@ function Feed()
             )) || <div className="no-feed">Your feed is currently empty</div>}
           </div>
         </div>
+        <Footer/>
       </div>
     );
   

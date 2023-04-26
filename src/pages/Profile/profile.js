@@ -15,11 +15,14 @@ import {
 } from "../../utilities/utilities";
 
 import ProfileDetails from "../../components/ProfileDetails/ProfileDetails";
+import AccountSettings from "../../components/AccountSettings/account-settings";
 import Followers from "../../components/Connections/Followers";
 import Following from "../../components/Connections/Following";
-import SidePanel from "../../components/SidePanel/side-panel";
+
 import LoadingBar from "../../components/LoadingBar/loading-bar";
-import AccountSettings from "../../components/AccountSettings/account-settings";
+import SidePanel from "../../components/SidePanel/side-panel";
+import Footer from "../../components/Footer/footer";
+
 import "./profile.scss";
 
 function Profile()
@@ -295,6 +298,7 @@ function Profile()
             }
           </div>
         </div>
+        <Footer/>
       </div>
     );
   
