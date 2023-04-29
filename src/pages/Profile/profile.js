@@ -171,7 +171,7 @@ function Profile()
                   alt="picture"
                 /> :
                 <div className="picture">
-                  <LoadingBar size="small"/>
+                  <LoadingBar size="small" height={35}/>
                 </div>
               } {
                 <div>

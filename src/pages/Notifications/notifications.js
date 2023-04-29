@@ -46,16 +46,18 @@ function Notifications()
         const years = Math.abs(Math.floor(days / 365));
         
         if (seconds < 60) {
-          notification.date = seconds > 1 ? seconds + " seconds ago" : "just now";
+          notification.date = seconds > 1 ? seconds + " seconds ago" : "1 second ago";
         } else if (minutes < 60) {
           notification.date = minutes > 1 ? minutes + " minutes ago" : "1 minute ago";
         } else if (hours < 24) {
           notification.date = hours > 1 ? hours + " hours ago" : "1 hour ago";
+        } else if (days < 7) {
+          notification.date = days > 1 ? days + " days ago" : "1 day ago";
         } else if (weeks < 4) {
           notification.date = weeks > 1 ? weeks + " weeks ago" : "1 week ago";
-        } else if (months >= 1 && months < 12) {
+        } else if (months < 12) {
           notification.date = months > 1 ? months + " months ago" : "1 month ago";
-        } else if (years >= 1) {
+        } else {
           notification.date = years > 1 ? years + " years ago" : "1 year ago";
         }
 
@@ -127,7 +129,7 @@ function Notifications()
                     <center>You have 0 notifications</center>
                   </div>
                 }
-              </div> : <LoadingBar size="large"/>
+              </div> : <LoadingBar size="large" height={15}/>
             }
           </div>
         </div>

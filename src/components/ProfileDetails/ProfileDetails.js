@@ -32,7 +32,7 @@ function ProfileDetails(args) {
     } else if (args.profile.length == 0) {
       return (
         <div className="information">
-          <LoadingBar size="large"/>
+          <LoadingBar size="large" height={25}/>
         </div>
       );
     

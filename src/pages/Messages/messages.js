@@ -17,8 +17,13 @@ import {
 function Messages()
 {
   const [session, setSession] = useState([]);
+
+  const [chatsLoaded, setChatsLoaded] = useState(false);
+  const [conversationLoaded, setConversationLoaded] = useState(true);
+
   const [conversation, setConversation] = useState([]);
   const [thumbnails, setThumbnail] = useState([]);
+
   const [chats, setChats] = useState([]);
   const [chatId, setChatId] = useState();
   const [userId, setUserId] = useState();
@@ -29,6 +34,7 @@ function Messages()
       
       setSession({ id: session.id, username: session.username, type: session.type });
       HandleFetchChats(session);
+      setChatsLoaded(true);
     });
   }, []);
 
@@ -80,6 +86,8 @@ function Messages()
   }
 
   function HandleFetchConversation(userId) {
+    setConversationLoaded(false);
+
     document.querySelectorAll(".selected").forEach(selected => {
       selected.style.display = "none";
     
@@ -89,18 +97,19 @@ function Messages()
       document.getElementById("message").disabled = false;
 
       setConversation(conversation.messages);
+      setConversationLoaded(true);
       setChatId(conversation.chatId);
       setUserId(userId);
 
-      const scroll = setInterval(function() {
-        const conversation = document.getElementById("chat");
+      const convScroll = setInterval(function() {
+        const messages = document.getElementById("chat");
         
-        if (conversation.innerText.length > 0) {
-          conversation.scrollTop = conversation.scrollHeight;
-          clearInterval(scroll);
+        if (messages.innerText.length > 0) {
+          messages.scrollTop = messages.scrollHeight;
+          clearInterval(convScroll);
         }
 
-      }, 25);
+      }, 0);
     })
   }
 
@@ -130,7 +139,7 @@ function Messages()
           <div className="messages">
             <div className="chats">
               <div className="chat-header">Message Friend</div>
-              {chats.map(chat => (
+              {chatsLoaded ? chats.map(chat => (
                 <div className="chat" onClick={() => { HandleFetchConversation(chat.id) }} id={`${chat.id}_chat`} key={chat.id}>
                   <img
                     src={thumbnails.filter(t => t.id == chat.id).map(t => t.thumbnail)}
@@ -141,19 +150,20 @@ function Messages()
                   <span>{chat.name}</span>
                   <i className="bi bi-chat-fill selected" id={chat.id} style={{display: "none", float: "right"}}/>
                 </div>
-              ))}
+              )) : <LoadingBar size="small" height={15}/>}
             </div>
   
             <div className="interface">
               <div className="chat-session" id="chat">
-                {conversation.map(message => (
+                {conversationLoaded ? conversation.map(message => (
                   <div className="text-chat" key={message.id}>
                     {message.from == session.username ?
                       <div className="you">{message.message}</div> :
                       <div className="user">{message.message}</div>
                     }
                   </div>
-                ))}
+                )) : <LoadingBar size="large" height={20}/>
+                }
               </div>
   
               <div className="message-box">

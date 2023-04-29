@@ -8,6 +8,7 @@ import {
 
 import LoadingBar from "../../components/LoadingBar/loading-bar";
 import SidePanel from "../../components/SidePanel/side-panel";
+import Footer from "../../components/Footer/footer";
 import "./post.scss";
 
 function Post()
@@ -136,6 +137,7 @@ function Post()
             </div>
           </div>
         </div>
+        <Footer/>
       </div>
     );
   

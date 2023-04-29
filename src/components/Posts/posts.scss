@@ -27,7 +27,11 @@
 
     .spinner {
       margin: 0 auto;
-      margin-top: 25px;
+
+      label {
+        margin-left: 10px;
+        margin-top: 10px;
+      }
     }
 
     .post {
