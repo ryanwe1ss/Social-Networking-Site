@@ -40,31 +40,34 @@ function AccountSettings(args)
   }
 
   return (
-    <div className="modal" id="modal">
-      <div className="modal-content">
+    <div className="account-settings">
+      <div className="modal" id="modal">
+        <div className="modal-content">
+          <header>
+            <h4>Account Settings</h4>
+            <span onClick={() => {
+              document.getElementById("modal").style.display = "none";
+              args.setShowSettings(false);
+              
+            }} id="close">&times;</span>
+          </header><hr/>
 
-        <header>
-          <h4>Account Settings</h4>
-          <span onClick={() => {
-            document.getElementById("modal").style.display = "none";
-            args.setShowSettings(false);
-            
-          }} id="close">&times;</span>
-        </header><hr/>
+          <div className="modal-body">
+            <input className="btn btn-secondary" type="button" value="Block" onClick={HandleBlock}/>
+            <input className="btn btn-secondary" type="button" value="Report" onClick={() => setShowReport(true)}/>
 
-        <div className="modal-body">
-          <input className="btn btn-secondary" type="button" value="Block" onClick={HandleBlock}/>
-          <input className="btn btn-secondary" type="button" value="Report" onClick={() => setShowReport(true)}/>
-
-          {report && <div className="report">
-            <hr/>
-            <label>Why do you want to report this account?</label>
-            <textarea className="form-control" id="reportMsg" placeholder="Enter your report here..."></textarea>
-            <input className="btn btn-secondary" type="button" value="Submit" onClick={() => HandleReportAccount(
-              document.getElementById("reportMsg").value
-            )}/>
-            <div id="result"/>
-          </div>}
+            {report &&
+              <div className="report">
+                <hr/>
+                <label>Why do you want to report this account?</label>
+                <textarea className="form-control" id="reportMsg" placeholder="Enter your report here..."></textarea>
+                <input className="btn btn-secondary" type="button" value="Submit" onClick={() => HandleReportAccount(
+                  document.getElementById("reportMsg").value
+                )}/>
+                <div id="result"/>
+              </div>
+            }
+          </div>
         </div>
       </div>
     </div>

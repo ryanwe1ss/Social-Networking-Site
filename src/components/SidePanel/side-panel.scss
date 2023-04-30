@@ -16,6 +16,10 @@
     overflow: hidden;
     padding: 15px;
 
+    .disabled {
+      cursor: not-allowed;
+    }
+
     div {
       margin-top: 20px;
 

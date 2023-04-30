@@ -1,71 +1,74 @@
-.modal {
-  padding-top: 100px;
-  background-color: rgba(0,0,0,0.4);
-  display: block;
+.followers-component, .following-component {
 
-  .modal-content {
-    padding: 15px;
-    max-width: 400px;
-    height: 400px;
-    margin: 2rem auto;
-    overflow: auto;
-
-    header {
-      h4 {
-        display: inline-block;
-        position: absolute;
-        transform: translateX(-50%);
-        margin-top: 8px;
-        color: black;
-        left: 50%;
-      }
-    }
-
-    .followers, .following {
-
-      label {
-        cursor: pointer;
-        line-height: 20px;
-        font-size: 17px;
-        color: black;
-
-        span {
-          font-size: 12px;
+  .modal {
+    padding-top: 100px;
+    background-color: rgba(0,0,0,0.4);
+    display: block;
+  
+    .modal-content {
+      padding: 15px;
+      max-width: 400px;
+      height: 400px;
+      margin: 2rem auto;
+      overflow: auto;
+  
+      header {
+        h4 {
+          display: inline-block;
+          position: absolute;
+          transform: translateX(-50%);
+          margin-top: 8px;
+          color: black;
+          left: 50%;
         }
       }
-
-      .thumbnail {
-        position: relative;
-        top: -3px;
-        border-radius: 50%;
-        object-fit: cover;
-        width: 40px;
-        height: 40px;
-
-        margin-right: 5px;
-        margin-bottom: 20px;
+  
+      .followers, .following {
+  
+        label {
+          cursor: pointer;
+          line-height: 20px;
+          font-size: 17px;
+          color: black;
+  
+          span {
+            font-size: 12px;
+          }
+        }
+  
+        .thumbnail {
+          position: relative;
+          top: -3px;
+          border-radius: 50%;
+          object-fit: cover;
+          width: 40px;
+          height: 40px;
+  
+          margin-right: 5px;
+          margin-bottom: 20px;
+        }
+  
+        input {
+          float: right;
+          margin-top: 5px;
+        }
       }
-
-      input {
+  
+      hr {
+        color: black;
+      }
+  
+      #close {
+        color: black;
         float: right;
-        margin-top: 5px;
+        font-size: 30px;
+        font-weight: bold;
       }
-    }
-
-    hr {
-      color: black;
-    }
-
-    #close {
-      color: black;
-      float: right;
-      font-size: 30px;
-      font-weight: bold;
-    }
-    
-    #close:hover {
-      color: red;
-      cursor: pointer;
+      
+      #close:hover {
+        color: red;
+        cursor: pointer;
+      }
     }
   }
 }

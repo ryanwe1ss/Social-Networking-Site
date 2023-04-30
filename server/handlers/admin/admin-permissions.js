@@ -6,7 +6,7 @@ function CheckAdminPermissions(request, result)
     SELECT
       monitor_posts_permission,
       modify_accounts_permission,
-      deactivate_accounts_permission
+      monitor_reports_permission
     FROM
       admin_accounts
     WHERE
@@ -19,7 +19,7 @@ function CheckAdminPermissions(request, result)
       return result.json({
         monitor_posts_permission: permissions.monitor_posts_permission,
         modify_accounts_permission: permissions.modify_accounts_permission,
-        deactivate_accounts_permission: permissions.deactivate_accounts_permission,
+        monitor_reports_permission: permissions.monitor_reports_permission,
       });
     }
   )

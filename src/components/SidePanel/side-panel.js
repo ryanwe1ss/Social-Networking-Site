@@ -1,28 +1,36 @@
 import { useEffect, useState } from "react";
-import { CheckAdminPermissions, FetchNotifications, Logout } from "../../utilities/utilities";
+import { FetchNotifications, Logout } from "../../utilities/utilities";
 import "./side-panel.scss";
 
 function SidePanel(args)
 {
   if (args.session.type === "admin") {
-    const [permissions, setPermissions] = useState({});
-
-    useEffect(() => {
-      CheckAdminPermissions().then((permissions) => {
-        setPermissions(permissions);
-        console.log(permissions);
-      });
-    }, []);
-
     return (
       <div className="side-panel">
         <img src={`${process.env.PUBLIC_URL}/images/sidepanel-logo.png`} alt="logo" />
   
         <div className="side-bar">
-          <div><a href="/statistics" className="bi bi-activity"> Statistics</a></div>
-          <div><a href="/monitor-posts" className="bi bi-binoculars-fill"> Monitor Posts</a></div>
-          <div><a href="/user-settings" className="bi bi-person-fill-gear"> User Settings</a></div>
-          <div><a href="/reports" className="bi bi-flag-fill"> Reports</a></div>
+          <div>
+            <a href="/statistics" className="bi bi-activity"> Statistics</a>
+          </div>
+          <div>
+            {args.permissions.monitor_posts_permission ?
+              <a href="/monitor-posts" className="bi bi-binoculars-fill"> Monitor Posts</a> :
+              <a className="bi bi-binoculars-fill disabled"> Monitor Posts</a>
+            }
+          </div>
+          <div>
+            {args.permissions.modify_accounts_permission ?
+              <a href="/user-settings" className="bi bi-person-fill-gear"> User Settings</a> :
+              <a className="bi bi-person-fill-gear disabled"> User Settings</a>
+            }
+          </div>
+          <div>
+            {args.permissions.monitor_reports_permission ?
+              <a href="/reports" className="bi bi-flag-fill"> Reports</a> :
+              <a className="bi bi-flag-fill disabled"> Reports</a>
+            }
+          </div>
   
           <div className="bottom">
             <div><a href="/" onClick={Logout} className="bi bi-lock"> Logout</a></div>

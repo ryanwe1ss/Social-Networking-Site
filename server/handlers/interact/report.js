@@ -9,7 +9,7 @@ function ReportAccount(request, result)
     SELECT
       MAX(date_created) AS last_reported
     FROM
-      reports
+      profile_reports
     WHERE
       reporter_id = ${request.session.user.id} AND
       reported_id = ${request.body.id}`,
@@ -21,7 +21,7 @@ function ReportAccount(request, result)
       if (lastReported && (new Date() - new Date(lastReported)) < 10800000) return result.sendStatus(429);
       
       database.query(`
-        INSERT INTO reports (reporter_id, reported_id, message)
+        INSERT INTO profile_reports (reporter_id, reported_id, message)
         VALUES (${request.session.user.id}, ${request.body.id}, '${reportMessage}')`,
         
         function(error, data) {

@@ -79,7 +79,19 @@
     .modal-content {
       max-width: 650px;
       height: 850px;
+      margin: 2rem auto;
       overflow: auto;
+
+      header {
+        h4 {
+          display: inline-block;
+          position: absolute;
+          transform: translateX(-50%);
+          margin-top: 8px;
+          color: black;
+          left: 50%;
+        }
+      }
 
       .post-block {
         display: flex;
@@ -120,6 +132,7 @@
         float: right;
         font-size: 30px;
         font-weight: bold;
+        margin-right: 10px;
       }
       
       #close:hover {

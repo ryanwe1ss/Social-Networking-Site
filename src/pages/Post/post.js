@@ -8,6 +8,7 @@ import {
 
 import LoadingBar from "../../components/LoadingBar/loading-bar";
 import SidePanel from "../../components/SidePanel/side-panel";
+import ReportModal from "./components/report";
 import Footer from "../../components/Footer/footer";
 import "./post.scss";
 
@@ -69,7 +70,7 @@ function Post()
                 <>
                   <img
                     src={`data:image/jpeg;base64,${picture}`}
-                    onError={(img) => (img.target.src = DefaultProfilePicture)}
+                    onError={(img) => (img.target.src = `${process.env.PUBLIC_URL}/images/default-profile.png`)}
                     className="picture"
                     alt="picture"
                   />
@@ -78,20 +79,25 @@ function Post()
                   <label className="description">{post.description}</label><hr/>
                 </> : <>
                 <div className="picture">
-                  <LoadingBar size="small"/>
+                  <LoadingBar size="small" height={50}/>
                 </div>
-
                 Loading Post...
                 </>
               }
             </div>
   
             <div className="interact">
-              <div className="likes">
-                {post.likes_enabled ?
-                  <span><i className="bi bi-heart-fill" id={post.is_liked ? 'liked' : null} onClick={HandleLikePost}/> {post.likes} {post.likes > 1 ? 'Likes' : 'Like'}</span> :
-                  <span><i className="bi bi-heart-fill" id="disabled"/> {isRendered ? "Likes have been disabled" : null}</span>
-                }
+              <div className="post-actions">
+                <div className="likes">
+                  {post.likes_enabled ?
+                    <span><i className="bi bi-heart-fill" id={post.is_liked ? 'liked' : null} onClick={HandleLikePost}/> {post.likes} {post.likes > 1 ? 'Likes' : 'Like'}</span> :
+                    <span><i className="bi bi-heart-fill" id="disabled"/> {isRendered ? "Likes have been disabled" : null}</span>
+                  }
+                </div>
+
+                <div className="settings">
+                  <i className="bi bi-three-dots-vertical"/>
+                </div>
               </div>
   
               {isRendered ? 
@@ -116,7 +122,7 @@ function Post()
                   }
                 </div> :
                 <div className="comments">
-                  <LoadingBar size="large"/>
+                  <LoadingBar size="large" height={50}/>
                 </div>
               }
   
@@ -135,6 +141,7 @@ function Post()
                 >Send</button>
               </div>
             </div>
+            <ReportModal/>
           </div>
         </div>
         <Footer/>

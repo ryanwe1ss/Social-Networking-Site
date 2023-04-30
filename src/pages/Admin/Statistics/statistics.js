@@ -1,12 +1,15 @@
 import { useState, useEffect } from "react";
-import { FetchSession, FetchStatistics, SearchAccounts, RedirectPage } from "../../../utilities/utilities";
+import { FetchSession, FetchStatistics, SearchAccounts, RedirectPage, CheckAdminPermissions } from "../../../utilities/utilities";
 
 import SidePanel from "../../../components/SidePanel/side-panel";
+import Footer from "../../../components/Footer/footer";
 import "./statistics.scss";
 
 function AdminPanel()
 {
   const [session, setSession] = useState([]);
+  const [permissions, setPermissions] = useState([]);
+
   const [statistics, setStatistics] = useState([]);
   const [searchResults, setSearchResults] = useState([]);
   const [hasSearched, setHasSearched] = useState(false);
@@ -16,10 +19,14 @@ function AdminPanel()
       if (session.type !== "admin") return window.history.back();
       setSession({ id: session.id, username: session.username, type: session.type });
 
-      FetchStatistics().then((statistics) => {
-        if (statistics.error) return console.log("Problem Grabbing Site Statistics. Please contact your administrator.");
-        setStatistics(statistics);
-        HandleSearchAccounts(null);
+      CheckAdminPermissions().then((permissions) => {
+        setPermissions(permissions);
+
+        FetchStatistics().then((statistics) => {
+          if (statistics.error) return console.log("Problem Grabbing Site Statistics. Please contact your administrator.");
+          setStatistics(statistics);
+          HandleSearchAccounts(null);
+        });
       });
     });
   }, []);
@@ -35,7 +42,7 @@ function AdminPanel()
     return (
       <div className="statistics-container">
         <div className="outer-border">
-          <SidePanel session={session}/>
+          <SidePanel session={session} permissions={permissions}/>
   
           <div className="panel">
             <div className="statistics">
@@ -83,6 +90,7 @@ function AdminPanel()
             </div>
           </div>
         </div>
+        <Footer/>
       </div>
     );
   }

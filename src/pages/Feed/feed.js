@@ -56,7 +56,7 @@ function Feed()
                 </div>
               )) || <div className="no-feed">Your feed is currently empty</div>}
             </div>
-          : <LoadingBar size="large"/>
+          : <LoadingBar size="large" height={15}/>
           }
         </div>
         <Footer/>

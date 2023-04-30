@@ -12,7 +12,7 @@ function FetchStatistics(request, result)
       (SELECT COUNT(*) FROM post_comments) AS total_comments,
       (SELECT COUNT(*) FROM post_likes) AS total_likes,
       (SELECT COUNT(*) FROM connections) AS total_connections,
-      (SELECT COUNT(*) FROM reports) AS total_reports,
+      (SELECT COUNT(*) FROM profile_reports) AS total_reports,
       (SELECT date_created FROM accounts ORDER BY id, date_created LIMIT 1) AS first_user_created
     FROM
       statistics`,
