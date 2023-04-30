@@ -61,6 +61,7 @@ function SidePanel(args)
               <span className="badge" style={{display: notification.count == 0 ? "none" : "block"}}>{notification.count}</span>
             </a>
           </div>
+          <div><a href="/saved-posts" className="bi bi-bookmark"> Saved Posts</a></div>
           <div><a href={`/profile?id=${args.session.id}`} className="bi bi-person-fill"> Profile</a></div>
           <div className="bottom">
             <div><a href="/" onClick={Logout} className="bi bi-lock"> Logout</a></div>

@@ -60,6 +60,15 @@
 
           .settings {
             font-size: 24px;
+
+            i {
+              cursor: pointer;
+              margin-left: 10px;
+
+              &:hover {
+                color: lightblue;
+              }
+            }
           }
         }
 

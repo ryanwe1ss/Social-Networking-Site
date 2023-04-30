@@ -1,0 +1,12 @@
+.saved-posts-container {
+
+  .outer-border {
+
+    .saved-posts {
+      display: flex;
+      overflow: auto;
+      padding: 10px;
+      flex: 1;
+    }
+  }
+}

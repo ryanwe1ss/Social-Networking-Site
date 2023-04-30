@@ -96,9 +96,11 @@ function Post()
                 </div>
 
                 <div className="settings">
-                  <i className="bi bi-three-dots-vertical" onClick={() => {
+                  <i className="bi bi-flag-fill" onClick={() => {
                     document.getElementById("report-modal").style.display = "block";
                   }}/>
+
+                  <i className="bi bi-star-fill"/>
                 </div>
               </div>
   
@@ -114,7 +116,7 @@ function Post()
                           alt="thumbnail"
                         />
                         <span className="commenter"> <a href={`/profile?id=${comment.commenter.id}`}>{comment.commenter.username}</a></span>
-                        <span className="comment"> {comment.comment}</span><br/>
+                        <span className="message"> {comment.comment}</span><br/>
                         <span className="date">Sent on {new Date(comment.date_created).toLocaleString()}</span>
                       </div>
                     )) : !post.comments_enabled
