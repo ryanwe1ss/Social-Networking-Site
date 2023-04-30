@@ -302,6 +302,6 @@ function Profile()
       </div>
     );
   
-  } else return <LoadingBar size="large"/>
+  } else return <LoadingBar size="large" height={15}/>
 }
 export default Profile;

@@ -66,7 +66,7 @@ function Search()
     );
   
   } else {
-    return <LoadingBar size="large"/>
+    return <LoadingBar size="large" height={15}/>
   }
 }
 export default Search;

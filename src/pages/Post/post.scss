@@ -113,6 +113,68 @@
       }
     }
   }
+
+  .modal {
+    padding-top: 100px;
+    background-color: rgba(0,0,0,0.4);
+    display: none;
+  
+    .modal-content {
+      padding: 15px;
+      max-width: 400px;
+      height: 450px;
+      margin: 2rem auto;
+      overflow: auto;
+  
+      header {
+        h4 {
+          display: inline-block;
+          position: absolute;
+          transform: translateX(-50%);
+          margin-top: 8px;
+          color: black;
+          left: 50%;
+        }
+      }
+
+      .body {
+        display: flex;
+        flex-direction: column;
+
+        text-align: center;
+        color: black;
+
+        textarea {
+          height: 170px;
+          resize: none;
+        }
+      }
+
+      input[type='button'] {
+        margin-top: 10px;
+      }
+
+      hr {
+        color: black;
+      }
+
+      #result {
+        color: red;
+      }
+  
+      #close {
+        color: black;
+        float: right;
+        font-size: 30px;
+        font-weight: bold;
+      }
+      
+      #close:hover {
+        color: red;
+        cursor: pointer;
+      }
+    }
+  }
 }
 
 @media only screen and (max-width: 1120px) {

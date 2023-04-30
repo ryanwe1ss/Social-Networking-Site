@@ -104,6 +104,6 @@ function Posts(args) {
       </div>
     );
   
-  } else return <LoadingBar size="large"/>
+  } else return <LoadingBar size="large" height={15}/>
 }
 export default Posts;

@@ -28,7 +28,10 @@ const userRoutes = [
   "/api/unblock",
   "/api/blocked",
 
-  "/api/report",
+  "/api/report-reasons",
+  "/api/report-account",
+  "/api/report-post",
+
   "/api/follow",
   "/api/unfollow",
 

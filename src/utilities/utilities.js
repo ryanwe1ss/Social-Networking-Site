@@ -170,6 +170,19 @@ export function FetchPost(profileId, postId)
     })
 }
 
+export function FetchReportReasons()
+{
+  return HttpGet('/api/report-reasons')
+    .then((response) => {
+      if (response.status == 200) {
+        return response.json();
+      }
+    })
+    .then((reasons) => {
+      return reasons;
+    });
+}
+
 // ----- POST ACTIONS ----- //
 export function LikePost(postId)
 {
@@ -242,7 +255,13 @@ export function DeclineFollowRequest(id, followerId)
 
 export function ReportAccount(body)
 {
-  return HttpPost('/api/report', body)
+  return HttpPost('/api/report-account', body)
+    .then((response) => { return response });
+}
+
+export function ReportPost(body)
+{
+  return HttpPost('/api/report-post', body)
     .then((response) => { return response });
 }
 

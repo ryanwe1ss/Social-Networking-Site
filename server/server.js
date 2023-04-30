@@ -5,6 +5,7 @@ const { Register } = require("./handlers/auth/register");
 // User Modules
 const { FetchConversation } = require("./handlers/get/fetch-conversation");
 const { FetchNotifications } = require("./handlers/get/fetch-notifications");
+const { FetchReportReasons } = require("./handlers/get/fetch-report-reasons");
 const { FetchFollowers } = require("./handlers/get/fetch-followers");
 const { FetchFollowing } = require("./handlers/get/fetch-following");
 const { FetchThumbnail } = require("./handlers/get/fetch-thumbnail");
@@ -24,7 +25,8 @@ const { UpdateProfile } = require("./handlers/update/update-profile");
 
 const { BlockAccount } = require("./handlers/interact/block");
 const { UnblockAccount } = require("./handlers/interact/unblock");
-const { ReportAccount } = require("./handlers/interact/report");
+const { ReportAccount } = require("./handlers/interact/report-account");
+const { ReportPost } = require("./handlers/interact/report-post");
 const { UnfollowAccount } = require("./handlers/interact/unfollow");
 const { FollowAccount } = require("./handlers/interact/follow");
 
@@ -179,8 +181,16 @@ apiRouter.get("/api/notifications", middleware, (request, result) => {
   FetchNotifications(request, result);
 });
 
-apiRouter.post("/api/report", middleware, (request, result) => {
+apiRouter.get("/api/report-reasons", middleware, (request, result) => {
+  FetchReportReasons(request, result);
+});
+
+apiRouter.post("/api/report-account", middleware, (request, result) => {
   ReportAccount(request, result);
+});
+
+apiRouter.post("/api/report-post", middleware, (request, result) => {
+  ReportPost(request, result);
 });
 
 apiRouter.get("/api/follow", middleware, (request, result) => {

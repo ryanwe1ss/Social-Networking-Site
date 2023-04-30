@@ -51,7 +51,7 @@ function PostPictureModal(args)
           <span onClick={() => { document.getElementById("postModal").style.display = "none"}} id="close">&times;</span>
         </header><hr/>
 
-        {args.posted ? <LoadingBar size="large"/> :
+        {args.posted ? <LoadingBar size="large" height={15}/> :
 
           <div className="post-block">
             <div className="post-form">

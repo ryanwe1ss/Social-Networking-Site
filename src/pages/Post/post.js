@@ -96,7 +96,9 @@ function Post()
                 </div>
 
                 <div className="settings">
-                  <i className="bi bi-three-dots-vertical"/>
+                  <i className="bi bi-three-dots-vertical" onClick={() => {
+                    document.getElementById("report-modal").style.display = "block";
+                  }}/>
                 </div>
               </div>
   
@@ -141,13 +143,13 @@ function Post()
                 >Send</button>
               </div>
             </div>
-            <ReportModal/>
           </div>
         </div>
+        <ReportModal profileId={profileId} postId={postId}/>
         <Footer/>
       </div>
     );
   
-  } else return <LoadingBar size="large"/>
+  } else return <LoadingBar size="large" height={15}/>
 }
 export default Post;
