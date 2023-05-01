@@ -366,3 +366,9 @@ export function DeactivateAccount()
   return HttpGet('/api/deactivate')
     .then((response) => { return response });
 }
+
+export function DeleteAccount()
+{
+  return HttpGet('/api/delete')
+    .then((response) => { return response });
+}

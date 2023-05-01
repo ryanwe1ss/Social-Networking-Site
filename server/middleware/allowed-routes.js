@@ -52,7 +52,8 @@ const userRoutes = [
   "/api/create-chat",
   "/api/send-message",
 
-  "/api/deactivate"
+  "/api/deactivate",
+  "/api/delete"
 ];
 
 const adminRoutes = [

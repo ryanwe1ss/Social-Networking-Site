@@ -9,7 +9,6 @@ function PasswordChange(args) {
 
   return (
     <div className="settings-change-password-container">
-
       <div className="left-elements">
         <h5>Current Password:</h5><br/>
         <h5>New Password:</h5>

@@ -7,7 +7,7 @@ import BlockedUsers from "./components/BlockedUsers";
 import UsernameChange from "./components/UsernameChange";
 import PasswordChange from "./components/PasswordChange";
 import PrivacySettings from "./components/PrivacySettings";
-import Deactivate from "./components/Deactivate";
+import ManageAccount from "./components/ManageAccount";
 
 import {
   FetchSession,
@@ -102,7 +102,7 @@ function Settings()
               <label onClick={() => { RenderComponent(2) }} className={selected == 2 ? "active" : null}>Username Change</label>
               <label onClick={() => { RenderComponent(3) }} className={selected == 3 ? "active" : null}>Password Change</label>
               <label onClick={() => { RenderComponent(4) }} className={selected == 4 ? "active" : null}>Blocked Users</label>
-              <label onClick={() => { RenderComponent(5) }} className={selected == 5 ? "active" : null}>Deactivate Account</label>
+              <label onClick={() => { RenderComponent(5) }} className={selected == 5 ? "active" : null}>Manage Account</label>
             </div>
   
             <div className="settings-block">
@@ -111,7 +111,7 @@ function Settings()
                 component === 2 ? <UsernameChange HandleUpdateCredential={HandleUpdateCredential} account={account}/> :
                 component === 3 ? <PasswordChange HandleUpdateCredential={HandleUpdateCredential} account={account}/> :
                 component === 4 ? <BlockedUsers HandleFetchBlocked={HandleFetchBlocked} blocked={blocked}/> :
-                component === 5 ? <Deactivate/> : null
+                component === 5 ? <ManageAccount/> : null
               }
             </div>
           </div>

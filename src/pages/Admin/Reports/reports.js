@@ -17,7 +17,6 @@ function Reports()
 
       CheckAdminPermissions().then((permissions) => {
         setPermissions(permissions);
-        console.log(permissions)
       });
     });
   }, []);

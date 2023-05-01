@@ -43,7 +43,8 @@ const { DeletePost } = require("./handlers/delete/delete-post");
 const { CreateChat } = require("./handlers/communicate/create-chat");
 const { SendMessage } = require("./handlers/communicate/send-message");
 
-const { DeactivateAccount } = require("./handlers/delete/deactivate");
+const { DeactivateAccount } = require("./handlers/delete/deactivate-account");
+const { DeleteAccount } = require("./handlers/delete/delete-account");
 
 // Admin Modules
 const { FetchStatistics } = require("./handlers/admin/fetch-statistics");
@@ -247,6 +248,10 @@ apiRouter.get("/api/admin-permissions", middleware, (request, result) => {
 
 apiRouter.get("/api/deactivate", middleware, (request, result) => {
   DeactivateAccount(request, result);
+});
+
+apiRouter.get("/api/delete", middleware, (request, result) => {
+  DeleteAccount(request, result);
 });
 
 apiRouter.listen(process.env.REACT_APP_API_PORT, () => {

@@ -22,13 +22,14 @@ function BlockedUsers(args)
               alt="thumbnail"
             />
             <label onClick={() => { location.href=`/profile?id=${account.id}` }}>
-              {account.username}
+              <span>@{account.username}</span>
               <br/><span>{account.name && account.name.trim().length > 0 ? account.name : "No Name"}</span>
             </label>
   
             <input type="button" className="btn btn-secondary btn-sm" value="Unblock" onClick={() => {
               HandleUnblock(account.id);
             }}/>
+            <hr/>
           </div>
         ))
       ) : (

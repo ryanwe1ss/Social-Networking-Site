@@ -17,7 +17,6 @@ function UserSettings()
 
       CheckAdminPermissions().then((permissions) => {
         setPermissions(permissions);
-        console.log(permissions)
       });
     });
   }, []);

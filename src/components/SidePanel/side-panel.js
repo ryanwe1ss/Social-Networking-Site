@@ -14,22 +14,13 @@ function SidePanel(args)
             <a href="/statistics" className="bi bi-activity"> Statistics</a>
           </div>
           <div>
-            {args.permissions.monitor_posts_permission ?
-              <a href="/monitor-posts" className="bi bi-binoculars-fill"> Monitor Posts</a> :
-              <a className="bi bi-binoculars-fill disabled"> Monitor Posts</a>
-            }
+            <a href="/monitor-posts" className="bi bi-binoculars-fill"> Monitor Posts</a>
           </div>
           <div>
-            {args.permissions.modify_accounts_permission ?
-              <a href="/user-settings" className="bi bi-person-fill-gear"> User Settings</a> :
-              <a className="bi bi-person-fill-gear disabled"> User Settings</a>
-            }
+            <a href="/user-settings" className="bi bi-person-fill-gear"> User Settings</a>
           </div>
           <div>
-            {args.permissions.monitor_reports_permission ?
-              <a href="/reports" className="bi bi-flag-fill"> Reports</a> :
-              <a className="bi bi-flag-fill disabled"> Reports</a>
-            }
+            <a href="/reports" className="bi bi-flag-fill"> Reports</a>
           </div>
   
           <div className="bottom">

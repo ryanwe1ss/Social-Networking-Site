@@ -26,7 +26,9 @@ function PostPictureModal(args)
     }
   }
 
-  function HandlePostImage(description, comment, like, image) {
+  function HandlePostImage(event, description, comment, like, image) {
+    event.target.disabled = true;
+
     UploadPost(description, comment, like, image).then((response) => {
       if (response.status == 200) {
         setPosted(true);
@@ -82,7 +84,8 @@ function PostPictureModal(args)
                 <button
                   id="postImageButton"
                   className="btn btn-secondary"
-                  onClick={() => HandlePostImage(
+                  onClick={(event) => HandlePostImage(
+                    event,
                     document.getElementById("description").value,
                     document.getElementById("comment").checked,
                     document.getElementById("like").checked,
