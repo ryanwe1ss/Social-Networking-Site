@@ -90,18 +90,26 @@ function Post()
               <div className="post-actions">
                 <div className="likes">
                   {post.likes_enabled ?
-                    <span><i className="bi bi-heart-fill" id={post.is_liked ? 'liked' : null} onClick={HandleLikePost}/> {post.likes} {post.likes > 1 ? 'Likes' : 'Like'}</span> :
-                    <span><i className="bi bi-heart-fill" id="disabled"/> {isRendered ? "Likes have been disabled" : null}</span>
+                    <span>
+                      <i className="bi bi-heart-fill" id={post.is_liked ? 'liked' : null} onClick={HandleLikePost}/>
+                      &nbsp;{post.likes} {post.likes > 1 ? 'Likes' : post.likes == 0 ? 'Likes' : 'Like'}</span>
+                    :
+                      <span>
+                        <i className="bi bi-heart-fill" id="disabled"/>
+                        {isRendered ? "Likes have been disabled" : null}
+                      </span>
                   }
                 </div>
 
-                <div className="settings">
-                  <i className="bi bi-flag-fill" onClick={() => {
-                    document.getElementById("report-modal").style.display = "block";
-                  }}/>
+                {session.id != profileId ?
+                  <div className="settings">
+                    <i className="bi bi-flag-fill" onClick={() => {
+                      document.getElementById("report-modal").style.display = "block";
+                    }}/>
 
-                  <i className="bi bi-star-fill"/>
-                </div>
+                    <i className="bi bi-star-fill"/>
+                  </div> : null
+                }
               </div>
   
               {isRendered ? 

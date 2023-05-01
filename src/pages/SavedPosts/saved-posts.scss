@@ -4,9 +4,11 @@
 
     .saved-posts {
       display: flex;
+      flex: 1;
+
+      background-color: black;
       overflow: auto;
       padding: 10px;
-      flex: 1;
     }
   }
 }

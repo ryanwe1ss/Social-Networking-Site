@@ -18,6 +18,7 @@ const { FetchFeed } = require("./handlers/get/fetch-feed");
 const { FetchPosts } = require("./handlers/get/fetch-posts");
 const { FetchPost } = require("./handlers/get/fetch-post");
 
+const { UpdatePublicMessaging } = require("./handlers/update/update-public-messaging");
 const { UpdateUsername } = require("./handlers/update/update-username");
 const { UpdatePassword } = require("./handlers/update/update-password");
 const { UpdatePrivacy } = require("./handlers/update/update-privacy");
@@ -116,6 +117,10 @@ apiRouter.post("/api/update", middleware, (request, result) => {
 
 apiRouter.get("/api/update-privacy", middleware, (request, result) => {
   UpdatePrivacy(request, result);
+});
+
+apiRouter.get("/api/update-public-messaging", middleware, (request, result) => {
+  UpdatePublicMessaging(request, result);
 });
 
 apiRouter.get("/api/update-username", middleware, (request, result) => {

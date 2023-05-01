@@ -18,6 +18,7 @@ function FetchProfile(request, result)
       bio,
       is_enabled,
       is_private,
+      public_messaging,
       date_created,
       date_updated,
 

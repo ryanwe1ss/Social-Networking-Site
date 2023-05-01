@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { useState } from "react";
 
 // User Components
 import Login from "./pages/Login/login.js";
@@ -21,27 +22,31 @@ import Reports from "./pages/Admin/Reports/reports.js";
 function App()
 {
   return (
-    <Router>
-      <Routes>
-        {/* User Account Routes */}
-        <Route exact path="/" element={<Login/>}/>
-        <Route exact path="/register" element={<Register/>}/>
-        <Route exact path="/feed" element={<Feed/>}/>
-        <Route exact path="/search" element={<Search/>}/>
-        <Route exact path="/messages" element={<Messages/>}/>
-        <Route exact path="/notifications" element={<Notifications/>}/>
-        <Route exact path="/saved-posts" element={<SavedPosts/>}/>
-        <Route exact path="/profile" element={<Profile/>}/>
-        <Route exact path="/settings" element={<Settings/>}/>
-        <Route exact path="/post" element={<Post/>}/>
+    <div>
+      <div className="popup-box"/>
+      
+      <Router>
+        <Routes>
+          {/* User Account Routes */}
+          <Route exact path="/" element={<Login/>}/>
+          <Route exact path="/register" element={<Register/>}/>
+          <Route exact path="/feed" element={<Feed/>}/>
+          <Route exact path="/search" element={<Search/>}/>
+          <Route exact path="/messages" element={<Messages/>}/>
+          <Route exact path="/notifications" element={<Notifications/>}/>
+          <Route exact path="/saved-posts" element={<SavedPosts/>}/>
+          <Route exact path="/profile" element={<Profile/>}/>
+          <Route exact path="/settings" element={<Settings/>}/>
+          <Route exact path="/post" element={<Post/>}/>
 
-        {/* Admin Account Routes */}
-        <Route exact path="/statistics" element={<Statistics/>}/>
-        <Route exact path="/monitor-posts" element={<MonitorPosts/>}/>
-        <Route exact path="/user-settings" element={<UserSettings/>}/>
-        <Route exact path="/reports" element={<Reports/>}/>
-      </Routes>
-    </Router>
+          {/* Admin Account Routes */}
+          <Route exact path="/statistics" element={<Statistics/>}/>
+          <Route exact path="/monitor-posts" element={<MonitorPosts/>}/>
+          <Route exact path="/user-settings" element={<UserSettings/>}/>
+          <Route exact path="/reports" element={<Reports/>}/>
+        </Routes>
+      </Router>
+    </div>
   );
 }
 export default App;

@@ -10,11 +10,11 @@
       .chats {
         background-color: rgb(61, 61, 61);
         border: 1px solid black;
+        min-height: max-content;
         overflow: auto;
         color: white;
         min-width: 200px;
         max-width: 200px;
-        min-height: max-content;
     
         .chat-header {
           border-bottom: 1px solid black;
@@ -51,7 +51,7 @@
         overflow: hidden;
     
         .chat-session {
-          background-color: rgb(223, 222, 222);
+          background-color: black;
           border: 1px solid black;
           border-left: none;
           overflow: auto;
@@ -97,7 +97,6 @@
             resize: none;
             border: none;
   
-            background-color: rgb(223, 222, 222);
             font-weight: 500;
             border-bottom: 1px solid black;
             border-right: 1px solid black;

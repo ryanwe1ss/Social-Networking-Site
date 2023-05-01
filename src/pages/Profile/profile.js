@@ -27,9 +27,10 @@ import "./profile.scss";
 
 function Profile()
 {
+  const popup = document.querySelector(".popup-box");
   const profileId = parseInt(location.search.split("id=")[1]);
+
   const [session, setSession] = useState([]);
-  
   const [picture, setPicture] = useState([]);
   const [profile, setProfile] = useState([]);
   const [followers, setFollowers] = useState([]);
@@ -90,6 +91,10 @@ function Profile()
         HandleFetchProfile();
         setEditForm(false);
         setSaved(true);
+
+        popup.style.display = "block";
+        popup.innerHTML = "Your profile has been updated!";
+        setTimeout(() => { document.querySelector(".popup-box").style.display = "none"; }, 6000);
       }
     });
   }

@@ -6,14 +6,13 @@ import "./settings.scss";
 import BlockedUsers from "./components/BlockedUsers";
 import UsernameChange from "./components/UsernameChange";
 import PasswordChange from "./components/PasswordChange";
-import PrivacySettings from "./components/PrivacySettings";
+import GeneralSettings from "./components/GeneralSettings";
 import ManageAccount from "./components/ManageAccount";
 
 import {
   FetchSession,
   FetchProfile,
   FetchBlocked,
-  UpdatePrivacy,
   UpdateUsername,
   UpdatePassword,
 } from "../../utilities/utilities";
@@ -22,9 +21,11 @@ import Footer from "../../components/Footer/footer";
 function Settings()
 {
   const [session, setSession] = useState([]);
-  const [isPrivate, setPrivate] = useState(false);
-  const [selected, setSelected] = useState(null);
+  const [rendered, setRendered] = useState(false);
+  
+  const [selected, setSelected] = useState(1);
   const [component, setComponent] = useState(1);
+
   const [blocked, setBlocked] = useState([]);
   const [account, setAccount] = useState([]);
 
@@ -40,22 +41,14 @@ function Settings()
 
   function HandleFetchProfile(sessionId) {
     FetchProfile(sessionId).then(account => {
-      if (account.is_private) setPrivate(true);
       setAccount(account);
+      setRendered(true);
     });
   }
 
   function HandleFetchBlocked() {
     FetchBlocked().then(users => {
       setBlocked(users);
-    });
-  }
-
-  function HandleUpdateAccountType(type) {
-    UpdatePrivacy(type).then(response => {
-      if (response.status === 200) {
-        setPrivate(!isPrivate);
-      }
     });
   }
 
@@ -90,7 +83,7 @@ function Settings()
     setSelected(id);
   }
 
-  if (session.id && session.type === "user") {
+  if (rendered && session.id && session.type === "user") {
     return (
       <div className="settings-container">
         <div className="outer-border">
@@ -98,7 +91,7 @@ function Settings()
   
           <div className="settings">
             <div className="settings-panel">
-              <label onClick={() => { RenderComponent(1) }} className={selected == 1 ? "active" : null}>Privacy Settings</label>
+              <label onClick={() => { RenderComponent(1) }} className={selected == 1 ? "active" : null}>General Settings</label>
               <label onClick={() => { RenderComponent(2) }} className={selected == 2 ? "active" : null}>Username Change</label>
               <label onClick={() => { RenderComponent(3) }} className={selected == 3 ? "active" : null}>Password Change</label>
               <label onClick={() => { RenderComponent(4) }} className={selected == 4 ? "active" : null}>Blocked Users</label>
@@ -107,7 +100,7 @@ function Settings()
   
             <div className="settings-block">
               {
-                component === 1 ? <PrivacySettings HandleUpdateAccountType={HandleUpdateAccountType} isPrivate={isPrivate}/> :
+                component === 1 ? <GeneralSettings account={account}/> :
                 component === 2 ? <UsernameChange HandleUpdateCredential={HandleUpdateCredential} account={account}/> :
                 component === 3 ? <PasswordChange HandleUpdateCredential={HandleUpdateCredential} account={account}/> :
                 component === 4 ? <BlockedUsers HandleFetchBlocked={HandleFetchBlocked} blocked={blocked}/> :

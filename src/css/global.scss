@@ -32,3 +32,32 @@ body {
     border-top: 3px solid black;
   }
 }
+
+.popup-box {
+  animation: fadeOut 6s ease-in-out;
+
+  background-color: #fff;
+  border: 1px solid #ccc;
+  color: black;
+
+  position: fixed;
+  display: none;
+  padding: 10px;
+  width: 300px;
+  right: 15px;
+  top: 15px;
+}
+
+.popup-box p {
+  margin: 0;
+}
+
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    display: none;
+  }
+}

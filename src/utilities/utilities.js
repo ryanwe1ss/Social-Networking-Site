@@ -284,6 +284,12 @@ export function UpdatePrivacy(isPrivate)
     .then((response) => { return response });
 }
 
+export function UpdatePublicMessaging(isPublicMessaging)
+{
+  return HttpGet(`/api/update-public-messaging?publicMessaging=${isPublicMessaging}`)
+    .then((response) => { return response });
+}
+
 export function UpdateUsername(username)
 {
   return HttpGet(`/api/update-username?username=${username}`)

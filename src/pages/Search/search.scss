@@ -5,8 +5,10 @@
     .search-content {
       display: flex;
       flex-direction: column;
-      overflow: auto;
       flex: 1;
+
+      background-color: black;
+      overflow: auto;
 
       .search-header {
         height: 50px;
@@ -33,7 +35,7 @@
           }
 
           &:hover {
-            background-color: rgb(75, 75, 75);
+            background-color: rgb(19, 19, 19);
           }
         }
 
