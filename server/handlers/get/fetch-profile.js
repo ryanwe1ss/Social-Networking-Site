@@ -49,11 +49,18 @@ function FetchProfile(request, result)
         WHERE follower_id = ${request.session.user.id} AND account_id = ${request.query.profileId} AND
         accepted = FALSE AND declined = FALSE) AS is_requested)
 
-    FROM accounts
-    WHERE accounts.id=${request.query.profileId} AND is_enabled=TRUE`,
+    FROM
+      accounts
+    WHERE
+      accounts.id=${request.query.profileId} AND
+      is_enabled=TRUE`,
     
     function(error, data) {
-      if (!error) result.send(data.rows[0]);
+      if (!error && data.rows.length > 0) {
+        result.send(data.rows[0]);
+      } else {
+        result.send([]);
+      }
     });
 }
 module.exports = { FetchProfile }

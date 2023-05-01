@@ -5,9 +5,11 @@
     .notifications {
       display: flex;
       flex-direction: column;
+      flex: 1;
+
+      background-color: black;
       overflow: auto;
       padding: 10px;
-      flex: 1;
 
       .notification {
         display: flex;
@@ -36,7 +38,7 @@
         .comment {
           margin-left: 5px;
           font-weight: 700;
-          color: #262626;
+          color: #6d66d8;
         }
 
         .timestamp {
@@ -49,6 +51,7 @@
           margin-left: auto;
           
           img {
+            border: 2px solid rgb(53, 53, 53);
             object-fit: cover;
             width: 55px;
             height: 55px;

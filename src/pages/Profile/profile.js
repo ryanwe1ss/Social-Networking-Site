@@ -52,7 +52,7 @@ function Profile()
 
   function HandleFetchProfile() {
     FetchProfile(profileId).then((profile) => {
-      if (!profile || profile.is_blocked) {
+      if (profile.length == 0 || profile.is_blocked) {
         setProfile([]);
         setPicture([]);
         setRendered(true);

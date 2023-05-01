@@ -13,6 +13,10 @@ function FetchFeed(request, result)
       (SELECT COUNT(*) FROM post_comments WHERE posts.id = post_id) AS comments
     FROM
       posts
+    WHERE
+      (SELECT EXISTS(SELECT * FROM connections WHERE follower = ${request.session.user.id} AND account = creator_id)) AND
+      NOT (SELECT EXISTS(SELECT * FROM "blocked" WHERE "user" = ${request.session.user.id} AND blocker = creator_id)) AND
+      NOT creator_id = ${request.session.user.id}
     ORDER BY
       date_created DESC`,
 
