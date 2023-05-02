@@ -49,7 +49,9 @@ function UploadPost(request, result)
       });
     })
   });
-  form.parse(request);
-  result.sendStatus(200);
+  form.parse(request, (error, fields, files) => {
+    if (Object.keys(files).length == 0) return result.sendStatus(500);
+    result.sendStatus(200);
+  });
 }
 module.exports = { UploadPost }

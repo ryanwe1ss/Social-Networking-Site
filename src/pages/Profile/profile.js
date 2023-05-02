@@ -216,6 +216,7 @@ function Profile()
                                 }
                                 <input
                                   className="btn btn-secondary btn-sm"
+                                  disabled={!profile.public_messaging && !profile.is_following}
                                   type="button"
                                   value="Message"
                                   onClick={HandleMessage}

@@ -5,6 +5,7 @@ import LoadingBar from "../../LoadingBar/loading-bar";
 
 function PostPictureModal(args)
 {
+  const popup = document.querySelector(".popup-box");
   const [uploaded, setUploaded] = useState(false);
   const [posted, setPosted] = useState(false);
 
@@ -41,7 +42,11 @@ function PostPictureModal(args)
 
         }, 1000);
       
-      } else alert("Error: " + response.status);
+      } else {
+        popup.style.display = "block";
+        popup.innerHTML =  "Problem Uploading Post. Error: " + response.status;
+        setTimeout(() => popup.style.display = "none", 6000);
+      }
     });
   }
   

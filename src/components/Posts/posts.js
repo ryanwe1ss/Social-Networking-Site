@@ -6,6 +6,7 @@ import { FetchPosts, DeletePost } from "../../utilities/utilities";
 import PostPictureModal from "./components/post-picture-modal";
 
 function Posts(args) {
+  const popup = document.querySelector(".popup-box");
   const profileId = parseInt(location.search.split("id=")[1]);
   const editMode = args.editMode;
 
@@ -34,7 +35,9 @@ function Posts(args) {
       if (args.saved) {
         DeletePost(postId).then((response) => {
           if (response.status != 200) {
-            alert("Error Deleting Post(s), try again");
+            popup.style.display = "block";
+            popup.innerHTML =  "Problem Deleting Post. Error: " + response.status;
+            setTimeout(() => popup.style.display = "none", 6000);
           }
         })
       }

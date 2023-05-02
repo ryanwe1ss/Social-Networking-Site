@@ -19,8 +19,6 @@ function Messages()
   const [session, setSession] = useState([]);
 
   const [chatsLoaded, setChatsLoaded] = useState(false);
-  const [conversationLoaded, setConversationLoaded] = useState(true);
-
   const [conversation, setConversation] = useState([]);
   const [thumbnails, setThumbnail] = useState([]);
 
@@ -86,8 +84,6 @@ function Messages()
   }
 
   function HandleFetchConversation(userId) {
-    setConversationLoaded(false);
-
     document.querySelectorAll(".selected").forEach(selected => {
       selected.style.display = "none";
     
@@ -97,7 +93,6 @@ function Messages()
       document.getElementById("message").disabled = false;
 
       setConversation(conversation.messages);
-      setConversationLoaded(true);
       setChatId(conversation.chatId);
       setUserId(userId);
 
@@ -155,14 +150,14 @@ function Messages()
   
             <div className="interface">
               <div className="chat-session" id="chat">
-                {conversationLoaded ? conversation.map(message => (
+                {conversation.map(message => (
                   <div className="text-chat" key={message.id}>
                     {message.from == session.username ?
                       <div className="you">{message.message}</div> :
                       <div className="user">{message.message}</div>
                     }
                   </div>
-                )) : <LoadingBar size="large" height={20}/>
+                ))
                 }
               </div>
   
