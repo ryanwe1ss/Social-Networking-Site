@@ -1,27 +1,30 @@
 .side-panel {
   background-color: #2B2B2B;
   border-right: 2px solid black;
+  width: 285px;
 
   img {
-    border-bottom: 2px solid black;
+    box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.75);
     object-fit: cover;
-
-    margin-right: 200px;
     height: 100px;
-    width: 100%;
+    width: 282px;
   }
 
   .side-bar {
+    position: fixed;
     white-space: nowrap;
-    overflow: hidden;
-    padding: 15px;
+    
+    .labels {
+      margin-left: 15px;
+      margin-top: 15px;
+    }
 
     .disabled {
       cursor: not-allowed;
     }
 
     div {
-      margin-top: 20px;
+      padding: 5px 0px;
 
       :hover {
         color: rgb(83, 93, 223);
@@ -43,24 +46,12 @@
       }
     }
 
-    .bottom {
-      position: absolute;
-      margin-bottom: 115px;
-      bottom: 0;
-    }
-
     a {
       text-decoration: none;
       font-style: normal;
       font-weight: 600;
       font-size: 28px;
-      color: rgb(236, 236, 236);;
+      color: rgb(236, 236, 236);
     }
-  }
-}
-
-@media only screen and (max-width: 1100px) {
-  .side-panel {
-    width: 250px;
   }
 }

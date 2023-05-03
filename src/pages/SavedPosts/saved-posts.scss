@@ -4,11 +4,30 @@
 
     .saved-posts {
       display: flex;
+      flex-direction: column;
       flex: 1;
 
       background-color: black;
       overflow: auto;
       padding: 10px;
+
+      .posts {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+
+        .post {
+          margin: 5px;
+
+          img {
+            border: 2px solid black;
+            object-fit: cover;
+            width: 350px;
+            height: 450px;
+          }
+        }
+      }
     }
   }
 }

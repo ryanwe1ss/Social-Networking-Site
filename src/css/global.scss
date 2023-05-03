@@ -20,16 +20,13 @@ body {
 .user-settings-container,
 .reports-container
 {
-  padding: 5px;
-
   .outer-border {
     display: flex;
     overflow: hidden;
-    height: 89.3vh;
+    min-height: 100vh;
 
-    border-left: 3px solid black;
-    border-right: 3px solid black;
-    border-top: 3px solid black;
+    border-left: 2px solid black;
+    border-right: 2px solid black;
   }
 }
 

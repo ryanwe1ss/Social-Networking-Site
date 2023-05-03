@@ -116,17 +116,19 @@ function Post()
                 <div className="comments">
                   { post.comments && post.comments_enabled ?
                     post.comments.map((comment) => (
-                      <div className="comment" key={comment.id}>
-                        <img
-                          src={`${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/api/thumbnail?id=${comment.commenter.id}`}
-                          onError={(img) => (img.target.src = `${process.env.PUBLIC_URL}/images/default-profile.png`)}
-                          className="thumbnail"
-                          alt="thumbnail"
-                        />
-                        <span className="commenter"> <a href={`/profile?id=${comment.commenter.id}`}>{comment.commenter.username}</a></span>
-                        <span className="message"> {comment.comment}</span><br/>
-                        <span className="date">Sent on {new Date(comment.date_created).toLocaleString()}</span>
-                      </div>
+                      comment.is_enabled ?
+                        <div className="comment" key={comment.id}>
+                          <img
+                            src={`${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/api/thumbnail?id=${comment.commenter.id}`}
+                            onError={(img) => (img.target.src = `${process.env.PUBLIC_URL}/images/default-profile.png`)}
+                            className="thumbnail"
+                            alt="thumbnail"
+                          />
+                          <span className="commenter"> <a href={`/profile?id=${comment.commenter.id}`}>{comment.commenter.username}</a></span>
+                          <span className="message"> {comment.comment}</span><br/>
+                          <span className="date">Sent on {new Date(comment.date_created).toLocaleString()}</span>
+                        </div>
+                      : null
                     )) : !post.comments_enabled
                       ? <div className="comments-disabled">Comments are disabled</div>
                       : !post.comments ? <div className="no-comments">No comments yet...</div>

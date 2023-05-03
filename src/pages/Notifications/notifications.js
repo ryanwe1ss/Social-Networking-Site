@@ -105,7 +105,7 @@ function Notifications()
           <SidePanel session={session}/>
 
           <div className="notifications">
-            <div className="notifications-header">
+            <div className="header">
               <h1>Your Notifications</h1>
               <hr/>
             </div>
@@ -124,11 +124,9 @@ function Notifications()
                     : null
                     }
                   </div>
-                )) :
-                  <div className="no-notifications">
-                    <center>You have 0 notifications</center>
-                  </div>
-                }
+                
+                )) : <center>You have 0 notifications</center>}
+                
               </div> : <LoadingBar size="large" height={15}/>
             }
           </div>

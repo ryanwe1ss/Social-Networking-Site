@@ -41,22 +41,22 @@ function SidePanel(args)
 
     return (
       <div className="side-panel">
-        <img src={`${process.env.PUBLIC_URL}/images/sidepanel-logo.png`} alt="logo" />
-
         <div className="side-bar">
-          <div><a href="/feed" className="bi bi-image"> Feed</a></div>
-          <div><a href="/search" className="bi bi-search"> Search</a></div>
-          <div><a href="/messages" className="bi bi-chat"> Messages</a></div>
-          <div>
-            <a href="/notifications" className="bi bi-bell notification"> Notifications
-              <span className="badge" style={{display: notification.count == 0 ? "none" : "block"}}>{notification.count}</span>
-            </a>
-          </div>
-          <div><a href="/saved-posts" className="bi bi-bookmark"> Saved Posts</a></div>
-          <div><a href={`/profile?id=${args.session.id}`} className="bi bi-person-fill"> Profile</a></div>
-          <div className="bottom">
-            <div><a href="/" onClick={Logout} className="bi bi-lock"> Logout</a></div>
+          <img src={`${process.env.PUBLIC_URL}/images/sidepanel-logo.png`} alt="logo" />
+
+          <div className="labels">
+            <div><a href="/feed" className="bi bi-image"> Feed</a></div>
+            <div><a href="/search" className="bi bi-search"> Search</a></div>
+            <div><a href="/messages" className="bi bi-chat"> Messages</a></div>
+            <div>
+              <a href="/notifications" className="bi bi-bell notification"> Notifications
+                <span className="badge" style={{display: notification.count == 0 ? "none" : "block"}}>{notification.count}</span>
+              </a>
+            </div>
+            <div><a href="/saved-posts" className="bi bi-bookmark"> Saved Posts</a></div>
+            <div><a href={`/profile?id=${args.session.id}`} className="bi bi-person-fill"> Profile</a></div>
             <div><a href="/settings" className="bi bi-gear"> Settings</a></div>
+            <div><a href="/" onClick={Logout} className="bi bi-lock"> Logout</a></div>
           </div>
         </div>
       </div>

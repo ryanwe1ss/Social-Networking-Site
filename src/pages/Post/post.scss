@@ -7,7 +7,8 @@
       flex: 1;
 
       background-color: black;
-      overflow: auto;
+      overflow-y: auto;
+      overflow-x: hidden;
       padding: 10px;
 
       .header-img {
@@ -77,9 +78,10 @@
         .comments {
           border: 1px solid white;
           min-height: 200px;
+          height: 85vh;
+
           overflow: auto;
           padding: 5px;
-          flex: 1;
 
           .comment {
             margin-bottom: 10px;

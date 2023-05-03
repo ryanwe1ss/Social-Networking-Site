@@ -14,6 +14,7 @@ function FetchFeed(request, result)
     FROM
       posts
     WHERE
+      (SELECT is_enabled FROM accounts WHERE id = creator_id) AND
       (SELECT EXISTS(SELECT * FROM connections WHERE follower = ${request.session.user.id} AND account = creator_id)) AND
       NOT (SELECT EXISTS(SELECT * FROM "blocked" WHERE "user" = ${request.session.user.id} AND blocker = creator_id)) AND
       NOT creator_id = ${request.session.user.id}

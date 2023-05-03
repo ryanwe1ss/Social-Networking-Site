@@ -39,8 +39,10 @@ const userRoutes = [
   "/api/decline-follow",
   "/api/delete-connection",
 
-  "/api/comment",
+
   "/api/like",
+  "/api/comment",
+  "/api/saved-posts",
   "/api/delete-post",
 
   "/api/chats",

@@ -44,6 +44,7 @@ function FetchNotifications(request, result)
       LEFT JOIN
         follow_requests ON follow_requests.account_id = accounts.id
       WHERE
+        (SELECT is_enabled FROM accounts WHERE id = follower_id) AND
         follow_requests.account_id = ${request.session.user.id} AND
         is_enabled = TRUE
       ORDER BY
@@ -77,13 +78,14 @@ function FetchNotifications(request, result)
               post_comments.comment,
               post_comments.date_created
             FROM
-                posts
+              posts
             LEFT JOIN
-                post_comments ON post_comments.post_id = posts.id
+              post_comments ON post_comments.post_id = posts.id
             WHERE
-                post_comments.id IS NOT NULL AND
-                creator_id = ${request.session.user.id} AND
-                commenter != ${request.session.user.id}`,
+              (SELECT is_enabled FROM accounts WHERE id = commenter) AND
+              post_comments.id IS NOT NULL AND
+              creator_id = ${request.session.user.id} AND
+              commenter != ${request.session.user.id}`,
 
             function(error, comments) {
               if (!error) {
@@ -119,6 +121,7 @@ function FetchNotifications(request, result)
                   LEFT JOIN
                     post_likes ON post_likes.post_id = posts.id
                   WHERE
+                    (SELECT is_enabled FROM accounts WHERE id = liker) AND
                     post_likes.id IS NOT NULL AND
                     creator_id = ${request.session.user.id} AND
                     liker != ${request.session.user.id}`,

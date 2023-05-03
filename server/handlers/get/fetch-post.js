@@ -3,6 +3,7 @@ const fs = require("fs");
 
 function FetchPost(request, result)
 {
+  console.log(request.query);
   database.query(`
     SELECT
       (SELECT username FROM accounts WHERE id = ${request.query.profileId}) as username,
@@ -13,6 +14,7 @@ function FetchPost(request, result)
 
       (SELECT JSON_AGG(JSON_BUILD_OBJECT(
         'id', id,
+        'is_enabled', (SELECT is_enabled FROM accounts WHERE id = commenter),
         'commenter', JSON_BUILD_OBJECT('id', commenter, 'username', (SELECT username FROM accounts WHERE id = commenter)),
         'comment', comment,
         'date_created', date_created
@@ -20,17 +22,17 @@ function FetchPost(request, result)
 
       CAST((SELECT COUNT(*) FROM post_likes WHERE post_id = ${request.query.post}) AS INT) as likes,
       CAST(creator_id AS INT),
-      CAST(id AS INT),
+      CAST(posts.id AS INT),
       description,
-      comment AS comments_enabled,
+      posts.comment AS comments_enabled,
       "like" AS likes_enabled,
-      date_created
+      posts.date_created
     FROM
       posts
     WHERE
-      id = ${request.query.post}
-      AND creator_id = ${request.query.profileId}
-      AND NOT (SELECT EXISTS(SELECT * FROM "blocked" WHERE "user" = ${request.session.user.id} AND blocker = creator_id))`,
+      posts.id = ${request.query.post} AND
+      creator_id = ${request.query.profileId} AND NOT
+      (SELECT EXISTS(SELECT * FROM "blocked" WHERE "user" = ${request.session.user.id} AND blocker = creator_id))`,
     
     function(error, data) {
       if (!error && data.rows[0] !== undefined) {

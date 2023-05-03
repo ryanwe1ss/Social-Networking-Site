@@ -11,7 +11,7 @@ function Posts(args) {
   const editMode = args.editMode;
 
   const [loaded, setLoaded] = useState(false);
-  const [refresh , setRefresh] = useState(0);
+  const [refresh, setRefresh] = useState(0);
   const [limit, setLimit] = useState(6);
 
   const [tempPosts, setTempPosts] = useState([]);

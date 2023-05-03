@@ -40,7 +40,7 @@ function Login()
         <div className="row">
           <div className="form-group">
             <label>Username</label>
-            <input type="text" id="username" className="form-control"/>
+            <input type="text" id="username" className="form-control" autoFocus={true}/>
           </div>
         </div><br/>
 

@@ -165,9 +165,9 @@ function Messages()
                 <textarea id="message" placeholder="Type Message Here" disabled/>
   
                 <div className="buttons">
-                  <button onClick={
-                    () => HandleSendMessage(document.getElementById("message").value) }
-                  ><i className='bi bi-arrow-right-circle-fill'/></button>
+                  <button id="send" onClick={() => HandleSendMessage(document.getElementById("message").value)}>
+                    <i className='bi bi-arrow-right-circle-fill'/>
+                  </button>
                 </div>
               </div>
             </div>
