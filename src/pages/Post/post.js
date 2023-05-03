@@ -9,14 +9,18 @@ import {
 import LoadingBar from "../../components/LoadingBar/loading-bar";
 import SidePanel from "../../components/SidePanel/side-panel";
 import ReportModal from "./components/report";
+import Likes from "./components/likes";
 import Footer from "../../components/Footer/footer";
 import "./post.scss";
 
 function Post()
 {
-  const profileId = parseInt(location.search.split("id=")[1]);
   const postId = parseInt(location.search.split("post=")[1]);
+  const profileId = parseInt(location.search.split("id=")[1]);
+
   const [session, setSession] = useState([]);
+  const [showLikes, setShowLikes] = useState(false);
+  const [showReport, setShowReport] = useState(false);
 
   const [post, setPost] = useState([]);
   const [picture, setPicture] = useState([]);
@@ -92,20 +96,19 @@ function Post()
                   {post.likes_enabled ?
                     <span>
                       <i className="bi bi-heart-fill" id={post.is_liked ? 'liked' : null} onClick={HandleLikePost}/>
-                      &nbsp;{post.likes} {post.likes > 1 ? 'Likes' : post.likes == 0 ? 'Likes' : 'Like'}</span>
+                      &nbsp;<span className="likeBtn" onClick={() => setShowLikes(true)}>{post.likes} {post.likes > 1 ? 'Likes' : post.likes == 0 ? 'Likes' : 'Like'}</span>
+                    </span>
                     :
-                      <span>
-                        <i className="bi bi-heart-fill" id="disabled"/>
-                        {isRendered ? "Likes have been disabled" : null}
-                      </span>
+                    <span>
+                      <i className="bi bi-heart-fill" id="disabled"/>
+                      {isRendered ? "Likes have been disabled" : null}
+                    </span>
                   }
                 </div>
 
                 {session.id != profileId ?
                   <div className="settings">
-                    <i className="bi bi-flag-fill" onClick={() => {
-                      document.getElementById("report-modal").style.display = "block";
-                    }}/>
+                    <i className="bi bi-flag-fill" onClick={() => setShowReport(true)}/>
 
                     <i className="bi bi-star-fill"/>
                   </div> : null
@@ -157,7 +160,19 @@ function Post()
             </div>
           </div>
         </div>
-        <ReportModal profileId={profileId} postId={postId}/>
+        {showReport ?
+          <ReportModal
+            profileId={profileId}
+            postId={postId}
+            setShowReport={setShowReport}
+          /> : false
+        }
+        {showLikes ?
+          <Likes
+            postId={postId}
+            setShowLikes={setShowLikes}
+          /> : false
+        }
         <Footer/>
       </div>
     );

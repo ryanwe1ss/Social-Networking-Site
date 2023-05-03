@@ -3,7 +3,6 @@ const fs = require("fs");
 
 function FetchPost(request, result)
 {
-  console.log(request.query);
   database.query(`
     SELECT
       (SELECT username FROM accounts WHERE id = ${request.query.profileId}) as username,
@@ -20,7 +19,7 @@ function FetchPost(request, result)
         'date_created', date_created
       )) AS comments FROM post_comments WHERE post_id = ${request.query.post}) as comments,
 
-      CAST((SELECT COUNT(*) FROM post_likes WHERE post_id = ${request.query.post}) AS INT) as likes,
+      CAST((SELECT COUNT(*) FROM post_likes WHERE post_id = ${request.query.post} AND (SELECT is_enabled FROM accounts WHERE id = post_likes.liker)) AS INT) AS likes,
       CAST(creator_id AS INT),
       CAST(posts.id AS INT),
       description,

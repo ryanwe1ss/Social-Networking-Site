@@ -41,13 +41,10 @@ function ReportModal(args)
       <div className="modal-content">
         <header>
           <h4>Report Post</h4>
-          <span onClick={() => {
-            document.getElementById("report-modal").style.display = "none";
-            
-          }} id="close">&times;</span>
+          <span onClick={() => args.setShowReport(false)} id="close">&times;</span>
         </header><hr/>
 
-        <div className="body">
+        <div className="report-body">
           <label>Reason</label>
           <select id="reason" defaultValue={'default'}>
             <option disabled hidden value="default">Select a reason...</option>

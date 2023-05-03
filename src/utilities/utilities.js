@@ -180,7 +180,20 @@ export function FetchPost(profileId, postId)
     })
     .then((post) => {
       return post;
+    });
+}
+
+export function FetchPostLikes(postId)
+{
+  return HttpGet(`/api/post-likes?post=${postId}`)
+    .then((response) => {
+      if (response.status == 200) {
+        return response.json();
+      }
     })
+    .then((likes) => {
+      return likes;
+    });
 }
 
 export function FetchReportReasons()

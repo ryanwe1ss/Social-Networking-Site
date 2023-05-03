@@ -12,6 +12,7 @@
       padding: 10px;
 
       .header-img {
+
         .user {
           font-weight: 500;
           font-size: 24px;
@@ -24,10 +25,10 @@
         .picture {
           border: 3px solid white;
 
-          max-width: 100%;
-          max-height: 80%;
+          max-width: 550px;
+          max-height: 650px;
 
-          min-width: 400px;
+          min-width: 450px;
           min-height: 400px;
         }
       }
@@ -48,6 +49,15 @@
             font-weight: bold;
             font-size: 24px;
             color: white;
+
+            .likeBtn {
+              cursor: pointer;
+
+              &:hover {
+                text-decoration: underline;
+                color: lightblue;
+              }
+            }
   
             i {
               border: 4px solid white;
@@ -131,7 +141,7 @@
   .modal {
     padding-top: 100px;
     background-color: rgba(0,0,0,0.4);
-    display: none;
+    display: block;
   
     .modal-content {
       padding: 15px;
@@ -151,7 +161,7 @@
         }
       }
 
-      .body {
+      .report-body {
         display: flex;
         flex-direction: column;
 
@@ -161,6 +171,33 @@
         textarea {
           height: 170px;
           resize: none;
+        }
+      }
+
+      .likes-body {
+        color: black;
+
+        label {
+          cursor: pointer;
+          line-height: 20px;
+          font-size: 17px;
+          color: black;
+  
+          span {
+            font-size: 12px;
+          }
+        }
+
+        .thumbnail {
+          position: relative;
+          top: -3px;
+          border-radius: 50%;
+          object-fit: cover;
+          width: 40px;
+          height: 40px;
+  
+          margin-right: 5px;
+          margin-bottom: 20px;
         }
       }
 
@@ -191,10 +228,11 @@
   }
 }
 
-@media only screen and (max-width: 1120px) {
+@media only screen and (max-width: 1250px) {
   .header-img {
     img {
-      min-width: 100%;
+      max-width: 100% !important;
+      min-width: 100% !important;
     }
   }
 

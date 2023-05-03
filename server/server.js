@@ -7,6 +7,7 @@ const { FetchConversation } = require("./handlers/get/fetch-conversation");
 const { FetchNotifications } = require("./handlers/get/fetch-notifications");
 const { FetchReportReasons } = require("./handlers/get/fetch-report-reasons");
 const { FetchSavedPosts } = require("./handlers/get/fetch-saved-posts");
+const { FetchPostLikes } = require("./handlers/get/fetch-post-likes");
 const { FetchFollowers } = require("./handlers/get/fetch-followers");
 const { FetchFollowing } = require("./handlers/get/fetch-following");
 const { FetchThumbnail } = require("./handlers/get/fetch-thumbnail");
@@ -182,6 +183,10 @@ apiRouter.get("/api/feed", middleware, (request, result) => {
 
 apiRouter.get("/api/posts", middleware, (request, result) => {
   FetchPosts(request, result);
+});
+
+apiRouter.get("/api/post-likes", middleware, (request, result) => {
+  FetchPostLikes(request, result);
 });
 
 apiRouter.get("/api/saved-posts", middleware, (request, result) => {
