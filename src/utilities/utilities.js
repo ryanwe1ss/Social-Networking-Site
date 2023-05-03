@@ -121,13 +121,14 @@ export function UploadProfilePicture(event)
 
 export function UploadPost(description, comment, like, image)
 {
-  const formData = new FormData();
-  formData.append("data", image);
+  const postContent = new FormData();
+  postContent.append("image", image);
+  postContent.append("description", description);
+  postContent.append("comment", comment);
+  postContent.append("like", like);
 
-  return HttpPost(`/api/post?description=${description}&comment=${comment}&like=${like}`,
-    formData, false, false
-  
-  ).then((response) => { return response });
+  return HttpPost(`/api/post`, postContent, false, false)
+    .then((response) => { return response });
 }
 
 // ----- POST GET REQUESTS ----- //

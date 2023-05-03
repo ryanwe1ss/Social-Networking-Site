@@ -60,7 +60,7 @@ function Login(request, result) {
                 
                 result.send({
                   'id': accountId,
-                  'username': data.rows[0].username,
+                  'username': credentials.username,
                   'type': 'user',
                   'status': 200,
                 });

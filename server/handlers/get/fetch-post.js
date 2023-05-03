@@ -19,14 +19,14 @@ function FetchPost(request, result)
 
       (SELECT JSON_AGG(JSON_BUILD_OBJECT(
         'id', id,
-        'is_enabled', (SELECT is_enabled FROM accounts WHERE id = commenter),
         'commenter', JSON_BUILD_OBJECT('id', commenter, 'username', (SELECT username FROM accounts WHERE id = commenter)),
         'comment', comment,
         'date_created', date_created
-      )) AS comments FROM post_comments WHERE post_id = ${request.query.post}) as comments,
+      )) AS comments FROM post_comments WHERE post_id = ${request.query.post} AND (SELECT is_enabled FROM accounts WHERE id = commenter)) as comments,
 
       (SELECT username FROM accounts WHERE id = ${request.query.profileId}) as username,
       CAST((SELECT COUNT(*) FROM post_likes WHERE post_id = ${request.query.post} AND (SELECT is_enabled FROM accounts WHERE id = post_likes.liker)) AS INT) AS likes,
+      (SELECT is_enabled FROM accounts WHERE id = ${request.query.profileId}) AS is_enabled,
       CAST(creator_id AS INT),
       CAST(posts.id AS INT),
       description,

@@ -50,7 +50,7 @@ function SidePanel(args)
             <div><a href="/messages" className="bi bi-chat"> Messages</a></div>
             <div>
               <a href="/notifications" className="bi bi-bell notification"> Notifications
-                <span className="badge" style={{display: notification.count == 0 ? "none" : "block"}}>{notification.count}</span>
+                <span className="badge">{notification.count > 0 ? notification.count : null}</span>
               </a>
             </div>
             <div><a href="/saved-posts" className="bi bi-bookmark"> Saved Posts</a></div>
