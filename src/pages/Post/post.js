@@ -3,7 +3,8 @@ import {
   FetchSession,
   FetchPost,
   LikePost,
-  CommentPost
+  CommentPost,
+  FavoritePost
 } from "../../utilities/utilities";
 
 import LoadingBar from "../../components/LoadingBar/loading-bar";
@@ -24,7 +25,7 @@ function Post()
 
   const [post, setPost] = useState([]);
   const [picture, setPicture] = useState([]);
-  const [isRendered, setRendered] = useState(false);
+  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
     FetchSession().then((session) => {
@@ -39,7 +40,7 @@ function Post()
 
       setPost(result.creator);
       setPicture(result.post);
-      setRendered(true);
+      setLoaded(true);
     });
   }
 
@@ -62,6 +63,12 @@ function Post()
     }
   }
 
+  function HandleFavoritePost() {
+    FavoritePost(post.id).then(() => {
+      HandleFetchPost();
+    });
+  }
+
   if (session.id) {
     return (
       <div className="post-container">
@@ -70,7 +77,7 @@ function Post()
   
           <div className="post">
             <div className="header-img">
-              {isRendered ? 
+              {loaded ? 
                 <>
                   <img
                     src={`data:image/jpeg;base64,${picture}`}
@@ -101,7 +108,7 @@ function Post()
                     :
                     <span>
                       <i className="bi bi-heart-fill" id="disabled"/>
-                      {isRendered ? "Likes have been disabled" : null}
+                      {loaded ? "Likes have been disabled" : null}
                     </span>
                   }
                 </div>
@@ -109,13 +116,12 @@ function Post()
                 {session.id != profileId ?
                   <div className="settings">
                     <i className="bi bi-flag-fill" onClick={() => setShowReport(true)}/>
-
-                    <i className="bi bi-star-fill"/>
+                    <i className="bi bi-star-fill" id={post.is_favorited ? 'favorited' : null} onClick={HandleFavoritePost}/>
                   </div> : null
                 }
               </div>
   
-              {isRendered ? 
+              {loaded ? 
                 <div className="comments">
                   { post.comments && post.comments_enabled ?
                     post.comments.map((comment) => (
@@ -139,7 +145,7 @@ function Post()
                   }
                 </div> :
                 <div className="comments">
-                  <LoadingBar size="large" height={50}/>
+                  <LoadingBar size="large" height={30}/>
                 </div>
               }
   

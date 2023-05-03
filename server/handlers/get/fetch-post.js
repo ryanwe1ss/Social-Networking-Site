@@ -5,11 +5,17 @@ function FetchPost(request, result)
 {
   database.query(`
     SELECT
-      (SELECT username FROM accounts WHERE id = ${request.query.profileId}) as username,
       (SELECT EXISTS(SELECT * FROM post_likes
         WHERE liker = ${request.session.user.id}
         AND post_id = ${request.query.post})
-        AS is_liked),
+        AS is_liked
+      ),
+
+      (SELECT EXISTS(SELECT * FROM saved_posts
+        WHERE post_id = ${request.query.post}
+        AND saver_id = ${request.session.user.id})
+        AS is_favorited
+      ),
 
       (SELECT JSON_AGG(JSON_BUILD_OBJECT(
         'id', id,
@@ -19,6 +25,7 @@ function FetchPost(request, result)
         'date_created', date_created
       )) AS comments FROM post_comments WHERE post_id = ${request.query.post}) as comments,
 
+      (SELECT username FROM accounts WHERE id = ${request.query.profileId}) as username,
       CAST((SELECT COUNT(*) FROM post_likes WHERE post_id = ${request.query.post} AND (SELECT is_enabled FROM accounts WHERE id = post_likes.liker)) AS INT) AS likes,
       CAST(creator_id AS INT),
       CAST(posts.id AS INT),

@@ -222,6 +222,12 @@ export function CommentPost(postId, comment)
     .then((response) => { return response });
 }
 
+export function FavoritePost(postId)
+{
+  return HttpGet(`/api/favorite?post=${postId}`)
+    .then((response) => { return response });
+}
+
 export function DeletePost(postId)
 {
   return HttpGet(`/api/delete-post?post=${postId}`)

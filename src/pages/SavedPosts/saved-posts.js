@@ -24,11 +24,10 @@ function SavedPosts()
     FetchSavedPosts().then((saved) => {
       setPosts(saved.posts);
       setLoaded(true);
-      console.log(saved.posts);
     });
   }
 
-  if (loaded && session.id && session.type === "user") {
+  if (session.id && session.type === "user") {
     return (
       <div className="saved-posts-container">
         <div className="outer-border">
@@ -44,8 +43,11 @@ function SavedPosts()
               <div className="posts">
                 {posts.length > 0 ? posts.map((post) => (
                   <div className="post" key={post.id}>
-                    <img src={`data:image/jpeg;base64,${post.image}`} id={post.id} alt="image"/>
-                  </div>  
+                    <a href={`/post?id=${post.poster.id}&post=${post.post_id}`} key={post.id}>
+                      <img src={`data:image/jpeg;base64,${post.image}`} id={post.id} alt="image"/>
+                    </a>
+                    <p>@{post.poster.username}</p>
+                  </div>
                 
                 )) : <center>You have no saved posts</center> }
                 

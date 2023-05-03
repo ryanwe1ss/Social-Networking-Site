@@ -65,10 +65,10 @@
               padding: 5px 10px;
               cursor: pointer;
             }
-  
-            #liked {
-              color: red;
-            }
+          }
+
+          #liked, #favorited {
+            color: red;
           }
 
           .settings {

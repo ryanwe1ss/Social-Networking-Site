@@ -14,11 +14,7 @@ function FetchSavedPosts(request, result)
         'username', (SELECT username FROM accounts WHERE id = posts.creator_id),
         'name', (SELECT name FROM accounts WHERE id = posts.creator_id)
       ) AS poster,
-      (SELECT COUNT(*) FROM post_likes WHERE posts.id = post_id) AS likes,
-      (SELECT COUNT(*) FROM post_comments WHERE posts.id = post_id) AS COMMENTS,
-      posts.description,
-      posts.file_path,
-      posts.date_created
+      posts.file_path
     FROM
       saved_posts
     JOIN
@@ -36,13 +32,7 @@ function FetchSavedPosts(request, result)
           id: post.id,
           post_id: post.post_id,
           poster: post.poster,
-
-          likes: post.likes,
-          comments: post.comments,
-          description: post.description,
-
-          image: fs.readFileSync(post.file_path, "base64"),
-          date_created: post.date_created,
+          image: fs.readFileSync(post.file_path, "base64")
         });
       });
       result.send({ posts: posts.slice(0, request.query.limit), count: posts.length });

@@ -15,16 +15,22 @@
         display: flex;
         flex-direction: row;
         flex-wrap: wrap;
-        justify-content: center;
+
+        center {
+          flex: 1;
+        }
 
         .post {
-          margin: 5px;
+          margin: 3px;
 
           img {
-            border: 2px solid black;
-            object-fit: cover;
-            width: 350px;
+            border: 1px solid lightblue;
+            width: 375px;
             height: 450px;
+
+            &:hover {
+              border: 1px solid blue;
+            }
           }
         }
       }

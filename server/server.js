@@ -38,6 +38,7 @@ const { DeclineFollowRequest } = require("./handlers/interact/decline-follow");
 
 const { UploadPost } = require("./handlers/interact/post");
 const { CommentPost } = require("./handlers/interact/comment");
+const { FavoritePost } = require("./handlers/interact/favorite");
 const { LikePost } = require("./handlers/interact/like");
 
 const { DeleteConnection } = require("./handlers/delete/delete-connection");
@@ -169,12 +170,16 @@ apiRouter.get("/api/unblock", middleware, (request, result) => {
   UnblockAccount(request, result);
 });
 
+apiRouter.get("/api/like", middleware, (request, result) => {
+  LikePost(request, result);
+});
+
 apiRouter.get("/api/comment", middleware, (request, result) => {
   CommentPost(request, result);
 });
 
-apiRouter.get("/api/like", middleware, (request, result) => {
-  LikePost(request, result);
+apiRouter.get("/api/favorite", middleware, (request, result) => {
+  FavoritePost(request, result);
 });
 
 apiRouter.get("/api/feed", middleware, (request, result) => {
