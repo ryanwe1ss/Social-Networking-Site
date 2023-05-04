@@ -254,8 +254,6 @@ function Profile()
                     saved={saved}
                     profile={profile}
                     session={session}
-                    HandleFetchProfile={HandleFetchProfile}
-                    setEditForm={setEditForm}
                     setSaved={setSaved}
                   />
   
@@ -264,8 +262,6 @@ function Profile()
                     saved={saved}
                     profile={profile}
                     session={session}
-                    HandleFetchProfile={HandleFetchProfile}
-                    setEditForm={setEditForm}
                     setSaved={setSaved}
                     isDisabled={isDisabled}
                   />

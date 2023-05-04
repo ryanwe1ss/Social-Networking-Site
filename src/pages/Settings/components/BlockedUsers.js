@@ -21,7 +21,7 @@ function BlockedUsers(args)
               className="thumbnail"
               alt="thumbnail"
             />
-            <label onClick={() => { location.href=`/profile?id=${account.id}` }}>
+            <label onClick={() => { location.href=`/profile/${account.username}` }}>
               <span>@{account.username}</span>
               <br/><span>{account.name && account.name.trim().length > 0 ? account.name : "No Name"}</span>
             </label>

@@ -34,13 +34,13 @@ function Settings()
       if (session.type === "admin") window.location.href = "/statistics";
 
       setSession({ id: session.id, username: session.username, type: session.type });
-      HandleFetchProfile(session.id);
+      HandleFetchProfile(session.username);
       HandleFetchBlocked();
     });
   }, []);
 
-  function HandleFetchProfile(sessionId) {
-    FetchProfile(sessionId).then(account => {
+  function HandleFetchProfile(username) {
+    FetchProfile(username).then(account => {
       setAccount(account);
       setRendered(true);
     });
