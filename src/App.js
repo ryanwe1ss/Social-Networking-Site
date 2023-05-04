@@ -33,7 +33,7 @@ function App()
           <Route exact path="/messages" element={<Messages/>}/>
           <Route exact path="/notifications" element={<Notifications/>}/>
           <Route exact path="/saved-posts" element={<SavedPosts/>}/>
-          <Route exact path="/profile" element={<Profile/>}/>
+          <Route path="/profile/:username" element={<Profile/>}/>
           <Route exact path="/settings" element={<Settings/>}/>
           <Route exact path="/post" element={<Post/>}/>
 

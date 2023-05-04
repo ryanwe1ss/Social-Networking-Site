@@ -9,7 +9,7 @@ function Likes(args)
         alt="thumbnail"
       />
 
-      <a href={`/profile?id=${args.notification.liker.id}&post=${args.notification.post.id}`} className="username">{args.notification.liker.username}</a>
+      <a href={`/profile/${args.notification.liker.username}`} className="username">{args.notification.liker.username}</a>
       &nbsp;liked your post
       <label className="timestamp">· {args.notification.date}</label>
 

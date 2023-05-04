@@ -27,8 +27,8 @@ function Login()
         document.getElementById("response").innerHTML = "Login failed, try again";
       
       } else if (response.status == 200) {
-        if (response.type == "admin") window.location.href = "/statistics";
-        else window.location.href = `/profile?id=${response.id}`;
+        if (response.type == "admin") return window.location.href = "/statistics";
+        window.location.href = `/profile/${response.username}`;
       }
     });
   }

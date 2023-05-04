@@ -28,7 +28,7 @@ import "./profile.scss";
 function Profile()
 {
   const popup = document.querySelector(".popup-box");
-  const profileId = parseInt(location.search.split("id=")[1]);
+  const profileUsername = location.href.split("profile/")[1];
 
   const [session, setSession] = useState([]);
   const [picture, setPicture] = useState([]);
@@ -52,7 +52,7 @@ function Profile()
   }, []);
 
   function HandleFetchProfile() {
-    FetchProfile(profileId).then((profile) => {
+    FetchProfile(profileUsername).then((profile) => {
       if (profile.length == 0 || profile.is_blocked) {
         setProfile([]);
         setPicture([]);
@@ -67,7 +67,7 @@ function Profile()
   }
 
   function HandleFetchPicture() {
-    FetchPicture(profileId).then((picture) => {
+    FetchPicture(profileUsername).then((picture) => {
       setPicture(picture);
       setRendered(true);
     })
@@ -111,19 +111,19 @@ function Profile()
   }
 
   function HandleFollow() {
-    FollowAccount(profileId).then((response) => {
+    FollowAccount(profile.id).then((response) => {
       if (response.status === 200) HandleFetchProfile();
     });
   }
 
   function HandleUnfollow() {
-    UnfollowAccount(profileId).then((response) => {
+    UnfollowAccount(profile.id).then((response) => {
       if (response.status === 200) HandleFetchProfile();
     })
   }
 
   function HandleUnblock() {
-    UnblockAccount(profileId).then(response => {
+    UnblockAccount(profile.id).then(response => {
       if (response.status == 200) {
         HandleFetchProfile();
       }
@@ -139,23 +139,23 @@ function Profile()
   }
 
   function HandleFetchFollowers() {
-    FetchFollowers(profileId).then((followers) => {
+    FetchFollowers(profile.id).then((followers) => {
       setFollowers(followers);
       setShowFollowers(true);
     });
   }
 
   function HandleFetchFollowing() {
-    FetchFollowing(profileId).then((following) => {
+    FetchFollowing(profile.id).then((following) => {
       setFollowing(following);
       setShowFollowing(true);
     });
   }
 
   function HandleMessage() {
-    CreateChat(profileId).then((response) => {
+    CreateChat(profile.id).then((response) => {
       if (response.status === 200) {
-        window.location.href = `/messages?id=${profileId}`;
+        window.location.href = '/messages';
       }
     });
   }
@@ -180,7 +180,7 @@ function Profile()
                 </div>
               } {
                 <div>
-                  {session.id == profileId && session.type != "admin" ?
+                  {session.id == profile.id && session.type != "admin" ?
                     <div className="profile-interact">
                       {
                         !editForm ?
@@ -234,10 +234,10 @@ function Profile()
                 </div>
               }
               <div style={{display: profile.is_blocked == false ? "block" : "none"}}>
-                <hr style={{marginTop: session.id == profileId ? null : "5px"}}/>
+                <hr style={{marginTop: session.id == profile.id ? null : "5px"}}/>
                 <div className="connection-labels" style={{
                   pointerEvents:
-                    session.id == profileId || session.type == "admin" || !profile.is_private || profile.is_following
+                    session.id == profile.id || session.type == "admin" || !profile.is_private || profile.is_following
                     ? "all"
                     : "none"
                 }}>
@@ -275,7 +275,7 @@ function Profile()
             {showFollowers
               ? <Followers
                   session={session}
-                  profileId={profileId}
+                  profileId={profile.id}
                   followers={followers}
                   setShowFollowers={setShowFollowers}
                   HandleFetchFollowers={HandleFetchFollowers}
@@ -286,7 +286,7 @@ function Profile()
             {showFollowing
               ? <Following
                   session={session}
-                  profileId={profileId}
+                  profileId={profile.id}
                   following={following}
                   setShowFollowing={setShowFollowing}
                   HandleFetchFollowing={HandleFetchFollowing}
@@ -296,7 +296,7 @@ function Profile()
             }
             {showSettings
               ? <AccountSettings
-                profileId={profileId}
+                profileId={profile.id}
                 setShowSettings={setShowSettings}
                 HandleFetchProfile={HandleFetchProfile}
               />

@@ -19,9 +19,14 @@
         padding: 10px;
 
         .account {
+          display: flex;
+          align-items: center;
+
           cursor: pointer;
           border-top: 1px solid grey;
+          text-decoration: none;
           padding: 8px;
+          color: inherit;
 
           img {
             border-radius: 5px;

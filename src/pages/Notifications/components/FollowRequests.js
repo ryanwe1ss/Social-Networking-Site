@@ -11,20 +11,20 @@ function FollowRequests(args)
       {args.notification.accepted ? (
         <>
           You have accepted&nbsp;
-          <a href={`/profile?id=${args.notification.follower.id}`} className="username">{args.notification.follower.username}'s</a>
+          <a href={`/profile/${args.notification.follower.username}`} className="username">{args.notification.follower.username}'s</a>
           &nbsp;request to follow you
           <label className="timestamp">· {args.notification.date}</label>
         </>
       ) : args.notification.declined ? (
         <>
           You have declined&nbsp;
-          <a href={`/profile?id=${args.notification.follower.id}`} className="username">{args.notification.follower.username}'s</a>
+          <a href={`/profile/${args.notification.follower.username}`} className="username">{args.notification.follower.username}'s</a>
           &nbsp;request to follow you
           <label className="timestamp">· {args.notification.date}</label>
         </>
       ) : (
         <>
-          <a href={`/profile?id=${args.notification.follower.id}`} className="username">{args.notification.follower.username}</a>
+          <a href={`/profile/${args.notification.follower.username}`} className="username">{args.notification.follower.username}</a>
           <label className="timestamp">requested to follow you · {args.notification.date}</label>
 
           <div className="buttons">

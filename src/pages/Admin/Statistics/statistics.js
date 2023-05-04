@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { FetchSession, FetchStatistics, SearchAccounts, RedirectPage, CheckAdminPermissions } from "../../../utilities/utilities";
+import { FetchSession, FetchStatistics, SearchAccounts, CheckAdminPermissions } from "../../../utilities/utilities";
 
 import SidePanel from "../../../components/SidePanel/side-panel";
 import Footer from "../../../components/Footer/footer";
@@ -72,14 +72,14 @@ function AdminPanel()
   
               <div className="search-body">
                 {searchResults.length > 0 ? searchResults.map((account) => (
-                  <div onClick={() => RedirectPage(account.id)} className="account" id="profile-page" key={account.id}>
+                  <a href={`/profile/${account.username}`} className="account" id="profile-page" key={account.id}>
                     <img
                       src={`${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/api/thumbnail?id=${account.id}`}
                       onError={(img) => (img.target.src = `${process.env.PUBLIC_URL}/images/default-profile.png`)}
                       alt="thumbnail"
                     />
                     <label>{account.username}</label>
-                  </div>
+                  </a>
                 
                 )) : (
                   <div className="no-results">

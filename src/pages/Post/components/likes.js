@@ -28,7 +28,7 @@ function Likes(args)
                 className="thumbnail"
                 alt="thumbnail"
               />
-              <label onClick={() => { location.href=`/profile?id=${like.liker.id}` }}>
+              <label onClick={() => { location.href=`/profile/${like.liker.username}` }}>
                 {like.liker.username}
                 <br/><span>{like.liker.name && like.liker.name.trim().length > 0 ? like.liker.name : "No Name"}</span>
               </label>

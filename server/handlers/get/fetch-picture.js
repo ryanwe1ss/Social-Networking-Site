@@ -1,14 +1,26 @@
+const { database } = require("../../database/db_connect");
 const fs = require("fs");
 
 function FetchPicture(request, result)
 {
-  try {
-    result.send(
-      fs.readFileSync(`data/images/${request.query.id}_profile.png`)
-    );
-  
-  } catch(error) {
-    result.sendStatus(500);
-  }
+  database.query(`
+    SELECT * FROM accounts WHERE username='${request.query.username}' AND is_enabled=TRUE`,
+
+    function(error, results) {
+      if (!error && results.rows.length > 0) {
+        const profileId = results.rows[0].id;
+
+        try {
+          result.send(
+            fs.readFileSync(`data/images/${profileId}_profile.png`)
+          );
+        
+          } catch(error) {
+            result.sendStatus(500);
+          }
+      
+      } else result.sendStatus(500);
+    }
+  );
 }
 module.exports = { FetchPicture }

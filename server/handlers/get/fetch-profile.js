@@ -3,65 +3,77 @@ const { database } = require("../../database/db_connect");
 function FetchProfile(request, result)
 {
   database.query(`
-    SELECT
-      accounts.id,
-      username,
-      password,
-      name,
-      gender,
-      status,
-      birthdate,
-      school,
-      major,
-      email,
-      phone_number,
-      bio,
-      is_enabled,
-      is_private,
-      public_messaging,
-      date_created,
-      date_updated,
+    SELECT * FROM accounts WHERE username='${request.query.username}' AND is_enabled=TRUE`,
 
-      (SELECT EXISTS(SELECT * FROM "blocked" WHERE blocker = ${request.session.user.id} AND "user" = ${request.query.profileId}) AS is_blocking),
-      (SELECT EXISTS(SELECT * FROM "blocked" WHERE blocker = ${request.query.profileId} AND "user" = ${request.session.user.id}) AS is_blocked),
-    
-      (SELECT COUNT(*) FROM accounts
-        LEFT JOIN connections ON connections.follower = accounts.id
-        WHERE
-          connections.account = ${request.query.profileId}
-          AND NOT (SELECT EXISTS(SELECT * FROM "blocked" WHERE "user" = ${request.session.user.id} AND blocker = accounts.id))
-          AND is_enabled=TRUE
-      ) AS followers,
+    function(error, results) {
+      if (!error && results.rows.length > 0) {
+        const profileId = results.rows[0].id;
 
-      (SELECT COUNT(*) FROM accounts
-        LEFT JOIN connections ON connections.account = accounts.id 
-        WHERE
-          connections.follower = ${request.query.profileId}
-          AND NOT (SELECT EXISTS(SELECT * FROM "blocked" WHERE "user" = ${request.session.user.id} AND blocker = accounts.id))
-          AND is_enabled=TRUE
-      ) AS following,
+        database.query(`
+          SELECT
+            accounts.id,
+            username,
+            password,
+            name,
+            gender,
+            status,
+            birthdate,
+            school,
+            major,
+            email,
+            phone_number,
+            bio,
+            is_enabled,
+            is_private,
+            public_messaging,
+            date_created,
+            date_updated,
 
-      (SELECT EXISTS(SELECT * FROM connections
-        WHERE follower = ${request.session.user.id}
-        AND account = ${request.query.profileId})
-        AS is_following),
+            (SELECT EXISTS(SELECT * FROM "blocked" WHERE blocker = ${request.session.user.id} AND "user" = ${profileId}) AS is_blocking),
+            (SELECT EXISTS(SELECT * FROM "blocked" WHERE blocker = ${profileId} AND "user" = ${request.session.user.id}) AS is_blocked),
+          
+            (SELECT COUNT(*) FROM accounts
+              LEFT JOIN connections ON connections.follower = accounts.id
+              WHERE
+                connections.account = ${profileId}
+                AND NOT (SELECT EXISTS(SELECT * FROM "blocked" WHERE "user" = ${request.session.user.id} AND blocker = accounts.id))
+                AND is_enabled=TRUE
+            ) AS followers,
 
-      (SELECT EXISTS(SELECT * FROM follow_requests
-        WHERE follower_id = ${request.session.user.id} AND account_id = ${request.query.profileId} AND
-        accepted = FALSE AND declined = FALSE) AS is_requested)
+            (SELECT COUNT(*) FROM accounts
+              LEFT JOIN connections ON connections.account = accounts.id 
+              WHERE
+                connections.follower = ${profileId}
+                AND NOT (SELECT EXISTS(SELECT * FROM "blocked" WHERE "user" = ${request.session.user.id} AND blocker = accounts.id))
+                AND is_enabled=TRUE
+            ) AS following,
 
-    FROM
-      accounts
-    WHERE
-      accounts.id=${request.query.profileId} AND
-      is_enabled=TRUE`,
-    
-    function(error, data) {
-      if (!error && data.rows.length > 0) {
-        result.send(data.rows[0]);
-      } else {
-        result.send([]);
-      }
-    });
+            (SELECT EXISTS(SELECT * FROM connections
+              WHERE follower = ${request.session.user.id}
+              AND account = ${profileId})
+              AS is_following),
+
+            (SELECT EXISTS(SELECT * FROM follow_requests
+              WHERE follower_id = ${request.session.user.id} AND account_id = ${profileId} AND
+              accepted = FALSE AND declined = FALSE) AS is_requested)
+
+          FROM
+            accounts
+          WHERE
+            accounts.id=${profileId} AND
+            is_enabled=TRUE`,
+          
+          function(error, data) {
+            if (!error && data.rows.length > 0) {
+              result.send(data.rows[0]);
+            } else {
+              result.send([]);
+            }
+          }
+        );
+
+      } else return result.send([]);
+    }
+  );
 }
 module.exports = { FetchProfile }

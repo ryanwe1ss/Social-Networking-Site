@@ -61,7 +61,7 @@ function SidePanel(args)
               <a href="/saved-posts" className="bi bi-bookmark"> Saved Posts</a>
             </div>
             <div>
-              <a href={`/profile?id=${args.session.id}`} className="bi bi-person-fill"> Profile</a>
+              <a href={`/profile/${args.session.username}`} className="bi bi-person-fill"> Profile</a>
             </div>
             <div>
               <a href="/settings" className="bi bi-gear"> Settings</a>

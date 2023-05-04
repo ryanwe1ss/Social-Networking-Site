@@ -9,7 +9,7 @@ function Comments(args)
         alt="thumbnail"
       />
       
-      <a href={`/profile?id=${args.notification.commenter.id}&post=${args.notification.post.id}`} className="username">{args.notification.commenter.username}</a>
+      <a href={`/profile/${args.notification.commenter.username}`} className="username">{args.notification.commenter.username}</a>
       &nbsp;commented on your post:<div className="comment">{args.notification.comment}</div>
       <label className="timestamp">· {args.notification.date}</label>
 

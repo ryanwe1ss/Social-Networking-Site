@@ -7,7 +7,6 @@ import PostPictureModal from "./components/post-picture-modal";
 
 function Posts(args) {
   const popup = document.querySelector(".popup-box");
-  const profileId = parseInt(location.search.split("id=")[1]);
   const editMode = args.editMode;
 
   const [loaded, setLoaded] = useState(false);
@@ -18,7 +17,7 @@ function Posts(args) {
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
-    FetchPosts(profileId, limit).then((result) => {
+    FetchPosts(args.profile.id, limit).then((result) => {
       setPosts(result.posts);
       setLoaded(true);
       setTimeout(() => {
@@ -60,7 +59,7 @@ function Posts(args) {
       <div className="user-posts">
         <input type="file" id="post"/><hr/>
   
-        {loaded && profileId == args.session.id && args.session.type !== "admin" && !args.editMode ? 
+        {loaded && args.profile.id == args.session.id && args.session.type !== "admin" && !args.editMode ? 
           <div className="share-post" onClick={() => document.getElementById("postModal").style.display = "block"}>
             <i className="bi bi-plus-circle"/> Share a post
           </div> : null }
@@ -68,7 +67,7 @@ function Posts(args) {
         <div className="posts">
           {loaded ? posts.length > 0 ?
             posts.map(post => (
-              <a className="post" href={!editMode ? `/post?id=${profileId}&post=${post.id}` : null} key={post.id}>
+              <a className="post" href={!editMode ? `/post?id=${args.profile.id}&post=${post.id}` : null} key={post.id}>
                 <img src={`data:image/jpeg;base64,${post.image}`} id={post.id} alt="thumbnail"/>
                 { editMode ?
                   <span
@@ -80,9 +79,9 @@ function Posts(args) {
               </a>
             )) :
             
-            args.session.id != profileId ?
+            args.session.id != args.profile.id ?
               <div className="no-posts">
-                {args.username + " has no posts"}
+                {args.profile.username + " has no posts"}
               </div> : null :
   
             <div className="spinner">

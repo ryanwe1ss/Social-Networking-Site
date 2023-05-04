@@ -50,9 +50,9 @@ export function FetchStatistics()
 }
 
 // ----- USER GET REQUESTS ----- //
-export function FetchProfile(profileId)
+export function FetchProfile(username)
 {
-  return HttpGet(`/api/profile?profileId=${profileId}`)
+  return HttpGet(`/api/profile?username=${username}`)
     .then((profile) => {
       return profile.json();
     })
@@ -88,8 +88,8 @@ export function FetchBlocked()
     });
 }
 
-export function FetchPicture(profileId) {
-  return HttpGet(`/api/picture?id=${profileId}`)
+export function FetchPicture(username) {
+  return HttpGet(`/api/picture?username=${username}`)
     .then((picture) => {
       return picture.blob();
     })
@@ -417,12 +417,6 @@ export function CheckAdminPermissions()
   return HttpGet('/api/admin-permissions')
     .then((response) => { return response.json() })
     .then((permissions) => { return permissions });
-}
-
-// ----- MISCELLANEOUS ----- //
-export function RedirectPage(profileId)
-{
-  window.location.href = `/profile?id=${profileId}`;
 }
 
 // ----- DELETE ----- //

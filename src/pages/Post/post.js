@@ -132,7 +132,7 @@ function Post()
                           className="thumbnail"
                           alt="thumbnail"
                         />
-                        <span className="commenter"> <a href={`/profile?id=${comment.commenter.id}`}>{comment.commenter.username}</a></span>
+                        <span className="commenter"> <a href={`/profile/${comment.commenter.username}`}>{comment.commenter.username}</a></span>
                         <span className="message"> {comment.comment}</span><br/>
                         <span className="date">Sent on {new Date(comment.date_created).toLocaleString()}</span>
                       </div>

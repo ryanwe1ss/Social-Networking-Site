@@ -4,8 +4,6 @@ import "./profile-details.scss";
 
 function ProfileDetails(args) {
 
-  const profileId = parseInt(location.search.split("id=")[1]);
-  const username = Object.keys(args.profile).length > 0 ? args.profile.username : null;
   const isFollowing = Object.keys(args.profile).length > 0 ? args.profile.is_following : false;
   const isPrivate = Object.keys(args.profile).length > 0 ? args.profile.is_private : false;
 
@@ -20,7 +18,7 @@ function ProfileDetails(args) {
         </div>
       );
   
-    } else if (!isFollowing && args.session.id !== profileId && args.session.type !== "admin" && isPrivate) {
+    } else if (!isFollowing && args.session.id !== args.profile.id && args.session.type !== "admin" && isPrivate) {
       return (
         <div className="information">
           <h4>
@@ -96,7 +94,7 @@ function ProfileDetails(args) {
             </div>
             <Posts
               session={args.session}
-              username={username}
+              profile={args.profile}
               editMode={true}
               saved={args.saved}
               setSaved={args.setSaved}
@@ -148,7 +146,7 @@ function ProfileDetails(args) {
             </div>
             <Posts
               session={args.session}
-              username={username}
+              profile={args.profile}
               editMode={false}
               saved={args.saved}
               setSaved={args.setSaved}
