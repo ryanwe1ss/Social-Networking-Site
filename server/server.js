@@ -53,6 +53,8 @@ const { DeleteAccount } = require("./handlers/delete/delete-account");
 // Admin Modules
 const { FetchStatistics } = require("./handlers/admin/fetch-statistics");
 const { CheckAdminPermissions } = require("./handlers/admin/admin-permissions");
+const { FetchProfileReports } = require("./handlers/admin/fetch-profile-reports");
+const { FetchPostReports } = require("./handlers/admin/fetch-post-reports");
 
 // Middleware
 const { middleware } = require("./middleware/middleware");
@@ -113,6 +115,14 @@ apiRouter.get("/api/session", middleware, (request, result) => {
 // --------------- ADMIN ROUTES --------------- //
 apiRouter.get("/api/statistics", middleware, (request, result) => {
   FetchStatistics(request, result);
+});
+
+apiRouter.get("/api/profile-reports", middleware, (request, result) => {
+  FetchProfileReports(request, result);
+});
+
+apiRouter.get("/api/post-reports", middleware, (request, result) => {
+  FetchPostReports(request, result);
 });
 
 // --------------- USER ROUTES --------------- //

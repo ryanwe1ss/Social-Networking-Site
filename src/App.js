@@ -1,5 +1,4 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { useState } from "react";
 
 // User Components
 import Login from "./pages/Login/login.js";
@@ -15,7 +14,6 @@ import Post from "./pages/Post/post.js";
 
 // Admin Components
 import Statistics from "./pages/Admin/Statistics/statistics.js";
-import MonitorPosts from "./pages/Admin/MonitorPosts/monitor-posts.js";
 import UserSettings from "./pages/Admin/UserSettings/user-settings.js";
 import Reports from "./pages/Admin/Reports/reports.js";
 
@@ -41,7 +39,6 @@ function App()
 
           {/* Admin Account Routes */}
           <Route exact path="/statistics" element={<Statistics/>}/>
-          <Route exact path="/monitor-posts" element={<MonitorPosts/>}/>
           <Route exact path="/user-settings" element={<UserSettings/>}/>
           <Route exact path="/reports" element={<Reports/>}/>
         </Routes>

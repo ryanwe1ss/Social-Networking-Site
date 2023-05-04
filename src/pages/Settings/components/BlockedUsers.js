@@ -17,7 +17,7 @@ function BlockedUsers(args)
           <div className="blocked-users" key={account.id}>
             <img
               src={`${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/api/thumbnail?id=${account.id}`}
-              onError={(img) => (img.target.src = DefaultProfilePicture)}
+              onError={(img) => (img.target.src = `${process.env.PUBLIC_URL}/images/default-profile.png`)}
               className="thumbnail"
               alt="thumbnail"
             />

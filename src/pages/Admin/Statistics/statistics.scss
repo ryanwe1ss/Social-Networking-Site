@@ -3,6 +3,7 @@
   .outer-border {
 
     .panel {
+      background-color: black;
       display: flex;
       overflow: auto;
       padding: 10px;
@@ -15,7 +16,6 @@
       }
 
       .statistics {
-        border: 1px solid black;
         overflow: auto;
         flex: 1;
 
@@ -34,7 +34,8 @@
 
         .statistics-body {
           label {
-            background-color: rgb(228, 228, 228);
+            background-color: rgb(228, 228, 228);              
+            border-radius: 5px;
             color: darkblue;
             font-weight: bold;
             padding: 0px 2px;
@@ -49,14 +50,13 @@
       }
 
       .search {
-        border: 1px solid black;
         padding: 10px;
         flex: 1;
 
         .search-body {
           .account {
             cursor: pointer;
-            border-top: 1px solid grey;
+            border-bottom: 1px solid grey;
             padding: 8px;
   
             img {

@@ -71,51 +71,11 @@ function Login(request, result) {
 
               } else result.send({ 'status': 401 });
             }
+            else result.send({ 'status': 401 });
           }
         );
       }
     }
   });
-  
-  /*
-  database.query(`
-    SELECT
-      id,
-      username,
-      password
-    FROM
-      accounts
-    WHERE
-      username='${credentials.username}' AND
-      password='${credentials.password}' AND
-      is_enabled = TRUE`,
-
-    function (error, data) {
-      if (!error) {
-        if (data.rows.length > 0) {
-          const accountId = data.rows[0].id;
-
-          request.session.user = {
-            id: accountId,
-            username: credentials.username,
-            type: 'user',
-          };
-          request.session.save();
-          
-          result.send({
-            'id': accountId,
-            'username': data.rows[0].username,
-            'type': 'user',
-          });
-
-          database.query(`UPDATE statistics SET total_logins = total_logins + 1, last_login = NOW() WHERE account_id = ${accountId}`, (error, data) => {
-            if (error) console.log(`Error updating last login for account: ${accountId}`);
-          });
-
-        } else result.send("invalid");
-      }
-    }
-  );
-  */
 }
 module.exports = { Login }

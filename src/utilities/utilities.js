@@ -197,6 +197,32 @@ export function FetchPostLikes(postId)
     });
 }
 
+export function FetchProfileReports()
+{
+  return HttpGet('/api/profile-reports')
+    .then((response) => {
+      if (response.status == 200) {
+        return response.json();
+      }
+    })
+    .then((reports) => {
+      return reports;
+    });
+}
+
+export function FetchPostReports()
+{
+  return HttpGet('/api/post-reports')
+    .then((response) => {
+      if (response.status == 200) {
+        return response.json();
+      }
+    })
+    .then((reports) => {
+      return reports;
+    });
+}
+
 export function FetchReportReasons()
 {
   return HttpGet('/api/report-reasons')

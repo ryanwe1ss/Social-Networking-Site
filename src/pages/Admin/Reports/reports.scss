@@ -3,10 +3,59 @@
   .outer-border {
 
     .reports {
+      background-color: black;
       display: flex;
       overflow: auto;
       padding: 10px;
       flex: 1;
+
+      .profile, .report-type-selection {
+        display: flex;
+        flex-direction: column;
+        padding: 10px;
+        margin: 10px;
+
+        .header {
+          text-decoration: underline;
+          border-bottom: 2px dotted black;
+          margin-bottom: 10px;
+          font-style: italic;
+        }
+
+        input {
+          margin-bottom: 10px;
+        }
+      }
+
+      .profile {
+        flex: 1;
+
+        .body {
+
+          table {
+            width: 100%;
+            border-collapse: collapse;
+
+            thead, tbody {
+              tr {
+                border-bottom: 1px solid grey;
+              }
+
+              th, td {
+                padding: 5px;
+
+                &:nth-child(2) {
+                  text-align: right;
+                }
+              }
+            }
+          }
+        }
+      }
+
+      .report-type-selection {
+        border-left: 2px solid white;
+      }
     }
   }
 }

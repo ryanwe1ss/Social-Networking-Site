@@ -39,7 +39,6 @@ const userRoutes = [
   "/api/decline-follow",
   "/api/delete-connection",
 
-
   "/api/like",
   "/api/comment",
   "/api/favorite",
@@ -62,7 +61,10 @@ const userRoutes = [
 
 const adminRoutes = [
   "/api/statistics",
-  "/api/admin-permissions"
+  "/api/admin-permissions",
+
+  "/api/profile-reports",
+  "/api/post-reports",
 ];
 
 module.exports = { allRoutes, userRoutes, adminRoutes };
