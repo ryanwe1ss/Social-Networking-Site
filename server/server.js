@@ -91,8 +91,10 @@ apiRouter.use(function(request, result, next) {
   result.setHeader('Access-Control-Allow-Headers', "Origin, X-Requested-With, Content-Type, Accept");
   result.setHeader('Access-Control-Allow-Credentials', true);
 
-  if (request.connection.remoteAddress.includes("192.168.2.222")) next();
-  // next();
+  if (true) {
+    if (request.connection.remoteAddress.includes("192.168.2.222")) next();
+  }
+  else next();
 });
 
 // --------------- AUTHENTICATION ROUTES --------------- //

@@ -32,8 +32,8 @@ function AdminPanel()
   }, []);
 
   function HandleSearchAccounts(event) {
-    SearchAccounts(event, true, true).then((result) => {
-      setSearchResults(result);
+    SearchAccounts(event, true, true).then((results) => {
+      setSearchResults(results);
       setHasSearched(true);
     });
   }

@@ -10,7 +10,9 @@ function Reports()
   const [session, setSession] = useState([]);
   const [permissions, setPermissions] = useState([]);
 
+  const [selected, setSelected] = useState(1);
   const [profileReports, setProfileReports] = useState([]);
+  const [postReports, setPostReports] = useState([]);
 
   useEffect(() => {
     FetchSession().then((session) => {
@@ -19,14 +21,33 @@ function Reports()
 
       CheckAdminPermissions().then((permissions) => {
         setPermissions(permissions);
-
-        FetchProfileReports().then((profileReports) => {
-          setProfileReports(profileReports);
-          console.log(profileReports);
-        });
+        HandleFetchProfileReports();
       });
     });
   }, []);
+
+  function HandleFetchProfileReports() {
+    FetchProfileReports().then((reports) => {
+      setProfileReports(reports);
+    });
+  }
+
+  function HandleFetchPostReports() {
+    FetchPostReports().then((reports) => {
+      setPostReports(reports);
+    });
+  }
+
+  function SwitchReports() {
+    setSelected(selected == 1 ? 2 : 1);
+
+    if (selected == 1) {
+      HandleFetchPostReports();
+    }
+    else {
+      HandleFetchProfileReports();
+    }
+  }
 
   if (session.id && permissions.monitor_reports_permission) {
     return (
@@ -37,49 +58,89 @@ function Reports()
           <div className="reports">
             <div className="profile">
               <div className="header">
-                <h4>Profile Reports</h4>
+                <h4>{selected == 1 ? 'Profile Reports' : 'Post Reports'}</h4>
+                <button className="btn btn-primary btn-sm" onClick={SwitchReports}>{selected == 1 ? 'Switch to Post Reports' : 'Switch to Profile Reports'}</button>
               </div>
 
-              <input type="text" className="form-control" placeholder="Search for profile reports..."/>
+              <div className="filters">
+                <input type="text" className="form-control" placeholder="Search reports..."/>
+                <button className="btn btn-secondary"><i className="bi bi-arrow-clockwise"/></button>
+              </div>
+
               <div className="body">
-                <table>
-                  <thead>
-                    <tr>
-                      <th>Reporter</th>
-                      <th>Reported</th>
-                      <th>Reason</th>
-                      <th>Date</th>
-                      <th>Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {profileReports.map((report) => (
-                      <tr key={report.id}>
-                        <td className="reporter">
-                          <a href={`/profile/${report.reporter.id}`}>{report.reporter.username}</a>
-                        </td>
-                        <td className="reported">
-                          <a href={`/profile/${report.reported.username}`}>{report.reported.username}</a>
-                        </td>
-                        <td className="reason">
-                          {report.message}
-                        </td>
-                        <td className="date">
-                          {new Date(report.date_created).toLocaleString()}
-                        </td>
+                {selected == 1 ?
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Reporter</th>
+                        <th>Reported</th>
+                        <th>Reason</th>
+                        <th>Date</th>
+                        <th>Actions</th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
+                    </thead>
+                    <tbody>
+                      {profileReports.map((report) => (
+                        <tr key={report.id}>
+                          <td className="reporter">
+                            <a href={`/profile/${report.reporter.username}`}>{report.reporter.username}</a>
+                          </td>
+                          <td className="reported">
+                            <a href={`/profile/${report.reported.username}`}>{report.reported.username}</a>
+                          </td>
+                          <td className="reason">
+                            {report.message}
+                          </td>
+                          <td className="date">
+                            {new Date(report.date_created).toLocaleString()}
+                          </td>
+                          <td className="actions">
+                            <button className="btn btn-warning btn-sm"><i className="bi bi-trash"/></button>
+                            <button className="btn btn-danger btn-sm"><i className="bi bi-person-lock"/></button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                  :
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Reporter</th>
+                        <th>Reported</th>
+                        <th>Reason</th>
+                        <th>Additional Information</th>
+                        <th>Date</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {postReports.map((report) => (
+                        <tr key={report.id}>
+                          <td className="reporter">
+                            <a href={`/profile/${report.reporter.username}`}>{report.reporter.username}</a>
+                          </td>
+                          <td className="reported">
+                            <a href={`/profile/${report.reported.username}`}>{report.reported.username}</a>
+                          </td>
+                          <td className="reason">
+                            {report.reason}
+                          </td>
+                          <td className="additional-information">
+                            {report.additional_information}
+                          </td>
+                          <td className="date">
+                            {new Date(report.date_created).toLocaleString()}
+                          </td>
+                          <td className="actions">
+                            <button className="btn btn-warning btn-sm"><i className="bi bi-trash"/></button>
+                            <button className="btn btn-danger btn-sm"><i className="bi bi-person-lock"/></button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>}
               </div>
-            </div>
-
-            <div className="report-type-selection">
-              <div className="header">
-                <h4>Post Reports</h4>
-              </div>
-
-              <input type="text" className="form-control" placeholder="Search for post reports..."/>
             </div>
           </div>
         </div>

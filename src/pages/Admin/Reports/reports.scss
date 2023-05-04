@@ -16,14 +16,29 @@
         margin: 10px;
 
         .header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+
           text-decoration: underline;
           border-bottom: 2px dotted black;
           margin-bottom: 10px;
           font-style: italic;
         }
+        
+        .filters {
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+          align-items: center;
 
-        input {
-          margin-bottom: 10px;
+          input, button {
+            margin-bottom: 10px;
+          }
+
+          button {
+            margin-left: 5px;
+          }
         }
       }
 
@@ -48,13 +63,15 @@
                   text-align: right;
                 }
               }
+
+              .actions {
+                button {
+                  margin-left: 5px;
+                }
+              }
             }
           }
         }
-      }
-
-      .report-type-selection {
-        border-left: 2px solid white;
       }
     }
   }
