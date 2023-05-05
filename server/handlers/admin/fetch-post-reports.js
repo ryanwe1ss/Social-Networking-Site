@@ -12,9 +12,8 @@ function FetchPostReports(request, result)
       ) AS reporter,
       JSON_BUILD_OBJECT(
         'id', reported_id,
-        'username', (SELECT username FROM accounts WHERE id = reported_id),
-        'name', (SELECT name FROM accounts WHERE id = reported_id)
-      ) AS reported,
+        'post_id', post_id
+      ) AS post,
       (SELECT reason FROM report_reasons WHERE id = post_reports.reason) AS reason,
       additional_information,
       date_created

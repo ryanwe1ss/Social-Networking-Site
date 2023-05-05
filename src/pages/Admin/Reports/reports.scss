@@ -48,8 +48,8 @@
         .body {
 
           table {
-            width: 100%;
             border-collapse: collapse;
+            width: 100%;
 
             thead, tbody {
               tr {
@@ -58,10 +58,6 @@
 
               th, td {
                 padding: 5px;
-
-                &:nth-child(2) {
-                  text-align: right;
-                }
               }
 
               .actions {

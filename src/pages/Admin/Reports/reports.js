@@ -21,31 +21,26 @@ function Reports()
 
       CheckAdminPermissions().then((permissions) => {
         setPermissions(permissions);
-        HandleFetchProfileReports();
+        
+        FetchProfileReports().then((reports) => {
+          setProfileReports(reports);
+        });
       });
     });
   }, []);
-
-  function HandleFetchProfileReports() {
-    FetchProfileReports().then((reports) => {
-      setProfileReports(reports);
-    });
-  }
-
-  function HandleFetchPostReports() {
-    FetchPostReports().then((reports) => {
-      setPostReports(reports);
-    });
-  }
 
   function SwitchReports() {
     setSelected(selected == 1 ? 2 : 1);
 
     if (selected == 1) {
-      HandleFetchPostReports();
+      FetchPostReports().then((reports) => {
+        setPostReports(reports);
+      });
     }
     else {
-      HandleFetchProfileReports();
+      FetchProfileReports().then((reports) => {
+        setProfileReports(reports);
+      });
     }
   }
 
@@ -73,7 +68,7 @@ function Reports()
                     <thead>
                       <tr>
                         <th>Reporter</th>
-                        <th>Reported</th>
+                        <th>Account</th>
                         <th>Reason</th>
                         <th>Date</th>
                         <th>Actions</th>
@@ -107,7 +102,7 @@ function Reports()
                     <thead>
                       <tr>
                         <th>Reporter</th>
-                        <th>Reported</th>
+                        <th>Post</th>
                         <th>Reason</th>
                         <th>Additional Information</th>
                         <th>Date</th>
@@ -120,8 +115,8 @@ function Reports()
                           <td className="reporter">
                             <a href={`/profile/${report.reporter.username}`}>{report.reporter.username}</a>
                           </td>
-                          <td className="reported">
-                            <a href={`/profile/${report.reported.username}`}>{report.reported.username}</a>
+                          <td className="post">
+                            <a href={`/post?id=${report.post.id}&post=${report.post.post_id}`}>{report.post.post_id}</a>
                           </td>
                           <td className="reason">
                             {report.reason}
