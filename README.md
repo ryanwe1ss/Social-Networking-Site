@@ -4,9 +4,17 @@ users on the network to see, allowing them to follow and message you directly. F
 
 ![](images/profile.png)<br/>
 ![](images/profile-edit.png)<br/>
-![](images/connections.png)<br/>
-![](images/chat.png)<br/>
+![](images/followers.png)<br/>
+![](images/following.png)<br/>
+![](images/account-settings.png)<br/>
+![](images/messaging.png)<br/>
+![](images/notifications.png)<br/>
+![](images/search.png)<br/>
+![](images/settings.png)<br/>
+![](images/feed.png)<br/>
 ![](images/post.png)<br/>
+![](images/saved-posts.png)<br/>
+![](images/report-post.png)<br/>
 
 # Requirements
 - NPM & NodeJS
