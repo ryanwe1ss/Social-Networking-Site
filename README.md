@@ -1,6 +1,41 @@
 # Social Networking Site
-This site gives you the ability to create your own page, having your information for other 
-users on the network to see, allowing them to follow and message you directly. Frontend written in React.JS and backend NodeJS.
+Built using: React.JS | Node.JS | PostgreSQL
+
+- User Registration and Login:
+  - Users can create accounts by registering with their email or social media profiles.
+  - Secure login system ensures privacy and data protection.
+
+- Profile Management:
+  - Users have personalized profiles that they can edit and customize.
+  - Profile information includes bio, profile picture, and other details.
+
+- Friend Connections:
+  - Users can search for and connect with friends on the platform.
+  - The option to follow friends allows users to stay updated with their activities.
+
+- Messaging System:
+  - Users can send direct messages to their friends within the platform.
+  - Private conversations provide a seamless communication experience.
+
+- Photo Sharing:
+  - Users can upload and share photos with their friends and followers.
+  - A user-friendly interface allows for easy browsing and viewing of shared pictures.
+
+- Profile and Post Viewing:
+  - Users can explore other people's profiles and view their posts.
+  - User-friendly navigation enables effortless browsing through different profiles.
+
+- Notifications:
+  - Users receive real-time notifications for friend requests, messages, and likes/comments on their posts.
+  - Notifications keep users engaged and informed about the platform's activities.
+
+- Post Saving:
+  - Users have the option to save interesting posts for later reference.
+  - Saved posts can be accessed from a dedicated section within the user's profile.
+
+- Account Settings:
+  - Users can customize their account settings to suit their preferences.
+  - Options include privacy settings, notification preferences, and personalization choices.
 
 ## Profile
 ![](images/profile.png)<br/>
@@ -33,7 +68,7 @@ users on the network to see, allowing them to follow and message you directly. F
 
 ## Post
 ![](images/post.png)<br/>
-![](images/post-likes)<br/>
+![](images/post-likes.png)<br/>
 ![](images/post-report.png)<br/>
 
 # Requirements
