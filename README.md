@@ -2,19 +2,39 @@
 This site gives you the ability to create your own page, having your information for other 
 users on the network to see, allowing them to follow and message you directly. Frontend written in React.JS and backend NodeJS.
 
+## Profile
 ![](images/profile.png)<br/>
 ![](images/profile-edit.png)<br/>
+
+## Connections
 ![](images/followers.png)<br/>
 ![](images/following.png)<br/>
+
+## Profile Options
 ![](images/account-settings.png)<br/>
+
+## Messaging
 ![](images/messaging.png)<br/>
+
+## Notifications
 ![](images/notifications.png)<br/>
+
+## User Search
 ![](images/search.png)<br/>
+
+## User Settings
 ![](images/settings.png)<br/>
-![](images/feed.png)<br/>
-![](images/post.png)<br/>
+
+## Your Saved Posts
 ![](images/saved-posts.png)<br/>
-![](images/report-post.png)<br/>
+
+## Your Feed
+![](images/feed.png)<br/>
+
+## Post
+![](images/post.png)<br/>
+![](images/post-likes)<br/>
+![](images/post-report.png)<br/>
 
 # Requirements
 - NPM & NodeJS
