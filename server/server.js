@@ -87,14 +87,10 @@ apiRouter.use(function(request, result, next) {
       `${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_ENDPOINT_PORT}`
     );
   }
-  result.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+  result.setHeader('Access-Control-Allow-Methods', 'GET, POST, DELETE');
   result.setHeader('Access-Control-Allow-Headers', "Origin, X-Requested-With, Content-Type, Accept");
   result.setHeader('Access-Control-Allow-Credentials', true);
-
-  if (true) {
-    if (request.connection.remoteAddress.includes("192.168.2.222")) next();
-  }
-  else next();
+  next();
 });
 
 // --------------- AUTHENTICATION ROUTES --------------- //

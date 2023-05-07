@@ -24,30 +24,30 @@ function Register()
     PerformRegister(username, password, confirm).then((response) => {
       document.getElementById("response").style.color = "red";
 
-      switch (response) {
-        case "success":
+      switch (response.status) {
+        case 200:
           document.getElementById("response").style.color = "green";
           document.getElementById("response").innerHTML = "Account Registered";
           break;
 
-        case "exists":
+        case 409:
           document.getElementById("response").innerHTML = "Username already taken";
           break;
 
-        case "error":
+        case 500:
           document.getElementById("response").innerHTML = "Failed to register, try again";
           break;
 
-        case "mismatch":
+        case 401:
           document.getElementById("response").innerHTML = "Passwords do not match";
           break;
 
-        case "username-length":
-          document.getElementById("response").innerHTML = "Username must be 5-20 characters";
+        case 400:
+          document.getElementById("response").innerHTML = "Username and Password must be 5-20 characters";
           break;
 
-        case "password-length":
-          document.getElementById("response").innerHTML = "Password must be 5-20 characters";
+        case 429:
+          document.getElementById("response").innerHTML = "Too many accounts registered";
           break;
       }
     });

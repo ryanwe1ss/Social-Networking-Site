@@ -33,7 +33,7 @@ export function PerformRegister(username, password, confirm) {
   };
 
   return HttpPost('/api/register', body)
-    .then((response) => { return response.text() });
+    .then((response) => { return response });
 }
 
 export function Logout()
