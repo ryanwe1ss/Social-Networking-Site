@@ -23,6 +23,9 @@
     
         .chat {
           border-bottom: 1px solid black;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          overflow: hidden;
           padding: 10px;
     
           label {
