@@ -3,7 +3,6 @@
 /build
 package-lock.json
 .vscode
-.env
 /server/data/images/*
 /server/data/thumbnails/*
 /server/data/posts/*
