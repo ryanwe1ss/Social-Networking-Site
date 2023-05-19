@@ -13,7 +13,7 @@ function Register()
             break;
 
           case "user":
-            window.location.href = `/profile?id=${session.id}`;
+            window.location.href = `/profile/${session.username}`;
             break;
         }
       }

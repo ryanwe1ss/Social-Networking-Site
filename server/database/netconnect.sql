@@ -2,8 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 15.1
--- Dumped by pg_dump version 15.1
+-- Dumped from database version 14.7 (Ubuntu 14.7-0ubuntu0.22.04.1)
+-- Dumped by pg_dump version 14.7 (Ubuntu 14.7-0ubuntu0.22.04.1)
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -20,7 +20,7 @@ SET row_security = off;
 -- Name: netconnect; Type: DATABASE; Schema: -; Owner: postgres
 --
 
-CREATE DATABASE netconnect WITH TEMPLATE = template0 ENCODING = 'UTF8' LOCALE_PROVIDER = libc LOCALE = 'English_Canada.1252';
+CREATE DATABASE netconnect WITH TEMPLATE = template0 ENCODING = 'UTF8' LOCALE = 'en_CA.UTF-8';
 
 
 ALTER DATABASE netconnect OWNER TO postgres;
@@ -64,21 +64,22 @@ SET default_table_access_method = heap;
 
 CREATE TABLE public.accounts (
     id integer NOT NULL,
-    username character varying,
-    password character varying,
-    name character varying,
-    email character varying,
-    phone_number character varying,
+    username text NOT NULL,
+    password text,
+    name text,
+    email text,
+    phone_number text,
     birthdate date,
-    gender character varying,
-    status character varying,
-    school character varying,
-    concentration character varying,
-    bio character varying,
+    gender text,
+    status text,
+    school text,
+    major text,
+    bio text,
+    is_enabled boolean DEFAULT true NOT NULL,
+    is_private boolean DEFAULT false NOT NULL,
+    public_messaging boolean DEFAULT false NOT NULL,
     date_created timestamp with time zone DEFAULT CURRENT_TIMESTAMP,
-    date_updated timestamp with time zone DEFAULT CURRENT_TIMESTAMP,
-    enabled boolean DEFAULT true NOT NULL,
-    private boolean DEFAULT false NOT NULL
+    date_updated timestamp with time zone DEFAULT CURRENT_TIMESTAMP
 );
 
 
@@ -143,13 +144,89 @@ ALTER SEQUENCE public.active_chats_id_seq OWNED BY public.active_chats.id;
 
 
 --
+-- Name: admin_accounts; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.admin_accounts (
+    id integer NOT NULL,
+    username text NOT NULL,
+    password text NOT NULL,
+    monitor_posts_permission boolean DEFAULT false NOT NULL,
+    modify_accounts_permission boolean DEFAULT false NOT NULL,
+    monitor_reports_permission boolean DEFAULT false NOT NULL,
+    date_created timestamp with time zone DEFAULT CURRENT_TIMESTAMP NOT NULL
+);
+
+
+ALTER TABLE public.admin_accounts OWNER TO postgres;
+
+--
+-- Name: admin_accounts_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.admin_accounts_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.admin_accounts_id_seq OWNER TO postgres;
+
+--
+-- Name: admin_accounts_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.admin_accounts_id_seq OWNED BY public.admin_accounts.id;
+
+
+--
+-- Name: blocked; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.blocked (
+    id integer NOT NULL,
+    blocker bigint NOT NULL,
+    "user" bigint NOT NULL,
+    date_created timestamp with time zone DEFAULT CURRENT_TIMESTAMP
+);
+
+
+ALTER TABLE public.blocked OWNER TO postgres;
+
+--
+-- Name: blocked_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.blocked_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.blocked_id_seq OWNER TO postgres;
+
+--
+-- Name: blocked_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.blocked_id_seq OWNED BY public.blocked.id;
+
+
+--
 -- Name: connections; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.connections (
     id integer NOT NULL,
-    "user" bigint NOT NULL,
-    follower bigint NOT NULL
+    account bigint NOT NULL,
+    follower bigint NOT NULL,
+    date_created timestamp with time zone DEFAULT CURRENT_TIMESTAMP NOT NULL
 );
 
 
@@ -175,6 +252,44 @@ ALTER TABLE public.connections_id_seq OWNER TO postgres;
 --
 
 ALTER SEQUENCE public.connections_id_seq OWNED BY public.connections.id;
+
+
+--
+-- Name: follow_requests; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.follow_requests (
+    id integer NOT NULL,
+    follower_id bigint NOT NULL,
+    account_id bigint NOT NULL,
+    accepted boolean DEFAULT false NOT NULL,
+    declined boolean DEFAULT false NOT NULL,
+    date_created timestamp with time zone DEFAULT CURRENT_TIMESTAMP NOT NULL
+);
+
+
+ALTER TABLE public.follow_requests OWNER TO postgres;
+
+--
+-- Name: follow_requests_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.follow_requests_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.follow_requests_id_seq OWNER TO postgres;
+
+--
+-- Name: follow_requests_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.follow_requests_id_seq OWNED BY public.follow_requests.id;
 
 
 --
@@ -289,16 +404,56 @@ ALTER SEQUENCE public.post_likes_id_seq OWNED BY public.post_likes.id;
 
 
 --
+-- Name: post_reports; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.post_reports (
+    id integer NOT NULL,
+    reporter_id bigint NOT NULL,
+    reported_id bigint NOT NULL,
+    post_id bigint NOT NULL,
+    reason bigint DEFAULT 1 NOT NULL,
+    additional_information text,
+    date_created timestamp with time zone DEFAULT CURRENT_TIMESTAMP NOT NULL
+);
+
+
+ALTER TABLE public.post_reports OWNER TO postgres;
+
+--
+-- Name: post_reports_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.post_reports_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.post_reports_id_seq OWNER TO postgres;
+
+--
+-- Name: post_reports_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.post_reports_id_seq OWNED BY public.post_reports.id;
+
+
+--
 -- Name: posts; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.posts (
     id integer NOT NULL,
-    creator bigint NOT NULL,
+    creator_id bigint NOT NULL,
     description text,
     comment boolean DEFAULT true NOT NULL,
     "like" boolean DEFAULT true NOT NULL,
-    date_created timestamp with time zone DEFAULT CURRENT_TIMESTAMP
+    file_path text,
+    date_created timestamp with time zone DEFAULT CURRENT_TIMESTAMP NOT NULL
 );
 
 
@@ -327,6 +482,159 @@ ALTER SEQUENCE public.posts_id_seq OWNED BY public.posts.id;
 
 
 --
+-- Name: profile_reports; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.profile_reports (
+    id integer NOT NULL,
+    reporter_id bigint NOT NULL,
+    reported_id bigint NOT NULL,
+    message text,
+    date_created timestamp with time zone DEFAULT CURRENT_TIMESTAMP
+);
+
+
+ALTER TABLE public.profile_reports OWNER TO postgres;
+
+--
+-- Name: report_reasons; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.report_reasons (
+    id integer NOT NULL,
+    reason text
+);
+
+
+ALTER TABLE public.report_reasons OWNER TO postgres;
+
+--
+-- Name: report_reason_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.report_reason_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.report_reason_id_seq OWNER TO postgres;
+
+--
+-- Name: report_reason_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.report_reason_id_seq OWNED BY public.report_reasons.id;
+
+
+--
+-- Name: reports_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.reports_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.reports_id_seq OWNER TO postgres;
+
+--
+-- Name: reports_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.reports_id_seq OWNED BY public.profile_reports.id;
+
+
+--
+-- Name: saved_posts; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.saved_posts (
+    id integer NOT NULL,
+    post_id bigint NOT NULL,
+    saver_id bigint NOT NULL,
+    date_created timestamp with time zone DEFAULT CURRENT_TIMESTAMP NOT NULL
+);
+
+
+ALTER TABLE public.saved_posts OWNER TO postgres;
+
+--
+-- Name: saved_posts_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.saved_posts_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.saved_posts_id_seq OWNER TO postgres;
+
+--
+-- Name: saved_posts_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.saved_posts_id_seq OWNED BY public.saved_posts.id;
+
+
+--
+-- Name: statistics; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.statistics (
+    id integer NOT NULL,
+    account_id bigint NOT NULL,
+    total_logins bigint DEFAULT 0 NOT NULL,
+    total_updates bigint DEFAULT 0 NOT NULL,
+    total_messages_sent bigint DEFAULT 0 NOT NULL,
+    total_posts bigint DEFAULT 0 NOT NULL,
+    total_comments bigint DEFAULT 0 NOT NULL,
+    total_likes bigint DEFAULT 0 NOT NULL,
+    last_login timestamp with time zone,
+    last_update timestamp with time zone,
+    last_message_sent timestamp with time zone,
+    last_post timestamp with time zone,
+    last_comment timestamp with time zone,
+    last_like timestamp with time zone
+);
+
+
+ALTER TABLE public.statistics OWNER TO postgres;
+
+--
+-- Name: statistics_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.statistics_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.statistics_id_seq OWNER TO postgres;
+
+--
+-- Name: statistics_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.statistics_id_seq OWNED BY public.statistics.id;
+
+
+--
 -- Name: accounts id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -341,10 +649,31 @@ ALTER TABLE ONLY public.active_chats ALTER COLUMN id SET DEFAULT nextval('public
 
 
 --
+-- Name: admin_accounts id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.admin_accounts ALTER COLUMN id SET DEFAULT nextval('public.admin_accounts_id_seq'::regclass);
+
+
+--
+-- Name: blocked id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.blocked ALTER COLUMN id SET DEFAULT nextval('public.blocked_id_seq'::regclass);
+
+
+--
 -- Name: connections id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.connections ALTER COLUMN id SET DEFAULT nextval('public.connections_id_seq'::regclass);
+
+
+--
+-- Name: follow_requests id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.follow_requests ALTER COLUMN id SET DEFAULT nextval('public.follow_requests_id_seq'::regclass);
 
 
 --
@@ -369,6 +698,13 @@ ALTER TABLE ONLY public.post_likes ALTER COLUMN id SET DEFAULT nextval('public.p
 
 
 --
+-- Name: post_reports id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.post_reports ALTER COLUMN id SET DEFAULT nextval('public.post_reports_id_seq'::regclass);
+
+
+--
 -- Name: posts id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -376,19 +712,39 @@ ALTER TABLE ONLY public.posts ALTER COLUMN id SET DEFAULT nextval('public.posts_
 
 
 --
--- Name: accounts accounts_id_uk; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: profile_reports id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.profile_reports ALTER COLUMN id SET DEFAULT nextval('public.reports_id_seq'::regclass);
+
+
+--
+-- Name: report_reasons id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.report_reasons ALTER COLUMN id SET DEFAULT nextval('public.report_reason_id_seq'::regclass);
+
+
+--
+-- Name: saved_posts id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.saved_posts ALTER COLUMN id SET DEFAULT nextval('public.saved_posts_id_seq'::regclass);
+
+
+--
+-- Name: statistics id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.statistics ALTER COLUMN id SET DEFAULT nextval('public.statistics_id_seq'::regclass);
+
+
+--
+-- Name: accounts accounts_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.accounts
-    ADD CONSTRAINT accounts_id_uk UNIQUE (id);
-
-
---
--- Name: accounts accounts_username_uk; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.accounts
-    ADD CONSTRAINT accounts_username_uk UNIQUE (username);
+    ADD CONSTRAINT accounts_pk PRIMARY KEY (id);
 
 
 --
@@ -424,10 +780,18 @@ ALTER TABLE ONLY public.posts
 
 
 --
--- Name: accounts date_updated; Type: TRIGGER; Schema: public; Owner: postgres
+-- Name: report_reasons report_reasons_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
-CREATE TRIGGER date_updated BEFORE UPDATE ON public.accounts FOR EACH ROW EXECUTE FUNCTION public.date_updated();
+ALTER TABLE ONLY public.report_reasons
+    ADD CONSTRAINT report_reasons_pk PRIMARY KEY (id);
+
+
+--
+-- Name: accounts accounts_date_updated; Type: TRIGGER; Schema: public; Owner: postgres
+--
+
+CREATE TRIGGER accounts_date_updated BEFORE UPDATE ON public.accounts FOR EACH ROW EXECUTE FUNCTION public.date_updated();
 
 
 --
@@ -435,7 +799,7 @@ CREATE TRIGGER date_updated BEFORE UPDATE ON public.accounts FOR EACH ROW EXECUT
 --
 
 ALTER TABLE ONLY public.active_chats
-    ADD CONSTRAINT active_chats_user_one_fk FOREIGN KEY (user_one) REFERENCES public.accounts(id);
+    ADD CONSTRAINT active_chats_user_one_fk FOREIGN KEY (user_one) REFERENCES public.accounts(id) ON DELETE CASCADE;
 
 
 --
@@ -443,7 +807,15 @@ ALTER TABLE ONLY public.active_chats
 --
 
 ALTER TABLE ONLY public.active_chats
-    ADD CONSTRAINT active_chats_user_two_fk FOREIGN KEY (user_two) REFERENCES public.accounts(id);
+    ADD CONSTRAINT active_chats_user_two_fk FOREIGN KEY (user_two) REFERENCES public.accounts(id) ON DELETE CASCADE;
+
+
+--
+-- Name: blocked blocker_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.blocked
+    ADD CONSTRAINT blocker_fk FOREIGN KEY (blocker) REFERENCES public.accounts(id) ON DELETE CASCADE;
 
 
 --
@@ -451,7 +823,7 @@ ALTER TABLE ONLY public.active_chats
 --
 
 ALTER TABLE ONLY public.connections
-    ADD CONSTRAINT connections_follower_fk FOREIGN KEY (follower) REFERENCES public.accounts(id);
+    ADD CONSTRAINT connections_follower_fk FOREIGN KEY (follower) REFERENCES public.accounts(id) ON DELETE CASCADE;
 
 
 --
@@ -459,7 +831,23 @@ ALTER TABLE ONLY public.connections
 --
 
 ALTER TABLE ONLY public.connections
-    ADD CONSTRAINT connections_user_fk FOREIGN KEY ("user") REFERENCES public.accounts(id);
+    ADD CONSTRAINT connections_user_fk FOREIGN KEY (account) REFERENCES public.accounts(id) ON DELETE CASCADE;
+
+
+--
+-- Name: follow_requests follow_requests_account_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.follow_requests
+    ADD CONSTRAINT follow_requests_account_fk FOREIGN KEY (account_id) REFERENCES public.accounts(id) ON DELETE CASCADE;
+
+
+--
+-- Name: follow_requests follow_requests_follower_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.follow_requests
+    ADD CONSTRAINT follow_requests_follower_fk FOREIGN KEY (follower_id) REFERENCES public.accounts(id) ON DELETE CASCADE;
 
 
 --
@@ -467,7 +855,7 @@ ALTER TABLE ONLY public.connections
 --
 
 ALTER TABLE ONLY public.messages
-    ADD CONSTRAINT messages_chat_id_fk FOREIGN KEY (chat_id) REFERENCES public.active_chats(id);
+    ADD CONSTRAINT messages_chat_id_fk FOREIGN KEY (chat_id) REFERENCES public.active_chats(id) ON DELETE CASCADE;
 
 
 --
@@ -475,7 +863,7 @@ ALTER TABLE ONLY public.messages
 --
 
 ALTER TABLE ONLY public.messages
-    ADD CONSTRAINT messages_from_user_fk FOREIGN KEY (from_user) REFERENCES public.accounts(id);
+    ADD CONSTRAINT messages_from_user_fk FOREIGN KEY (from_user) REFERENCES public.accounts(id) ON DELETE CASCADE;
 
 
 --
@@ -483,7 +871,15 @@ ALTER TABLE ONLY public.messages
 --
 
 ALTER TABLE ONLY public.messages
-    ADD CONSTRAINT messages_to_user_fk FOREIGN KEY (to_user) REFERENCES public.accounts(id);
+    ADD CONSTRAINT messages_to_user_fk FOREIGN KEY (to_user) REFERENCES public.accounts(id) ON DELETE CASCADE;
+
+
+--
+-- Name: post_comments post_comments_commenter_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.post_comments
+    ADD CONSTRAINT post_comments_commenter_fk FOREIGN KEY (commenter) REFERENCES public.accounts(id) ON DELETE CASCADE;
 
 
 --
@@ -495,14 +891,6 @@ ALTER TABLE ONLY public.post_comments
 
 
 --
--- Name: post_comments post_comments_fk_1; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.post_comments
-    ADD CONSTRAINT post_comments_fk_1 FOREIGN KEY (commenter) REFERENCES public.accounts(id);
-
-
---
 -- Name: post_likes post_likes_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -511,11 +899,43 @@ ALTER TABLE ONLY public.post_likes
 
 
 --
--- Name: post_likes post_likes_fk_1; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: post_likes post_likes_liker_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.post_likes
-    ADD CONSTRAINT post_likes_fk_1 FOREIGN KEY (liker) REFERENCES public.accounts(id);
+    ADD CONSTRAINT post_likes_liker_fk FOREIGN KEY (liker) REFERENCES public.accounts(id) ON DELETE CASCADE;
+
+
+--
+-- Name: post_reports post_post_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.post_reports
+    ADD CONSTRAINT post_post_id_fk FOREIGN KEY (post_id) REFERENCES public.posts(id) ON DELETE CASCADE;
+
+
+--
+-- Name: post_reports post_reported_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.post_reports
+    ADD CONSTRAINT post_reported_id_fk FOREIGN KEY (reported_id) REFERENCES public.accounts(id) ON DELETE CASCADE;
+
+
+--
+-- Name: post_reports post_reporter_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.post_reports
+    ADD CONSTRAINT post_reporter_id_fk FOREIGN KEY (reporter_id) REFERENCES public.accounts(id) ON DELETE CASCADE;
+
+
+--
+-- Name: post_reports post_reports_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.post_reports
+    ADD CONSTRAINT post_reports_fk FOREIGN KEY (reason) REFERENCES public.report_reasons(id) ON DELETE CASCADE;
 
 
 --
@@ -523,7 +943,65 @@ ALTER TABLE ONLY public.post_likes
 --
 
 ALTER TABLE ONLY public.posts
-    ADD CONSTRAINT posts_fk FOREIGN KEY (creator) REFERENCES public.accounts(id);
+    ADD CONSTRAINT posts_fk FOREIGN KEY (creator_id) REFERENCES public.accounts(id) ON DELETE CASCADE;
+
+
+--
+-- Name: profile_reports reports_reported_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.profile_reports
+    ADD CONSTRAINT reports_reported_fk FOREIGN KEY (reported_id) REFERENCES public.accounts(id) ON DELETE CASCADE;
+
+
+--
+-- Name: profile_reports reports_reporter_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.profile_reports
+    ADD CONSTRAINT reports_reporter_fk FOREIGN KEY (reporter_id) REFERENCES public.accounts(id) ON DELETE CASCADE;
+
+
+--
+-- Name: saved_posts saved_posts_post_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.saved_posts
+    ADD CONSTRAINT saved_posts_post_id_fk FOREIGN KEY (post_id) REFERENCES public.posts(id) ON DELETE CASCADE;
+
+
+--
+-- Name: saved_posts saved_posts_saver_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.saved_posts
+    ADD CONSTRAINT saved_posts_saver_id_fk FOREIGN KEY (saver_id) REFERENCES public.accounts(id) ON DELETE CASCADE;
+
+
+--
+-- Name: statistics statistics_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.statistics
+    ADD CONSTRAINT statistics_fk FOREIGN KEY (account_id) REFERENCES public.accounts(id) ON DELETE CASCADE;
+
+
+--
+-- Name: blocked user_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.blocked
+    ADD CONSTRAINT user_fk FOREIGN KEY ("user") REFERENCES public.accounts(id);
+
+
+--
+-- Name: SCHEMA public; Type: ACL; Schema: -; Owner: pg_database_owner
+--
+
+REVOKE ALL ON SCHEMA public FROM postgres;
+REVOKE ALL ON SCHEMA public FROM PUBLIC;
+GRANT ALL ON SCHEMA public TO pg_database_owner;
+GRANT ALL ON SCHEMA public TO PUBLIC;
 
 
 --

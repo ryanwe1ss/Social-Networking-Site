@@ -36,7 +36,7 @@ function Post()
 
   function HandleFetchPost(session) {
     FetchPost(profileId, postId).then((result) => {
-      if (!result || !result.creator.is_enabled) location.href = `/profile?id=${session.id}`;
+      if (!result || !result.creator.is_enabled) location.href = `/profile/${session.username}`;
 
       setPost(result.creator);
       setPicture(result.post);
