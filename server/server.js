@@ -79,12 +79,12 @@ apiRouter.use(function(request, result, next) {
   if (process.env.REACT_APP_ENDPOINT_PORT === "80") {
     result.setHeader(
       'Access-Control-Allow-Origin',
-      process.env.REACT_APP_API_URL
+      process.env.REACT_APP_URL
     );
   } else {
     result.setHeader(
       'Access-Control-Allow-Origin',
-      `${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_ENDPOINT_PORT}`
+      `${process.env.REACT_APP_URL}:${process.env.REACT_APP_ENDPOINT_PORT}`
     );
   }
   result.setHeader('Access-Control-Allow-Methods', 'GET, POST, DELETE');
