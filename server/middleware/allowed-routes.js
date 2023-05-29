@@ -18,8 +18,6 @@ const allRoutes = [
 ]
 
 const userRoutes = [
-  "/api/update-profile-picture",
-
   "/api/update",
   "/api/update-privacy",
   "/api/update-username",
@@ -41,6 +39,7 @@ const userRoutes = [
   "/api/delete-connection",
 
   "/api/create-post",
+  "/api/update-profile-picture",
 
   "/api/like",
   "/api/comment",

@@ -3,11 +3,11 @@
 package-lock.json
 /build
 node_modules
-/server/data/images/*
-/server/data/thumbnails/*
-/server/data/posts/*
+/FileServerAPI/content/images/*
+/FileServerAPI/content/thumbnails/*
+/FileServerAPI/content/posts/*
 
 # ALLOW
-!/server/data/images/info.txt
-!/server/data/thumbnails/info.txt
-!/server/data/posts/info.txt
+!/FileServerAPI/content/images/info.txt
+!/FileServerAPI/content/thumbnails/info.txt
+!/FileServerAPI/content/posts/info.txt
