@@ -14,7 +14,7 @@ function FetchSavedPosts(request, result)
         'username', (SELECT username FROM accounts WHERE id = posts.creator_id),
         'name', (SELECT name FROM accounts WHERE id = posts.creator_id)
       ) AS poster,
-      posts.file_path
+      posts.file_name
     FROM
       saved_posts
     JOIN
@@ -30,12 +30,12 @@ function FetchSavedPosts(request, result)
       results.rows.forEach(post => {
         posts.push({
           id: post.id,
-          post_id: post.post_id,
+          postId: post.post_id,
           poster: post.poster,
-          image: fs.readFileSync(post.file_path, "base64")
+          fileName: post.file_name
         });
       });
-      result.send({ posts: posts.slice(0, request.query.limit), count: posts.length });
+      result.send(posts);
     }
   );
 }

@@ -18,7 +18,7 @@ const { FetchBlocked } = require("./handlers/get/fetch-blocked");
 const { FetchChats } = require("./handlers/get/fetch-chats");
 const { FetchFeed } = require("./handlers/get/fetch-feed");
 const { FetchPosts } = require("./handlers/get/fetch-posts");
-const { FetchPost } = require("./handlers/get/fetch-post");
+const { FetchPostContent } = require("./handlers/get/fetch-post");
 
 const { UpdatePublicMessaging } = require("./handlers/update/update-public-messaging");
 const { UpdateUsername } = require("./handlers/update/update-username");
@@ -88,12 +88,27 @@ apiRouter.use(function(request, result, next) {
     );
   }
   result.setHeader('Access-Control-Allow-Methods', 'GET, POST, DELETE');
-  result.setHeader('Access-Control-Allow-Headers', "Origin, X-Requested-With, Content-Type, Accept");
+  result.setHeader('Access-Control-Allow-Headers', "Origin, X-Requested-With, Content-Type, Accept, Authorization");
   result.setHeader('Access-Control-Allow-Credentials', true);
   next();
 });
 
 // --------------- AUTHENTICATION ROUTES --------------- //
+
+/*
+apiRouter.get("/api/test", middleware, (request, result) => {
+  axios.get(`${process.env.REACT_APP_FILE_SERVER}:${process.env.REACT_APP_FILE_PORT}/api/register`, {
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': request.headers.cookie,
+    }
+  })
+  .then(response => console.log(response.data));
+
+  result.send(request.session.user);
+});
+*/
+
 apiRouter.post("/api/login", (request, result) => {
   Login(request, result);
 });
@@ -128,6 +143,10 @@ apiRouter.post("/api/update", middleware, (request, result) => {
   UpdateProfile(request, result);
 });
 
+apiRouter.get('/api/update-profile-picture', middleware, (request, result) => {
+  result.status(200).send(request.session.user);
+});
+
 apiRouter.get("/api/update-privacy", middleware, (request, result) => {
   UpdatePrivacy(request, result);
 });
@@ -144,7 +163,13 @@ apiRouter.get("/api/update-password", middleware, (request, result) => {
   UpdatePassword(request, result);
 });
 
+/*
 apiRouter.post("/api/post", middleware, (request, result) => {
+  UploadPost(request, result);
+});
+*/
+
+apiRouter.post("/api/create-post", middleware, (request, result) => {
   UploadPost(request, result);
 });
 
@@ -168,8 +193,8 @@ apiRouter.get("/api/thumbnail", middleware, (request, result) => {
   FetchThumbnail(request, result);
 });
 
-apiRouter.get("/api/post", middleware, (request, result) => {
-  FetchPost(request, result);
+apiRouter.get("/api/post/:profileId/:post", (request, result) => {
+  FetchPostContent(request, result);
 });
 
 apiRouter.get("/api/block", middleware, (request, result) => {
@@ -196,7 +221,7 @@ apiRouter.get("/api/feed", middleware, (request, result) => {
   FetchFeed(request, result);
 });
 
-apiRouter.get("/api/posts", middleware, (request, result) => {
+apiRouter.get("/api/posts/:id", middleware, (request, result) => {
   FetchPosts(request, result);
 });
 
@@ -285,5 +310,5 @@ apiRouter.get("/api/delete", middleware, (request, result) => {
 });
 
 apiRouter.listen(process.env.REACT_APP_API_PORT, () => {
-  console.log(`API listening on port ${process.env.REACT_APP_API_PORT}`);
+  console.log(`Back-end listening on port ${process.env.REACT_APP_API_PORT}`);
 });

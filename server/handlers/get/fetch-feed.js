@@ -1,5 +1,4 @@
 const { database } = require("../../database/db_connect");
-const fs = require("fs");
 
 function FetchFeed(request, result)
 {
@@ -26,19 +25,19 @@ function FetchFeed(request, result)
       data.rows.forEach(post => {
         posts.push({
           id: post.id,
-          creator_id: post.creator_id,
+          creatorId: post.creator_id,
+          fileName: post.file_name,
 
-          creator_username: post.username,
+          creatorUsername: post.username,
           description: post.description,
 
           likes: post.likes,
           comments: post.comments,
 
-          file: fs.readFileSync(post.file_path, "base64"),
-          date_created: post.date_created,
+          dateCreated: post.date_created,
         });
       });
-      result.send({ posts: posts.slice(0, request.query.limit), count: posts.length });
+      result.send(posts);
     }
   });
 }

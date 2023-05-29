@@ -1,9 +1,11 @@
+import { thumbnailUrl } from "../../../utilities/utilities";
+
 function Comments(args)
 {
   return (
     <div className="notification">
       <img
-        src={`${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/api/thumbnail?id=${args.notification.commenter.id}`}
+        src={`${thumbnailUrl}/api/thumbnail/${args.notification.commenter.id}`}
         onError={(img) => (img.target.src = `${process.env.PUBLIC_URL}/images/default-profile.png`)}
         className="thumbnail"
         alt="thumbnail"
@@ -13,9 +15,9 @@ function Comments(args)
       &nbsp;commented on your post:<div className="comment">{args.notification.comment}</div>
       <label className="timestamp">· {args.notification.date}</label>
 
-      <a href={`/post?id=${args.notification.post.account.id}&post=${args.notification.post.id}`} className="post">
+      <a href={`/post?profileId=${args.session.id}&postId=${args.notification.post.id}&post=${args.notification.file_name}`} className="post">
         <img
-          src={`data:image/jpeg;base64,${args.notification.post.image}`}
+          src={`${thumbnailUrl}/api/post/${args.session.id}/${args.notification.file_name}`}
           onError={(img) => (img.target.src = `${process.env.PUBLIC_URL}/images/default-profile.png`)}
           alt="post"
         />

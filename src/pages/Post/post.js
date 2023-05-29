@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import {
+  thumbnailUrl,
   FetchSession,
-  FetchPost,
+  FetchPostContent,
+  FetchPostPicture,
   LikePost,
   CommentPost,
   FavoritePost
@@ -16,8 +18,9 @@ import "./post.scss";
 
 function Post()
 {
-  const postId = parseInt(location.search.split("post=")[1]);
-  const profileId = parseInt(location.search.split("id=")[1]);
+  const profileId = parseInt(location.search.split("profileId=")[1]);
+  const postId = parseInt(location.search.split("postId=")[1]);
+  const postName = parseInt(location.search.split("post=")[1]);
 
   const [session, setSession] = useState([]);
   const [showLikes, setShowLikes] = useState(false);
@@ -30,16 +33,23 @@ function Post()
   useEffect(() => {
     FetchSession().then((session) => {
       setSession({ id: session.id, username: session.username, type: session.type });
-      HandleFetchPost(session);
+      HandleFetchPostContent(session);
+      HandleFetchPostPicture();
     });
   }, []);
 
-  function HandleFetchPost(session) {
-    FetchPost(profileId, postId).then((result) => {
-      if (!result || !result.creator.is_enabled) location.href = `/profile/${session.username}`;
+  function HandleFetchPostPicture() {
+    FetchPostPicture(profileId, postName).then((picture) => {
+      setPicture(picture);
+    });
+  }
 
-      setPost(result.creator);
-      setPicture(result.post);
+  function HandleFetchPostContent(session) {
+    FetchPostContent(profileId, postId).then((content) => {
+      console.log(content);
+      if (!content || !content.is_enabled) location.href = `/profile/${session.username}`;
+
+      setPost(content);
       setLoaded(true);
     });
   }
@@ -47,7 +57,7 @@ function Post()
   function HandleLikePost() {
     if (post.likes_enabled) {
       LikePost(post.id).then(() => {
-        HandleFetchPost();
+        HandleFetchPostContent();
       });
     }
   }
@@ -58,14 +68,14 @@ function Post()
     if (comment.length > 0 && comment.length < 256 && post.comments_enabled) {
       CommentPost(postId, comment).then(() => {
         document.getElementById("comment").value = null;
-        HandleFetchPost();
+        HandleFetchPostContent();
       });
     }
   }
 
   function HandleFavoritePost() {
     FavoritePost(post.id).then(() => {
-      HandleFetchPost();
+      HandleFetchPostContent();
     });
   }
 
@@ -80,7 +90,7 @@ function Post()
               {loaded ? 
                 <>
                   <img
-                    src={`data:image/jpeg;base64,${picture}`}
+                    src={picture}
                     onError={(img) => (img.target.src = `${process.env.PUBLIC_URL}/images/default-profile.png`)}
                     className="picture"
                     alt="picture"
@@ -127,7 +137,7 @@ function Post()
                     post.comments.map((comment) => (
                       <div className="comment" key={comment.id}>
                         <img
-                          src={`${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/api/thumbnail?id=${comment.commenter.id}`}
+                          src={`${thumbnailUrl}/api/thumbnail/${comment.commenter.id}`}
                           onError={(img) => (img.target.src = `${process.env.PUBLIC_URL}/images/default-profile.png`)}
                           className="thumbnail"
                           alt="thumbnail"

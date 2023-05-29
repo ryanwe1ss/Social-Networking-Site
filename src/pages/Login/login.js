@@ -22,14 +22,17 @@ function Login()
 
   function HandleLogin(username, password) {
     PerformLogin(username, password).then((response) => {
-      if (response.status == 401) {
-        document.getElementById("response").style.color = "red";
-        document.getElementById("response").innerHTML = "Login failed, try again";
-      
-      } else if (response.status == 200) {
+      localStorage.setItem('sessionToken', response.token);
+      document.getElementById("response").style.color = "red";
+
+      if (response.status == 200) {
         if (response.type == "admin") return window.location.href = "/statistics";
         window.location.href = `/profile/${response.username}`;
-      }
+
+      } else if (response.status == 504) {
+        document.getElementById("response").innerHTML = "Error connecting to server. Please contact an administrator.";
+      
+      } else document.getElementById("response").innerHTML = "Login failed, try again";
     });
   }
 

@@ -46,8 +46,16 @@ function Register()
           document.getElementById("response").innerHTML = "Username and Password must be 5-20 characters";
           break;
 
+        case 403:
+          document.getElementById("response").innerHTML = "Permission error creating your user folder. Please contact administrator";
+          break;
+
         case 429:
           document.getElementById("response").innerHTML = "Too many accounts registered";
+          break;
+
+        case 502:
+          document.getElementById("response").innerHTML = "Server was unable to communicate with the file server";
           break;
       }
     });

@@ -11,7 +11,6 @@ const allRoutes = [
   "/api/picture",
   
   "/api/posts",
-  "/api/post",
   "/api/feed",
 
   "/api/followers",
@@ -19,6 +18,8 @@ const allRoutes = [
 ]
 
 const userRoutes = [
+  "/api/update-profile-picture",
+
   "/api/update",
   "/api/update-privacy",
   "/api/update-username",
@@ -38,6 +39,8 @@ const userRoutes = [
   "/api/accept-follow",
   "/api/decline-follow",
   "/api/delete-connection",
+
+  "/api/create-post",
 
   "/api/like",
   "/api/comment",

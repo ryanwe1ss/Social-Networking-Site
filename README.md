@@ -38,38 +38,38 @@ Built using: React.JS | Node.JS | PostgreSQL
   - Options include privacy settings, notification preferences, and personalization choices.
 
 ## Profile
-![](images/profile.png)<br/>
-![](images/profile-edit.png)<br/>
+![](demo/profile.png)<br/>
+![](demo/profile-edit.png)<br/>
 
 ## Connections
-![](images/followers.png)<br/>
-![](images/following.png)<br/>
+![](demo/followers.png)<br/>
+![](demo/following.png)<br/>
 
 ## Profile Options
-![](images/account-settings.png)<br/>
+![](demo/account-settings.png)<br/>
 
 ## Messaging
-![](images/messaging.png)<br/>
+![](demo/messaging.png)<br/>
 
 ## Notifications
-![](images/notifications.png)<br/>
+![](demo/notifications.png)<br/>
 
 ## User Search
-![](images/search.png)<br/>
+![](demo/search.png)<br/>
 
 ## User Settings
-![](images/settings.png)<br/>
+![](demo/settings.png)<br/>
 
 ## Your Saved Posts
-![](images/saved-posts.png)<br/>
+![](demo/saved-posts.png)<br/>
 
 ## Your Feed
-![](images/feed.png)<br/>
+![](demo/feed.png)<br/>
 
 ## Post
-![](images/post.png)<br/>
-![](images/post-likes.png)<br/>
-![](images/post-report.png)<br/>
+![](demo/post.png)<br/>
+![](demo/post-likes.png)<br/>
+![](demo/post-report.png)<br/>
 
 # Requirements
 - NPM & NodeJS

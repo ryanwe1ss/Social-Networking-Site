@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import LoadingBar from "../../components/LoadingBar/loading-bar";
+import { thumbnailUrl } from "../../utilities/utilities";
 
+import LoadingBar from "../../components/LoadingBar/loading-bar";
 import SidePanel from "../../components/SidePanel/side-panel";
 import Footer from "../../components/Footer/footer";
-
 import "./search.scss";
 
 import {
@@ -45,7 +45,7 @@ function Search()
               {searchResults.length > 0 ? searchResults.map((account) => (
                 <a href={`/profile/${account.username}`} className="account" id="profile-page" key={account.id}>
                   <img
-                    src={`${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/api/thumbnail?id=${account.id}`}
+                    src={`${thumbnailUrl}/api/thumbnail/${account.id}`}
                     onError={(img) => (img.target.src = `${process.env.PUBLIC_URL}/images/default-profile.png`)}
                     alt="thumbnail"
                   />

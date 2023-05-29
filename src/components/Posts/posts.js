@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import LoadingBar from "../LoadingBar/loading-bar";
 import "./posts.scss";
 
-import { FetchPosts, DeletePost } from "../../utilities/utilities";
+import { thumbnailUrl, DeletePost } from "../../utilities/utilities";
 import PostPictureModal from "./components/post-picture-modal";
 
 function Posts(args) {
@@ -14,9 +14,16 @@ function Posts(args) {
   const [limit, setLimit] = useState(6);
 
   const [tempPosts, setTempPosts] = useState([]);
-  const [posts, setPosts] = useState([]);
+  // const [posts, setPosts] = useState([]);
 
   useEffect(() => {
+    setLoaded(true);
+    setTimeout(() => {
+      document.querySelector(".load-more").style.display = "none";
+    
+    }, 10);
+
+    /*
     FetchPosts(args.profile.id, limit).then((result) => {
       setPosts(result.posts);
       setLoaded(true);
@@ -26,6 +33,7 @@ function Posts(args) {
       
       }, 250);
     });
+    */
 
   }, [limit, refresh]);
 
@@ -65,10 +73,25 @@ function Posts(args) {
           </div> : null }
   
         <div className="posts">
-          {loaded ? posts.length > 0 ?
+          {loaded ? args.profile.posts && args.profile.posts.length > 0 ?
+            /*
             posts.map(post => (
               <a className="post" href={!editMode ? `/post?id=${args.profile.id}&post=${post.id}` : null} key={post.id}>
                 <img src={`data:image/jpeg;base64,${post.image}`} id={post.id} alt="thumbnail"/>
+                { editMode ?
+                  <span
+                    className="delete"
+                    onClick={() => SelectPost(post.id)}
+                  >✕
+                  </span>
+                : null }
+              </a>
+            ))*/
+            
+            args.profile.posts.map(post => (
+              <a className="post" href={!editMode ? `/post?profileId=${args.profile.id}&postId=${post.id}&post=${post.file_name}` : null} key={post.id}>
+                <img src={`${thumbnailUrl}/api/post/${args.profile.id}/${post.file_name}`} id={post.id} alt="thumbnail"/>
+                
                 { editMode ?
                   <span
                     className="delete"

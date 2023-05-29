@@ -74,7 +74,7 @@ function FetchNotifications(request, result)
                 FROM accounts
                 WHERE id = ${request.session.user.id}
               ),
-              posts.file_path,
+              posts.file_name,
               post_comments.comment,
               post_comments.date_created
             FROM
@@ -89,10 +89,6 @@ function FetchNotifications(request, result)
 
             function(error, comments) {
               if (!error) {
-                comments.rows.forEach(comment => {
-                  comment.post.image = fs.readFileSync(comment.file_path, "base64");
-                });
-  
                 notifications.push(comments.rows);
                 database.query(`
                   SELECT
@@ -114,7 +110,7 @@ function FetchNotifications(request, result)
                         FROM accounts
                         WHERE id = liker
                       ),
-                    posts.file_path,
+                    posts.file_name,
                     post_likes.date_created
                   FROM
                     posts
@@ -128,10 +124,6 @@ function FetchNotifications(request, result)
 
                   function(error, likes) {
                     if (!error) {
-                      likes.rows.forEach(like => {
-                        like.post.image = fs.readFileSync(like.file_path, "base64");
-                      });
-
                       notifications.push(likes.rows);
                       result.send(notifications);
                     }

@@ -61,6 +61,7 @@ function Login(request, result) {
                 result.send({
                   'id': accountId,
                   'username': credentials.username,
+                  'token': request.headers.cookie,
                   'type': 'user',
                   'status': 200,
                 });

@@ -1,9 +1,11 @@
+import { thumbnailUrl } from "../../../utilities/utilities";
+
 function FollowRequests(args)
 {
   return (
     <div className="notification">
       <img
-        src={`${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/api/thumbnail?id=${args.notification.follower.id}`}
+        src={`${thumbnailUrl}/api/thumbnail/${args.notification.follower.id}`}
         onError={(img) => (img.target.src = `${process.env.PUBLIC_URL}/images/default-profile.png`)}
         className="thumbnail"
         alt="thumbnail"

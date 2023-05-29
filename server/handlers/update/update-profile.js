@@ -1,11 +1,46 @@
-const sharp = require("sharp");
-sharp.cache(false);
+// const sharp = require("sharp");
+// sharp.cache(false);
 
-const fs = require("fs");
-const formidable = require("formidable");
+// const fs = require("fs");
+// const formidable = require("formidable");
 const { database } = require("../../database/db_connect");
 
 function UpdateProfile(request, result) {
+  const account = request.body;
+  
+  for (const property in account) {
+    account[property] = account[property].trim();
+    account[property].length > 0
+      ? account[property] = `'${account[property]}'`
+      : account[property] = null;
+  }
+
+  database.query(`
+    UPDATE accounts
+    SET name=${account.name},
+    gender=${account.gender},
+    status=${account.status},
+    birthdate=${account.birthdate},
+    school=${account.school},
+    major=${account.major},
+    email=${account.email},
+    phone_number=${account.phone_number},
+    bio=${account.bio}
+    WHERE id=${request.session.user.id}`,
+    
+    function (error, data) {
+      if (!error) {
+        result.send("success");
+        console.log(`${request.session.user.username} has updated their profile`);
+
+        database.query(`UPDATE statistics SET total_updates = total_updates + 1, last_update = NOW() WHERE account_id = ${request.session.user.id}`, (error, data) => {
+          if (error) console.log(`Error updating last updated statistic for account: ${request.session.user.id}`);
+        });
+      }
+    }
+  );
+
+  /*
   const form = new formidable.IncomingForm();
   const account = request.body;
 
@@ -70,5 +105,6 @@ function UpdateProfile(request, result) {
     form.parse(request);
     result.sendStatus(200);
   }
+  */
 }
 module.exports = { UpdateProfile }

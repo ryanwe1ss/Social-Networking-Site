@@ -6,13 +6,12 @@ import Footer from "../../components/Footer/footer";
 import "./messages.scss";
 
 import {
+  thumbnailUrl,
   FetchSession,
-  FetchThumbnail,
   FetchConversation,
   SendMessage,
   FetchChats,
 } from "../../utilities/utilities";
-
 
 function Messages()
 {
@@ -20,7 +19,6 @@ function Messages()
 
   const [chatsLoaded, setChatsLoaded] = useState(false);
   const [conversation, setConversation] = useState([]);
-  const [thumbnails, setThumbnail] = useState([]);
 
   const [chats, setChats] = useState([]);
   const [chatId, setChatId] = useState();
@@ -36,17 +34,6 @@ function Messages()
     });
   }, []);
 
-  function HandleFetchThumbnails(users) {
-    users.forEach(user => {
-      FetchThumbnail(user.id).then((thumbnail) => {
-        setThumbnail(t => [...t, {
-          id: user.id,
-          thumbnail: thumbnail,
-        }])
-      })
-    });
-  }
-
   function HandleFetchChats(session) {
     FetchChats().then((chats) => {
       const users = chats.map(chat => {
@@ -58,7 +45,6 @@ function Messages()
         }
       });
       setChats(users);
-      HandleFetchThumbnails(users);
 
       let timer = 0;
       const chatExists = setInterval(function() {
@@ -137,7 +123,7 @@ function Messages()
               {chatsLoaded ? chats.map(chat => (
                 <div className="chat" onClick={() => { HandleFetchConversation(chat.id) }} id={`${chat.id}_chat`} key={chat.id}>
                   <img
-                    src={thumbnails.filter(t => t.id == chat.id).map(t => t.thumbnail)}
+                    src={`${thumbnailUrl}/api/thumbnail/${chat.id}`}
                     onError={(img) => (img.target.src = `${process.env.PUBLIC_URL}/images/default-profile.png`)}
                     className="thumbnail"
                     alt="thumbnail"

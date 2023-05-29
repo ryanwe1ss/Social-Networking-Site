@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { FetchPostLikes } from "../../../utilities/utilities";
+import { thumbnailUrl, FetchPostLikes } from "../../../utilities/utilities";
 
 function Likes(args)
 {
@@ -23,7 +23,7 @@ function Likes(args)
           {likes.map(like => (
             <div className="like" key={like.id}>
               <img
-                src={`${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/api/thumbnail?id=${like.liker.id}`}
+                src={`${thumbnailUrl}/api/thumbnail/${like.liker.id}`}
                 onError={(img) => (img.target.src = `${process.env.PUBLIC_URL}/images/default-profile.png`)}
                 className="thumbnail"
                 alt="thumbnail"

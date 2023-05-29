@@ -1,8 +1,8 @@
 # IGNORE
-/node_modules
-/build
-package-lock.json
 .vscode
+package-lock.json
+/build
+node_modules
 /server/data/images/*
 /server/data/thumbnails/*
 /server/data/posts/*

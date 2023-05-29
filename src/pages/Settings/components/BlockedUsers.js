@@ -1,4 +1,4 @@
-import { UnblockAccount } from "../../../utilities/utilities";
+import { thumbnailUrl, UnblockAccount } from "../../../utilities/utilities";
 
 function BlockedUsers(args)
 {
@@ -16,7 +16,7 @@ function BlockedUsers(args)
         args.blocked.map((account) => (
           <div className="blocked-users" key={account.id}>
             <img
-              src={`${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/api/thumbnail?id=${account.id}`}
+              src={`${thumbnailUrl}/api/thumbnail/${account.id}`}
               onError={(img) => (img.target.src = `${process.env.PUBLIC_URL}/images/default-profile.png`)}
               className="thumbnail"
               alt="thumbnail"

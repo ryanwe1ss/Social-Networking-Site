@@ -1,3 +1,4 @@
+import { thumbnailUrl } from "../../utilities/utilities";
 import "./connections.scss";
 
 function Following(args)
@@ -19,7 +20,7 @@ function Following(args)
             {args.following.map(account => (
               <div className="account" key={account.id}>
                 <img
-                  src={`${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/api/thumbnail?id=${account.id}`}
+                  src={`${thumbnailUrl}/api/thumbnail/${account.id}`}
                   onError={(img) => (img.target.src = `${process.env.PUBLIC_URL}/images/default-profile.png`)}
                   className="thumbnail"
                   alt="thumbnail"

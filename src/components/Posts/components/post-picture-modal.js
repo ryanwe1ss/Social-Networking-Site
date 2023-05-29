@@ -7,7 +7,6 @@ function PostPictureModal(args)
 {
   const popup = document.querySelector(".popup-box");
   const [uploaded, setUploaded] = useState(false);
-  const [posted, setPosted] = useState(false);
 
   function DisplayImage(event) {
     const image = event.target.files[0];
@@ -32,13 +31,10 @@ function PostPictureModal(args)
 
     UploadPost(description, comment, like, image).then((response) => {
       if (response.status == 200) {
-        setPosted(true);
-
         setTimeout(() => {
           document.getElementById("postModal").style.display = "none";
           args.setRefresh(args.refresh + 1);
           args.setLoaded(false);
-          setPosted(false);
 
         }, 1000);
       

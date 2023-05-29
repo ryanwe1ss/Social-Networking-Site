@@ -1,4 +1,9 @@
-import { HttpGet, HttpPost } from "./http-service";
+import { HttpGet, HttpPost, HttpGetFileServer, HttpPostFileServer } from "./http-service";
+
+export const thumbnailUrl =
+  process.env.REACT_APP_FILE_SERVER +
+  (process.env.REACT_APP_USE_PORT_IN_URL == "true"
+  ? `:${process.env.REACT_APP_FILE_SERVER_PORT}` : '');
 
 // ----- AUTHENTICATION ----- //
 export function FetchSession(onHomeScreens=false)
@@ -22,7 +27,8 @@ export function PerformLogin(username, password) {
   };
 
   return HttpPost('/api/login', body)
-    .then((response) => { return response.json() });
+    .then((response) => { return response.json() })
+    .catch(() => { return {"status": 504} });
 }
 
 export function PerformRegister(username, password, confirm) {
@@ -38,6 +44,7 @@ export function PerformRegister(username, password, confirm) {
 
 export function Logout()
 {
+  localStorage.clear();
   HttpGet('/api/logout');
 }
 
@@ -88,25 +95,10 @@ export function FetchBlocked()
     });
 }
 
-export function FetchPicture(username) {
-  return HttpGet(`/api/picture?username=${username}`)
-    .then((picture) => {
-      return picture.blob();
-    })
-    .then((picture) => {
-      return URL.createObjectURL(picture);
-    })
-}
-
-export function FetchThumbnail(id)
-{
-  return HttpGet(`/api/thumbnail?id=${id}`)
-    .then((thumbnail) => {
-      return thumbnail.blob();
-    })
-    .then((thumbnail) => {
-      return URL.createObjectURL(thumbnail);
-    })
+export function FetchPicture(id) {
+  return HttpGetFileServer(`/api/profile-picture/${id}`)
+    .then(picture => picture.blob())
+    .then(picture => { return URL.createObjectURL(picture) });
 }
 
 // ----- FILE UPLOADS ----- //
@@ -115,8 +107,8 @@ export function UploadProfilePicture(event)
   const formData = new FormData();
   formData.append("data", event.target.files[0]);
 
-  return HttpPost(`/api/update`, formData, false, false)
-    .then((response) => { return response });
+  return HttpPostFileServer(`/api/update-profile-picture`, formData, false)
+    .then(response => { return response });
 }
 
 export function UploadPost(description, comment, like, image)
@@ -127,7 +119,7 @@ export function UploadPost(description, comment, like, image)
   postContent.append("comment", comment);
   postContent.append("like", like);
 
-  return HttpPost(`/api/post`, postContent, false, false)
+  return HttpPostFileServer('/api/create-post', postContent, false)
     .then((response) => { return response });
 }
 
@@ -171,9 +163,15 @@ export function FetchSavedPosts()
     });
 }
 
-export function FetchPost(profileId, postId)
+export function FetchPostPicture(profileId, postId) {
+  return HttpGetFileServer(`/api/post/${profileId}/${postId}`)
+    .then(post => post.blob())
+    .then(post => { return URL.createObjectURL(post) });
+}
+
+export function FetchPostContent(profileId, postName)
 {
-  return HttpGet(`/api/post?profileId=${profileId}&post=${postId}`)
+  return HttpGet(`/api/post/${profileId}/${postName}`)
     .then((response) => {
       if (response.status == 200) {
         return response.json();

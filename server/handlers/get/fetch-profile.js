@@ -31,6 +31,8 @@ function FetchProfile(request, result)
 
             (SELECT EXISTS(SELECT * FROM "blocked" WHERE blocker = ${request.session.user.id} AND "user" = ${profileId}) AS is_blocking),
             (SELECT EXISTS(SELECT * FROM "blocked" WHERE blocker = ${profileId} AND "user" = ${request.session.user.id}) AS is_blocked),
+
+            (SELECT JSON_AGG(JSON_BUILD_OBJECT('id', id, 'file_name', file_name)) AS posts FROM posts WHERE creator_id = ${profileId}) AS posts,
           
             (SELECT COUNT(*) FROM accounts
               LEFT JOIN connections ON connections.follower = accounts.id

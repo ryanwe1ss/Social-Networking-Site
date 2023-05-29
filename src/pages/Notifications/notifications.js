@@ -77,6 +77,7 @@ function Notifications()
         }
       });
 
+      console.log(combinedNotifications);
       setNotifications(combinedNotifications);
       setLoaded(true);
     });
@@ -118,9 +119,9 @@ function Notifications()
                     notification.tag == "follow_request" ?
                       <FollowRequests notification={notification} HandleAcceptFollow={HandleAcceptFollow} HandleDeclineFollow={HandleDeclineFollow}/>
                     : notification.tag == "comment" ?
-                      <Comments notification={notification}/>
+                      <Comments notification={notification} session={session}/>
                     : notification.tag == "like" ?
-                      <Likes notification={notification}/>
+                      <Likes notification={notification} session={session}/>
                     : null
                     }
                   </div>

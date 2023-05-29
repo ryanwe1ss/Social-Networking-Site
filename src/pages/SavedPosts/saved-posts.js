@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { FetchSession, FetchSavedPosts } from "../../utilities/utilities";
+import { thumbnailUrl, FetchSession, FetchSavedPosts } from "../../utilities/utilities";
 
 import LoadingBar from "../../components/LoadingBar/loading-bar";
 import SidePanel from "../../components/SidePanel/side-panel";
@@ -21,8 +21,9 @@ function SavedPosts()
   }, []);
 
   function HandleFetchSavedPosts() {
-    FetchSavedPosts().then((saved) => {
-      setPosts(saved.posts);
+    FetchSavedPosts().then(saved => {
+      console.log(saved);
+      setPosts(saved);
       setLoaded(true);
     });
   }
@@ -43,8 +44,8 @@ function SavedPosts()
               <div className="posts">
                 {posts.length > 0 ? posts.map((post) => (
                   <div className="post" key={post.id}>
-                    <a href={`/post?id=${post.poster.id}&post=${post.post_id}`} key={post.id}>
-                      <img src={`data:image/jpeg;base64,${post.image}`} id={post.id} alt="image"/>
+                    <a href={`/post?profileId=${post.poster.id}&postId=${post.postId}&post=${post.fileName}`} key={post.id}>
+                      <img src={`${thumbnailUrl}/api/post/${post.poster.id}/${post.fileName}`} id={post.id} alt="image"/>
                     </a>
                     <p>@{post.poster.username}</p>
                   </div>

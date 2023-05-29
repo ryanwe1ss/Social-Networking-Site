@@ -61,16 +61,16 @@ function Profile()
       
       } else {
         setProfile(profile);
-        HandleFetchPicture();
+        HandleFetchPicture(profile);
       }
     });
   }
 
-  function HandleFetchPicture() {
-    FetchPicture(profileUsername).then((picture) => {
+  function HandleFetchPicture(tempProfile) {
+    FetchPicture(tempProfile ? tempProfile.id : profile.id).then(picture => {
       setPicture(picture);
       setRendered(true);
-    })
+    });
   }
 
   function HandleUpdate() {

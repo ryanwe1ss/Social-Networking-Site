@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { FetchSession, FetchFeed } from "../../utilities/utilities";
+import { thumbnailUrl, FetchSession, FetchFeed } from "../../utilities/utilities";
 
 import SidePanel from "../../components/SidePanel/side-panel";
 import LoadingBar from "../../components/LoadingBar/loading-bar";
@@ -18,7 +18,7 @@ function Feed()
       setSession({ id: session.id, username: session.username, type: session.type });
 
       FetchFeed().then((feed) => {
-        setFeed(feed.posts);
+        setFeed(feed);
         setLoaded(true);
       });
     });
@@ -36,13 +36,16 @@ function Feed()
                 <div className="post" key={post.id}>
 
                   <div className="header">
-                    <span className="username">@{post.creator_username}</span><br/>
-                    <img src={`data:image/png;base64,${post.file}`} onClick={() => { window.location.href = `/post?id=${post.creator_id}&post=${post.id}` }} alt="post"/>
+                    <span className="username">@{post.creatorUsername}</span><br/>
+                    <img
+                      src={`${thumbnailUrl}/api/post/${post.creatorId}/${post.fileName}`}
+                      onClick={() => { window.location.href = `/post?profileId=${post.creatorId}&postId=${post.id}&post=${post.fileName}` }} alt="post"
+                    />
                   </div>
 
                   <div className="body">
                     <div className="post-description">{post.description}</div>
-                    <span className="post-date">{new Date(post.date_created).toLocaleString()}</span>
+                    <span className="post-date">{new Date(post.dateCreated).toLocaleString()}</span>
 
                     <div className="likes-comments">
                       <i className="bi bi-heart-fill"/>
