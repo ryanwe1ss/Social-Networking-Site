@@ -18,7 +18,7 @@ function DeletePost(request, result)
           if (error) return result.sendStatus(500);
           result.send({
             session: request.session.user,
-            fileName: request.params.fileName,
+            fileName: fileName,
           });
         }
       );

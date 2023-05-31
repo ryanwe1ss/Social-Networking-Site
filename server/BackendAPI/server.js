@@ -10,14 +10,11 @@ const { FetchSavedPosts } = require("./handlers/get/fetch-saved-posts");
 const { FetchPostLikes } = require("./handlers/get/fetch-post-likes");
 const { FetchFollowers } = require("./handlers/get/fetch-followers");
 const { FetchFollowing } = require("./handlers/get/fetch-following");
-const { FetchThumbnail } = require("./handlers/get/fetch-thumbnail");
 const { SearchAccounts } = require("./handlers/get/search-accounts");
-const { FetchPicture } = require("./handlers/get/fetch-picture");
 const { FetchProfile } = require("./handlers/get/fetch-profile");
 const { FetchBlocked } = require("./handlers/get/fetch-blocked");
 const { FetchChats } = require("./handlers/get/fetch-chats");
 const { FetchFeed } = require("./handlers/get/fetch-feed");
-const { FetchPosts } = require("./handlers/get/fetch-posts");
 const { FetchPostContent } = require("./handlers/get/fetch-post");
 
 const { UpdatePublicMessaging } = require("./handlers/update/update-public-messaging");
@@ -190,10 +187,6 @@ apiRouter.get("/api/favorite", middleware, (request, result) => {
 
 apiRouter.get("/api/feed", middleware, (request, result) => {
   FetchFeed(request, result);
-});
-
-apiRouter.get("/api/posts/:id", middleware, (request, result) => {
-  FetchPosts(request, result);
 });
 
 apiRouter.get("/api/post-likes", middleware, (request, result) => {
