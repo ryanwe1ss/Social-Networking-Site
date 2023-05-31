@@ -10,32 +10,17 @@ function Posts(args) {
   const editMode = args.editMode;
 
   const [loaded, setLoaded] = useState(false);
-  const [refresh, setRefresh] = useState(0);
   const [limit, setLimit] = useState(6);
-
   const [tempPosts, setTempPosts] = useState([]);
-  // const [posts, setPosts] = useState([]);
 
   useEffect(() => {
     setLoaded(true);
     setTimeout(() => {
       document.querySelector(".load-more").style.display = "none";
-    
+
     }, 10);
 
-    /*
-    FetchPosts(args.profile.id, limit).then((result) => {
-      setPosts(result.posts);
-      setLoaded(true);
-      setTimeout(() => {
-        if (result.count <= limit)
-          document.querySelector(".load-more").style.display = "none";
-      
-      }, 250);
-    });
-    */
-
-  }, [limit, refresh]);
+  }, [limit]);
 
   useEffect(() => {
     tempPosts.forEach(postId => {
@@ -45,15 +30,12 @@ function Posts(args) {
             popup.style.display = "block";
             popup.innerHTML =  "Problem Deleting Post. Error: " + response.status;
             setTimeout(() => popup.style.display = "none", 6000);
-          }
+          
+          } location.reload();
         })
       }
       document.getElementById(postId).style.border = "2px solid black";
     });
-
-    if (args.saved) setRefresh(refresh + 1);
-    setTempPosts([]);
-    args.setSaved(false);
 
   }, [editMode]);
 
@@ -74,20 +56,6 @@ function Posts(args) {
   
         <div className="posts">
           {loaded ? args.profile.posts && args.profile.posts.length > 0 ?
-            /*
-            posts.map(post => (
-              <a className="post" href={!editMode ? `/post?id=${args.profile.id}&post=${post.id}` : null} key={post.id}>
-                <img src={`data:image/jpeg;base64,${post.image}`} id={post.id} alt="thumbnail"/>
-                { editMode ?
-                  <span
-                    className="delete"
-                    onClick={() => SelectPost(post.id)}
-                  >✕
-                  </span>
-                : null }
-              </a>
-            ))*/
-            
             args.profile.posts.map(post => (
               <a className="post" href={!editMode ? `/post?profileId=${args.profile.id}&postId=${post.id}&post=${post.file_name}` : null} key={post.id}>
                 <img src={`${thumbnailUrl}/fs-api/post/${args.profile.id}/${post.file_name}`} id={post.id} alt="thumbnail"/>
@@ -122,10 +90,7 @@ function Posts(args) {
             }}/>
           </div> : null
         }
-        <PostPictureModal
-          setRefresh={setRefresh} refresh={refresh}
-          setLoaded={setLoaded} loaded={loaded}
-        />
+        <PostPictureModal/>
       </div>
     );
   

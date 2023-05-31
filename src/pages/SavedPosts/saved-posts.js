@@ -22,7 +22,6 @@ function SavedPosts()
 
   function HandleFetchSavedPosts() {
     FetchSavedPosts().then(saved => {
-      console.log(saved);
       setPosts(saved);
       setLoaded(true);
     });

@@ -77,7 +77,6 @@ function Notifications()
         }
       });
 
-      console.log(combinedNotifications);
       setNotifications(combinedNotifications);
       setLoaded(true);
     });

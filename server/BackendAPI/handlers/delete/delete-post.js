@@ -8,7 +8,7 @@ function DeletePost(request, result)
     
     (error, data) => {
       if (error) return result.sendStatus(500);
-      const fileName = data.rows[0].file_name;
+      const fileName = data.rows.length > 0 ? data.rows[0].file_name : null;
 
       database.query(`
         DELETE FROM posts

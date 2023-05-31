@@ -46,7 +46,6 @@ function Post()
 
   function HandleFetchPostContent(session) {
     FetchPostContent(profileId, postId).then((content) => {
-      console.log(content);
       if (!content || !content.is_enabled) location.href = `/profile/${session.username}`;
 
       setPost(content);
@@ -118,7 +117,7 @@ function Post()
                     :
                     <span>
                       <i className="bi bi-heart-fill" id="disabled"/>
-                      {loaded ? "Likes have been disabled" : null}
+                      {loaded ? " Likes have been disabled" : null}
                     </span>
                   }
                 </div>

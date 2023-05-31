@@ -33,8 +33,7 @@ function PostPictureModal(args)
       if (response.status == 200) {
         setTimeout(() => {
           document.getElementById("postModal").style.display = "none";
-          args.setRefresh(args.refresh + 1);
-          args.setLoaded(false);
+          location.reload();
 
         }, 1000);
       

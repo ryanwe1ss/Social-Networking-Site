@@ -12,6 +12,7 @@ function FetchNotifications(request, result)
       FROM
         follow_requests
       WHERE
+        (SELECT EXISTS(SELECT * FROM accounts WHERE is_enabled IS TRUE AND id = follower_id)) AND
         account_id = ${request.session.user.id} AND
         accepted = FALSE AND
         declined = FALSE`,
@@ -126,16 +127,15 @@ function FetchNotifications(request, result)
                     if (!error) {
                       notifications.push(likes.rows);
                       result.send(notifications);
-                    }
-                    else return result.sendStatus(500);
+                    
+                    } else return result.sendStatus(500);
                   }
                 )
-              }
-              else return result.sendStatus(500);
+              
+              } else return result.sendStatus(500);
             }
           )
-        }
-        else return result.sendStatus(500);
+        } else return result.sendStatus(500);
       }
     );
   }
