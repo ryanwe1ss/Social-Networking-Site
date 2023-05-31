@@ -3,7 +3,6 @@
 /build
 node_modules
 envs
-.env
 /server/FileServerAPI/content/images/*
 /server/FileServerAPI/content/thumbnails/*
 /server/FileServerAPI/content/posts/*
