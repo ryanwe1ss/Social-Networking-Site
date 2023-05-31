@@ -94,21 +94,6 @@ apiRouter.use(function(request, result, next) {
 });
 
 // --------------- AUTHENTICATION ROUTES --------------- //
-
-/*
-apiRouter.get("/api/test", middleware, (request, result) => {
-  axios.get(`${process.env.REACT_APP_FILE_SERVER}:${process.env.REACT_APP_FILE_PORT}/api/register`, {
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': request.headers.cookie,
-    }
-  })
-  .then(response => console.log(response.data));
-
-  result.send(request.session.user);
-});
-*/
-
 apiRouter.post("/api/login", (request, result) => {
   Login(request, result);
 });
@@ -163,12 +148,6 @@ apiRouter.get("/api/update-password", middleware, (request, result) => {
   UpdatePassword(request, result);
 });
 
-/*
-apiRouter.post("/api/post", middleware, (request, result) => {
-  UploadPost(request, result);
-});
-*/
-
 apiRouter.post("/api/create-post", middleware, (request, result) => {
   UploadPost(request, result);
 });
@@ -183,14 +162,6 @@ apiRouter.get("/api/profile", middleware, (request, result) => {
 
 apiRouter.get("/api/blocked", middleware, (request, result) => {
   FetchBlocked(request, result);
-});
-
-apiRouter.get("/api/picture", middleware, (request, result) => {
-  FetchPicture(request, result);
-});
-
-apiRouter.get("/api/thumbnail", middleware, (request, result) => {
-  FetchThumbnail(request, result);
 });
 
 apiRouter.get("/api/post/:profileId/:post", (request, result) => {
@@ -269,7 +240,7 @@ apiRouter.get("/api/delete-connection", middleware, (request, result) => {
   DeleteConnection(request, result);
 });
 
-apiRouter.get("/api/delete-post", middleware, (request, result) => {
+apiRouter.delete('/api/delete-post/:postId', middleware, (request, result) => {
   DeletePost(request, result);
 });
 

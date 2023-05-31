@@ -1,4 +1,8 @@
-require("dotenv").config({path:".env"});
+require("dotenv").config({ path:"../../.env" });
+
+const Backend_Url = process.env.REACT_APP_URL;
+const Backend_Port = process.env.REACT_APP_BACKEND_USE_PORT_IN_URL == "true" ?
+  `:${process.env.REACT_APP_API_PORT}` : '';
 
 const fs = require('fs');
 const path = require('path');
@@ -14,16 +18,15 @@ sharp.cache(false);
 fileApi.use(function(request, result, next) {
   result.setHeader(
     'Access-Control-Allow-Origin',
-    `${process.env.REACT_APP_URL}:${process.env.REACT_APP_ENDPOINT_PORT}`
+    `${Backend_Url}:${process.env.REACT_APP_ENDPOINT_PORT}`
   );
-
   result.setHeader('Access-Control-Allow-Methods', 'GET, POST, DELETE');
   result.setHeader('Access-Control-Allow-Headers', "Origin, X-Requested-With, Content-Type, Accept, Token");
   next();
 });
 
 // --------------- ROUTES --------------- //
-fileApi.post('/api/register', (request, result) => {
+fileApi.post('/fs-api/register', (request, result) => {
   const id = request.body.id;
 
   fs.mkdir(`content/posts/${id}`, { recursive: true }, (error) => {
@@ -32,24 +35,24 @@ fileApi.post('/api/register', (request, result) => {
   });
 });
 
-fileApi.get('/api/post/:id/:fileName', (request, result) => {
+fileApi.get('/fs-api/post/:id/:fileName', (request, result) => {
   result.sendFile(path.join(__dirname, `./content/posts/${request.params.id}/${request.params.fileName}.png`));
 });
 
-fileApi.get('/api/thumbnail/:id', (request, result) => {
+fileApi.get('/fs-api/thumbnail/:id', (request, result) => {
   result.sendFile(path.join(__dirname, `./content/thumbnails/${request.params.id}.png`));
 });
 
-fileApi.get('/api/profile-picture/:id', (request, result) => {
+fileApi.get('/fs-api/profile-picture/:id', (request, result) => {
   result.sendFile(path.join(__dirname, `./content/images/${request.params.id}.png`));
 });
 
-fileApi.post('/api/update-profile-picture', (request, result) => {
+fileApi.post('/fs-api/update-profile-picture', (request, result) => {
   const form = new formidable.IncomingForm();
   const sessionToken = request.headers.token;
 
   form.on("file", function (field, file) {
-    fetch(`${process.env.REACT_APP_URL}:${process.env.REACT_APP_API_PORT}/api/update-profile-picture`, {
+    fetch(`${Backend_Url}${Backend_Port}/api/update-profile-picture`, {
       headers: {
         'Content-Type': 'application/json',
         'Cookie': sessionToken
@@ -82,14 +85,15 @@ fileApi.post('/api/update-profile-picture', (request, result) => {
       result.sendStatus(200);
       console.log(`${session.username} has updated their profile picture: ${file.originalFilename}`);
     })
-    .catch(errorCode => {
-      result.sendStatus(parseInt(errorCode.message) || 500);
+    .catch(error => {
+      console.log("Error Fetching Resource for Updating Profile Picture: " + error.message);
+      result.sendStatus(parseInt(error.message) || 500);
     });
   });
   form.parse(request);
 });
 
-fileApi.post('/api/create-post', (request, result) => {
+fileApi.post('/fs-api/create-post', (request, result) => {
   const form = new formidable.IncomingForm();
   const sessionToken = request.headers.token;
   
@@ -98,7 +102,7 @@ fileApi.post('/api/create-post', (request, result) => {
     const comment = fields.comment != 'true' && fields.comment != 'false' ? false : fields.comment;
     const like = fields.like != 'true' && fields.like != 'false' ? false : fields.like;
 
-    fetch(`${process.env.REACT_APP_URL}:${process.env.REACT_APP_API_PORT}/api/create-post`, {
+    fetch(`${Backend_Url}${Backend_Port}/api/create-post`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -128,9 +132,39 @@ fileApi.post('/api/create-post', (request, result) => {
       );
       result.sendStatus(200);
     })
-    .catch(errorCode => {
-      result.sendStatus(parseInt(errorCode.message) || 500);
+    .catch(error => {
+      console.log("Error Fetching Resource for Creating Post: " + error.message);
+      result.sendStatus(parseInt(error.message) || 500);
     });
+  });
+});
+
+fileApi.get('/fs-api/delete-post/:postId', (request, result) => {
+  const sessionToken = request.headers.token;
+  const postId = request.params.postId;
+
+  fetch(`${Backend_Url}${Backend_Port}/api/delete-post/${postId}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+      'Cookie': sessionToken
+    },
+  })
+  .then(response => {
+    if (response.status === 200) return response.json();
+    else throw new Error(response.status);
+  })
+  .then(post => {
+    fs.unlinkSync(`./content/posts/${post.session.id}/${post.fileName}.png`, (error) => {
+      if (error) {
+        console.log(`Error Deleting Post for ${post.session.id}`);
+        return result.sendStatus(500);
+      }
+    }); result.sendStatus(200);
+  })
+  .catch(error => {
+    console.log("Error Fetching Resource for Deleting Post: " + error.message);
+    result.sendStatus(parseInt(error.message) || 500);
   });
 });
 

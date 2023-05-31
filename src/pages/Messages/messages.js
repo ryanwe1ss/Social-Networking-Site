@@ -123,7 +123,7 @@ function Messages()
               {chatsLoaded ? chats.map(chat => (
                 <div className="chat" onClick={() => { HandleFetchConversation(chat.id) }} id={`${chat.id}_chat`} key={chat.id}>
                   <img
-                    src={`${thumbnailUrl}/api/thumbnail/${chat.id}`}
+                    src={`${thumbnailUrl}/fs-api/thumbnail/${chat.id}`}
                     onError={(img) => (img.target.src = `${process.env.PUBLIC_URL}/images/default-profile.png`)}
                     className="thumbnail"
                     alt="thumbnail"

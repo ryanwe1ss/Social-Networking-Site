@@ -38,7 +38,7 @@ function Feed()
                   <div className="header">
                     <span className="username">@{post.creatorUsername}</span><br/>
                     <img
-                      src={`${thumbnailUrl}/api/post/${post.creatorId}/${post.fileName}`}
+                      src={`${thumbnailUrl}/fs-api/post/${post.creatorId}/${post.fileName}`}
                       onClick={() => { window.location.href = `/post?profileId=${post.creatorId}&postId=${post.id}&post=${post.fileName}` }} alt="post"
                     />
                   </div>

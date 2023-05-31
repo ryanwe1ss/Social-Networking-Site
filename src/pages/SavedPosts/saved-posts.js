@@ -45,7 +45,7 @@ function SavedPosts()
                 {posts.length > 0 ? posts.map((post) => (
                   <div className="post" key={post.id}>
                     <a href={`/post?profileId=${post.poster.id}&postId=${post.postId}&post=${post.fileName}`} key={post.id}>
-                      <img src={`${thumbnailUrl}/api/post/${post.poster.id}/${post.fileName}`} id={post.id} alt="image"/>
+                      <img src={`${thumbnailUrl}/fs-api/post/${post.poster.id}/${post.fileName}`} id={post.id} alt="image"/>
                     </a>
                     <p>@{post.poster.username}</p>
                   </div>

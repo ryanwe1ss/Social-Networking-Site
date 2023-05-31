@@ -5,7 +5,7 @@ function Likes(args)
   return (
     <div className="notification">
       <img
-        src={`${thumbnailUrl}/api/thumbnail/${args.notification.liker.id}`}
+        src={`${thumbnailUrl}/fs-api/thumbnail/${args.notification.liker.id}`}
         onError={(img) => (img.target.src = `${process.env.PUBLIC_URL}/images/default-profile.png`)}
         className="thumbnail"
         alt="thumbnail"
@@ -17,7 +17,7 @@ function Likes(args)
 
       <a href={`/post?profileId=${args.session.id}&postId=${args.notification.post.id}&post=${args.notification.file_name}`} className="post">
         <img
-          src={`${thumbnailUrl}/api/post/${args.session.id}/${args.notification.file_name}`}
+          src={`${thumbnailUrl}/fs-api/post/${args.session.id}/${args.notification.file_name}`}
           onError={(img) => (img.target.src = `${process.env.PUBLIC_URL}/images/default-profile.png`)}
           alt="post"
         />

@@ -1,5 +1,7 @@
 const { database } = require("../../database/db_connect");
-const fs = require("fs");
+
+const FileServer_URL = process.env.REACT_APP_FILE_SERVER;
+const FileServer_Port = process.env.REACT_APP_FS_USE_PORT_IN_URL == "true" ? `:${process.env.REACT_APP_FILE_SERVER_PORT}` : '';
 
 function Register(request, result)
 {
@@ -33,7 +35,7 @@ function Register(request, result)
               database.query(`SELECT id FROM accounts WHERE username = '${credentials.username}'`, function(error, results) {
                 const accountId = results.rows[0].id;
 
-                fetch(`${process.env.REACT_APP_FILE_SERVER}:${process.env.REACT_APP_FILE_SERVER_PORT}/api/register`, {
+                fetch(`${FileServer_URL}${FileServer_Port}/fs-api/register`, {
                   method: "POST",
                   headers: {"Content-Type": "application/json"},
                   body: JSON.stringify({id: accountId})

@@ -16,7 +16,7 @@ function BlockedUsers(args)
         args.blocked.map((account) => (
           <div className="blocked-users" key={account.id}>
             <img
-              src={`${thumbnailUrl}/api/thumbnail/${account.id}`}
+              src={`${thumbnailUrl}/fs-api/thumbnail/${account.id}`}
               onError={(img) => (img.target.src = `${process.env.PUBLIC_URL}/images/default-profile.png`)}
               className="thumbnail"
               alt="thumbnail"

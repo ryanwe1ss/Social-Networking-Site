@@ -1,13 +1,13 @@
 # IGNORE
 .vscode
-package-lock.json
 /build
 node_modules
-/FileServerAPI/content/images/*
-/FileServerAPI/content/thumbnails/*
-/FileServerAPI/content/posts/*
+envs
+/server/FileServerAPI/content/images/*
+/server/FileServerAPI/content/thumbnails/*
+/server/FileServerAPI/content/posts/*
 
 # ALLOW
-!/FileServerAPI/content/images/info.txt
-!/FileServerAPI/content/thumbnails/info.txt
-!/FileServerAPI/content/posts/info.txt
+!/server/FileServerAPI/content/images/info.txt
+!/server/FileServerAPI/content/thumbnails/info.txt
+!/server/FileServerAPI/content/posts/info.txt

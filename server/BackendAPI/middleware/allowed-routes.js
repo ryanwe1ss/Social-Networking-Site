@@ -7,9 +7,6 @@ const allRoutes = [
   "/api/profile",
   "/api/search",
   
-  "/api/thumbnail",
-  "/api/picture",
-  
   "/api/posts",
   "/api/feed",
 

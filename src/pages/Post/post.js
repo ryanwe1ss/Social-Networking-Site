@@ -137,7 +137,7 @@ function Post()
                     post.comments.map((comment) => (
                       <div className="comment" key={comment.id}>
                         <img
-                          src={`${thumbnailUrl}/api/thumbnail/${comment.commenter.id}`}
+                          src={`${thumbnailUrl}/fs-api/thumbnail/${comment.commenter.id}`}
                           onError={(img) => (img.target.src = `${process.env.PUBLIC_URL}/images/default-profile.png`)}
                           className="thumbnail"
                           alt="thumbnail"

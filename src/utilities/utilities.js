@@ -2,7 +2,7 @@ import { HttpGet, HttpPost, HttpGetFileServer, HttpPostFileServer } from "./http
 
 export const thumbnailUrl =
   process.env.REACT_APP_FILE_SERVER +
-  (process.env.REACT_APP_USE_PORT_IN_URL == "true"
+  (process.env.REACT_APP_FS_USE_PORT_IN_URL == "true"
   ? `:${process.env.REACT_APP_FILE_SERVER_PORT}` : '');
 
 // ----- AUTHENTICATION ----- //
@@ -96,7 +96,7 @@ export function FetchBlocked()
 }
 
 export function FetchPicture(id) {
-  return HttpGetFileServer(`/api/profile-picture/${id}`)
+  return HttpGetFileServer(`/fs-api/profile-picture/${id}`)
     .then(picture => picture.blob())
     .then(picture => { return URL.createObjectURL(picture) });
 }
@@ -107,7 +107,7 @@ export function UploadProfilePicture(event)
   const formData = new FormData();
   formData.append("data", event.target.files[0]);
 
-  return HttpPostFileServer(`/api/update-profile-picture`, formData, false)
+  return HttpPostFileServer(`/fs-api/update-profile-picture`, formData, false)
     .then(response => { return response });
 }
 
@@ -119,7 +119,7 @@ export function UploadPost(description, comment, like, image)
   postContent.append("comment", comment);
   postContent.append("like", like);
 
-  return HttpPostFileServer('/api/create-post', postContent, false)
+  return HttpPostFileServer('/fs-api/create-post', postContent, false)
     .then((response) => { return response });
 }
 
@@ -164,7 +164,7 @@ export function FetchSavedPosts()
 }
 
 export function FetchPostPicture(profileId, postId) {
-  return HttpGetFileServer(`/api/post/${profileId}/${postId}`)
+  return HttpGetFileServer(`/fs-api/post/${profileId}/${postId}`)
     .then(post => post.blob())
     .then(post => { return URL.createObjectURL(post) });
 }
@@ -255,7 +255,7 @@ export function FavoritePost(postId)
 
 export function DeletePost(postId)
 {
-  return HttpGet(`/api/delete-post?post=${postId}`)
+  return HttpGetFileServer(`/fs-api/delete-post/${postId}`)
     .then((response) => { return response });
 }
 

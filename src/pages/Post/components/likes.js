@@ -23,7 +23,7 @@ function Likes(args)
           {likes.map(like => (
             <div className="like" key={like.id}>
               <img
-                src={`${thumbnailUrl}/api/thumbnail/${like.liker.id}`}
+                src={`${thumbnailUrl}/fs-api/thumbnail/${like.liker.id}`}
                 onError={(img) => (img.target.src = `${process.env.PUBLIC_URL}/images/default-profile.png`)}
                 className="thumbnail"
                 alt="thumbnail"

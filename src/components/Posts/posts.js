@@ -90,7 +90,7 @@ function Posts(args) {
             
             args.profile.posts.map(post => (
               <a className="post" href={!editMode ? `/post?profileId=${args.profile.id}&postId=${post.id}&post=${post.file_name}` : null} key={post.id}>
-                <img src={`${thumbnailUrl}/api/post/${args.profile.id}/${post.file_name}`} id={post.id} alt="thumbnail"/>
+                <img src={`${thumbnailUrl}/fs-api/post/${args.profile.id}/${post.file_name}`} id={post.id} alt="thumbnail"/>
                 
                 { editMode ?
                   <span

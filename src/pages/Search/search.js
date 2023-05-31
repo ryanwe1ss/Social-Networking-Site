@@ -45,7 +45,7 @@ function Search()
               {searchResults.length > 0 ? searchResults.map((account) => (
                 <a href={`/profile/${account.username}`} className="account" id="profile-page" key={account.id}>
                   <img
-                    src={`${thumbnailUrl}/api/thumbnail/${account.id}`}
+                    src={`${thumbnailUrl}/fs-api/thumbnail/${account.id}`}
                     onError={(img) => (img.target.src = `${process.env.PUBLIC_URL}/images/default-profile.png`)}
                     alt="thumbnail"
                   />
