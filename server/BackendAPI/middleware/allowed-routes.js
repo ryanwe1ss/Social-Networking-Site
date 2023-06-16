@@ -12,6 +12,7 @@ const allRoutes = [
 
   "/api/followers",
   "/api/following",
+  "/api/post-likes",
 ]
 
 const userRoutes = [
@@ -41,7 +42,6 @@ const userRoutes = [
   "/api/like",
   "/api/comment",
   "/api/favorite",
-  "/api/post-likes",
   "/api/saved-posts",
   "/api/delete-post",
 

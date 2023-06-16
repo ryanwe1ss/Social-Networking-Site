@@ -36,6 +36,7 @@ function Post()
       HandleFetchPostContent(session);
       HandleFetchPostPicture();
     });
+    
   }, []);
 
   function HandleFetchPostPicture() {
@@ -124,7 +125,7 @@ function Post()
 
                 {session.id != profileId ?
                   <div className="settings">
-                    <i className="bi bi-flag-fill" onClick={() => setShowReport(true)}/>
+                    <i className="bi bi-flag-fill" onClick={() => session.type == 'admin' ? null : setShowReport(true)}/>
                     <i className="bi bi-star-fill" id={post.is_favorited ? 'favorited' : null} onClick={HandleFavoritePost}/>
                   </div> : null
                 }
