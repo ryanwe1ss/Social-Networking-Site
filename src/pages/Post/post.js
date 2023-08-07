@@ -11,8 +11,11 @@ import {
 
 import LoadingBar from "../../components/LoadingBar/loading-bar";
 import SidePanel from "../../components/SidePanel/side-panel";
-import ReportModal from "./components/report";
+
+import ReportPostModal from "./components/report-post";
+import ReportCommentModal from "./components/report-comment";
 import Likes from "./components/likes";
+
 import Footer from "../../components/Footer/footer";
 import "./post.scss";
 
@@ -23,8 +26,12 @@ function Post()
   const postName = parseInt(location.search.split("post=")[1]);
 
   const [session, setSession] = useState([]);
+
   const [showLikes, setShowLikes] = useState(false);
-  const [showReport, setShowReport] = useState(false);
+  const [showReportPostModal, setShowReportPostModal] = useState(false);
+  const [showReportCommentModal, setShowReportCommentModal] = useState(false);
+
+  const [comment, setComment] = useState([]);
 
   const [post, setPost] = useState([]);
   const [picture, setPicture] = useState([]);
@@ -48,7 +55,6 @@ function Post()
   function HandleFetchPostContent(session) {
     FetchPostContent(profileId, postId).then((content) => {
       if (!content || !content.is_enabled) location.href = `/profile/${session.username}`;
-
       setPost(content);
       setLoaded(true);
     });
@@ -77,6 +83,11 @@ function Post()
     FavoritePost(post.id).then(() => {
       HandleFetchPostContent();
     });
+  }
+
+  function HandleReportComment(id) {
+    setComment(post.comments.find((comment) => comment.id === id));
+    setShowReportCommentModal(true);
   }
 
   if (session.id) {
@@ -125,7 +136,7 @@ function Post()
 
                 {session.id != profileId ?
                   <div className="settings">
-                    <i className="bi bi-flag-fill" onClick={() => session.type == 'admin' ? null : setShowReport(true)}/>
+                    <i className="bi bi-flag-fill" onClick={() => session.type == 'admin' ? null : setShowReportPostModal(true)}/>
                     <i className="bi bi-star-fill" id={post.is_favorited ? 'favorited' : null} onClick={HandleFavoritePost}/>
                   </div> : null
                 }
@@ -143,7 +154,13 @@ function Post()
                           alt="thumbnail"
                         />
                         <span className="commenter"> <a href={`/profile/${comment.commenter.username}`}>{comment.commenter.username}</a></span>
-                        <span className="message"> {comment.comment}</span><br/>
+                        <span className="message"> {comment.comment}</span>
+                        {session.id != comment.commenter.id ?
+                          <span className="report" onClick={() => HandleReportComment(comment.id)}>Report</span>
+                          : null
+                        }
+                        
+                        <br/>
                         <span className="date">Sent on {new Date(comment.date_created).toLocaleString()}</span>
                       </div>
 
@@ -175,16 +192,22 @@ function Post()
             </div>
           </div>
         </div>
-        {showReport ?
-          <ReportModal
+        {showReportPostModal ?
+          <ReportPostModal
             profileId={profileId}
             postId={postId}
-            setShowReport={setShowReport}
+            setShowReportPostModal={setShowReportPostModal}
+          /> : false
+        }
+        {showReportCommentModal ?
+          <ReportCommentModal
+            comment={comment}
+            postId={postId}
+            setShowReportCommentModal={setShowReportCommentModal}
           /> : false
         }
         {showLikes ?
           <Likes
-            postId={postId}
             setShowLikes={setShowLikes}
           /> : false
         }

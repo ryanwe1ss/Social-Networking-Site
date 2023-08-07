@@ -10,15 +10,14 @@ function Posts(args) {
   const editMode = args.editMode;
 
   const [loaded, setLoaded] = useState(false);
-  const [limit, setLimit] = useState(6);
+  const [limit, setLimit] = useState(3);
+
+  const [posts, setPosts] = useState([]);
   const [tempPosts, setTempPosts] = useState([]);
 
   useEffect(() => {
+    setPosts(args.profile.posts.slice(0, limit));
     setLoaded(true);
-    setTimeout(() => {
-      document.querySelector(".load-more").style.display = "none";
-
-    }, 10);
 
   }, [limit]);
 
@@ -33,8 +32,8 @@ function Posts(args) {
           
           } location.reload();
         })
-      }
-      document.getElementById(postId).style.border = "2px solid black";
+      
+      } document.getElementById(postId).style.border = "2px solid black";
     });
 
   }, [editMode]);
@@ -55,18 +54,18 @@ function Posts(args) {
           </div> : null }
   
         <div className="posts">
-          {loaded ? args.profile.posts && args.profile.posts.length > 0 ?
-            args.profile.posts.map(post => (
+          {loaded ? posts && posts.length > 0 ?
+            posts.map(post => (
               <a className="post" href={!editMode ? `/post?profileId=${args.profile.id}&postId=${post.id}&post=${post.file_name}` : null} key={post.id}>
                 <img src={`${thumbnailUrl}/fs-api/post/${args.profile.id}/${post.file_name}`} id={post.id} alt="thumbnail"/>
                 
-                { editMode ?
+                {editMode ?
                   <span
                     className="delete"
                     onClick={() => SelectPost(post.id)}
                   >✕
                   </span>
-                : null }
+                : null}
               </a>
             )) :
             
@@ -82,12 +81,12 @@ function Posts(args) {
           }
         </div>
         {loaded ?
-          <div className="load-more">
+          <div className="load-more" style={{display: `${args.profile.posts && args.profile.posts.length > limit ? 'block' : 'none'}`}}>
             <input type="button" className="btn btn-secondary btn-sm" value="Load More"
-            onClick={() => {
-              setLimit(limit + 3);
-              setLoaded(false);
-            }}/>
+              onClick={() => {
+                setLimit(limit + 3);
+                setLoaded(false);
+              }}/>
           </div> : null
         }
         <PostPictureModal/>

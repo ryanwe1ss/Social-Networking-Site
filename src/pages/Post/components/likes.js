@@ -8,7 +8,6 @@ function Likes(args)
   useEffect(() => {
     FetchPostLikes(args.postId).then((likes) => {
       setLikes(likes);
-      console.log(likes);
     });
   }, []);
 

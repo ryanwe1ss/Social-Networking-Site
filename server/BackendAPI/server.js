@@ -27,6 +27,7 @@ const { BlockAccount } = require("./handlers/interact/block");
 const { UnblockAccount } = require("./handlers/interact/unblock");
 const { ReportAccount } = require("./handlers/interact/report-account");
 const { ReportPost } = require("./handlers/interact/report-post");
+const { ReportComment } = require("./handlers/interact/report-comment");
 const { UnfollowAccount } = require("./handlers/interact/unfollow");
 const { FollowAccount } = require("./handlers/interact/follow");
 
@@ -211,6 +212,10 @@ apiRouter.post("/api/report-account", middleware, (request, result) => {
 
 apiRouter.post("/api/report-post", middleware, (request, result) => {
   ReportPost(request, result);
+});
+
+apiRouter.post("/api/report-comment", middleware, (request, result) => {
+  ReportComment(request, result);
 });
 
 apiRouter.get("/api/follow", middleware, (request, result) => {

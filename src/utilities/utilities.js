@@ -322,6 +322,12 @@ export function ReportPost(body)
     .then((response) => { return response });
 }
 
+export function ReportComment(body)
+{
+  return HttpPost('/api/report-comment', body)
+    .then((response) => { return response });
+}
+
 export function DeleteConnection(userId, type)
 {
   return HttpGet(`/api/delete-connection?userId=${userId}&type=${type}`)

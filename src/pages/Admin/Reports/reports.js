@@ -29,13 +29,13 @@ function Reports()
     });
   }, []);
 
-  function SwitchReports() {
-    setSelected(selected == 1 ? 2 : 1);
+  function SwitchReports(event) {
+    setSelected(event.target.value);
 
     if (selected == 1) {
       FetchPostReports().then((reports) => {
         setPostReports(reports);
-      });
+      }); 
     }
     else {
       FetchProfileReports().then((reports) => {
@@ -54,7 +54,16 @@ function Reports()
             <div className="profile">
               <div className="header">
                 <h4>{selected == 1 ? 'Profile Reports' : 'Post Reports'}</h4>
-                <button className="btn btn-primary btn-sm" onClick={SwitchReports}>{selected == 1 ? 'Switch to Post Reports' : 'Switch to Profile Reports'}</button>
+                <div className="col-md-2">
+                  <select className="form-select form-select-sm" onChange={SwitchReports}>
+                    <option hidden>Select Reports Category</option>
+                    <option value="1">Profile Reports</option>
+                    <option value="2">Post Reports</option>
+                    <option value="3">Comment Reports</option>
+                  </select>
+                </div>
+
+                {/* <button className="btn btn-primary btn-sm" onClick={SwitchReports}>{selected == 1 ? 'Switch to Post Reports' : 'Switch to Profile Reports'}</button> */}
               </div>
 
               <div className="filters">
@@ -134,7 +143,8 @@ function Reports()
                         </tr>
                       ))}
                     </tbody>
-                  </table>}
+                  </table>
+                }
               </div>
             </div>
           </div>

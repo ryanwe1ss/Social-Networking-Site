@@ -113,9 +113,22 @@
               }
             }
 
+            .report {
+              cursor: pointer;
+              display: none;
+              font-size: 12px;
+              float: right;
+            }
+
             .date {
               font-size: 12px;
               color: white;
+            }
+          }
+
+          .comment:hover {
+            .report {
+              display: inline-block;
             }
           }
           

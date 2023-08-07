@@ -28,6 +28,7 @@ const userRoutes = [
   "/api/report-reasons",
   "/api/report-account",
   "/api/report-post",
+  "/api/report-comment",
 
   "/api/follow",
   "/api/unfollow",

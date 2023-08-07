@@ -8,7 +8,7 @@ function SidePanel(args)
     return (
       <div className="side-panel">
         <div className="side-bar">
-          <img src={`${process.env.PUBLIC_URL}/images/sidepanel-logo.png`} alt="logo"/>
+          <img src={`/images/sidepanel-logo.png`} alt="logo"/>
 
           <div className="labels">
             <div>
@@ -40,7 +40,7 @@ function SidePanel(args)
     return (
       <div className="side-panel">
         <div className="side-bar">
-          <img src={`${process.env.PUBLIC_URL}/images/sidepanel-logo.png`} alt="logo"/>
+          <img src={`/images/sidepanel-logo.png`} alt="logo"/>
 
           <div className="labels">
             <div>

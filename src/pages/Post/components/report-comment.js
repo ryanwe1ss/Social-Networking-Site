@@ -1,26 +1,26 @@
 import { useEffect, useState } from "react";
-import { FetchReportReasons, ReportPost } from "../../../utilities/utilities";
+import { FetchReportReasons, ReportComment } from "../../../utilities/utilities";
 
-function ReportModal(args)
+function ReportCommentModal(args)
 {
   const [reasons, setReasons] = useState([]);
 
   useEffect(() => {
     FetchReportReasons().then((reasons) => {
-      setReasons(reasons);
+      setReasons(reasons); 
     });
   }, []);
 
-  function HandleReportPost(reason, additionalInformation) {
+  function HandleReportComment(reason, additionalInformation) {
     const reportBody = {
-      id: args.profileId,
-      postId: args.postId,
+      reportedId: args.comment.commenter.id,
+      commentId: args.comment.id,
       reason: reason,
-      additionalInformation: additionalInformation
+      additionalInformation: additionalInformation,
     }
 
     if (reason !== "default") {
-      ReportPost(reportBody).then((response) => {
+      ReportComment(reportBody).then((response) => {
         if (response.status == 200) {
           document.getElementById("result").innerHTML = "Your report has been submitted.";
         
@@ -40,8 +40,8 @@ function ReportModal(args)
     <div id="report-modal" className="modal">
       <div className="modal-content">
         <header>
-          <h4>Report Post</h4>
-          <span onClick={() => args.setShowReport(false)} id="close">&times;</span>
+          <h4>Report Comment</h4>
+          <span onClick={() => args.setShowReportCommentModal(false)} id="close">&times;</span>
         </header><hr/>
 
         <div className="report-body">
@@ -58,7 +58,7 @@ function ReportModal(args)
         </div>
 
         <input type="button" className="btn btn-primary" value="Submit" onClick={() => {
-          HandleReportPost(
+          HandleReportComment(
             document.getElementById("reason").value,
             document.getElementsByTagName("textarea")[0].value
           )
@@ -68,4 +68,4 @@ function ReportModal(args)
     </div>
   );
 }
-export default ReportModal;
+export default ReportCommentModal;
