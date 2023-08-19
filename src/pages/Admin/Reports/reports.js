@@ -7,6 +7,10 @@ import {
   FetchCommentReports,
 } from "../../../utilities/utilities";
 
+import ProfileReports from "./components/profile-reports";
+import PostReports from "./components/post-reports";
+import CommentReports from "./components/comment-reports";
+
 import SidePanel from "../../../components/SidePanel/side-panel";
 import Footer from "../../../components/Footer/footer";
 import "./reports.scss";
@@ -82,100 +86,12 @@ function Reports()
 
               <div className="body">
                 {selected == 1 ?
-                  <table>
-                    <thead>
-                      <tr>
-                        <th>Reporter</th>
-                        <th>Account</th>
-                        <th>Reason</th>
-                        <th>Date</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {profileReports.map((report) => (
-                        <tr key={report.id}>
-                          <td className="reporter">
-                            <a href={`/profile/${report.reporter.username}`}>{report.reporter.username}</a>
-                          </td>
-                          <td className="reported">
-                            <a href={`/profile/${report.reported.username}`}>{report.reported.username}</a>
-                          </td>
-                          <td className="reason">
-                            {report.message}
-                          </td>
-                          <td className="date">
-                            {new Date(report.date_created).toLocaleString()}
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                  : selected == 2 ?
-                    <table>
-                      <thead>
-                        <tr>
-                          <th>Reporter</th>
-                          <th>Post</th>
-                          <th>Reason</th>
-                          <th>Additional Information</th>
-                          <th>Date</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {postReports.map((report) => (
-                          <tr key={report.id}>
-                            <td className="reporter">
-                              <a href={`/profile/${report.reporter.username}`}>{report.reporter.username}</a>
-                            </td>
-                            <td className="post">
-                              <a href={`/post?profileId=${report.post.id}&postId=${report.post.post_id}&post=${report.post.file}`}>{report.post.post_id}</a>
-                            </td>
-                            <td className="reason">
-                              {report.reason}
-                            </td>
-                            <td className="additional-information">
-                              {report.additional_information}
-                            </td>
-                            <td className="date">
-                              {new Date(report.date_created).toLocaleString()}
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                    :
-                    <table>
-                      <thead>
-                        <tr>
-                          <th>Reporter</th>
-                          <th>Comment</th>
-                          <th>Reason</th>
-                          <th>Additional Information</th>
-                          <th>Date</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {commentReports.map((report) => (
-                          <tr key={report.id}>
-                            <td className="reporter">
-                              <a href={`/profile/${report.reporter.username}`}>{report.reporter.username}</a>
-                            </td>
-                            <td>
-                              <a href={`/post?profileId=${report.post.id}&postId=${report.post.post_id}&post=${report.post.file}`}>{report.comment.comment}</a>
-                            </td>
-                            <td>
-                              {report.reason.name}
-                            </td>
-                            <td>
-                              {report.additional_information}
-                            </td>
-                            <td>
-                              {new Date(report.date_created).toLocaleString()}
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
+                  <ProfileReports profileReports={profileReports}/> :
+                 selected == 2 ?
+                  <PostReports postReports={postReports}/> :
+                 selected == 3 ?
+                  <CommentReports commentReports={commentReports}/> :
+                 null
                 }
               </div>
             </div>

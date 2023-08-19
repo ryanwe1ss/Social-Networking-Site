@@ -26,7 +26,6 @@ function Post()
   const postName = parseInt(location.search.split("post=")[1]);
 
   const [session, setSession] = useState([]);
-
   const [showLikes, setShowLikes] = useState(false);
   const [showReportPostModal, setShowReportPostModal] = useState(false);
   const [showReportCommentModal, setShowReportCommentModal] = useState(false);
@@ -155,7 +154,7 @@ function Post()
                         />
                         <span className="commenter"> <a href={`/profile/${comment.commenter.username}`}>{comment.commenter.username}</a></span>
                         <span className="message"> {comment.comment}</span>
-                        {session.id != comment.commenter.id ?
+                        {session.id != comment.commenter.id && session.type != 'admin' ?
                           <span className="report" onClick={() => HandleReportComment(comment.id)}>Report</span>
                           : null
                         }
@@ -209,6 +208,7 @@ function Post()
         {showLikes ?
           <Likes
             setShowLikes={setShowLikes}
+            postId={postId}
           /> : false
         }
         <Footer/>
