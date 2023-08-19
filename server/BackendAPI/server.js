@@ -53,6 +53,7 @@ const { FetchStatistics } = require("./handlers/admin/fetch-statistics");
 const { CheckAdminPermissions } = require("./handlers/admin/admin-permissions");
 const { FetchProfileReports } = require("./handlers/admin/fetch-profile-reports");
 const { FetchPostReports } = require("./handlers/admin/fetch-post-reports");
+const { FetchCommentReports } = require("./handlers/admin/fetch-comment-reports");
 
 // Middleware
 const { middleware } = require("./middleware/middleware");
@@ -119,6 +120,10 @@ apiRouter.get("/api/profile-reports", middleware, (request, result) => {
 
 apiRouter.get("/api/post-reports", middleware, (request, result) => {
   FetchPostReports(request, result);
+});
+
+apiRouter.get("/api/comment-reports", middleware, (request, result) => {
+  FetchCommentReports(request, result);
 });
 
 // --------------- USER ROUTES --------------- //

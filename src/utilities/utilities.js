@@ -221,6 +221,19 @@ export function FetchPostReports()
     });
 }
 
+export function FetchCommentReports()
+{
+  return HttpGet('/api/comment-reports')
+    .then((response) => {
+      if (response.status == 200) {
+        return response.json();
+      }
+    })
+    .then((reports) => {
+      return reports;
+    });
+}
+
 export function FetchReportReasons()
 {
   return HttpGet('/api/report-reasons')

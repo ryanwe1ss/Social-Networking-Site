@@ -14,9 +14,11 @@ function SidePanel(args)
             <div>
               <a href="/statistics" className="bi bi-activity"> Statistics</a>
             </div>
+            {/*
             <div>
               <a href="/user-settings" className="bi bi-person-fill-gear"> User Settings</a>
             </div>
+            */}
             <div>
               <a href="/reports" className="bi bi-flag-fill"> Reports</a>
             </div>

@@ -1,5 +1,11 @@
 import { useState, useEffect } from "react";
-import { FetchSession, CheckAdminPermissions, FetchProfileReports, FetchPostReports } from "../../../utilities/utilities";
+import {
+  FetchSession,
+  CheckAdminPermissions,
+  FetchProfileReports,
+  FetchPostReports,
+  FetchCommentReports,
+} from "../../../utilities/utilities";
 
 import SidePanel from "../../../components/SidePanel/side-panel";
 import Footer from "../../../components/Footer/footer";
@@ -9,10 +15,11 @@ function Reports()
 {
   const [session, setSession] = useState([]);
   const [permissions, setPermissions] = useState([]);
-
   const [selected, setSelected] = useState(1);
+
   const [profileReports, setProfileReports] = useState([]);
   const [postReports, setPostReports] = useState([]);
+  const [commentReports, setCommentReports] = useState([]);
 
   useEffect(() => {
     FetchSession().then((session) => {
@@ -32,14 +39,19 @@ function Reports()
   function SwitchReports(event) {
     setSelected(event.target.value);
 
-    if (selected == 1) {
+    if (event.target.value == 1) {
+      FetchProfileReports().then((reports) => {
+        setProfileReports(reports);
+      });
+    
+    } else if (event.target.value == 2) {
       FetchPostReports().then((reports) => {
         setPostReports(reports);
       }); 
-    }
-    else {
-      FetchProfileReports().then((reports) => {
-        setProfileReports(reports);
+    
+    } else if (event.target.value == 3) {
+      FetchCommentReports().then((reports) => {
+        setCommentReports(reports);
       });
     }
   }
@@ -53,17 +65,14 @@ function Reports()
           <div className="reports">
             <div className="profile">
               <div className="header">
-                <h4>{selected == 1 ? 'Profile Reports' : 'Post Reports'}</h4>
+                <h4>{selected == 1 ? 'Profile Reports' : selected == 2 ? 'Post Reports' : 'Comment Reports'}</h4>
                 <div className="col-md-2">
                   <select className="form-select form-select-sm" onChange={SwitchReports}>
-                    <option hidden>Select Reports Category</option>
                     <option value="1">Profile Reports</option>
                     <option value="2">Post Reports</option>
                     <option value="3">Comment Reports</option>
                   </select>
                 </div>
-
-                {/* <button className="btn btn-primary btn-sm" onClick={SwitchReports}>{selected == 1 ? 'Switch to Post Reports' : 'Switch to Profile Reports'}</button> */}
               </div>
 
               <div className="filters">
@@ -80,7 +89,6 @@ function Reports()
                         <th>Account</th>
                         <th>Reason</th>
                         <th>Date</th>
-                        <th>Actions</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -98,52 +106,76 @@ function Reports()
                           <td className="date">
                             {new Date(report.date_created).toLocaleString()}
                           </td>
-                          <td className="actions">
-                            <button className="btn btn-warning btn-sm"><i className="bi bi-trash"/></button>
-                            <button className="btn btn-danger btn-sm"><i className="bi bi-person-lock"/></button>
-                          </td>
                         </tr>
                       ))}
                     </tbody>
                   </table>
-                  :
-                  <table>
-                    <thead>
-                      <tr>
-                        <th>Reporter</th>
-                        <th>Post</th>
-                        <th>Reason</th>
-                        <th>Additional Information</th>
-                        <th>Date</th>
-                        <th>Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {postReports.map((report) => (
-                        <tr key={report.id}>
-                          <td className="reporter">
-                            <a href={`/profile/${report.reporter.username}`}>{report.reporter.username}</a>
-                          </td>
-                          <td className="post">
-                            <a href={`/post?id=${report.post.id}&post=${report.post.post_id}`}>{report.post.post_id}</a>
-                          </td>
-                          <td className="reason">
-                            {report.reason}
-                          </td>
-                          <td className="additional-information">
-                            {report.additional_information}
-                          </td>
-                          <td className="date">
-                            {new Date(report.date_created).toLocaleString()}
-                          </td>
-                          <td className="actions">
-                            <button className="btn btn-warning btn-sm"><i className="bi bi-trash"/></button>
-                            <button className="btn btn-danger btn-sm"><i className="bi bi-person-lock"/></button>
-                          </td>
+                  : selected == 2 ?
+                    <table>
+                      <thead>
+                        <tr>
+                          <th>Reporter</th>
+                          <th>Post</th>
+                          <th>Reason</th>
+                          <th>Additional Information</th>
+                          <th>Date</th>
                         </tr>
-                      ))}
-                    </tbody>
-                  </table>
+                      </thead>
+                      <tbody>
+                        {postReports.map((report) => (
+                          <tr key={report.id}>
+                            <td className="reporter">
+                              <a href={`/profile/${report.reporter.username}`}>{report.reporter.username}</a>
+                            </td>
+                            <td className="post">
+                              <a href={`/post?profileId=${report.post.id}&postId=${report.post.post_id}&post=${report.post.file}`}>{report.post.post_id}</a>
+                            </td>
+                            <td className="reason">
+                              {report.reason}
+                            </td>
+                            <td className="additional-information">
+                              {report.additional_information}
+                            </td>
+                            <td className="date">
+                              {new Date(report.date_created).toLocaleString()}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                    :
+                    <table>
+                      <thead>
+                        <tr>
+                          <th>Reporter</th>
+                          <th>Comment</th>
+                          <th>Reason</th>
+                          <th>Additional Information</th>
+                          <th>Date</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {commentReports.map((report) => (
+                          <tr key={report.id}>
+                            <td className="reporter">
+                              <a href={`/profile/${report.reporter.username}`}>{report.reporter.username}</a>
+                            </td>
+                            <td>
+                              <a href={`/post?profileId=${report.post.id}&postId=${report.post.post_id}&post=${report.post.file}`}>{report.comment.comment}</a>
+                            </td>
+                            <td>
+                              {report.reason.name}
+                            </td>
+                            <td>
+                              {report.additional_information}
+                            </td>
+                            <td>
+                              {new Date(report.date_created).toLocaleString()}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
                 }
               </div>
             </div>

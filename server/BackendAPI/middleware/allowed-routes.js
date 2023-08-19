@@ -65,6 +65,7 @@ const adminRoutes = [
 
   "/api/profile-reports",
   "/api/post-reports",
+  "/api/comment-reports",
 ];
 
 module.exports = { allRoutes, userRoutes, adminRoutes };
