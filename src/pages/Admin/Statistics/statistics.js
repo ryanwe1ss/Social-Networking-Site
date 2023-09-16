@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { thumbnailUrl, FetchSession, FetchStatistics, SearchAccounts, CheckAdminPermissions } from "../../../utilities/utilities";
+import DefaultProfileImage from "/public/images/default-profile.png";
 
 import SidePanel from "../../../components/SidePanel/side-panel";
 import Footer from "../../../components/Footer/footer";
@@ -75,7 +76,7 @@ function AdminPanel()
                   <a href={`/profile/${account.username}`} className="account" id="profile-page" key={account.id}>
                     <img
                       src={`${thumbnailUrl}/fs-api/thumbnail/${account.id}`}
-                      onError={(img) => (img.target.src = `${process.env.PUBLIC_URL}/images/default-profile.png`)}
+                      onError={(img) => (img.target.src = DefaultProfileImage)}
                       alt="thumbnail"
                     />
                     <label>{account.username}</label>

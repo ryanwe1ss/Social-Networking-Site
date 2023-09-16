@@ -18,6 +18,16 @@ function Login()
         }
       }
     });
+
+    document.getElementById("password").addEventListener("keyup", (event) => {
+      if (event.key == 'Enter') {
+        document.getElementById("response").style.color = "red";
+        HandleLogin(
+          document.getElementById("username").value,
+          document.getElementById("password").value,
+        );
+      }
+    });
   }, []);
 
   function HandleLogin(username, password) {

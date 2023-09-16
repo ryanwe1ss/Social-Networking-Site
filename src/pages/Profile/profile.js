@@ -13,6 +13,7 @@ import {
   FetchFollowers,
   FetchFollowing,
 } from "../../utilities/utilities";
+import DefaultProfileImage from "/public/images/default-profile.png";
 
 import ProfileDetails from "../../components/ProfileDetails/ProfileDetails";
 import AccountSettings from "../../components/AccountSettings/account-settings";
@@ -171,7 +172,7 @@ function Profile()
               {isRendered ? 
                 <img
                   src={picture}
-                  onError={(img) => (img.target.src = `${process.env.PUBLIC_URL}/images/default-profile.png`)}
+                  onError={(img) => (img.target.src = DefaultProfileImage)}
                   className="picture"
                   alt="picture"
                 /> :

@@ -1,3 +1,4 @@
+import DefaultProfileImage from "/public/images/default-profile.png";
 import { thumbnailUrl } from "../../../utilities/utilities";
 
 function Likes(args)
@@ -6,7 +7,7 @@ function Likes(args)
     <div className="notification">
       <img
         src={`${thumbnailUrl}/fs-api/thumbnail/${args.notification.liker.id}`}
-        onError={(img) => (img.target.src = `${process.env.PUBLIC_URL}/images/default-profile.png`)}
+        onError={(img) => (img.target.src = DefaultProfileImage)}
         className="thumbnail"
         alt="thumbnail"
       />
@@ -18,7 +19,7 @@ function Likes(args)
       <a href={`/post?profileId=${args.session.id}&postId=${args.notification.post.id}&post=${args.notification.file_name}`} className="post">
         <img
           src={`${thumbnailUrl}/fs-api/post/${args.session.id}/${args.notification.file_name}`}
-          onError={(img) => (img.target.src = `${process.env.PUBLIC_URL}/images/default-profile.png`)}
+          onError={(img) => (img.target.src = DefaultProfileImage)}
           alt="post"
         />
       </a>

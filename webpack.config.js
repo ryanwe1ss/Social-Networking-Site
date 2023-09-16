@@ -8,7 +8,7 @@ module.exports = {
   mode: 'development',
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: 'bundle.js',
+    filename: '[name].[contenthash].js',
     publicPath: '/',
   },
   module: {
@@ -43,7 +43,7 @@ module.exports = {
       filename: 'index.html',
     }),
     new webpack.DefinePlugin({
-      'process.env.PUBLIC_URL': JSON.stringify('')
+      'process.env.PUBLIC_URL': JSON.stringify(''),
     }),
   ],
   resolve: {

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { FetchNotifications, Logout } from "../../utilities/utilities";
+import SidePanelImage from "/public/images/sidepanel-logo.png";
 import "./side-panel.scss";
 
 function SidePanel(args)
@@ -8,7 +9,7 @@ function SidePanel(args)
     return (
       <div className="side-panel">
         <div className="side-bar">
-          <img src={`/images/sidepanel-logo.png`} alt="logo"/>
+          <img src={SidePanelImage} alt="logo"/>
 
           <div className="labels">
             <div>
@@ -42,7 +43,7 @@ function SidePanel(args)
     return (
       <div className="side-panel">
         <div className="side-bar">
-          <img src={`/images/sidepanel-logo.png`} alt="logo"/>
+          <img src={SidePanelImage} alt="logo"/>
 
           <div className="labels">
             <div>

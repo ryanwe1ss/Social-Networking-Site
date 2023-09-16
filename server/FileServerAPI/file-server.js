@@ -1,4 +1,4 @@
-require("dotenv").config({ path:"../../.env" });
+require("dotenv").config({ path: "../../.env" });
 
 const Backend_Url = process.env.REACT_APP_URL;
 const Backend_Port = process.env.REACT_APP_BACKEND_USE_PORT_IN_URL == "true" ?
@@ -101,6 +101,11 @@ fileApi.post('/fs-api/create-post', (request, result) => {
     const description = fields.description.replace(/['";\(\)]/g, '');
     const comment = fields.comment != 'true' && fields.comment != 'false' ? false : fields.comment;
     const like = fields.like != 'true' && fields.like != 'false' ? false : fields.like;
+
+    // check if file (post) is an image
+    if (!file.image.mimetype.includes('image')) {
+      return result.sendStatus(400);
+    }
 
     fetch(`${Backend_Url}${Backend_Port}/api/create-post`, {
       method: 'POST',

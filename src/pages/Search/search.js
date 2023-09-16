@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { thumbnailUrl } from "../../utilities/utilities";
+import DefaultProfileImage from "/public/images/default-profile.png";
 
 import LoadingBar from "../../components/LoadingBar/loading-bar";
 import SidePanel from "../../components/SidePanel/side-panel";
@@ -46,7 +47,7 @@ function Search()
                 <a href={`/profile/${account.username}`} className="account" id="profile-page" key={account.id}>
                   <img
                     src={`${thumbnailUrl}/fs-api/thumbnail/${account.id}`}
-                    onError={(img) => (img.target.src = `${process.env.PUBLIC_URL}/images/default-profile.png`)}
+                    onError={(img) => (img.target.src = DefaultProfileImage)}
                     alt="thumbnail"
                   />
                   <label>{account.username}</label>

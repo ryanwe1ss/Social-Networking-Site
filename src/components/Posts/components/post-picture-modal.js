@@ -38,8 +38,9 @@ function PostPictureModal(args)
         }, 1000);
       
       } else {
+        event.target.disabled = false;
         popup.style.display = "block";
-        popup.innerHTML =  "Problem Uploading Post. Error: " + response.status;
+        popup.innerHTML =  response.status != 400 ? "Problem Uploading Post. Error: " + response.status : "Incorrect File Type. Please Upload an Image.";
         setTimeout(() => popup.style.display = "none", 6000);
       }
     });

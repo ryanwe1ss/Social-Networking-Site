@@ -4,7 +4,7 @@ function Footer()
 {
   return (
     <footer>
-      <p>NetConnect © 2023, All rights reserved.<br/>Developed By Ryan Weiss</p>
+      <p>NetConnect © {new Date().getFullYear()}, All rights reserved.<br/>Developed By Ryan Weiss</p>
     </footer>
   )
 }

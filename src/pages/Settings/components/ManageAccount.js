@@ -62,10 +62,10 @@ function ManageAccount()
       <div className="delete">
         <p>Deleting your account will permanently remove it from the system and you will not be able to get it back.</p>
         <button className="btn btn-danger delete-account" onClick={() => {
-          document.querySelector(".confirmation-delete").style.display = "block";
-          document.querySelector(".delete-account").style.display = "none";
+          // document.querySelector(".confirmation-delete").style.display = "block";
+          // document.querySelector(".delete-account").style.display = "none";
 
-        }}>Delete</button>
+        }} disabled={true}>Delete</button>
 
         <div className="confirmation-delete" style={{display: "none"}}>
           <p>Are you sure you want to delete your account?</p>

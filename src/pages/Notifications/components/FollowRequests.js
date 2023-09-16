@@ -1,3 +1,4 @@
+import DefaultProfileImage from "/public/images/default-profile.png";
 import { thumbnailUrl } from "../../../utilities/utilities";
 
 function FollowRequests(args)
@@ -6,7 +7,7 @@ function FollowRequests(args)
     <div className="notification">
       <img
         src={`${thumbnailUrl}/fs-api/thumbnail/${args.notification.follower.id}`}
-        onError={(img) => (img.target.src = `${process.env.PUBLIC_URL}/images/default-profile.png`)}
+        onError={(img) => (img.target.src = DefaultProfileImage)}
         className="thumbnail"
         alt="thumbnail"
       />

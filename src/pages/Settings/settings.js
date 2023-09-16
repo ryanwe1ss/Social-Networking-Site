@@ -53,7 +53,7 @@ function Settings()
   }
 
   function HandleUpdateCredential(type) {
-    const Update = type === "Username" ? UpdateUsername : UpdatePassword;
+    const Update = type == "Username" ? UpdateUsername : UpdatePassword;
 
     Update(document.getElementById(`new${type}`).value).then(response => {
       document.getElementById("result").style.color = "#000000";
@@ -62,6 +62,7 @@ function Settings()
         case 200:
           document.getElementById("result").style.color = "#00D21C";
           document.getElementById("result").innerHTML = `Your ${type.toLowerCase()} has been successfully updated`;
+          document.getElementById(`new${type}`).value = null;
           break;
 
         case 409:

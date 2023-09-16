@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { thumbnailUrl, FetchPostLikes } from "../../../utilities/utilities";
+import DefaultProfileImage from "/public/images/default-profile.png";
 
 function Likes(args)
 {
@@ -24,7 +25,7 @@ function Likes(args)
             <div className="like" key={like.id}>
               <img
                 src={`${thumbnailUrl}/fs-api/thumbnail/${like.liker.id}`}
-                onError={(img) => (img.target.src = `${process.env.PUBLIC_URL}/images/default-profile.png`)}
+                onError={(img) => (img.target.src = DefaultProfileImage)}
                 className="thumbnail"
                 alt="thumbnail"
               />
