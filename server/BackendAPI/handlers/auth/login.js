@@ -1,7 +1,12 @@
 const { database } = require("../../database/db_connect");
+const crypto = require('crypto');
 
 function Login(request, result) {
   const credentials = request.body;
+  const hash = crypto.createHash('sha256');
+
+  hash.update(credentials.password);
+  credentials.password = hash.digest('hex');
 
   database.query(`
     SELECT

@@ -1,24 +1,24 @@
 const { database } = require("../../database/db_connect");
+const crypto = require('crypto');
 
 function UpdatePassword(request, result)
 {
-  const password = request.query.password;
+  const hash = crypto.createHash('sha256');
+  let password = request.query.password;
+  
   if (password.length < 5 || password.length > 20) {
     result.sendStatus(400);
     return;
   }
 
+  hash.update(password);
   database.query(`
     UPDATE accounts
-    SET password = '${password}'
+    SET password = '${hash.digest('hex')}'
     WHERE id = ${request.session.user.id}`,
 
     function (error, data) {
-      if (error) {
-        result.sendStatus(500);
-        return;
-      }
-      result.sendStatus(200);
+      result.sendStatus(error ? 500 : 200);
     }
   );
 }

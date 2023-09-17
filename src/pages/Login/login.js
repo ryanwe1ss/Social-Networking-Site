@@ -42,7 +42,10 @@ function Login()
       } else if (response.status == 504) {
         document.getElementById("response").innerHTML = "Error connecting to server. Please contact an administrator.";
       
-      } else document.getElementById("response").innerHTML = "Login failed, try again";
+      } else {
+        document.getElementById("response").innerHTML = "Login failed, try again";
+        document.getElementById("password").value = null;
+      }
     });
   }
 
