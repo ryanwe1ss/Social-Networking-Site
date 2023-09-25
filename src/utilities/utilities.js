@@ -195,9 +195,9 @@ export function FetchPostLikes(postId)
     });
 }
 
-export function FetchProfileReports()
+export function FetchProfileReports(searchQuery='')
 {
-  return HttpGet('/api/profile-reports')
+  return HttpGet(`/api/profile-reports?searchQuery=${searchQuery}`)
     .then((response) => {
       if (response.status == 200) {
         return response.json();
@@ -208,9 +208,9 @@ export function FetchProfileReports()
     });
 }
 
-export function FetchPostReports()
+export function FetchPostReports(searchQuery='')
 {
-  return HttpGet('/api/post-reports')
+  return HttpGet(`/api/post-reports?searchQuery=${searchQuery}`)
     .then((response) => {
       if (response.status == 200) {
         return response.json();
@@ -221,9 +221,9 @@ export function FetchPostReports()
     });
 }
 
-export function FetchCommentReports()
+export function FetchCommentReports(searchQuery='')
 {
-  return HttpGet('/api/comment-reports')
+  return HttpGet(`/api/comment-reports?searchQuery=${searchQuery}`)
     .then((response) => {
       if (response.status == 200) {
         return response.json();
@@ -385,8 +385,7 @@ export function SearchAccounts(event, override=false, all=false)
   const accounts = [];
 
   if (searchQuery.length == 0 && !override) return Promise.resolve([]);
-
-  return HttpGet(`/api/search?searchQuery=${searchQuery}${all ? '&all=true' : ''}`)
+  return HttpGet(`/api/search-accounts?searchQuery=${searchQuery}${all ? '&all=true' : ''}`)
     .then((result) => {
       return result.json();
     })
@@ -398,7 +397,8 @@ export function SearchAccounts(event, override=false, all=false)
         });
       });
       return accounts;
-    });
+    }
+  );
 }
 
 // ----- MESSAGING ----- //

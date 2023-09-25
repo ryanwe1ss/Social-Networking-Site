@@ -2,6 +2,7 @@ const path = require('path');
 const webpack = require('webpack');
 const Dotenv = require('dotenv-webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   entry: './src/index.js',
@@ -41,9 +42,13 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: './public/index.html',
       filename: 'index.html',
+      title: 'Caching',
     }),
     new webpack.DefinePlugin({
       'process.env.PUBLIC_URL': JSON.stringify(''),
+    }),
+    new CopyWebpackPlugin({
+      patterns: [{ from: 'public/favicon.ico', to: 'favicon.ico' }],
     }),
   ],
   resolve: {

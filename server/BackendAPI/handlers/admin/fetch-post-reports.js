@@ -2,6 +2,7 @@ const { database } = require("../../database/db_connect");
 
 function FetchPostReports(request, result)
 {
+  const searchQuery = request.query.searchQuery;
   database.query(`
     SELECT
       post_reports.id,
@@ -25,7 +26,12 @@ function FetchPostReports(request, result)
     LEFT JOIN
       report_reasons ON report_reasons.id = post_reports.reason
     LEFT JOIN
-      posts ON posts.id = post_id`,
+      posts ON posts.id = post_id
+    WHERE
+      reporter.username ILIKE '%${searchQuery}%' OR
+      reporter.name ILIKE '%${searchQuery}%' OR
+      report_reasons.reason ILIKE '%${searchQuery}%' OR
+      additional_information ILIKE '%${searchQuery}%'`,
     
     (error, reports) => {
       if (error) return result.sendStatus(500);

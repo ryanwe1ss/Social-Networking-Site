@@ -155,7 +155,7 @@ apiRouter.post("/api/create-post", middleware, (request, result) => {
   UploadPost(request, result);
 });
 
-apiRouter.get("/api/search", middleware, (request, result) => {
+apiRouter.get("/api/search-accounts", middleware, (request, result) => {
   SearchAccounts(request, result);
 });
 

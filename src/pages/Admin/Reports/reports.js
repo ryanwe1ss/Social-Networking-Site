@@ -5,6 +5,7 @@ import {
   FetchProfileReports,
   FetchPostReports,
   FetchCommentReports,
+  SearchReports,
 } from "../../../utilities/utilities";
 
 import ProfileReports from "./components/profile-reports";
@@ -27,7 +28,7 @@ function Reports()
 
   useEffect(() => {
     FetchSession().then((session) => {
-      if (session.type !== "admin") return window.history.back();
+      if (session.type != 'admin') return window.history.back();
       setSession({ id: session.id, username: session.username, type: session.type });
 
       CheckAdminPermissions().then((permissions) => {
@@ -60,6 +61,28 @@ function Reports()
     }
   }
 
+  function HandleSearchReports(event) {
+    switch (parseInt(selected)) {
+      case 1:
+        FetchProfileReports(event.target.value).then((reports) => {
+          setProfileReports(reports);
+        });
+        break;
+
+      case 2:
+        FetchPostReports(event.target.value).then((reports) => {
+          setPostReports(reports);
+        });
+        break;
+
+      case 3:
+        FetchCommentReports(event.target.value).then((reports) => {
+          setCommentReports(reports);
+        });
+        break;
+    }
+  }
+
   if (session.id && permissions.monitor_reports_permission) {
     return (
       <div className="reports-container">
@@ -80,8 +103,7 @@ function Reports()
               </div>
 
               <div className="filters">
-                <input type="text" className="form-control" placeholder="Search reports..."/>
-                <button className="btn btn-secondary"><i className="bi bi-arrow-clockwise"/></button>
+                <input type="text" className="form-control" onKeyUp={HandleSearchReports} placeholder="Search reports..."/>
               </div>
 
               <div className="body">

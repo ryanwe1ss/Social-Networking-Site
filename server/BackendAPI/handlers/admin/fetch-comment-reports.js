@@ -2,6 +2,7 @@ const { database } = require("../../database/db_connect");
 
 function FetchCommentReports(request, result)
 {
+  const searchQuery = request.query.searchQuery;
   database.query(`
     SELECT
       comment_reports.id,
@@ -39,7 +40,13 @@ function FetchCommentReports(request, result)
     LEFT JOIN
       posts ON posts.id = post_comments.post_id
     LEFT JOIN
-      report_reasons ON report_reasons.id = comment_reports.reason`,
+      report_reasons ON report_reasons.id = comment_reports.reason
+    WHERE
+      reporter.username ILIKE '%${searchQuery}%' OR
+      reported.username ILIKE '%${searchQuery}%' OR
+      post_comments.comment ILIKE '%${searchQuery}%' OR
+      report_reasons.reason ILIKE '%${searchQuery}%' OR
+      additional_information LIKE '%${searchQuery}%'`,
 
     (error, reports) => {
       if (error) return result.sendStatus(500);
