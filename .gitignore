@@ -3,11 +3,11 @@
 /build
 node_modules
 envs
-/server/FileServerAPI/content/images/*
-/server/FileServerAPI/content/thumbnails/*
-/server/FileServerAPI/content/posts/*
+/server/file-server-api/content/images/*
+/server/file-server-api/content/thumbnails/*
+/server/file-server-api/content/posts/*
 
 # ALLOW
-!/server/FileServerAPI/content/images/info.txt
-!/server/FileServerAPI/content/thumbnails/info.txt
-!/server/FileServerAPI/content/posts/info.txt
+!/server/file-server-api/content/images/info.txt
+!/server/file-server-api/content/thumbnails/info.txt
+!/server/file-server-api/content/posts/info.txt

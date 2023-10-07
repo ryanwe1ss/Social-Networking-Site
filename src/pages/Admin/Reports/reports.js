@@ -18,13 +18,10 @@ import "./reports.scss";
 
 function Reports()
 {
-  const [session, setSession] = useState([]);
   const [permissions, setPermissions] = useState([]);
+  const [session, setSession] = useState([]);
+  const [reports, setReports] = useState([]);
   const [selected, setSelected] = useState(1);
-
-  const [profileReports, setProfileReports] = useState([]);
-  const [postReports, setPostReports] = useState([]);
-  const [commentReports, setCommentReports] = useState([]);
 
   useEffect(() => {
     FetchSession().then((session) => {
@@ -35,7 +32,7 @@ function Reports()
         setPermissions(permissions);
         
         FetchProfileReports().then((reports) => {
-          setProfileReports(reports);
+          setReports(reports);
         });
       });
     });
@@ -43,20 +40,21 @@ function Reports()
 
   function SwitchReports(event) {
     setSelected(event.target.value);
+    setReports([]);
 
     if (event.target.value == 1) {
       FetchProfileReports().then((reports) => {
-        setProfileReports(reports);
+        setReports(reports);
       });
     
     } else if (event.target.value == 2) {
       FetchPostReports().then((reports) => {
-        setPostReports(reports);
+        setReports(reports);
       }); 
     
     } else if (event.target.value == 3) {
       FetchCommentReports().then((reports) => {
-        setCommentReports(reports);
+        setReports(reports);
       });
     }
   }
@@ -65,19 +63,19 @@ function Reports()
     switch (parseInt(selected)) {
       case 1:
         FetchProfileReports(event.target.value).then((reports) => {
-          setProfileReports(reports);
+          setReports(reports);
         });
         break;
 
       case 2:
         FetchPostReports(event.target.value).then((reports) => {
-          setPostReports(reports);
+          setReports(reports);
         });
         break;
 
       case 3:
         FetchCommentReports(event.target.value).then((reports) => {
-          setCommentReports(reports);
+          setReports(reports);
         });
         break;
     }
@@ -108,11 +106,11 @@ function Reports()
 
               <div className="body">
                 {selected == 1 ?
-                  <ProfileReports profileReports={profileReports}/> :
+                  <ProfileReports reports={reports}/> :
                  selected == 2 ?
-                  <PostReports postReports={postReports}/> :
+                  <PostReports reports={reports}/> :
                  selected == 3 ?
-                  <CommentReports commentReports={commentReports}/> :
+                  <CommentReports reports={reports}/> :
                  null
                 }
               </div>

@@ -11,7 +11,7 @@ function PostReports(args) {
         </tr>
       </thead>
       <tbody>
-        {args.postReports.map((report) => (
+        {args.reports.length > 0 && args.reports.map((report) => (
           <tr key={report.id}>
             <td className="reporter">
               <a href={`/profile/${report.reporter.username}`}>{report.reporter.username}</a>
@@ -29,7 +29,13 @@ function PostReports(args) {
               {new Date(report.date_created).toLocaleString()}
             </td>
           </tr>
-        ))}
+        )) || (
+          <tr>
+            <td colSpan="5">
+              <center><h5 style={{marginTop: '10px'}}>No Reports Found</h5></center>
+            </td>
+          </tr>
+        )}
       </tbody>
     </table>
   );
