@@ -1,18 +1,22 @@
-import { useState, useEffect } from "react";
-import LoadingBar from "../../components/LoadingBar/loading-bar";
+import { useState, useEffect } from 'react';
+import LoadingBar from '../../components/LoadingBar/loading-bar';
 
-import DefaultProfileImage from "/public/images/default-profile.png";
-import SidePanel from "../../components/SidePanel/side-panel";
-import Footer from "../../components/Footer/footer";
-import "./messages.scss";
+import DefaultProfileImage from '/public/images/default-profile.png';
+import SidePanel from '../../components/SidePanel/side-panel';
+import Footer from '../../components/Footer/footer';
+import './messages.scss';
 
 import {
   thumbnailUrl,
   FetchSession,
   FetchConversation,
-  SendMessage,
   FetchChats,
-} from "../../utilities/utilities";
+} from '../../utilities/utilities';
+
+export const webSocketUrl =
+  process.env.CHAT_SERVER +
+  (process.env.CS_API_USE_PORT_IN_URL == "true"
+  ? `:${process.env.CHAT_SERVER_PORT}` : '');
 
 function Messages()
 {
@@ -29,7 +33,7 @@ function Messages()
 
   useEffect(() => {
     FetchSession().then((session) => {
-      if (session.type === "admin") window.location.href = "/statistics";
+      if (session.type === 'admin') window.location.href = '/statistics';
       
       setSession({ id: session.id, username: session.username, type: session.type });
       HandleFetchChats(session);
@@ -51,7 +55,7 @@ function Messages()
 
       let timer = 0;
       const chatExists = setInterval(function() {
-        const user = parseInt(location.search.split("id=")[1]);
+        const user = parseInt(location.search.split('id=')[1]);
         const chat = document.getElementById(`${user}_chat`);
 
         if (chat) {
@@ -73,116 +77,111 @@ function Messages()
   }
 
   function HandleFetchConversation(userId) {
-    document.querySelectorAll(".selected").forEach(selected => {
-      selected.parentNode.style.pointerEvents = "auto";
-      selected.style.display = "none";
+    const messages = document.getElementById('chat');
+
+    document.querySelectorAll('.selected').forEach(selected => {
+      selected.parentNode.style.pointerEvents = 'auto';
+      selected.style.display = 'none';
     });
     
-    document.getElementById(userId).style.display = "block";
-    document.getElementById(userId).parentNode.style.pointerEvents = "none";
+    document.getElementById(userId).style.display = 'block';
+    document.getElementById(userId).parentNode.style.pointerEvents = 'none';
 
     FetchConversation(userId).then((conversation) => {
-      document.getElementById("message").disabled = false;
+      document.getElementById('message').disabled = false;
 
       setConversation(conversation.messages);
       setChatId(conversation.chatId);
       setUserId(userId);
 
-      const convScroll = setInterval(function() {
-        const messages = document.getElementById("chat");
-        
+      setTimeout(() => {
         if (messages.innerText.length > 0) {
           messages.scrollTop = messages.scrollHeight;
-          clearInterval(convScroll);
         }
-
       }, 0);
 
       if (conversation.chatId == chatId) return;
-      chatSocket = new WebSocket(`ws://${process.env.CHAT_SERVER}:${process.env.CHAT_SERVER_PORT}?chatId=${conversation.chatId}`);
+      chatSocket = new WebSocket(`${webSocketUrl}/cs-api/?chatId=${conversation.chatId}`);
 
       chatSocket.onmessage = (event) => {
-        const body = JSON.parse(event.data);
-        setConversation(conversation => [...conversation, { ...body, id: new Date().getTime() }]);
+        setConversation(conversation => [...conversation, { ...JSON.parse(event.data), id: new Date().getTime() }]);
+        setTimeout(() => messages.scrollTop = messages.scrollHeight, 0);
       };
 
-      document.getElementById("send").addEventListener("click", () => HandleSendMessage(chatSocket, conversation));
-      document.querySelectorAll(".chat").forEach(chat => {
-        chat.addEventListener("click", () => HandleCloseChat(chatSocket, conversation));
+      document.getElementById('send').addEventListener('click', () => HandleSendMessage(chatSocket, conversation, userId));
+      document.querySelectorAll('.chat').forEach(chat => {
+        chat.addEventListener('click', () => HandleCloseChat(chatSocket, conversation, chatId));
       });
     });
   }
 
-  function HandleSendMessage(chatSocket, conversation) {
-    const message = document.getElementById("message").value;
+  function HandleSendMessage(chatSocket, conversation, userId) {
+    const message = document.getElementById('message').value;
 
     if (chatSocket.readyState == WebSocket.OPEN && message.length > 0) {
-      chatSocket.send(JSON.stringify({
-        chatId: conversation.chatId,
-        toUser: userId,
-        fromUser: session.id,
-        message: message,
-      }));
-
-      setConversation(conversation => [...conversation, {
+      const newMessage = {
+        chat_id: conversation.chatId,
         to: userId,
         from: session.username,
+        to_user: userId,
         from_user: session.id,
         message: message,
         id: new Date().getTime(),
-      }]);
-      
-      document.getElementById("message").value = null;
+      };
+
+      chatSocket.send(JSON.stringify(newMessage));
+      setConversation(conversation => [...conversation, newMessage]);
+      document.getElementById('message').value = null;
     }
   }
 
-  function HandleCloseChat(chatSocket, conversation) {
+  function HandleCloseChat(chatSocket, conversation, chatId) {
     if (chatId !== conversation.chatId) {
       chatSocket.close();
     }
   }
 
-  if (session.id && session.type === "user") {
+  if (session.id && session.type === 'user') {
     return (
-      <div className="messages-container">
-        <div className="outer-border">
+      <div className='messages-container'>
+        <div className='outer-border'>
           <SidePanel session={session}/>
   
-          <div className="messages">
-            <div className="chats">
-              <div className="chat-header">Message Friend</div>
+          <div className='messages'>
+            <div className='chats'>
+              <div className='chat-header'>Message Friend</div>
               {chatsLoaded ? chats.map(chat => (
-                <div className="chat" onClick={() => { HandleFetchConversation(chat.id) }} id={`${chat.id}_chat`} key={chat.id}>
+                <div className='chat' onClick={() => { HandleFetchConversation(chat.id) }} id={`${chat.id}_chat`} key={chat.id}>
                   <img
                     src={`${thumbnailUrl}/fs-api/thumbnail/${chat.id}`}
                     onError={(img) => (img.target.src = DefaultProfileImage)}
-                    className="thumbnail"
-                    alt="thumbnail"
+                    className='thumbnail'
+                    alt='thumbnail'
                   />
                   <span>{chat.name}</span>
-                  <i className="bi bi-chat-fill selected" id={chat.id} style={{display: "none", float: "right"}}/>
+                  <i className='bi bi-chat-fill selected' id={chat.id} style={{display: 'none', float: 'right'}}/>
                 </div>
-              )) : <LoadingBar size="small" height={15}/>}
+              )) : <LoadingBar size='small' height={15}/>}
             </div>
   
-            <div className="interface">
-              <div className="chat-session" id="chat">
+            <div className='interface'>
+              <div className='chat-session' id='chat'>
                 {conversation.map(message => (
-                  <div className="text-chat" key={message.id}>
+                  <div className='text-chat' key={message.id}>
                     {message.from == session.username ?
-                      <div className="you">{message.message}</div> :
-                      <div className="user">{message.message}</div>
+                      <div className='you'>{message.message}</div> :
+                      <div className='user'>{message.message}</div>
                     }
                   </div>
                 ))
                 }
               </div>
   
-              <div className="message-box">
-                <textarea id="message" placeholder="Type Message Here" disabled/>
+              <div className='message-box'>
+                <textarea id='message' placeholder='Type Message Here' disabled/>
   
-                <div className="buttons">
-                  <button id="send">
+                <div className='buttons'>
+                  <button id='send'>
                     <i className='bi bi-arrow-right-circle-fill'/>
                   </button>
                 </div>
@@ -194,6 +193,6 @@ function Messages()
       </div>
     );
   
-  } else return <LoadingBar size="large" height={15}/>
+  } else return <LoadingBar size='large' height={15}/>
 }
 export default Messages;

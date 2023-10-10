@@ -422,12 +422,6 @@ export function CreateChat(userId)
     .then((response) => { return response });
 }
 
-export function SendMessage(body)
-{
-  return HttpPost('/api/send-message', body)
-    .then((response) => { return response });
-}
-
 // ----- PERMISSIONS ----- //
 export function CheckAdminPermissions()
 {

@@ -20,12 +20,10 @@ const createWebSocketServer = (temporaryChatId) => {
 
       database.query(
         'INSERT INTO messages (chat_id, to_user, from_user, message) VALUES ($1, $2, $3, $4)',
-        [body.chatId, body.toUser, body.fromUser, body.message],
+        [body.chat_id, body.to_user, body.from_user, body.message],
         
         (error, results) => {
-          if (error) {
-            console.log(error);
-          }
+          if (error) console.log('Error saving message to database: ', error);
         }
       );
 

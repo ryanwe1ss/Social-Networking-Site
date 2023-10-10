@@ -43,8 +43,6 @@ const { DeleteConnection } = require('./handlers/delete/delete-connection');
 const { DeletePost } = require('./handlers/delete/delete-post');
 
 const { CreateChat } = require('./handlers/communicate/create-chat');
-const { SendMessage } = require('./handlers/communicate/send-message');
-
 const { DeactivateAccount } = require('./handlers/delete/deactivate-account');
 const { DeleteAccount } = require('./handlers/delete/delete-account');
 
@@ -267,10 +265,6 @@ apiRouter.get('/api/get-conversation', middleware, (request, result) => {
   FetchConversation(request, result);
 });
 
-apiRouter.post('/api/send-message', middleware, (request, result) => {
-  SendMessage(request, result);
-});
-
 apiRouter.get('/api/admin-permissions', middleware, (request, result) => {
   CheckAdminPermissions(request, result);
 });
@@ -284,5 +278,5 @@ apiRouter.get('/api/delete', middleware, (request, result) => {
 });
 
 apiRouter.listen(process.env.API_PORT, () => {
-  console.log(`Back-end listening on port ${process.env.API_PORT}`);
+  console.log(`Main API listening on port ${process.env.API_PORT}`);
 });
