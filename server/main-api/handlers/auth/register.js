@@ -1,8 +1,8 @@
 const { database } = require("../../../database/database");
 const crypto = require('crypto');
 
-const FileServer_URL = process.env.REACT_APP_FILE_SERVER;
-const FileServer_Port = process.env.REACT_APP_FS_USE_PORT_IN_URL == "true" ? `:${process.env.REACT_APP_FILE_SERVER_PORT}` : '';
+const FileServer_URL = process.env.FILE_SERVER;
+const FileServer_Port = process.env.FS_API_USE_PORT_IN_URL == "true" ? `:${process.env.FILE_SERVER_PORT}` : '';
 
 function Register(request, result)
 {

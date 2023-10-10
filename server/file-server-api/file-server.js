@@ -1,8 +1,8 @@
 require("dotenv").config({ path: "../../.env" });
 
-const Backend_Url = process.env.REACT_APP_URL;
-const Backend_Port = process.env.REACT_APP_BACKEND_USE_PORT_IN_URL == "true" ?
-  `:${process.env.REACT_APP_API_PORT}` : '';
+const Backend_Url = process.env.URL;
+const Backend_Port = process.env.API_USE_PORT_IN_URL == "true" ?
+  `:${process.env.API_PORT}` : '';
 
 const fs = require('fs');
 const path = require('path');
@@ -18,7 +18,7 @@ sharp.cache(false);
 fileApi.use(function(request, result, next) {
   result.setHeader(
     'Access-Control-Allow-Origin',
-    `${Backend_Url}:${process.env.REACT_APP_ENDPOINT_PORT}`
+    `${Backend_Url}:${process.env.ENDPOINT_PORT}`
   );
   result.setHeader('Access-Control-Allow-Methods', 'GET, POST, DELETE');
   result.setHeader('Access-Control-Allow-Headers', "Origin, X-Requested-With, Content-Type, Accept, Token");
@@ -72,6 +72,7 @@ fileApi.post('/fs-api/update-profile-picture', (request, result) => {
           return result.sendStatus(500);
         }
       });
+      
       sharp(image)
       .resize(100, 100)
       .rotate()
@@ -173,6 +174,6 @@ fileApi.get('/fs-api/delete-post/:postId', (request, result) => {
   });
 });
 
-fileApi.listen(process.env.REACT_APP_FILE_SERVER_PORT, () => {
-  console.log(`File Server API listening on port ${process.env.REACT_APP_FILE_SERVER_PORT}`);
+fileApi.listen(process.env.FILE_SERVER_PORT, () => {
+  console.log(`File Server API listening on port ${process.env.FILE_SERVER_PORT}`);
 });

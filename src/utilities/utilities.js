@@ -1,9 +1,9 @@
 import { HttpGet, HttpPost, HttpGetFileServer, HttpPostFileServer } from "./http-service";
 
 export const thumbnailUrl =
-  process.env.REACT_APP_FILE_SERVER +
-  (process.env.REACT_APP_FS_USE_PORT_IN_URL == "true"
-  ? `:${process.env.REACT_APP_FILE_SERVER_PORT}` : '');
+  process.env.FILE_SERVER +
+  (process.env.FS_API_USE_PORT_IN_URL == "true"
+  ? `:${process.env.FILE_SERVER_PORT}` : '');
 
 // ----- AUTHENTICATION ----- //
 export function FetchSession(onHomeScreens=false)

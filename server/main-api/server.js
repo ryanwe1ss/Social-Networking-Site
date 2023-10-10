@@ -70,20 +70,20 @@ apiRouter.use(session({
   secret: 'token',
   cookie: {
     maxAge: 3600000,
-  }
+  },
 }));
 
 // --------------- CORS --------------- //
 apiRouter.use(function(request, result, next) {
-  if (process.env.REACT_APP_ENDPOINT_PORT === '80') {
+  if (process.env.ENDPOINT_PORT === '80') {
     result.setHeader(
       'Access-Control-Allow-Origin',
-      process.env.REACT_APP_URL
+      process.env.URL
     );
   } else {
     result.setHeader(
       'Access-Control-Allow-Origin',
-      `${process.env.REACT_APP_URL}:${process.env.REACT_APP_ENDPOINT_PORT}`
+      `${process.env.URL}:${process.env.ENDPOINT_PORT}`
     );
   }
   result.setHeader('Access-Control-Allow-Methods', 'GET, POST, DELETE');
@@ -283,6 +283,6 @@ apiRouter.get('/api/delete', middleware, (request, result) => {
   DeleteAccount(request, result);
 });
 
-apiRouter.listen(process.env.REACT_APP_API_PORT, () => {
-  console.log(`Back-end listening on port ${process.env.REACT_APP_API_PORT}`);
+apiRouter.listen(process.env.API_PORT, () => {
+  console.log(`Back-end listening on port ${process.env.API_PORT}`);
 });

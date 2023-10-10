@@ -1,8 +1,8 @@
-const Backend_URL = process.env.REACT_APP_URL;
-const Backend_Port = process.env.REACT_APP_BACKEND_USE_PORT_IN_URL == "true" ? `:${process.env.REACT_APP_API_PORT}` : '';
+const Backend_URL = process.env.URL;
+const Backend_Port = process.env.API_USE_PORT_IN_URL == "true" ? `:${process.env.API_PORT}` : '';
 
-const FileServer_URL = process.env.REACT_APP_FILE_SERVER;
-const FileServer_Port = process.env.REACT_APP_FS_USE_PORT_IN_URL == "true" ? `:${process.env.REACT_APP_FILE_SERVER_PORT}` : '';
+const FileServer_URL = process.env.FILE_SERVER;
+const FileServer_Port = process.env.FS_API_USE_PORT_IN_URL == "true" ? `:${process.env.FILE_SERVER_PORT}` : '';
 
 export function HttpPost(route, body, stringify=true, headers=true)
 {

@@ -25,6 +25,8 @@ function Messages()
   const [chatId, setChatId] = useState();
   const [userId, setUserId] = useState();
 
+  let chatSocket;
+
   useEffect(() => {
     FetchSession().then((session) => {
       if (session.type === "admin") window.location.href = "/statistics";
@@ -72,9 +74,12 @@ function Messages()
 
   function HandleFetchConversation(userId) {
     document.querySelectorAll(".selected").forEach(selected => {
+      selected.parentNode.style.pointerEvents = "auto";
       selected.style.display = "none";
+    });
     
-    }); document.getElementById(userId).style.display = "block";
+    document.getElementById(userId).style.display = "block";
+    document.getElementById(userId).parentNode.style.pointerEvents = "none";
 
     FetchConversation(userId).then((conversation) => {
       document.getElementById("message").disabled = false;
@@ -92,24 +97,49 @@ function Messages()
         }
 
       }, 0);
-    })
+
+      if (conversation.chatId == chatId) return;
+      chatSocket = new WebSocket(`ws://${process.env.CHAT_SERVER}:${process.env.CHAT_SERVER_PORT}?chatId=${conversation.chatId}`);
+
+      chatSocket.onmessage = (event) => {
+        const body = JSON.parse(event.data);
+        setConversation(conversation => [...conversation, { ...body, id: new Date().getTime() }]);
+      };
+
+      document.getElementById("send").addEventListener("click", () => HandleSendMessage(chatSocket, conversation));
+      document.querySelectorAll(".chat").forEach(chat => {
+        chat.addEventListener("click", () => HandleCloseChat(chatSocket, conversation));
+      });
+    });
   }
 
-  function HandleSendMessage(message) {
-    if (message.trim().length < 1) return;
+  function HandleSendMessage(chatSocket, conversation) {
+    const message = document.getElementById("message").value;
 
-    const body = {
-      chat_id: chatId,
-      to_user: userId,
-      message: message,
-    };
+    if (chatSocket.readyState == WebSocket.OPEN && message.length > 0) {
+      chatSocket.send(JSON.stringify({
+        chatId: conversation.chatId,
+        toUser: userId,
+        fromUser: session.id,
+        message: message,
+      }));
 
-    SendMessage(body).then((response) => {
-      if (response.status === 200) {
-        HandleFetchConversation(userId);
-        document.getElementById("message").value = null;
-      }
-    })
+      setConversation(conversation => [...conversation, {
+        to: userId,
+        from: session.username,
+        from_user: session.id,
+        message: message,
+        id: new Date().getTime(),
+      }]);
+      
+      document.getElementById("message").value = null;
+    }
+  }
+
+  function HandleCloseChat(chatSocket, conversation) {
+    if (chatId !== conversation.chatId) {
+      chatSocket.close();
+    }
   }
 
   if (session.id && session.type === "user") {
@@ -152,7 +182,7 @@ function Messages()
                 <textarea id="message" placeholder="Type Message Here" disabled/>
   
                 <div className="buttons">
-                  <button id="send" onClick={() => HandleSendMessage(document.getElementById("message").value)}>
+                  <button id="send">
                     <i className='bi bi-arrow-right-circle-fill'/>
                   </button>
                 </div>

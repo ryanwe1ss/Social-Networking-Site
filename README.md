@@ -49,10 +49,15 @@ Built using: React.JS | Node.JS | PostgreSQL
 - npm start
 
 # Backend Usage
-- node server.js
+- npm install
 - Execute database file 'netconnect.sql' in PostgreSQL (\i netconnect.sql)
 
+# Main API Usage
+- node server.js
+
 # File Server API Usage
-- npm install
 - node file-server.js
 - Ensure Read/Write are permitted on the 'content' folder
+
+# Chat Server API Usage
+- node chat-server.js
