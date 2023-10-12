@@ -1,9 +1,8 @@
 import { useState, useEffect } from "react";
-import { thumbnailUrl, FetchSession, FetchSavedPosts } from "../../utilities/utilities";
+import { thumbnailUrl, FetchSession, FetchSavedPosts } from "../../utilities/routes";
 
 import LoadingBar from "../../components/LoadingBar/loading-bar";
 import SidePanel from "../../components/SidePanel/side-panel";
-import Footer from "../../components/Footer/footer";
 import "./saved-posts.scss";
 
 function SavedPosts()
@@ -55,7 +54,6 @@ function SavedPosts()
             }
           </div>
         </div>
-        <Footer/>
       </div>
     );
   

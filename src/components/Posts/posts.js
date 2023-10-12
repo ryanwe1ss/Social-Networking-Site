@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import LoadingBar from "../LoadingBar/loading-bar";
 import "./posts.scss";
 
-import { thumbnailUrl, DeletePost } from "../../utilities/utilities";
+import { thumbnailUrl, DeletePost } from "../../utilities/routes";
 import PostPictureModal from "./components/post-picture-modal";
 
 function Posts(args) {

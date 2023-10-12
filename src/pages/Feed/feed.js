@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
-import { thumbnailUrl, FetchSession, FetchFeed } from "../../utilities/utilities";
+import { thumbnailUrl, FetchSession, FetchFeed } from "../../utilities/routes";
 
 import SidePanel from "../../components/SidePanel/side-panel";
 import LoadingBar from "../../components/LoadingBar/loading-bar";
-import Footer from "../../components/Footer/footer";
 import "./feed.scss";
 
 function Feed()
@@ -62,7 +61,6 @@ function Feed()
           : <LoadingBar size="large" height={15}/>
           }
         </div>
-        <Footer/>
       </div>
     );
   

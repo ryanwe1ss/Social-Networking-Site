@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { FetchReportReasons, ReportPost } from "../../../utilities/utilities";
+import { FetchReportReasons, ReportPost } from "../../../utilities/routes";
 
 function ReportPostModal(args)
 {

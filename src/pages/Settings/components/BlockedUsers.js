@@ -1,5 +1,5 @@
 import DefaultProfileImage from "/public/images/default-profile.png";
-import { thumbnailUrl, UnblockAccount } from "../../../utilities/utilities";
+import { thumbnailUrl, UnblockAccount } from "../../../utilities/routes";
 
 function BlockedUsers(args)
 {

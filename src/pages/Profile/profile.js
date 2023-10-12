@@ -12,7 +12,9 @@ import {
   CreateChat,
   FetchFollowers,
   FetchFollowing,
-} from "../../utilities/utilities";
+} from "../../utilities/routes";
+
+import { ShowBoxDialog } from "../../utilities/utilities";
 import DefaultProfileImage from "/public/images/default-profile.png";
 
 import ProfileDetails from "../../components/ProfileDetails/ProfileDetails";
@@ -22,13 +24,12 @@ import Following from "../../components/Connections/Following";
 
 import LoadingBar from "../../components/LoadingBar/loading-bar";
 import SidePanel from "../../components/SidePanel/side-panel";
-import Footer from "../../components/Footer/footer";
 
 import "./profile.scss";
 
 function Profile()
 {
-  const popup = document.querySelector(".popup-box");
+  // const popup = document.querySelector(".popup-box");
   const profileUsername = location.href.split("profile/")[1];
 
   const [session, setSession] = useState([]);
@@ -93,9 +94,7 @@ function Profile()
         setEditForm(false);
         setSaved(true);
 
-        popup.style.display = "block";
-        popup.innerHTML = "Your profile has been updated!";
-        setTimeout(() => { document.querySelector(".popup-box").style.display = "none"; }, 6000);
+        ShowBoxDialog('Your profile has been updated!');
       }
     });
   }
@@ -301,7 +300,6 @@ function Profile()
             }
           </div>
         </div>
-        <Footer/>
       </div>
     );
   

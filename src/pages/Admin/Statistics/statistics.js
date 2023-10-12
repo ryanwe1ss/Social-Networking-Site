@@ -1,9 +1,8 @@
 import { useState, useEffect } from "react";
-import { thumbnailUrl, FetchSession, FetchStatistics, SearchAccounts, CheckAdminPermissions } from "../../../utilities/utilities";
+import { thumbnailUrl, FetchSession, FetchStatistics, SearchAccounts, CheckAdminPermissions } from "../../../utilities/routes";
 import DefaultProfileImage from "/public/images/default-profile.png";
 
 import SidePanel from "../../../components/SidePanel/side-panel";
-import Footer from "../../../components/Footer/footer";
 import "./statistics.scss";
 
 function AdminPanel()
@@ -91,7 +90,6 @@ function AdminPanel()
             </div>
           </div>
         </div>
-        <Footer/>
       </div>
     );
   }

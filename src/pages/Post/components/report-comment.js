@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { FetchReportReasons, ReportComment } from "../../../utilities/utilities";
+import { FetchReportReasons, ReportComment } from "../../../utilities/routes";
 
 function ReportCommentModal(args)
 {

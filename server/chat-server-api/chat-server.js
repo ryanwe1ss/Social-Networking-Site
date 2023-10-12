@@ -17,6 +17,7 @@ const createWebSocketServer = (temporaryChatId) => {
   wss.on('connection', (ws, request) => {
     ws.on('message', (body) => {
       body = JSON.parse(body);
+      if (body.message.length < 1 || body.message.length > 500) return;
 
       database.query(
         'INSERT INTO messages (chat_id, to_user, from_user, message) VALUES ($1, $2, $3, $4)',

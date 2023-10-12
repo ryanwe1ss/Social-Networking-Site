@@ -10,47 +10,75 @@
     width: 282px;
   }
 
+  .collapsed {
+    .area {
+      height: 100px;
+
+      img {
+        width: 59px;
+        height: 65px;
+      }
+    }
+  }
+
+  .hamburger {
+    position: absolute;
+    cursor: pointer;
+    bottom: 0;
+
+    font-size: 30px;
+    margin-left: 15px;
+    margin-bottom: 15px;
+  }
+
   .side-bar {
-    position: fixed;
     white-space: nowrap;
+    position: fixed;
+    height: 100%;
 
     .labels {
       margin-left: 15px;
       margin-top: 15px;
-    }
 
-    .disabled {
-      cursor: not-allowed;
-    }
+      div {
+        padding: 3px 0px;
 
-    div {
-      padding: 5px 0px;
-
-      :hover {
-        color: rgb(83, 93, 223);
+        :hover {
+          color: rgb(83, 93, 223);
+        }
       }
     }
 
-    .notification {
+    .sp-notification {
       position: relative;
 
-      .badge {
+      .sp-badge {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+  
         background-color: rgb(189, 48, 48);
-        min-height: 20px;
         border-radius: 50%;
-        padding: 3px 6px;
-        font-size: 14px;
+  
+        width: 19px;
+        height: 18px;
+        font-size: 11px;
         color: white;
-
+  
         position: absolute;
-        top: 0px;
+        left: 16px;
+        top: 0;
+      }
+
+      a :hover {
+        color: rgb(236, 236, 236);
       }
     }
 
     a {
       text-decoration: none;
+      font-family: sans-serif;
       font-style: normal;
-      font-weight: 600;
       font-size: 28px;
       color: rgb(236, 236, 236);
     }

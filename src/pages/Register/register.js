@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { FetchSession, PerformRegister } from "../../utilities/utilities";
+import { FetchSession, PerformRegister } from "../../utilities/routes";
 import "./register.scss";
 
 function Register()

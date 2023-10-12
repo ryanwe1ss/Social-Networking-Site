@@ -3,7 +3,6 @@ import LoadingBar from '../../components/LoadingBar/loading-bar';
 
 import DefaultProfileImage from '/public/images/default-profile.png';
 import SidePanel from '../../components/SidePanel/side-panel';
-import Footer from '../../components/Footer/footer';
 import './messages.scss';
 
 import {
@@ -11,7 +10,9 @@ import {
   FetchSession,
   FetchConversation,
   FetchChats,
-} from '../../utilities/utilities';
+} from '../../utilities/routes';
+
+import { ShowBoxDialog } from '../../utilities/utilities';
 
 export const webSocketUrl =
   process.env.CHAT_SERVER +
@@ -117,6 +118,10 @@ function Messages()
 
   function HandleSendMessage(chatSocket, conversation, userId) {
     const message = document.getElementById('message').value;
+    if (message.length > 500) {
+      ShowBoxDialog('Message must be less than 500 characters');
+      return;
+    }
 
     if (chatSocket.readyState == WebSocket.OPEN && message.length > 0) {
       const newMessage = {
@@ -189,7 +194,6 @@ function Messages()
             </div>
           </div>
         </div>
-        <Footer/>
       </div>
     );
   

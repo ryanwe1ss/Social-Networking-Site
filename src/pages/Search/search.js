@@ -1,16 +1,15 @@
 import { useEffect, useState } from "react";
-import { thumbnailUrl } from "../../utilities/utilities";
+import { thumbnailUrl } from "../../utilities/routes";
 import DefaultProfileImage from "/public/images/default-profile.png";
 
 import LoadingBar from "../../components/LoadingBar/loading-bar";
 import SidePanel from "../../components/SidePanel/side-panel";
-import Footer from "../../components/Footer/footer";
 import "./search.scss";
 
 import {
   FetchSession,
   SearchAccounts
-} from "../../utilities/utilities";
+} from "../../utilities/routes";
 
 function Search()
 {
@@ -61,7 +60,6 @@ function Search()
             </div>
           </div>
         </div>
-        <Footer/>
       </div>
     );
   

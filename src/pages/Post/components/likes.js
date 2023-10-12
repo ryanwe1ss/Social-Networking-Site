@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { thumbnailUrl, FetchPostLikes } from "../../../utilities/utilities";
+import { thumbnailUrl, FetchPostLikes } from "../../../utilities/routes";
 import DefaultProfileImage from "/public/images/default-profile.png";
 
 function Likes(args)

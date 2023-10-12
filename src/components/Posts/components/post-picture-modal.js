@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { UploadPost } from "../../../utilities/utilities";
+import { UploadPost } from "../../../utilities/routes";
 import LoadingBar from "../../LoadingBar/loading-bar";
 
 function PostPictureModal(args)

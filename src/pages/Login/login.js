@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { FetchSession, PerformLogin } from "../../utilities/utilities";
+import { FetchSession, PerformLogin } from "../../utilities/routes";
 import "./login.scss";
 
 function Login()

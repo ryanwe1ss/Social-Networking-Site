@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { UpdatePrivacy, UpdatePublicMessaging } from "../../../utilities/utilities";
+import { UpdatePrivacy, UpdatePublicMessaging } from "../../../utilities/routes";
 
 function GeneralSettings(args)
 {

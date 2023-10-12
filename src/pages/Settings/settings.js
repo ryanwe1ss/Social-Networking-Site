@@ -15,8 +15,7 @@ import {
   FetchBlocked,
   UpdateUsername,
   UpdatePassword,
-} from "../../utilities/utilities";
-import Footer from "../../components/Footer/footer";
+} from "../../utilities/routes";
 
 function Settings()
 {
@@ -110,7 +109,6 @@ function Settings()
             </div>
           </div>
         </div>
-        <Footer/>
       </div>
     );
   

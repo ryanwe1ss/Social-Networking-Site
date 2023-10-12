@@ -4,7 +4,7 @@ import {
   FetchNotifications,
   AcceptFollowRequest,
   DeclineFollowRequest
-} from "../../utilities/utilities";
+} from "../../utilities/routes";
 
 import FollowRequests from "./components/FollowRequests";
 import Comments from "./components/Comments";
@@ -12,7 +12,6 @@ import Likes from "./components/Likes";
 
 import LoadingBar from "../../components/LoadingBar/loading-bar";
 import SidePanel from "../../components/SidePanel/side-panel";
-import Footer from "../../components/Footer/footer";
 
 import "./notifications.scss";
 
@@ -131,7 +130,6 @@ function Notifications()
             }
           </div>
         </div>
-        <Footer/>
       </div>
     );
   

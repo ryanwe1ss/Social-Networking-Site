@@ -1,5 +1,5 @@
 import DefaultProfileImage from "/public/images/default-profile.png";
-import { thumbnailUrl } from "../../utilities/utilities";
+import { thumbnailUrl } from "../../utilities/routes";
 import "./connections.scss";
 
 function Following(args)

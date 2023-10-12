@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
-import { CheckAdminPermissions, FetchSession } from "../../../utilities/utilities";
+import { CheckAdminPermissions, FetchSession } from "../../../utilities/routes";
 
 import SidePanel from "../../../components/SidePanel/side-panel";
-import Footer from "../../../components/Footer/footer";
 import "./user-settings.scss";
 
 function UserSettings()
@@ -31,7 +30,6 @@ function UserSettings()
             User Settings
           </div>
         </div>
-        <Footer/>
       </div>
     );
   
@@ -45,7 +43,6 @@ function UserSettings()
             <i className="bi bi-lock-fill"/>&nbsp;You do not have access to view this page.
           </div>
         </div>
-        <Footer/>
       </div>
     )
   }

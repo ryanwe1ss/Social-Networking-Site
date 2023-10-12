@@ -1,4 +1,4 @@
-import { DeactivateAccount, DeleteAccount } from "../../../utilities/utilities";
+import { DeactivateAccount, DeleteAccount } from "../../../utilities/routes";
 
 function ManageAccount()
 {

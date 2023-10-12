@@ -6,14 +6,13 @@ import {
   FetchPostReports,
   FetchCommentReports,
   SearchReports,
-} from "../../../utilities/utilities";
+} from "../../../utilities/routes";
 
 import ProfileReports from "./components/profile-reports";
 import PostReports from "./components/post-reports";
 import CommentReports from "./components/comment-reports";
 
 import SidePanel from "../../../components/SidePanel/side-panel";
-import Footer from "../../../components/Footer/footer";
 import "./reports.scss";
 
 function Reports()
@@ -117,7 +116,6 @@ function Reports()
             </div>
           </div>
         </div>
-        <Footer/>
       </div>
     );
   
@@ -131,7 +129,6 @@ function Reports()
             <i className="bi bi-lock-fill"/>&nbsp;You do not have access to view this page.
           </div>
         </div>
-        <Footer/>
       </div>
     );
   }

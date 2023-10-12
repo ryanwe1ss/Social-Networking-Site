@@ -7,7 +7,7 @@ import {
   LikePost,
   CommentPost,
   FavoritePost
-} from "../../utilities/utilities";
+} from "../../utilities/routes";
 import DefaultProfileImage from "/public/images/default-profile.png";
 
 import LoadingBar from "../../components/LoadingBar/loading-bar";
@@ -16,8 +16,6 @@ import SidePanel from "../../components/SidePanel/side-panel";
 import ReportPostModal from "./components/report-post";
 import ReportCommentModal from "./components/report-comment";
 import Likes from "./components/likes";
-
-import Footer from "../../components/Footer/footer";
 import "./post.scss";
 
 function Post()
@@ -212,7 +210,6 @@ function Post()
             postId={postId}
           /> : false
         }
-        <Footer/>
       </div>
     );
   

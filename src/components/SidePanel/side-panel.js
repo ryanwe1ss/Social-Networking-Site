@@ -1,37 +1,56 @@
-import { useEffect, useState } from "react";
-import { FetchNotifications, Logout } from "../../utilities/utilities";
-import SidePanelImage from "/public/images/sidepanel-logo.png";
-import "./side-panel.scss";
+import { useEffect, useState } from 'react';
+import { FetchNotifications, Logout } from '../../utilities/routes';
+import SidePanelImage from '/public/images/sidepanel-logo.png';
+import SidePanelIcon from '/public/images/sidepanel-icon.png';
+import './side-panel.scss';
 
 function SidePanel(args)
 {
-  if (args.session.type === "admin") {
-    return (
-      <div className="side-panel">
-        <div className="side-bar">
-          <img src={SidePanelImage} alt="logo"/>
+  const [showSidePanel, setShowSidePanel] = useState(true);
 
-          <div className="labels">
+  useEffect(() => {
+    if (localStorage.getItem('showSidePanel') === null) {
+      localStorage.setItem('showSidePanel', false);
+
+    } else {
+      setShowSidePanel(JSON.parse(localStorage.getItem('showSidePanel')));
+    }
+  }, []);
+
+  function ShowSidePanel() {
+    localStorage.setItem('showSidePanel', !showSidePanel);
+    setShowSidePanel(!showSidePanel);
+  }
+
+  if (args.session.type == 'admin') {
+    return (
+      <div className='side-panel' style={{'width': showSidePanel ? '61px' : '285px'}}>
+        <div className={`side-bar ${showSidePanel && 'collapsed'}`}>
+
+        <div className='hamburger' onClick={ShowSidePanel}>
+            <div className='bi bi-list'></div>
+          </div>
+
+          <div className='area'>
+            <img src={showSidePanel ? SidePanelIcon : SidePanelImage} id='sp-image' alt='logo'/>
+          </div>
+
+          <div className='labels'>
             <div>
-              <a href="/statistics" className="bi bi-activity"> Statistics</a>
+              <a href='/statistics' className='bi bi-activity'> {!showSidePanel && 'Statistics'}</a>
             </div>
-            {/*
             <div>
-              <a href="/user-settings" className="bi bi-person-fill-gear"> User Settings</a>
-            </div>
-            */}
-            <div>
-              <a href="/reports" className="bi bi-flag-fill"> Reports</a>
+              <a href='/reports' className='bi bi-flag-fill'> {!showSidePanel && 'Reports'}</a>
             </div>
             <div>
-              <a href="/" onClick={Logout} className="bi bi-lock"> Logout</a>
+              <a href='/' onClick={Logout} className='bi bi-lock'> {!showSidePanel && 'Logout'}</a>
             </div>
           </div>
         </div>
       </div>
     );
   
-  } else if (args.session.type === "user") {
+  } else if (args.session.type == 'user') {
     const [notification, setNotificationCount] = useState([]);
 
     useEffect(() => {
@@ -41,36 +60,55 @@ function SidePanel(args)
     }, []);
 
     return (
-      <div className="side-panel">
-        <div className="side-bar">
-          <img src={SidePanelImage} alt="logo"/>
+      <div className='side-panel' style={{'width': showSidePanel ? '61px' : '285px'}}>
+        <div className={`side-bar ${showSidePanel && 'collapsed'}`}>
 
-          <div className="labels">
+          <div className='hamburger' onClick={ShowSidePanel}>
+            <div className='bi bi-list'></div>
+          </div>
+
+          <div className='area'>
+            <img src={showSidePanel ? SidePanelIcon : SidePanelImage} id='sp-image' alt='logo'/>
+          </div>
+
+          <div className='labels'>
             <div>
-              <a href="/feed" className="bi bi-image"> Feed</a>
+              <a href='/feed' className='bi bi-image'> {!showSidePanel && 'Feed'}</a>
             </div>
             <div>
-              <a href="/search" className="bi bi-search"> Search</a>
+              <a href='/search' className='bi bi-search'> {!showSidePanel && 'Search'}</a>
             </div>
             <div>
-              <a href="/messages" className="bi bi-chat"> Messages</a>
+              <a href='/messages' className='bi bi-chat'> {!showSidePanel && 'Messages'}</a>
             </div>
-            <div>
-              <a href="/notifications" className="bi bi-bell notification"> Notifications
-                <span className="badge">{notification.count > 0 ? notification.count : null}</span>
+            <div className='sp-notification'>
+              <a href='/notifications' className='bi bi-bell notification'> {!showSidePanel && 'Notifications'}
+                {notification.count > 0 && (
+                  <div
+                    className='sp-badge'
+                    style={{
+                      padding: notification.count > 9 && notification.count < 99
+                      ? '3px 3px'
+                      : notification.count > 99
+                      ? '4px 3px' : '3px 6px'
+                    }}
+                  >
+                    {notification.count > 0 ? notification.count : null}
+                  </div>
+                )}
               </a>
             </div>
             <div>
-              <a href="/saved-posts" className="bi bi-bookmark"> Saved Posts</a>
+              <a href='/saved-posts' className='bi bi-bookmark'> {!showSidePanel && 'Saved Posts'}</a>
             </div>
             <div>
-              <a href={`/profile/${args.session.username}`} className="bi bi-person-fill"> Profile</a>
+              <a href={`/profile/${args.session.username}`} className='bi bi-person-fill'> {!showSidePanel && 'Profile'}</a>
             </div>
             <div>
-              <a href="/settings" className="bi bi-gear"> Settings</a>
+              <a href='/settings' className='bi bi-gear'> {!showSidePanel && 'Settings'}</a>
             </div>
             <div>
-              <a href="/" onClick={Logout} className="bi bi-lock"> Logout</a>
+              <a href='/' onClick={Logout} className='bi bi-lock'> {!showSidePanel && 'Logout'}</a>
             </div>
           </div>
         </div>

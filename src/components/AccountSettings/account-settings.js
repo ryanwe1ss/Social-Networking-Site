@@ -3,7 +3,7 @@ import { useState } from "react";
 import {
   ReportAccount,
   BlockAccount
-} from "./../../utilities/utilities";
+} from "../../utilities/routes";
 import "./account-settings.scss";
 
 function AccountSettings(args)

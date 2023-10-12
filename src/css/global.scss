@@ -1,7 +1,8 @@
 body {
   background-color: #425E7A;
   color: rgb(230, 230, 230);
-  font-weight: 600;
+  font-family: system-ui;
+  font-weight: 500;
 }
 
 // User Containers
@@ -31,8 +32,6 @@ body {
 }
 
 .popup-box {
-  animation: fadeOut 6s ease-in-out;
-
   background-color: #fff;
   border: 1px solid #ccc;
   color: black;
