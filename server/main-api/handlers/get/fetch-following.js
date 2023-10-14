@@ -9,7 +9,8 @@ function FetchFollowing(request, result)
       name
     FROM
       accounts
-    LEFT JOIN connections ON connections.account = accounts.id
+    LEFT JOIN
+      connections ON connections.account = accounts.id
     WHERE
       connections.follower = ${request.query.id}
       AND NOT (SELECT EXISTS(SELECT * FROM "blocked" WHERE "user" = ${request.session.user.id} AND blocker = accounts.id))

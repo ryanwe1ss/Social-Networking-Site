@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { FetchNotifications, Logout } from '../../utilities/routes';
+
 import SidePanelImage from '/public/images/sidepanel-logo.png';
 import SidePanelIcon from '/public/images/sidepanel-icon.png';
 import './side-panel.scss';
@@ -9,8 +10,9 @@ function SidePanel(args)
   const [showSidePanel, setShowSidePanel] = useState(true);
 
   useEffect(() => {
-    if (localStorage.getItem('showSidePanel') === null) {
+    if (localStorage.getItem('showSidePanel') == null) {
       localStorage.setItem('showSidePanel', false);
+      setShowSidePanel(false);
 
     } else {
       setShowSidePanel(JSON.parse(localStorage.getItem('showSidePanel')));
@@ -55,6 +57,7 @@ function SidePanel(args)
 
     useEffect(() => {
       FetchNotifications(true).then((notifications) => {
+        console.log(notifications)
         setNotificationCount(notifications);
       });
     }, []);
@@ -78,11 +81,28 @@ function SidePanel(args)
             <div>
               <a href='/search' className='bi bi-search'> {!showSidePanel && 'Search'}</a>
             </div>
-            <div>
-              <a href='/messages' className='bi bi-chat'> {!showSidePanel && 'Messages'}</a>
+            <div className='sp-message'>
+              <a href='/messages' className='bi bi-chat-left-text'> {!showSidePanel && 'Messages'}
+                {notification.messages > 0 && (
+                  <div
+                    className='sp-badge'
+                    style={{
+                      padding: notification.messages > 9 && notification.messages < 99
+                      ? '3px 3px'
+                      : notification.messages > 99
+                      ? '4px 3px' : '3px 6px'
+                    }}
+                  >
+                    {notification.messages > 0 && notification.messages < 100
+                      ? notification.messages : notification.messages > 99 
+                      ? '99+' : null
+                    }
+                  </div>
+                )}
+              </a>
             </div>
             <div className='sp-notification'>
-              <a href='/notifications' className='bi bi-bell notification'> {!showSidePanel && 'Notifications'}
+              <a href='/notifications' className='bi bi-bell'> {!showSidePanel && 'Notifications'}
                 {notification.count > 0 && (
                   <div
                     className='sp-badge'
@@ -93,7 +113,10 @@ function SidePanel(args)
                       ? '4px 3px' : '3px 6px'
                     }}
                   >
-                    {notification.count > 0 ? notification.count : null}
+                    {notification.count > 0 && notification.count < 100
+                      ? notification.count : notification.count > 99 
+                      ? '99+' : null
+                    }
                   </div>
                 )}
               </a>
@@ -108,7 +131,7 @@ function SidePanel(args)
               <a href='/settings' className='bi bi-gear'> {!showSidePanel && 'Settings'}</a>
             </div>
             <div>
-              <a href='/' onClick={Logout} className='bi bi-lock'> {!showSidePanel && 'Logout'}</a>
+              <a href='/' onClick={Logout}><i className='bi bi-box-arrow-in-left'></i>{!showSidePanel && 'Logout'}</a>
             </div>
           </div>
         </div>

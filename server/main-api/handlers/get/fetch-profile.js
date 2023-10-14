@@ -66,8 +66,8 @@ function FetchProfile(request, result)
           FROM
             accounts
           WHERE
-            accounts.id=${profileId} AND
-            is_enabled=TRUE`,
+            accounts.id = ${profileId} AND
+            is_enabled = TRUE`,
           
           function(error, data) {
             if (!error && data.rows.length > 0) {

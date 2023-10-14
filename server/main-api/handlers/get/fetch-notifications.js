@@ -8,14 +8,13 @@ function FetchNotifications(request, result)
   if (request.query.countOnly) {
     database.query(`
       SELECT
-        COUNT(*) AS count
-      FROM
-        follow_requests
-      WHERE
-        (SELECT EXISTS(SELECT * FROM accounts WHERE is_enabled IS TRUE AND id = follower_id)) AND
-        account_id = ${request.session.user.id} AND
-        accepted = FALSE AND
-        declined = FALSE`,
+        (SELECT COUNT(*) FROM messages WHERE to_user = ${request.session.user.id} AND has_read IS FALSE) AS messages,
+        (SELECT COUNT(*) FROM follow_requests
+        WHERE
+          (SELECT EXISTS(SELECT * FROM accounts WHERE is_enabled IS TRUE AND id = follower_id)) AND
+          account_id = ${request.session.user.id} AND
+          accepted = FALSE AND
+          declined = FALSE) AS count`,
 
       function(error, data) {
         if (!error) result.send(data.rows[0]);

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect } from 'react';
 import {
   FetchSession,
   FetchProfile,
@@ -12,28 +12,27 @@ import {
   CreateChat,
   FetchFollowers,
   FetchFollowing,
-} from "../../utilities/routes";
+} from '../../utilities/routes';
 
-import { ShowBoxDialog } from "../../utilities/utilities";
-import DefaultProfileImage from "/public/images/default-profile.png";
+import { ShowBoxDialog } from '../../utilities/utilities';
+import DefaultProfileImage from '/public/images/default-profile.png';
 
-import ProfileDetails from "../../components/ProfileDetails/ProfileDetails";
-import AccountSettings from "../../components/AccountSettings/account-settings";
-import Followers from "../../components/Connections/Followers";
-import Following from "../../components/Connections/Following";
+import ProfileDetails from '../../components/ProfileDetails/ProfileDetails';
+import AccountSettings from '../../components/AccountSettings/account-settings';
+import Followers from '../../components/Connections/Followers';
+import Following from '../../components/Connections/Following';
 
-import LoadingBar from "../../components/LoadingBar/loading-bar";
-import SidePanel from "../../components/SidePanel/side-panel";
+import LoadingBar from '../../components/LoadingBar/loading-bar';
+import SidePanel from '../../components/SidePanel/side-panel';
 
-import "./profile.scss";
+import './profile.scss';
 
 function Profile()
 {
-  // const popup = document.querySelector(".popup-box");
-  const profileUsername = location.href.split("profile/")[1];
+  const profileUsername = location.href.split('profile/')[1];
 
   const [session, setSession] = useState([]);
-  const [picture, setPicture] = useState([]);
+  const [picture, setPicture] = useState(null);
   const [profile, setProfile] = useState([]);
   const [followers, setFollowers] = useState([]);
   const [following, setFollowing] = useState([]);
@@ -77,35 +76,32 @@ function Profile()
 
   function HandleUpdate() {
     const body = {
-      'name': document.getElementById("name").value,
-      'gender': document.getElementById("gender").value,
-      'status': document.getElementById("status").value,
-      'birthdate': document.getElementById("birthdate").value,
-      'school': document.getElementById("school").value,
-      'major': document.getElementById("major").value,
-      'email': document.getElementById("email").value,
-      'phone_number': document.getElementById("phone_number").value,
-      'bio': document.getElementById("bio").value,
+      'name':         document.getElementById('name').value,
+      'gender':       document.getElementById('gender').value,
+      'status':       document.getElementById('status').value,
+      'birthdate':    document.getElementById('birthdate').value,
+      'school':       document.getElementById('school').value,
+      'major':        document.getElementById('major').value,
+      'email':        document.getElementById('email').value,
+      'phone_number': document.getElementById('phone_number').value,
+      'bio':          document.getElementById('bio').value,
     };
 
     UpdateProfile(body).then((response) => {
-      if (response.status === 200) {
+      if (response.status == 200) {
         HandleFetchProfile();
         setEditForm(false);
         setSaved(true);
-
-        ShowBoxDialog('Your profile has been updated!');
-      }
+      
+      } ShowBoxDialog(response.status == 200 ? 'Your profile has been updated' : `Error: ${response.status}`);
     });
   }
 
   function HandleUpload(event) {
     UploadProfilePicture(event).then((response) => {
       if (response.status === 200) {
-        setTimeout(() => {
-          setRendered(false);
-          HandleFetchPicture();
-        }, 100);
+        setRendered(false);
+        HandleFetchPicture();
       }
     });
   }
@@ -162,68 +158,68 @@ function Profile()
 
   if (session.id) {
     return (
-      <div className="profile-container">
-        <div className="outer-border">
+      <div className='profile-container'>
+        <div className='outer-border'>
           <SidePanel session={session}/>
   
-          <div className="profile">
-            <div className="left-details">
+          <div className='profile'>
+            <div className='left-details'>
               {isRendered ? 
                 <img
                   src={picture}
                   onError={(img) => (img.target.src = DefaultProfileImage)}
-                  className="picture"
-                  alt="picture"
+                  className='picture'
+                  alt='picture'
                 /> :
-                <div className="picture">
-                  <LoadingBar size="small" height={35}/>
+                <div className='picture'>
+                  <LoadingBar size='small' height={35}/>
                 </div>
               } {
                 <div>
-                  {session.id == profile.id && session.type != "admin" ?
-                    <div className="profile-interact">
+                  {session.id == profile.id && session.type != 'admin' ?
+                    <div className='profile-interact'>
                       {
                         !editForm ?
-                          <input className="btn btn-secondary btn-sm" type="button" value="Edit Profile" 
+                          <input className='btn btn-secondary btn-sm' type='button' value='Edit Profile' 
                             onClick={() => setEditForm(true)}
                           /> :
                           <span>
-                            <button className="btn btn-success btn-sm" onClick={HandleUpdate}>
-                              <i className="bi bi-check-lg"/>
+                            <button className='btn btn-success btn-sm' onClick={HandleUpdate}>
+                              <i className='bi bi-check-lg'/>
                             </button>
                             
-                            <button className="btn btn-danger btn-sm" onClick={() => setEditForm(false)}>
-                              <i className="bi bi-x-lg"/>
+                            <button className='btn btn-danger btn-sm' onClick={() => setEditForm(false)}>
+                              <i className='bi bi-x-lg'/>
                             </button>
                           </span>
                       }
-                      <input id="profile-picture" onChange={HandleUpload} type="file"/>
+                      <input id='profile-picture' onChange={HandleUpload} type='file'/>
                       <button
-                        className="btn btn-secondary btn-sm"
-                        onClick={() => document.getElementById("profile-picture").click()}>Edit Profile Picture
+                        className='btn btn-secondary btn-sm'
+                        onClick={() => document.getElementById('profile-picture').click()}>Edit Profile Picture
                       </button>
-                    </div> : profile.is_blocked == false && session.type != "admin" ?
+                    </div> : profile.is_blocked == false && session.type != 'admin' ?
                       <div>
                         <h5>
-                          <label className="username">@{profile.username}</label>
-                          <div className="interact">
+                          <label className='username'>@{profile.username}</label>
+                          <div className='interact'>
                             {profile.is_blocking == false ?
                               <div>
                                 {profile.is_following ?
-                                  <button className="btn btn-secondary btn-sm" onClick={HandleUnfollow}>Unfollow</button> : profile.is_requested ?
-                                  <button className="btn btn-secondary btn-sm">Requested</button> :
-                                  <button className="btn btn-secondary btn-sm" onClick={HandleFollow}>Follow</button>
+                                  <button className='btn btn-secondary btn-sm' onClick={HandleUnfollow}>Unfollow</button> : profile.is_requested ?
+                                  <button className='btn btn-secondary btn-sm'>Requested</button> :
+                                  <button className='btn btn-secondary btn-sm' onClick={HandleFollow}>Follow</button>
                                 }
                                 <input
-                                  className="btn btn-secondary btn-sm"
+                                  className='btn btn-secondary btn-sm'
                                   disabled={!profile.public_messaging && !profile.is_following}
-                                  type="button"
-                                  value="Message"
+                                  type='button'
+                                  value='Message'
                                   onClick={HandleMessage}
                                 />
-                                <i className="bi bi-gear-fill" onClick={() => setShowSettings(true)}/>
+                                <i className='bi bi-gear-fill' onClick={() => setShowSettings(true)}/>
                               </div> :
-                                <input type="button" className="btn btn-secondary btn-sm" value="Unblock Account" onClick={() => {
+                                <input type='button' className='btn btn-secondary btn-sm' value='Unblock Account' onClick={() => {
                                   HandleUnblock();
                                 }}/>
                             }
@@ -233,13 +229,13 @@ function Profile()
                   }
                 </div>
               }
-              <div style={{display: profile.is_blocked == false ? "block" : "none"}}>
-                <hr style={{marginTop: session.id == profile.id ? null : "5px"}}/>
-                <div className="connection-labels" style={{
+              <div style={{display: profile.is_blocked == false ? 'block' : 'none'}}>
+                <hr style={{marginTop: session.id == profile.id ? null : '5px'}}/>
+                <div className='connection-labels' style={{
                   pointerEvents:
-                    session.id == profile.id || session.type == "admin" || !profile.is_private || profile.is_following
-                    ? "all"
-                    : "none"
+                    session.id == profile.id || session.type == 'admin' || !profile.is_private || profile.is_following
+                    ? 'all'
+                    : 'none'
                 }}>
                   <label onClick={HandleFetchFollowers}>Followers</label>: {profile.followers} |&nbsp;
                   <label onClick={HandleFetchFollowing}>Following</label>: {profile.following}
@@ -247,25 +243,15 @@ function Profile()
               </div>
             </div>
   
-            <div className="right-details">
-              {editForm
-                ? <ProfileDetails
-                    edit={true}
-                    saved={saved}
-                    profile={profile}
-                    session={session}
-                    setSaved={setSaved}
-                  />
-  
-                : <ProfileDetails
-                    edit={false}
-                    saved={saved}
-                    profile={profile}
-                    session={session}
-                    setSaved={setSaved}
-                    isDisabled={isDisabled}
-                  />
-              }
+            <div className='right-details'>
+              <ProfileDetails
+                edit={editForm}
+                saved={saved}
+                profile={profile}
+                session={session}
+                setSaved={setSaved}
+                isDisabled={isDisabled}
+              />
             </div>
   
             {showFollowers
@@ -303,6 +289,6 @@ function Profile()
       </div>
     );
   
-  } else return <LoadingBar size="large" height={15}/>
+  } else return <LoadingBar size='large' height={15}/>
 }
 export default Profile;
