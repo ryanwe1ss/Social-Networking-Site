@@ -8,7 +8,7 @@ import "./search.scss";
 
 import {
   FetchSession,
-  SearchAccounts
+  SearchUsers
 } from "../../utilities/routes";
 
 function Search()
@@ -32,8 +32,8 @@ function Search()
   
           <div className="search-content">
             <div className="search-header">
-              <input type="text" className="form-control" onChange={() => {
-                SearchAccounts(event).then((result) => {
+              <input type="text" className="form-control" onChange={(event) => {
+                SearchUsers(event.target.value, true).then((result) => {
                   setSearchResults(result);
                   setHasSearched(true);
                 });

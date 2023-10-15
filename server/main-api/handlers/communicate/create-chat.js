@@ -36,7 +36,22 @@ function CreateChat(request, result)
         
         function(error, results) {
           if (error) result.sendStatus(500);
-          else result.sendStatus(200);
+          else {
+            database.query(`
+              SELECT
+                id
+              FROM
+                active_chats
+              WHERE
+                user_one=${request.session.user.id} AND user_two=${request.query.userId} OR 
+                user_one=${request.query.userId} AND user_two=${request.session.user.id}`,
+                
+              function(error, results) {
+                if (error) result.sendStatus(500);
+                else result.send({ chatId: results.rows[0].id, status: 200 });
+              }
+            );
+          }
         }
       );
     }

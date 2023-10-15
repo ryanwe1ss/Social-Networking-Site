@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { thumbnailUrl, FetchSession, FetchStatistics, SearchAccounts, CheckAdminPermissions } from "../../../utilities/routes";
+import { thumbnailUrl, FetchSession, FetchStatistics, SearchUsers, CheckAdminPermissions } from "../../../utilities/routes";
 import DefaultProfileImage from "/public/images/default-profile.png";
 
 import SidePanel from "../../../components/SidePanel/side-panel";
@@ -32,7 +32,9 @@ function AdminPanel()
   }, []);
 
   function HandleSearchAccounts(event) {
-    SearchAccounts(event, true, true).then((results) => {
+    const search = event ? event.target.value : '';
+
+    SearchUsers(search, true, true).then((results) => {
       setSearchResults(results);
       setHasSearched(true);
     });

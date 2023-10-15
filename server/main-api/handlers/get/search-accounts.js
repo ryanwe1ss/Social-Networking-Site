@@ -3,8 +3,12 @@ const { database } = require("../../../database/database");
 function SearchAccounts(request, result)
 {
   database.query(`
-    SELECT id, username
-    FROM accounts
+    SELECT
+      id,
+      name,
+      username
+    FROM
+      accounts
     WHERE
       username ILIKE '%${request.query.searchQuery}%'
       ${request.query.all ? "" : "AND id != " + request.session.user.id}

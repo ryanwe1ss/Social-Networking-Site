@@ -57,7 +57,6 @@ function SidePanel(args)
 
     useEffect(() => {
       FetchNotifications(true).then((notifications) => {
-        console.log(notifications)
         setNotificationCount(notifications);
       });
     }, []);

@@ -379,26 +379,12 @@ export function UpdatePassword(password)
 }
 
 // ----- SEARCH ----- //
-export function SearchAccounts(event, override=false, all=false)
-{
-  const searchQuery = event ? event.target.value : [];
-  const accounts = [];
-
+export function SearchUsers(searchQuery, override=false, all=false) {
   if (searchQuery.length == 0 && !override) return Promise.resolve([]);
+  
   return HttpGet(`/api/search-accounts?searchQuery=${searchQuery}${all ? '&all=true' : ''}`)
-    .then((result) => {
-      return result.json();
-    })
-    .then((users) => {
-      users.map(user => {
-        accounts.push({
-          id: user.id,
-          username: user.username,
-        });
-      });
-      return accounts;
-    }
-  );
+    .then((result) => { return result.json() })
+    .then((users) => { return users });
 }
 
 // ----- MESSAGING ----- //
@@ -419,6 +405,7 @@ export function FetchConversation(userId)
 export function CreateChat(userId)
 {
   return HttpGet(`/api/create-chat?userId=${userId}`)
+    .then((result) => { return result.json() })
     .then((response) => { return response });
 }
 

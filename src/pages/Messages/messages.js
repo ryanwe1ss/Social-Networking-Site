@@ -1,81 +1,40 @@
 import { useState, useEffect } from 'react';
 import LoadingBar from '../../components/LoadingBar/loading-bar';
 
-import DefaultProfileImage from '/public/images/default-profile.png';
 import SidePanel from '../../components/SidePanel/side-panel';
 import './messages.scss';
 
 import {
-  thumbnailUrl,
   FetchSession,
   FetchConversation,
-  FetchChats,
 } from '../../utilities/routes';
-
 import { ShowBoxDialog } from '../../utilities/utilities';
+
+import Chats from './components/chats';
+import CreateChat from './components/create-chat';
+import Conversation from './components/conversation';
 
 export const webSocketUrl =
   process.env.CHAT_SERVER +
-  (process.env.CS_API_USE_PORT_IN_URL == "true"
+  (process.env.CS_API_USE_PORT_IN_URL == 'true'
   ? `:${process.env.CHAT_SERVER_PORT}` : '');
 
 function Messages()
 {
-  const [session, setSession] = useState([]);
-
-  const [chatsLoaded, setChatsLoaded] = useState(false);
-  const [conversation, setConversation] = useState([]);
-
-  const [chats, setChats] = useState([]);
-  const [chatId, setChatId] = useState();
-  const [userId, setUserId] = useState();
-
+  const chat = location.search.split('chat=')[1];
   let chatSocket;
+
+  const [session, setSession] = useState([]);
+  const [conversation, setConversation] = useState([]);
+  const [showCreateChat, setShowCreateChat] = useState(false);
+  const [chatId, setChatId] = useState(null);
 
   useEffect(() => {
     FetchSession().then((session) => {
-      if (session.type === 'admin') window.location.href = '/statistics';
-      
+      if (session.type == 'admin') return window.location.href = '/statistics';
       setSession({ id: session.id, username: session.username, type: session.type });
-      HandleFetchChats(session);
-      setChatsLoaded(true);
     });
   }, []);
-
-  function HandleFetchChats(session) {
-    FetchChats().then((chats) => {
-      const users = chats.map(chat => {
-        if (chat.user_one !== session.username) {
-          return { id: chat.user_one_id, name: chat.user_one };
-        }
-        if (chat.user_two !== session.username) {
-          return { id: chat.user_two_id, name: chat.user_two };
-        }
-      });
-      setChats(users);
-
-      let timer = 0;
-      const chatExists = setInterval(function() {
-        const user = parseInt(location.search.split('id=')[1]);
-        const chat = document.getElementById(`${user}_chat`);
-
-        if (chat) {
-           chat.click();
-           clearInterval(chatExists);
-        
-        } else if (!user) {
-          clearInterval(chatExists);
-
-        } else {
-          if (timer > 100) {
-            clearInterval(chatExists);
-          
-          } timer += 1;
-        }
-
-     }, 100);
-    })
-  }
 
   function HandleFetchConversation(userId) {
     const messages = document.getElementById('chat');
@@ -93,7 +52,6 @@ function Messages()
 
       setConversation(conversation.messages);
       setChatId(conversation.chatId);
-      setUserId(userId);
 
       setTimeout(() => {
         if (messages.innerText.length > 0) {
@@ -125,13 +83,13 @@ function Messages()
 
     if (chatSocket.readyState == WebSocket.OPEN && message.length > 0) {
       const newMessage = {
-        chat_id: conversation.chatId,
-        to: userId,
-        from: session.username,
-        to_user: userId,
+        chat_id:   conversation.chatId,
+        to:        userId,
+        from:      session.username,
+        to_user:   userId,
         from_user: session.id,
-        message: message,
-        id: new Date().getTime(),
+        message:   message,
+        id:        new Date().getTime(),
       };
 
       chatSocket.send(JSON.stringify(newMessage));
@@ -141,58 +99,23 @@ function Messages()
   }
 
   function HandleCloseChat(chatSocket, conversation, chatId) {
-    if (chatId !== conversation.chatId) {
+    if (chatId != conversation.chatId) {
       chatSocket.close();
     }
   }
 
-  if (session.id && session.type === 'user') {
+  if (session.id && session.type == 'user') {
     return (
       <div className='messages-container'>
         <div className='outer-border'>
           <SidePanel session={session}/>
   
           <div className='messages'>
-            <div className='chats'>
-              <div className='chat-header'>Message Friend</div>
-              {chatsLoaded ? chats.map(chat => (
-                <div className='chat' onClick={() => { HandleFetchConversation(chat.id) }} id={`${chat.id}_chat`} key={chat.id}>
-                  <img
-                    src={`${thumbnailUrl}/fs-api/thumbnail/${chat.id}`}
-                    onError={(img) => (img.target.src = DefaultProfileImage)}
-                    className='thumbnail'
-                    alt='thumbnail'
-                  />
-                  <span>{chat.name}</span>
-                  <i className='bi bi-chat-fill selected' id={chat.id} style={{display: 'none', float: 'right'}}/>
-                </div>
-              )) : <LoadingBar size='small' height={15}/>}
-            </div>
-  
-            <div className='interface'>
-              <div className='chat-session' id='chat'>
-                {conversation.map(message => (
-                  <div className='text-chat' key={message.id}>
-                    {message.from == session.username ?
-                      <div className='you'>{message.message}</div> :
-                      <div className='user'>{message.message}</div>
-                    }
-                  </div>
-                ))
-                }
-              </div>
-  
-              <div className='message-box'>
-                <textarea id='message' placeholder='Type Message Here' disabled/>
-  
-                <div className='buttons'>
-                  <button id='send'>
-                    <i className='bi bi-arrow-right-circle-fill'/>
-                  </button>
-                </div>
-              </div>
-            </div>
+            <Chats session={session} chat={chat} setShowCreateChat={setShowCreateChat} HandleFetchConversation={HandleFetchConversation}/>
+            <Conversation session={session} conversation={conversation}/>
           </div>
+
+          {showCreateChat && <CreateChat setShowCreateChat={setShowCreateChat} />}
         </div>
       </div>
     );

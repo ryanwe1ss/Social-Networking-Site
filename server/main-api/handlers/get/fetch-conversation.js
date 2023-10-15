@@ -42,6 +42,19 @@ function FetchConversation(request, result)
           username: username,
           messages: data.rows,
         });
+
+        database.query(`
+          UPDATE messages
+          SET
+            has_read = TRUE
+          WHERE
+            from_user = ${request.query.userId} AND
+            to_user = ${request.session.user.id}`,
+
+          function(error, data) {
+            if (error) console.log(`Error updating messages for user ${request.session.user.id}: ${error}`);
+          }
+        );
       }
     }
   )

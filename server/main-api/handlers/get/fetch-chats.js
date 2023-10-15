@@ -3,22 +3,38 @@ const { database } = require("../../../database/database");
 function FetchChats(request, result)
 {
   database.query(`
-    SELECT
-      CAST(user_one AS INT) AS user_one_id,
-      CAST(user_two AS INT) AS user_two_id,
-      (SELECT username FROM accounts WHERE id = active_chats.user_one) AS user_one,
-      (SELECT username FROM accounts WHERE id = active_chats.user_two) AS user_two
+    SELECT DISTINCT ON (active_chats.id)
+      active_chats.id AS chat_id,
+      COUNT(CASE WHEN messages.has_read IS FALSE AND messages.to_user = ${request.session.user.id} THEN 1 END) AS messages,
+
+      JSON_BUILD_OBJECT(
+        'id', active_chats.user_one,
+        'name', userOne.username
+      ) AS user_one,
+      JSON_BUILD_OBJECT(
+        'id', active_chats.user_two,
+        'name', userTwo.username
+      ) AS user_two
     FROM
       active_chats
-    WHERE
-      (SELECT is_enabled
-        FROM accounts
-        WHERE active_chats.user_one = id AND active_chats.user_two = ${request.session.user.id} OR
-        active_chats.user_one = ${request.session.user.id} AND active_chats.user_two = id
-      ) AND (
-        user_one = ${request.session.user.id} OR
-        user_two = ${request.session.user.id}
-      )`,
+    LEFT JOIN
+      messages ON messages.chat_id = active_chats.id
+    JOIN
+      accounts userOne ON active_chats.user_one = userOne.id
+    JOIN
+      accounts userTwo ON active_chats.user_two = userTwo.id
+    WHERE (
+      SELECT is_enabled
+      FROM accounts
+      WHERE active_chats.user_one = id AND active_chats.user_two = ${request.session.user.id}
+      OR active_chats.user_one = ${request.session.user.id} AND active_chats.user_two = id
+
+    ) AND (
+      active_chats.user_one = ${request.session.user.id} OR
+      active_chats.user_two = ${request.session.user.id}
+    )
+    GROUP BY
+      active_chats.id, userOne.id, userTwo.id, userOne.username, userTwo.username`,
 
     function(error, data) {
       if (!error) result.send(data.rows);
