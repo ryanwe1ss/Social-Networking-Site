@@ -3,6 +3,7 @@
   .outer-border {
 
     .settings {
+      overflow: auto;
       display: flex;
       flex: 1;
 
@@ -69,6 +70,10 @@
 
           .right-elements {
             margin-bottom: 20px;
+
+            .username {
+              color: white;
+            }
 
             .show {
               background-color: rgb(255, 0, 0);

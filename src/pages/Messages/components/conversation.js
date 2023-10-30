@@ -2,7 +2,7 @@ function Conversation(args)
 {
   return (
     <div className='interface'>
-      <div className='chat-session' id='chat'>
+      <div className='chat-session' ref={args.chatRef}>
         {args.conversation.map(message => (
           <div className='text-chat' key={message.id}>
             {message.from == args.session.username ?
@@ -14,7 +14,7 @@ function Conversation(args)
       </div>
 
       <div className='message-box'>
-        <textarea id='message' placeholder='Type Message Here' disabled/>
+        <textarea ref={args.messageRef} placeholder='Type Message Here' disabled/>
 
         <div className='buttons'>
           <button id='send'>

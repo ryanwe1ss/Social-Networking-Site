@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import LoadingBar from '../../components/LoadingBar/loading-bar';
 
 import SidePanel from '../../components/SidePanel/side-panel';
@@ -24,6 +24,9 @@ function Messages()
   const chat = location.search.split('chat=')[1];
   let chatSocket;
 
+  const chatRef = useRef(null);
+  const messageRef = useRef(null);
+
   const [session, setSession] = useState([]);
   const [conversation, setConversation] = useState([]);
   const [showCreateChat, setShowCreateChat] = useState(false);
@@ -37,7 +40,7 @@ function Messages()
   }, []);
 
   function HandleFetchConversation(userId) {
-    const messages = document.getElementById('chat');
+    const messages = chatRef.current;
 
     document.querySelectorAll('.selected').forEach(selected => {
       selected.parentNode.style.pointerEvents = 'auto';
@@ -48,7 +51,7 @@ function Messages()
     document.getElementById(userId).parentNode.style.pointerEvents = 'none';
 
     FetchConversation(userId).then((conversation) => {
-      document.getElementById('message').disabled = false;
+      messageRef.current.disabled = false;
 
       setConversation(conversation.messages);
       setChatId(conversation.chatId);
@@ -75,7 +78,7 @@ function Messages()
   }
 
   function HandleSendMessage(chatSocket, conversation, userId) {
-    const message = document.getElementById('message').value;
+    const message = messageRef.current.value;
     if (message.length > 500) {
       ShowBoxDialog('Message must be less than 500 characters');
       return;
@@ -94,7 +97,7 @@ function Messages()
 
       chatSocket.send(JSON.stringify(newMessage));
       setConversation(conversation => [...conversation, newMessage]);
-      document.getElementById('message').value = null;
+      messageRef.current.value = null;
     }
   }
 
@@ -112,7 +115,7 @@ function Messages()
   
           <div className='messages'>
             <Chats session={session} chat={chat} setShowCreateChat={setShowCreateChat} HandleFetchConversation={HandleFetchConversation}/>
-            <Conversation session={session} conversation={conversation}/>
+            <Conversation session={session} conversation={conversation} messageRef={messageRef} chatRef={chatRef}/>
           </div>
 
           {showCreateChat && <CreateChat setShowCreateChat={setShowCreateChat} />}

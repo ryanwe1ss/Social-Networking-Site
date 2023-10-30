@@ -17,6 +17,15 @@ function SidePanel(args)
     } else {
       setShowSidePanel(JSON.parse(localStorage.getItem('showSidePanel')));
     }
+
+    // event listener for side panel collapse on resize
+    window.addEventListener('resize', () => {
+      const width = window.innerWidth < 750 ? true : false;
+
+      document.querySelector('.hamburger').style.display = width ? 'none' : 'block';
+      localStorage.setItem('showSidePanel', width);
+      setShowSidePanel(width);
+    });
   }, []);
 
   function ShowSidePanel() {

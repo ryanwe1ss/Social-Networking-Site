@@ -1,19 +1,19 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect } from 'react';
 import {
   FetchSession,
   FetchNotifications,
   AcceptFollowRequest,
   DeclineFollowRequest
-} from "../../utilities/routes";
+} from '../../utilities/routes';
 
-import FollowRequests from "./components/FollowRequests";
-import Comments from "./components/Comments";
-import Likes from "./components/Likes";
+import FollowRequests from './components/FollowRequests';
+import Comments from './components/Comments';
+import Likes from './components/Likes';
 
-import LoadingBar from "../../components/LoadingBar/loading-bar";
-import SidePanel from "../../components/SidePanel/side-panel";
+import LoadingBar from '../../components/LoadingBar/loading-bar';
+import SidePanel from '../../components/SidePanel/side-panel';
 
-import "./notifications.scss";
+import './notifications.scss';
 
 function Notifications()
 {
@@ -23,7 +23,7 @@ function Notifications()
 
   useEffect(() => {
     FetchSession().then((session) => {
-      if (session.type === "admin") window.location.href = "/statistics";
+      if (session.type == 'admin') window.location.href = '/statistics';
       
       setSession({ id: session.id, username: session.username, type: session.type });
       HandleGetNotifications();
@@ -45,19 +45,19 @@ function Notifications()
         const years = Math.abs(Math.floor(days / 365));
         
         if (seconds < 60) {
-          notification.date = seconds > 1 ? seconds + " seconds ago" : "1 second ago";
+          notification.date = seconds > 1 ? seconds + ' seconds ago' : '1 second ago';
         } else if (minutes < 60) {
-          notification.date = minutes > 1 ? minutes + " minutes ago" : "1 minute ago";
+          notification.date = minutes > 1 ? minutes + ' minutes ago' : '1 minute ago';
         } else if (hours < 24) {
-          notification.date = hours > 1 ? hours + " hours ago" : "1 hour ago";
+          notification.date = hours > 1 ? hours + ' hours ago' : '1 hour ago';
         } else if (days < 7) {
-          notification.date = days > 1 ? days + " days ago" : "1 day ago";
+          notification.date = days > 1 ? days + ' days ago' : '1 day ago';
         } else if (weeks < 4) {
-          notification.date = weeks > 1 ? weeks + " weeks ago" : "1 week ago";
+          notification.date = weeks > 1 ? weeks + ' weeks ago' : '1 week ago';
         } else if (months < 12) {
-          notification.date = months > 1 ? months + " months ago" : "1 month ago";
+          notification.date = months > 1 ? months + ' months ago' : '1 month ago';
         } else {
-          notification.date = years > 1 ? years + " years ago" : "1 year ago";
+          notification.date = years > 1 ? years + ' years ago' : '1 year ago';
         }
 
         notification.key = key;
@@ -68,11 +68,11 @@ function Notifications()
       combinedNotifications.sort((a, b) => new Date(b.date_created) - new Date(a.date_created));
       combinedNotifications.forEach((notification) => {
         if (notification.follower) {
-          notification.tag = "follow_request";
+          notification.tag = 'follow_request';
         } else if (notification.commenter) {
-          notification.tag = "comment";
+          notification.tag = 'comment';
         } else if (notification.liker) {
-          notification.tag = "like";
+          notification.tag = 'like';
         }
       });
 
@@ -97,14 +97,14 @@ function Notifications()
     });
   }
 
-  if (session.id && session.type === "user") {
+  if (session.id && session.type == 'user') {
     return (
-      <div className="notifications-container">
-        <div className="outer-border">
+      <div className='notifications-container'>
+        <div className='outer-border'>
           <SidePanel session={session}/>
 
-          <div className="notifications">
-            <div className="header">
+          <div className='notifications'>
+            <div className='header'>
               <h1>Your Notifications</h1>
               <hr/>
             </div>
@@ -114,25 +114,25 @@ function Notifications()
                 {notifications.length > 0 ? notifications.map((notification) => (
                   <div key={notification.key}>
                     {
-                    notification.tag == "follow_request" ?
+                    notification.tag == 'follow_request' ?
                       <FollowRequests notification={notification} HandleAcceptFollow={HandleAcceptFollow} HandleDeclineFollow={HandleDeclineFollow}/>
-                    : notification.tag == "comment" ?
+                    : notification.tag == 'comment' ?
                       <Comments notification={notification} session={session}/>
-                    : notification.tag == "like" ?
+                    : notification.tag == 'like' ?
                       <Likes notification={notification} session={session}/>
                     : null
                     }
                   </div>
                 
-                )) : <center>You have 0 notifications</center>}
+                )) : <center>You have no notifications</center>}
                 
-              </div> : <LoadingBar size="large" height={15}/>
+              </div> : <LoadingBar size='medium' height={15}/>
             }
           </div>
         </div>
       </div>
     );
   
-  } else return <LoadingBar size="large" height={15}/>
+  } else return <LoadingBar size='large' height={15}/>
 }
 export default Notifications;

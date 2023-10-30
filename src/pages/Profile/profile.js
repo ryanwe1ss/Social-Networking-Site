@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import {
   FetchSession,
   FetchProfile,
@@ -17,10 +17,10 @@ import {
 import { ShowBoxDialog } from '../../utilities/utilities';
 import DefaultProfileImage from '/public/images/default-profile.png';
 
-import ProfileDetails from '../../components/ProfileDetails/ProfileDetails';
-import AccountSettings from '../../components/AccountSettings/account-settings';
-import Followers from '../../components/Connections/Followers';
-import Following from '../../components/Connections/Following';
+import ProfileDetails from './components/ProfileDetails/profile-details';
+import AccountSettings from './components/AccountSettings/account-settings';
+import Followers from './components/Connections/followers';
+import Following from './components/Connections/following';
 
 import LoadingBar from '../../components/LoadingBar/loading-bar';
 import SidePanel from '../../components/SidePanel/side-panel';
@@ -34,16 +34,30 @@ function Profile()
   const [session, setSession] = useState([]);
   const [picture, setPicture] = useState(null);
   const [profile, setProfile] = useState([]);
+
   const [followers, setFollowers] = useState([]);
   const [following, setFollowing] = useState([]);
+  const [showFollowers, setShowFollowers] = useState(false);
+  const [showFollowing, setShowFollowing] = useState(false);
+  const [followingLoaded, setFollowingLoaded] = useState(false);
+  const [followersLoaded, setFollowersLoaded] = useState(false);
 
   const [saved, setSaved] = useState(false);
   const [editForm, setEditForm] = useState(false);
   const [isDisabled, setDisabled] = useState(false);
   const [isRendered, setRendered] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
-  const [showFollowers, setShowFollowers] = useState(false);
-  const [showFollowing, setShowFollowing] = useState(false);
+
+  const nameRef = useRef(null);
+  const genderRef = useRef(null);
+  const statusRef = useRef(null);
+  const birthdateRef = useRef(null);
+  const schoolRef = useRef(null);
+  const majorRef = useRef(null);
+  const emailRef = useRef(null);
+  const phoneNumberRef = useRef(null);
+  const bioRef = useRef(null);
+  const profilePictureRef = useRef(null);
 
   useEffect(() => {
     FetchSession().then((session) => {
@@ -76,15 +90,15 @@ function Profile()
 
   function HandleUpdate() {
     const body = {
-      'name':         document.getElementById('name').value,
-      'gender':       document.getElementById('gender').value,
-      'status':       document.getElementById('status').value,
-      'birthdate':    document.getElementById('birthdate').value,
-      'school':       document.getElementById('school').value,
-      'major':        document.getElementById('major').value,
-      'email':        document.getElementById('email').value,
-      'phone_number': document.getElementById('phone_number').value,
-      'bio':          document.getElementById('bio').value,
+      'name':         nameRef.current.value,
+      'gender':       genderRef.current.value,
+      'status':       statusRef.current.value,
+      'birthdate':    birthdateRef.current.value,
+      'school':       schoolRef.current.value,
+      'major':        majorRef.current.value,
+      'email':        emailRef.current.value,
+      'phone_number': phoneNumberRef.current.value,
+      'bio':          bioRef.current.value,
     };
 
     UpdateProfile(body).then((response) => {
@@ -98,8 +112,9 @@ function Profile()
   }
 
   function HandleUpload(event) {
+    ShowBoxDialog('Uploading profile picture...');
     UploadProfilePicture(event).then((response) => {
-      if (response.status === 200) {
+      if (response.status == 200) {
         setRendered(false);
         HandleFetchPicture();
       }
@@ -108,13 +123,13 @@ function Profile()
 
   function HandleFollow() {
     FollowAccount(profile.id).then((response) => {
-      if (response.status === 200) HandleFetchProfile();
+      if (response.status == 200) HandleFetchProfile();
     });
   }
 
   function HandleUnfollow() {
     UnfollowAccount(profile.id).then((response) => {
-      if (response.status === 200) HandleFetchProfile();
+      if (response.status == 200) HandleFetchProfile();
     })
   }
 
@@ -128,29 +143,33 @@ function Profile()
 
   function HandleDeleteConnection(userId, type) {
     DeleteConnection(userId, type).then((response) => {
-      if (response.status === 200) {
+      if (response.status == 200) {
         HandleFetchProfile();
       }
     })
   }
 
   function HandleFetchFollowers() {
+    setShowFollowers(true);
+
     FetchFollowers(profile.id).then((followers) => {
+      setFollowersLoaded(true);
       setFollowers(followers);
-      setShowFollowers(true);
     });
   }
 
   function HandleFetchFollowing() {
+    setShowFollowing(true);
+
     FetchFollowing(profile.id).then((following) => {
+      setFollowingLoaded(true);
       setFollowing(following);
-      setShowFollowing(true);
     });
   }
 
   function HandleMessage() {
     CreateChat(profile.id).then((response) => {
-      if (response.status === 200) {
+      if (response.status == 200) {
         window.location.href = '/messages';
       }
     });
@@ -193,10 +212,10 @@ function Profile()
                             </button>
                           </span>
                       }
-                      <input id='profile-picture' onChange={HandleUpload} type='file'/>
+                      <input ref={profilePictureRef} onChange={HandleUpload} type='file'/>
                       <button
                         className='btn btn-secondary btn-sm'
-                        onClick={() => document.getElementById('profile-picture').click()}>Edit Profile Picture
+                        onClick={() => profilePictureRef.current.click()}>Edit Profile Picture
                       </button>
                     </div> : profile.is_blocked == false && session.type != 'admin' ?
                       <div>
@@ -219,9 +238,7 @@ function Profile()
                                 />
                                 <i className='bi bi-gear-fill' onClick={() => setShowSettings(true)}/>
                               </div> :
-                                <input type='button' className='btn btn-secondary btn-sm' value='Unblock Account' onClick={() => {
-                                  HandleUnblock();
-                                }}/>
+                                <input type='button' className='btn btn-secondary btn-sm' value='Unblock Account' onClick={HandleUnblock}/>
                             }
                           </div>
                         </h5>
@@ -251,6 +268,16 @@ function Profile()
                 session={session}
                 setSaved={setSaved}
                 isDisabled={isDisabled}
+
+                nameRef={nameRef}
+                genderRef={genderRef}
+                statusRef={statusRef}
+                birthdateRef={birthdateRef}
+                schoolRef={schoolRef}
+                majorRef={majorRef}
+                emailRef={emailRef}
+                phoneNumberRef={phoneNumberRef}
+                bioRef={bioRef}
               />
             </div>
   
@@ -259,7 +286,10 @@ function Profile()
                   session={session}
                   profileId={profile.id}
                   followers={followers}
+                  followersLoaded={followersLoaded}
+                  setFollowers={setFollowers}
                   setShowFollowers={setShowFollowers}
+                  setFollowersLoaded={setFollowersLoaded}
                   HandleFetchFollowers={HandleFetchFollowers}
                   HandleDeleteConnection={HandleDeleteConnection}
                 />
@@ -270,7 +300,10 @@ function Profile()
                   session={session}
                   profileId={profile.id}
                   following={following}
+                  followingLoaded={followingLoaded}
+                  setFollowing={setFollowing}
                   setShowFollowing={setShowFollowing}
+                  setFollowingLoaded={setFollowingLoaded}
                   HandleFetchFollowing={HandleFetchFollowing}
                   HandleDeleteConnection={HandleDeleteConnection}
                 />

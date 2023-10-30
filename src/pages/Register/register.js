@@ -1,18 +1,23 @@
-import { useEffect } from "react";
-import { FetchSession, PerformRegister } from "../../utilities/routes";
-import "./register.scss";
+import { useEffect, useRef, useState } from 'react';
+import { FetchSession, PerformLogin, PerformRegister } from '../../utilities/routes';
+import './register.scss';
 
 function Register()
 {
+  const [response, setResponse] = useState(null);
+  const usernameRef = useRef(null);
+  const passwordRef = useRef(null);
+  const confirmRef = useRef(null);
+
   useEffect(() => {
     FetchSession(true).then((session) => {
       if (session) {
         switch (session.type) {
-          case "admin":
-            window.location.href = "/statistics";
+          case 'admin':
+            window.location.href = '/statistics';
             break;
 
-          case "user":
+          case 'user':
             window.location.href = `/profile/${session.username}`;
             break;
         }
@@ -20,81 +25,84 @@ function Register()
     });
   }, []);
 
-  function HandleRegister(username, password, confirm) {
-    PerformRegister(username, password, confirm).then((response) => {
-      document.getElementById("response").style.color = "red";
+  function HandleRegister(event) {
+    event.target.disabled = true;
+    const username = usernameRef.current.value;
+    const password = passwordRef.current.value;
+    const confirmPassword = confirmRef.current.value;
 
+    PerformRegister(username, password, confirmPassword).then((response) => {
       switch (response.status) {
         case 200:
-          document.getElementById("response").style.color = "green";
-          document.getElementById("response").innerHTML = "Account Registered";
+          PerformLogin(username, password).then((response) => {
+            localStorage.setItem('sessionToken', response.token);
+            location.href = `/profile/${username}`;
+          });
           break;
-
+      
         case 409:
-          document.getElementById("response").innerHTML = "Username already taken";
+          setResponse('Username already taken');
           break;
-
+      
         case 500:
-          document.getElementById("response").innerHTML = "Failed to register, try again";
+          setResponse('Failed to register, try again');
           break;
-
+      
         case 401:
-          document.getElementById("response").innerHTML = "Passwords do not match";
+          setResponse('Passwords do not match');
           break;
-
+      
         case 400:
-          document.getElementById("response").innerHTML = "Username and Password must be 5-20 characters";
+          setResponse('Username and Password must be 5-20 characters');
           break;
-
+      
         case 403:
-          document.getElementById("response").innerHTML = "Permission error creating your user folder. Please contact administrator";
+          setResponse('Permission error creating your user folder. Please contact administrator');
           break;
-
+      
         case 429:
-          document.getElementById("response").innerHTML = "Too many accounts registered";
+          setResponse('Too many accounts registered');
           break;
-
+      
         case 502:
-          document.getElementById("response").innerHTML = "Server was unable to communicate with the file server";
+          setResponse('Server was unable to communicate with the file server');
           break;
-      }
+      
+      } event.target.disabled = false;
     });
   }
 
   return (
     <center>
-      <div className="register-form">
+      <div className='register-form'>
         <h1>Register</h1>
-        <div className="row">
-          <div className="form-group">
+        <div className='row'>
+          <div className='form-group'>
             <label>Username</label>
-            <input type="text" id="username" className="form-control"/>
+            <input type='text' ref={usernameRef} className='form-control'/>
           </div>
         </div><br/>
 
-        <div className="row">
-          <div className="form-group">
+        <div className='row'>
+          <div className='form-group'>
             <label>Password</label>
-            <input type="password" id="password" className="form-control"/>
+            <input type='password' ref={passwordRef} className='form-control'/>
           </div>
         </div><br/>
 
-        <div className="row">
-          <div className="form-group">
+        <div className='row'>
+          <div className='form-group'>
             <label>Confirm Password</label>
-            <input type="password" id="confirm" className="form-control"/>
+            <input type='password' ref={confirmRef} className='form-control'/>
           </div>
         </div>
-        <input type="button" onClick={() => HandleRegister(
-          document.getElementById("username").value,
-          document.getElementById("password").value,
-          document.getElementById("confirm").value
-          
-          )} className="btn btn-primary" value="Register Account"/>
-        <div id="response"/>
+        <input type='button' onClick={HandleRegister} className='btn btn-primary' value='Register Account'/>
+        <div id='response'>
+          {response}
+        </div>
 
-        <div className="footer">
-          Already registered?<br/><a href="/">Click here</a>
+        <div className='footer'>
+          Already registered?<br/><a href='/'>Click here</a>
         </div>
       </div>
     </center>

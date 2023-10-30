@@ -1,79 +1,80 @@
-import { useEffect } from "react";
-import { FetchSession, PerformLogin } from "../../utilities/routes";
-import "./login.scss";
+import { useState, useEffect, useRef } from 'react';
+import { FetchSession, PerformLogin } from '../../utilities/routes';
+import './login.scss';
 
 function Login()
 {
+  const [response, setResponse] = useState(null);
+  const usernameRef = useRef(null);
+  const passwordRef = useRef(null);
+
   useEffect(() => {
     FetchSession(true).then((session) => {
       if (session) {
         switch (session.type) {
-          case "admin":
-            window.location.href = "/statistics";
+          case 'admin':
+            window.location.href = '/statistics';
             break;
 
-          case "user":
+          case 'user':
             window.location.href = `/profile/${session.username}`;
             break;
         }
       }
     });
 
-    document.getElementById("password").addEventListener("keyup", (event) => {
-      if (event.key == 'Enter') {
-        document.getElementById("response").style.color = "red";
-        HandleLogin(
-          document.getElementById("username").value,
-          document.getElementById("password").value,
-        );
-      }
+    passwordRef.current.addEventListener('keyup', (event) => {
+      if (event.key == 'Enter') HandleLogin(event);
     });
   }, []);
 
-  function HandleLogin(username, password) {
+  function HandleLogin(event) {
+    event.target.disabled = true;
+    const username = usernameRef.current.value;
+    const password = passwordRef.current.value;
+
     PerformLogin(username, password).then((response) => {
       localStorage.setItem('sessionToken', response.token);
-      document.getElementById("response").style.color = "red";
 
       if (response.status == 200) {
-        if (response.type == "admin") return window.location.href = "/statistics";
+        if (response.type == 'admin') return window.location.href = '/statistics';
         window.location.href = `/profile/${response.username}`;
 
       } else if (response.status == 504) {
-        document.getElementById("response").innerHTML = "Error connecting to server. Please contact an administrator.";
+        setResponse('Error connecting to server. Please contact an administrator.');
       
       } else {
-        document.getElementById("response").innerHTML = "Login failed, try again";
-        document.getElementById("password").value = null;
+        setResponse('Login failed, try again');
+        passwordRef.current.value = null;
       }
-    });
+    
+    }); event.target.disabled = false;
   }
 
   return (
     <center>
-      <div className="login-form">
+      <div className='login-form'>
         <h1>Login</h1>
-        <div className="row">
-          <div className="form-group">
+        <div className='row'>
+          <div className='form-group'>
             <label>Username</label>
-            <input type="text" id="username" className="form-control"/>
+            <input type='text' ref={usernameRef} className='form-control'/>
           </div>
         </div><br/>
 
-        <div className="row">
-          <div className="form-group">
+        <div className='row'>
+          <div className='form-group'>
             <label>Password</label>
-            <input type="password" id="password" className="form-control"/>
+            <input type='password' ref={passwordRef} className='form-control'/>
           </div>
         </div>
-        <input type="button" className="btn btn-primary" value="Login" onClick={() => HandleLogin(
-          document.getElementById("username").value,
-          document.getElementById("password").value,
-        )}/>
-        <div id="response"/>
+        <input type='button' className='btn btn-primary' value='Login' onClick={HandleLogin}/>
+        <div id='response'>
+          {response}
+        </div>
 
-        <div className="footer">
-          Not registered?<br/><a href="/register">Click here</a>
+        <div className='footer'>
+          Not registered?<br/><a href='/register'>Click here</a>
         </div>
       </div>
     </center>

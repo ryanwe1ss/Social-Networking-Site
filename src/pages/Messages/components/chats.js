@@ -21,7 +21,7 @@ function Chats(args)
           if (chat.user_one.name != args.session.username) {
             return { id: chat.user_one.id, chat_id: chat.chat_id, name: chat.user_one.name + (chat.messages > 0 ? ` (${chat.messages})` : '') };
           }
-          if (chat.user_two.name !== args.session.username) {
+          if (chat.user_two.name != args.session.username) {
             return { id: chat.user_two.id, chat_id: chat.chat_id, name: chat.user_two.name + (chat.messages > 0 ? ` (${chat.messages})` : '') };
           }
         })

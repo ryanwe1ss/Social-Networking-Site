@@ -61,7 +61,8 @@
 
         cursor: pointer;
         position: absolute;
-        top: 0;
+        right: 15px;
+        top: 5px;
       }
     }
 
@@ -73,8 +74,8 @@
 
   .modal {
     background-color: rgba(0,0,0,0.4);
+    display: block;
     padding-top: 12px;
-    display: none;
     color: black;
   
     .modal-content {
@@ -84,6 +85,8 @@
       overflow: auto;
 
       header {
+        margin-top: 10px;
+
         h4 {
           display: inline-block;
           position: absolute;
@@ -119,16 +122,18 @@
   
         .preview-block {
           background-color: rgb(204, 204, 204);
+          border-radius: 10px;
           margin: 0 auto;
+          height: 560px;
   
           img {
-            height: 480px;
+            border-radius: 10px;
             width: 500px;
           }
         }
       }
 
-      #close {
+      .close {
         color: black;
         float: right;
         font-size: 30px;
@@ -136,7 +141,7 @@
         margin-right: 10px;
       }
       
-      #close:hover {
+      .close:hover {
         color: red;
         cursor: pointer;
       }

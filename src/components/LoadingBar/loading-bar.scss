@@ -10,6 +10,18 @@
   border-radius: 50%;
 }
 
+.medium-spinner {
+  min-height: 70px;
+  min-width: 70px;
+  max-height: 70px;
+  max-width: 70px;
+
+  animation: spin 1.5s linear infinite;
+  border: 10px solid #f3f3f3;
+  border-top: 10px solid #3498db;
+  border-radius: 50%;
+}
+
 .small-spinner {
   min-height: 40px;
   min-width: 40px;

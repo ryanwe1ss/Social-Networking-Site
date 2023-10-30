@@ -45,14 +45,14 @@
         }
       }
   
-      #close {
+      .close {
         color: black;
         float: right;
         font-size: 30px;
         font-weight: bold;
       }
       
-      #close:hover {
+      .close:hover {
         color: red;
         cursor: pointer;
       }
