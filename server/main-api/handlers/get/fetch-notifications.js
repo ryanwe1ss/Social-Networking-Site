@@ -129,7 +129,7 @@ function FetchNotifications(request, result)
                     
                     } else return result.sendStatus(500);
                   }
-                )
+                );
               
               } else return result.sendStatus(500);
             }

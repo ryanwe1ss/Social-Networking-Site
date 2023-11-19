@@ -15,12 +15,11 @@ function LikePost(request, result)
           VALUES (${request.query.post}, ${request.session.user.id})`,
           
           function(error, data) {
-            if (error) return result.sendStatus(500);
-
-            result.sendStatus(200);
-            database.query(`UPDATE statistics SET total_likes = total_likes + 1, last_like = NOW() WHERE account_id = ${request.session.user.id}`, (error, data) => {
-              if (error) console.log(`Error updating like statistic for account: ${request.session.user.id}`);
-            });
+            if (error) result.sendStatus(500);
+            else {
+              database.query(`UPDATE statistics SET total_likes = total_likes + 1, last_like = NOW() WHERE account_id = ${request.session.user.id}`, (error, data) => null);
+              result.sendStatus(200);
+            }
           }
         );
       
@@ -31,8 +30,7 @@ function LikePost(request, result)
           liker = ${request.session.user.id}`,
           
           function(error, data) {
-            if (error) result.sendStatus(500);
-            else result.sendStatus(200);
+            result.sendStatus(error ? 500 : 200);
           }
         );
       }

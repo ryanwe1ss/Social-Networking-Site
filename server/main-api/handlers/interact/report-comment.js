@@ -33,8 +33,7 @@ function ReportComment(request, result)
             VALUES(${request.session.user.id}, ${request.body.reportedId}, ${request.body.commentId}, ${reason}, ${additionalInformation ? `'${additionalInformation}'` : null})`,
 
             function(error, reports) {
-              if (error) return result.sendStatus(500);
-              result.sendStatus(200);
+              result.sendStatus(error ? 500 : 200);
             }
           );
         }

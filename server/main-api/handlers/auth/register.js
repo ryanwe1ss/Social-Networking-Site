@@ -46,19 +46,7 @@ function Register(request, result)
                   headers: {"Content-Type": "application/json"},
                   body: JSON.stringify({id: accountId})
                 })
-                .then(response => {
-                  if (response.status == 200) {
-                    database.query(`INSERT INTO statistics (account_id) VALUES (${accountId})`, (error, data) => {
-                      if (error) console.log(`Error creating statistic record for new account: ${accountId}`);
-                    
-                    }); return result.sendStatus(200);
-                  
-                  } throw new Error(response.status);
-                })
-                .catch((errorCode) => {
-                  database.query(`DELETE FROM accounts WHERE username = '${credentials.username}'`, function(error, _) {});
-                  result.sendStatus(parseInt(errorCode.message) || 502);
-                })
+                .then(() => result.sendStatus(200));
               });
             }
           }

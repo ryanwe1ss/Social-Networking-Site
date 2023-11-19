@@ -8,8 +8,7 @@ function UnfollowAccount(request, result)
     account = ${request.query.profileId}`,
     
     function(error, data) {
-      if (error) result.sendStatus(500);
-      else result.sendStatus(200);
+      result.sendStatus(error ? 500 : 200);
     }
   );
 }

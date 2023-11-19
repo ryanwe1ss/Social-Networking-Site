@@ -21,6 +21,7 @@ function SearchAccounts(request, result)
     
     function(error, data) {
       if (!error) result.send(data.rows);
+      else result.sendStatus(500);
     }
   );
 }

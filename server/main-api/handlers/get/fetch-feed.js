@@ -38,7 +38,8 @@ function FetchFeed(request, result)
         });
       });
       result.send(posts);
-    }
+    
+    } else result.sendStatus(500);
   });
 }
 module.exports = { FetchFeed }

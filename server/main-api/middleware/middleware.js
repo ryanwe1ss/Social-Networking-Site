@@ -1,4 +1,4 @@
-const { allRoutes, adminRoutes, userRoutes } = require("./allowed-routes");
+const { allRoutes, adminRoutes, userRoutes } = require('./allowed-routes');
 
 const middleware = (request, result, next) => {
   const requestType = request.session.user ? request.session.user.type : null;
@@ -7,11 +7,11 @@ const middleware = (request, result, next) => {
     return next();
   }
 
-  if (requestType === "admin" && adminRoutes.some((route) => request.url.includes(route))) {
+  if (requestType == 'admin' && adminRoutes.some((route) => request.url.includes(route))) {
     return next();
   }
 
-  if (requestType === "user" && userRoutes.some((route) => request.url.includes(route))) {
+  if (requestType == 'user' && userRoutes.some((route) => request.url.includes(route))) {
     return next();
   }
   result.sendStatus(401);

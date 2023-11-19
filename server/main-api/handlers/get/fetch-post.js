@@ -40,10 +40,8 @@ function FetchPostContent(request, result)
       (SELECT EXISTS(SELECT * FROM "blocked" WHERE "user" = ${request.session.user.id} AND blocker = creator_id))`,
     
     function(error, data) {
-      if (!error && data.rows[0] !== undefined) {
-        result.send(data.rows[0]);
-      
-      } else result.sendStatus(500);
+      if (!error && data.rows[0] != undefined) result.send(data.rows[0]);
+      else result.sendStatus(500);
     }
   );
 }

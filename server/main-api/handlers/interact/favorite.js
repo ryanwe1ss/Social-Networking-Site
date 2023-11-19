@@ -15,8 +15,7 @@ function FavoritePost(request, result)
           VALUES (${request.session.user.id}, ${request.query.post})`,
           
           function(error, results) {
-            if (error) return result.sendStatus(500);
-            result.sendStatus(200);
+            result.sendStatus(error ? 500 : 200);
           }
         );
       
@@ -27,8 +26,7 @@ function FavoritePost(request, result)
           saver_id = ${request.session.user.id}`,
           
           function(error, results) {
-            if (error) result.sendStatus(500);
-            else result.sendStatus(200);
+            result.sendStatus(error ? 500 : 200);
           }
         );
       }

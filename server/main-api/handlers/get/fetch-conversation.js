@@ -55,7 +55,8 @@ function FetchConversation(request, result)
             if (error) console.log(`Error updating messages for user ${request.session.user.id}: ${error}`);
           }
         );
-      }
+      
+      } else result.sendStatus(500);
     }
   )
 }

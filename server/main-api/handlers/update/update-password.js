@@ -13,9 +13,12 @@ function UpdatePassword(request, result)
 
   hash.update(password);
   database.query(`
-    UPDATE accounts
-    SET password = '${hash.digest('hex')}'
-    WHERE id = ${request.session.user.id}`,
+    UPDATE
+      accounts
+    SET
+      password = '${hash.digest('hex')}'
+    WHERE
+      id = ${request.session.user.id}`,
 
     function (error, data) {
       result.sendStatus(error ? 500 : 200);

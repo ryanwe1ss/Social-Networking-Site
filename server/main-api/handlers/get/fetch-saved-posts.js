@@ -1,5 +1,4 @@
 const { database } = require("../../../database/database");
-const fs = require("fs");
 
 function FetchSavedPosts(request, result)
 {

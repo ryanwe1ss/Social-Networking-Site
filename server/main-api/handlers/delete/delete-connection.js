@@ -1,4 +1,4 @@
-const { database } = require("../../../database/database");
+const { database } = require('../../../database/database');
 
 function DeleteConnection(request, result)
 {
@@ -6,23 +6,21 @@ function DeleteConnection(request, result)
   const userId = request.query.userId;
   const type = request.query.type;
 
-  if (type == "following") {
+  if (type == 'following') {
     database.query(`
       DELETE FROM connections
       WHERE follower = ${sessionId} AND
       account = ${userId}`, function(error, data) {
-        if (error) result.sendStatus(500);
-        else result.sendStatus(200);
+        result.sendStatus(error ? 500 : 200);
       }
     );
   
-  } else if (type == "followers") {
+  } else if (type == 'followers') {
     database.query(`
       DELETE FROM connections
       WHERE follower = ${userId} AND
       account = ${sessionId}`, function(error, data) {
-        if (error) result.sendStatus(500);
-        else result.sendStatus(200);
+        result.sendStatus(error ? 500 : 200);
       }
     );
   }

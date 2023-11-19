@@ -6,8 +6,8 @@ import LoadingBar from '../../../../../components/LoadingBar/loading-bar';
 function PostPictureModal(args)
 {
   const [uploaded, setUploaded] = useState(false);
+  
   const previewImageRef = useRef(null);
-
   const descriptionRef = useRef(null);
   const commentRef = useRef(null);
   const likeRef = useRef(null);
@@ -29,10 +29,17 @@ function PostPictureModal(args)
     }
   }
 
-  function HandlePostImage(event, description, comment, like, image) {
+  function HandlePostImage(event) {
     event.target.disabled = true;
+    ShowBoxDialog('Uploading Post...');
 
-    UploadPost(description, comment, like, image).then((response) => {
+    UploadPost(
+      descriptionRef.current.value,
+      commentRef.current.checked,
+      likeRef.current.checked,
+      imageRef.current.files[0]
+
+    ).then((response) => {
       if (response.status == 200) {
         setTimeout(() => {
           args.setShowPostModal(false);
@@ -88,13 +95,7 @@ function PostPictureModal(args)
                 </button>
                 <button
                   className='btn btn-secondary'
-                  onClick={(event) => HandlePostImage(
-                    event,
-                    descriptionRef.current.value,
-                    commentRef.current.checked,
-                    likeRef.current.checked,
-                    imageRef.current.files[0],
-                  )}
+                  onClick={HandlePostImage}
                   disabled={!uploaded}
                   >Create Post
                 </button>
@@ -102,7 +103,7 @@ function PostPictureModal(args)
             </div>
 
             <div className='preview-block'>
-              <img ref={previewImageRef} id='preview'/>
+              <img ref={previewImageRef}/>
             </div>
           </div>
         }

@@ -3,10 +3,10 @@ const { database } = require("../../../database/database");
 function BlockAccount(request, result)
 {
   database.query(`
-    DELETE FROM connections
+    DELETE FROM
+      connections
     WHERE
-      account = ${request.session.user.id} AND follower = ${request.query.profileId}
-      OR
+      account = ${request.session.user.id} AND follower = ${request.query.profileId} OR
       account = ${request.query.profileId} AND follower = ${request.session.user.id}`,
   
     function(error, data) {
@@ -17,8 +17,7 @@ function BlockAccount(request, result)
         VALUES (${request.session.user.id}, ${request.query.profileId})`,
         
         function(error, data) {
-          if (error) result.sendStatus(500);
-          else result.sendStatus(200);
+          result.sendStatus(error ? 500 : 200);
         }
       );
     }

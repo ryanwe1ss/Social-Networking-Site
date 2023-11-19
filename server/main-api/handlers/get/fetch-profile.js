@@ -3,7 +3,13 @@ const { database } = require("../../../database/database");
 function FetchProfile(request, result)
 {
   database.query(`
-    SELECT * FROM accounts WHERE username='${request.query.username}' AND is_enabled=TRUE`,
+    SELECT
+      id
+    FROM
+      accounts
+    WHERE
+      username='${request.query.username}' AND
+      is_enabled=TRUE`,
 
     function(error, results) {
       if (!error && results.rows.length > 0) {
@@ -70,11 +76,7 @@ function FetchProfile(request, result)
             is_enabled = TRUE`,
           
           function(error, data) {
-            if (!error && data.rows.length > 0) {
-              result.send(data.rows[0]);
-            } else {
-              result.send([]);
-            }
+            result.send(!error && data.rows.length > 0 ? data.rows[0] : []);
           }
         );
 
