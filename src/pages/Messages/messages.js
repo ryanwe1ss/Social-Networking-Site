@@ -51,10 +51,14 @@ function Messages()
     document.getElementById(userId).parentNode.style.pointerEvents = 'none';
 
     FetchConversation(userId).then((conversation) => {
-      messageRef.current.disabled = false;
+      const activeMessaging = !conversation.public_messaging && !conversation.is_following;
+      if (activeMessaging) {
+        ShowBoxDialog('You do not follow this user and they do not allow public messaging');
+      
+      } messageRef.current.disabled = activeMessaging;
 
       setConversation(conversation.messages);
-      setChatId(conversation.chatId);
+      setChatId(conversation.chat_id);
 
       setTimeout(() => {
         if (messages.innerText.length > 0) {
@@ -62,8 +66,8 @@ function Messages()
         }
       }, 0);
 
-      if (conversation.chatId == chatId) return;
-      chatSocket = new WebSocket(`${webSocketUrl}/cs-api/?chatId=${conversation.chatId}`);
+      if (conversation.chat_id == chatId) return;
+      chatSocket = new WebSocket(`${webSocketUrl}/cs-api/?chatId=${conversation.chat_id}`);
 
       chatSocket.onmessage = (event) => {
         setConversation(conversation => [...conversation, { ...JSON.parse(event.data), id: new Date().getTime() }]);
@@ -86,7 +90,7 @@ function Messages()
 
     if (chatSocket.readyState == WebSocket.OPEN && message.length > 0) {
       const newMessage = {
-        chat_id:   conversation.chatId,
+        chatId:   conversation.chatId,
         to:        userId,
         from:      session.username,
         to_user:   userId,

@@ -14,7 +14,10 @@ function CreateChat(args)
   const [users, setUsers] = useState([]);
 
   async function HandleSearchUsers(event) {
-    setUsers(await SearchUsers(event.target.value));
+    const users = await SearchUsers(event.target.value);
+    console.log(users);
+
+    setUsers(users);
   };
 
   async function HandleCreateChat(userId) {
@@ -31,11 +34,7 @@ function CreateChat(args)
       <div className='modal-content'>
         <header>
           <h4>Create Chat</h4>
-          <span onClick={() => {
-              document.getElementById('modal').style.display = 'none';
-              args.setShowCreateChat(false);
-              
-            }} id='close'>&times;</span>
+          <span onClick={() => args.setShowCreateChat(false)} id='close'>&times;</span>
         </header>
         <hr/>
 
@@ -61,6 +60,7 @@ function CreateChat(args)
                   type='button'
                   className='btn btn-secondary btn-sm'
                   onClick={() => HandleCreateChat(user.id)}
+                  disabled={!user.is_following && !user.has_public_messaging}
                   value='Message'
                 />
               </div>

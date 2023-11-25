@@ -8,15 +8,27 @@ function FetchConversation(request, result)
   database.query(`
     SELECT
       id AS chat_id,
-      (SELECT username FROM accounts WHERE id = ${request.query.userId}) AS user
-    FROM active_chats
-    WHERE user_one = ${request.session.user.id} AND user_two = ${request.query.userId}
-    OR user_one = ${request.query.userId} AND user_two = ${request.session.user.id}`,
+      (SELECT username FROM accounts WHERE id = ${request.query.userId}) AS user,
+      (SELECT public_messaging FROM accounts WHERE id = ${request.query.userId}),
+      CASE
+        WHEN (
+          SELECT COUNT(*)
+          FROM connections
+          WHERE account = ${request.query.userId} AND follower = ${request.session.user.id}
+        ) > 0 THEN TRUE ELSE FALSE
+      END AS is_following
+    FROM
+      active_chats
+    WHERE
+      user_one = ${request.session.user.id} AND user_two = ${request.query.userId} OR
+      user_one = ${request.query.userId} AND user_two = ${request.session.user.id}`,
 
     function(error, data) {
       if (!error) {
         chatId = data.rows[0].chat_id;
         username = data.rows[0].user;
+        publicMessaging = data.rows[0].public_messaging;
+        isFollowing = data.rows[0].is_following;
       }
     }
   )
@@ -38,8 +50,10 @@ function FetchConversation(request, result)
     function(error, data) {
       if (!error) {
         result.send({
-          chatId: chatId,
+          chat_id: chatId,
           username: username,
+          public_messaging: publicMessaging,
+          is_following: isFollowing,
           messages: data.rows,
         });
 

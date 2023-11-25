@@ -6,7 +6,18 @@ function SearchAccounts(request, result)
     SELECT
       id,
       name,
-      username
+      username,
+      CASE
+        WHEN (
+          SELECT COUNT(*)
+          FROM connections
+          WHERE account = accounts.id AND follower = ${request.session.user.id}
+        ) > 0 THEN TRUE ELSE FALSE
+      END AS is_following,
+      (SELECT
+        public_messaging
+        WHERE id = accounts.id
+      ) AS has_public_messaging
     FROM
       accounts
     WHERE

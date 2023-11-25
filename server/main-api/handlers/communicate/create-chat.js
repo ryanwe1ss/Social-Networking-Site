@@ -1,4 +1,4 @@
-const { database } = require("../../../database/database");
+const { database } = require('../../../database/database');
 
 function CreateChat(request, result)
 {
@@ -17,7 +17,9 @@ function CreateChat(request, result)
     )`,
     
     function(error, results) {
-      if (error || !results.rows[0].exists) return result.sendStatus(403);
+      if (error) return result.sendStatus(500);
+      if (!results.rows[0].exists) return result.sendStatus(403);
+
       database.query(`
         DO
         $do$
