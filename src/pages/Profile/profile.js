@@ -170,7 +170,7 @@ function Profile()
   function HandleMessage() {
     CreateChat(profile.id).then((response) => {
       if (response.status == 200) {
-        window.location.href = '/messages';
+        window.location.href = `/messages?chat=${response.chatId}`;
       }
     });
   }
@@ -207,7 +207,10 @@ function Profile()
                               <i className='bi bi-check-lg'/>
                             </button>
                             
-                            <button className='btn btn-danger btn-sm' onClick={() => setEditForm(false)}>
+                            <button className='btn btn-danger btn-sm' onClick={() => {
+                              setEditForm(false);
+                              setSaved(false);
+                            }}>
                               <i className='bi bi-x-lg'/>
                             </button>
                           </span>

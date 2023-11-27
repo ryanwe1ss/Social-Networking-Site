@@ -68,7 +68,6 @@ function Messages()
 
       if (conversation.chat_id == chatId) return;
       chatSocket = new WebSocket(`${webSocketUrl}/cs-api/?chatId=${conversation.chat_id}`);
-
       chatSocket.onmessage = (event) => {
         setConversation(conversation => [...conversation, { ...JSON.parse(event.data), id: new Date().getTime() }]);
         setTimeout(() => messages.scrollTop = messages.scrollHeight, 0);
@@ -88,9 +87,9 @@ function Messages()
       return;
     }
 
-    if (chatSocket.readyState == WebSocket.OPEN && message.length > 0) {
+    if (chatSocket.readyState == WebSocket.OPEN && message.length > 0 && conversation) {
       const newMessage = {
-        chatId:   conversation.chatId,
+        chat_id:   conversation.chat_id,
         to:        userId,
         from:      session.username,
         to_user:   userId,

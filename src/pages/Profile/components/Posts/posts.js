@@ -32,10 +32,11 @@ function Posts(args) {
             ShowBoxDialog('Problem Deleting Post. Error: ' + response.status);
           
           } else location.reload();
-        })
+        });
       
       } document.getElementById(postId).style.border = '2px solid black';
-    });
+    
+    }); setTempPosts([]);
 
   }, [editMode]);
 
@@ -49,7 +50,7 @@ function Posts(args) {
       <div className='user-posts'>
         <input type='file' id='post'/>
   
-        {loaded && args.profile.id == args.session.id && args.session.type !== 'admin' && !args.editMode ? 
+        {loaded && args.profile.id == args.session.id && args.session.type != 'admin' && !args.editMode ? 
           <div className='share-post' onClick={() => setShowPostModal(true)}>
             <i className='bi bi-plus-circle'/> Share a post
           </div> : null }

@@ -31,9 +31,7 @@ function Chats(args)
 
   useEffect(() => {
     const chat = document.getElementById(`${args.chat}_chat`);
-    if (chat) {
-      chat.click();
-    }
+    if (chat) chat.click();
 
   }, [chats]);
 

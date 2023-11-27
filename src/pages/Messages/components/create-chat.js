@@ -15,8 +15,6 @@ function CreateChat(args)
 
   async function HandleSearchUsers(event) {
     const users = await SearchUsers(event.target.value);
-    console.log(users);
-
     setUsers(users);
   };
 
