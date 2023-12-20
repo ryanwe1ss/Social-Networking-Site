@@ -39,14 +39,20 @@ function Chats(args)
     <div className='chats'>
       <div className='chat-header' onClick={() => args.setShowCreateChat(true)}><i className='bi bi-person-plus'></i>&nbsp;Message Friend</div>
       {chatsLoaded ? chats.map(chat => (
-        <div className='chat' onClick={() => args.HandleFetchConversation(chat.id)} id={`${chat.chat_id}_chat`} key={chat.id}>
+        <div className='chat' onClick={(event) => {
+          if (event.target.children[1]?.innerText) {
+            event.target.children[1].innerText = event.target.children[1].innerText.split(' (')[0];
+          
+          } args.HandleFetchConversation(chat.id);
+
+        }} id={`${chat.chat_id}_chat`} key={chat.id}>
           <img
             src={`${thumbnailUrl}/fs-api/thumbnail/${chat.id}`}
             onError={(img) => (img.target.src = DefaultProfileImage)}
             className='thumbnail'
             alt='thumbnail'
           />
-          <span>{chat.name}</span>
+          <span id='name'>{chat.name}</span>
           <i className='bi bi-chat-fill selected' id={chat.id} style={{display: 'none', float: 'right'}}/>
         </div>
       )) : <LoadingBar size='small' height={15}/>}

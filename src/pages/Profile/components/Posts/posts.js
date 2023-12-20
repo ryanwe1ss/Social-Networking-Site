@@ -11,7 +11,7 @@ import './posts.scss';
 function Posts(args) {
   const editMode = args.editMode;
   
-  const [limit, setLimit] = useState(3);
+  const [limit, setLimit] = useState(4);
   const [loaded, setLoaded] = useState(false);
   const [showPostModal, setShowPostModal] = useState(false);
 

@@ -3,9 +3,10 @@ const { database } = require("../../../database/database");
 function FetchChats(request, result)
 {
   database.query(`
-    SELECT DISTINCT ON (active_chats.id)
+    SELECT
       active_chats.id AS chat_id,
       COUNT(CASE WHEN messages.has_read IS FALSE AND messages.to_user = ${request.session.user.id} THEN 1 END) AS messages,
+      MAX(messages.date_created) AS most_recent_message,
 
       JSON_BUILD_OBJECT(
         'id', active_chats.user_one,
@@ -34,7 +35,9 @@ function FetchChats(request, result)
       active_chats.user_two = ${request.session.user.id}
     )
     GROUP BY
-      active_chats.id, userOne.id, userTwo.id, userOne.username, userTwo.username`,
+      active_chats.id, userOne.id, userTwo.id, userOne.username, userTwo.username
+    ORDER BY
+      most_recent_message DESC`,
 
     function(error, data) {
       if (!error) result.send(data.rows);

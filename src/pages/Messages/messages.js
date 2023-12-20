@@ -29,6 +29,7 @@ function Messages()
 
   const [session, setSession] = useState([]);
   const [conversation, setConversation] = useState([]);
+
   const [showCreateChat, setShowCreateChat] = useState(false);
   const [chatId, setChatId] = useState(null);
 
@@ -105,7 +106,7 @@ function Messages()
   }
 
   function HandleCloseChat(chatSocket, conversation, chatId) {
-    if (chatId != conversation.chatId) {
+    if (chatId != conversation.chatId || chatSocket) {
       chatSocket.close();
     }
   }
